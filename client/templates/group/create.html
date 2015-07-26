@@ -1,0 +1,56 @@
+<template name="groupCreate">
+  <div class="container">
+    <div class="row">
+      <h1 class="col-md-offset-2 col-md-10">创建组织</h1>
+    </div>
+
+    <hr class="form-divider">
+
+    <form class="form-horizontal">
+      <div class="form-group">
+        <label for="inputGroupName" class="col-md-2 control-label">我们的组织叫：</label>
+        <div class="col-md-8">
+          <input type="text" class="form-control" id="inputGroupName"
+                 placeholder="逗比俱乐部&hellip;">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputGroupHometown" class="col-md-2 control-label">坐落在：</label>
+        <div class="col-md-8">
+          <select class="form-control" id="inputGroupHometown">
+            <option>上海</option>
+            <option>北京</option>
+            <option>广州</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputMemberAlias" class="col-md-2 control-label">我们自称为：</label>
+        <div class="col-md-8">
+          <input type="text" class="form-control" id="inputMemberAlias"
+                 placeholder="逗比&hellip;">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputMemberTraits" class="col-md-2 control-label">我们的特质有：</label>
+        <div class="col-md-8">
+          <input type="text" class="form-control" id="inputMemberTraits"
+                 placeholder="搞笑&hellip;">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputGroupDescription" class="col-md-2 control-label">组织简介：</label>
+        <div class="col-md-8">
+          <textarea class="form-control" rows="5" id="inputGroupDescription"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-md-offset-2 col-md-8">
+          <button type="submit" class="btn btn-primary">创建组织</button>
+          <button type="button" class="btn btn-link">取消</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</template>
