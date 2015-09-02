@@ -5,9 +5,15 @@
 # but you can also edit it by hand.
 
 meteor-platform
-twbs:bootstrap
-iron:router
 sacha:spin
 accounts-password
-ian:accounts-ui-bootstrap-3
 less
+nemo64:bootstrap
+meteorhacks:npm
+
+
+npm-container
+aldeed:collection2
+kadira:flow-router
+kadira:blaze-layout
+arillo:flow-router-helpers

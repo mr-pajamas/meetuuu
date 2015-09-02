@@ -1,0 +1,28 @@
+html,
+body {
+  .size(100%; 100%) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.bg {
+  background: #eee5d4 fixed center;
+  background-size: cover;
+  .size(100%; 100%);
+  position: fixed;
+  z-index: 0;
+  top: 0;
+  left: 0;
+}
+
+header {
+  position: relative;
+  z-index: 9999;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+  .size(100%; 100%);
+  padding-top: @navbar-height;
+}
