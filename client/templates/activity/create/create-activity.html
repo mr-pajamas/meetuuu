@@ -1,4 +1,83 @@
 <template name="createActivity">
-    {{> header}}
-    <p>I'm here</p>
+    <header class="index-header">
+        {{> header}}
+    </header>
+    <div class="container">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="activityName" class="col-sm-2 control-label">活动名称<em>*</em></label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="activityName" placeholder="活动名称(不少于5个字)">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="activityTime" class="col-sm-2 control-label">活动时间<em>*</em></label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="daterange" value="01/01/2015 1:30 PM - 01/01/2015 2:00 PM" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="activityAddress" class="col-sm-2 control-label">活动地点</label>
+                <div class="col-sm-10">
+                    <div class="col-sm-2">
+                        <select class="selectpickerProvince">
+                            <option>Mustard</option>
+                            <option>Ketchup</option>
+                            <option>Relish</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <select class="selectpickerCity">
+                            <option>Mustard</option>
+                            <option>Ketchup</option>
+                            <option>Relish</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name="activityAddress" value="请输入详细地址" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="activityPoster" class="col-sm-2 control-label">上传海报</label>
+                <div class="col-sm-10">
+                    <div class="media" id="event-create-poster">
+                        <div class="pull-left" id="poster-preview">
+                            <img id="event_logo_image" class="pull-left" src="http://cdn.huodongxing.com/Content/v2.0/img/event-create-poster-holder.png" alt="海报 尺寸：1080*640 px" style="width:472px;height:280px;">
+                        </div>
+                        <div class="media-body">
+                            <div class="btn btn-primary btn-lg">
+                                <span><i class="fa fa-upload"></i> 上传</span>
+                                <input type="file" accept=".jpg,.jpeg,.gif,.png,.webp" id="poster-input" name="poster-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="activityMemberLimit" class="col-sm-2 control-label">活动人数</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="activityMemberLimit" placeholder="最多允许的人数,0不限制活动名额">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="activityTheme" class="col-sm-2 control-label">活动主题</label>
+                <div class="col-sm-10">
+                    <select class="activityTheme">
+                        <option>创意</option>
+                        <option>商业</option>
+                        <option>公益</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="activityTags" class="col-sm-2 control-label">活动标签</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="activityTags" placeholder="输入tag">
+                </div>
+            </div>
+
+        </form>
+    </div>
+
 </template>

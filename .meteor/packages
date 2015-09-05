@@ -17,3 +17,8 @@ aldeed:collection2
 kadira:flow-router
 kadira:blaze-layout
 arillo:flow-router-helpers
+
+fortawesome:fontawesome
+momentjs:moment
+chenkaic4:bootstrap-daterangepicker
+mrt:bootstrap-select
