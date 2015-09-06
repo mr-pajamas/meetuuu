@@ -1,20 +1,83 @@
 //@navbar-font-size: 16px;
 //@navbar-font-size-lg: 20px;
+@navbar-lg-height: 60px;
+@navbar-lg-padding-vertical: ((@navbar-lg-height - @line-height-computed) / 2);
+
+@navbar-brand-img-height: 34px;
+@navbar-lg-brand-img-height: 40px;
+
+@navbar-inverse-btn-border-color: #333;
+@navbar-inverse-btn-color: #fff;
+@navbar-inverse-btn-hover-bg: #333;
 
 body {
   padding-top: @navbar-height;
+
+  @media (min-width: @screen-sm-min) {
+    padding-top: @navbar-lg-height;
+  }
 }
 
 .header-navbar {
   margin-bottom: 0 !important;
   //.box-shadow(0 5px 5px #333);
   .navbar-header {
-    .dropdown.navbar-left {
-      float: left !important;
+    .navbar-brand {
+      padding-top: floor((@navbar-height - @navbar-brand-img-height) / 2);
+      padding-bottom: floor((@navbar-height - @navbar-brand-img-height) / 2);
+
+      img {
+        height: @navbar-brand-img-height;
+      }
+    }
+
+    .dropdown {
+      &.navbar-left {
+        float: left !important;
+      }
+    }
+
+    .btn {
+      background-color: transparent;
+      background-image: none;
+      .caret {
+        margin-left: 3px !important;
+      }
+
+      .navbar-inverse& {
+        border-color: @navbar-inverse-btn-border-color;
+        color: @navbar-inverse-btn-color;
+        &:hover,
+        &:focus {
+          background-color: @navbar-inverse-btn-hover-bg;
+        }
+      }
     }
   }
 
   @media (min-width: @screen-sm-min) {
+    min-height: @navbar-lg-height;
 
+    .navbar-header {
+      .navbar-brand {
+        height: @navbar-lg-height;
+        padding-top: floor((@navbar-lg-height - @navbar-lg-brand-img-height) / 2);
+        padding-bottom: ceil((@navbar-lg-height - @navbar-lg-brand-img-height) / 2);
+
+        img {
+          height: @navbar-lg-brand-img-height;
+        }
+      }
+
+      .navbar-btn {
+        margin-top: floor((@navbar-lg-height - @input-height-base) / 2);
+        margin-bottom: ceil((@navbar-lg-height - @input-height-base) / 2);
+      }
+    }
+
+    .navbar-nav > li > a {
+      padding-top: @navbar-lg-padding-vertical;
+      padding-bottom: @navbar-lg-padding-vertical;
+    }
   }
 }
