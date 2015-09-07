@@ -71,3 +71,32 @@
     margin: 0;
 }
 /* typeheader css */
+
+span.tag {
+    margin-right: 7px;
+    color: white;
+}
+
+span.tag i:hover {
+    cursor: pointer;
+}
+
+/* pic upload */
+.drop-zone {
+    position: absolute;
+    left: 0;
+    display: none;
+}
+
+/* bdmap */
+#bdmap {
+    position: absolute;
+    height: 300px;
+    display: none;
+    overflow: hidden;
+    margin:0;
+    z-index: 99;
+    border: 1px solid #a0a0a0;
+    box-shadow: 1px 1px 5px rgba(0,0,0,.5);
+    -webkit-box-shadow: 1px 1px 5px rgba(0,0,0,.5);
+}

@@ -22,3 +22,6 @@ fortawesome:fontawesome
 momentjs:moment
 chenkaic4:bootstrap-daterangepicker
 mrt:bootstrap-select
+sergeyt:typeahead
+summernote:standalone
+reactive-var

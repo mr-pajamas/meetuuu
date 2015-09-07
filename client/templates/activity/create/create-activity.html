@@ -19,41 +19,46 @@
             <div class="form-group">
                 <label for="activityAddress" class="col-sm-2 control-label">活动地点</label>
                 <div class="col-sm-10">
-                    <div class="col-sm-2">
-                        <select class="selectpickerProvince">
-                            <option>Mustard</option>
-                            <option>Ketchup</option>
-                            <option>Relish</option>
+                    <div class="col-sm-4">
+                        <select class="selectCity">
+                            <option value="">---请选择城市---</option>
+                            <option value="上海">上海</option>
+                            <option value="北京">北京</option>
+                            <option value="深圳">深圳</option>
                         </select>
                     </div>
-                    <div class="col-sm-2">
-                        <select class="selectpickerCity">
-                            <option>Mustard</option>
-                            <option>Ketchup</option>
-                            <option>Relish</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" name="activityAddress" value="请输入详细地址" />
+                    <div class="col-sm-offset-1 col-sm-6">
+                        <input type="text" class="form-control" name="activityAddress" placeholder="请输入详细地址" />
+                        <div id="bdmap"></div>
                     </div>
                 </div>
             </div>
             <div class="form-group">
-                <label for="activityPoster" class="col-sm-2 control-label">上传海报</label>
-                <div class="col-sm-10">
-                    <div class="media" id="event-create-poster">
-                        <div class="pull-left" id="poster-preview">
-                            <img id="event_logo_image" class="pull-left" src="http://cdn.huodongxing.com/Content/v2.0/img/event-create-poster-holder.png" alt="海报 尺寸：1080*640 px" style="width:472px;height:280px;">
+                <label class="col-sm-2 control-label">上传海报</label>
+                <div class="media event-create-poster" id="event-create-poster">
+                    <img class="drop-zone" src="http://cdn.huodongxing.com/Content/v2.0/img/event-create-drop-zone.png">
+                    <div class="pull-left" id="poster-preview">
+                        <img id="event_logo_image" class="pull-left" src="http://cdn.huodongxing.com/Content/v2.0/img/event-create-poster-holder.png" alt="海报 尺寸：1080*640 px" style="width:472px;height:280px;"/>
+                    </div>
+                    <div class="media-body">
+                        <div class="btn btn-primary btn-lg">
+                            <span>上传</span>
+                            <input type="file" accept=".jpg,.jpeg,.gif,.png,.webp" id="poster-input" name="poster-input">
                         </div>
-                        <div class="media-body">
-                            <div class="btn btn-primary btn-lg">
-                                <span><i class="fa fa-upload"></i> 上传</span>
-                                <input type="file" accept=".jpg,.jpeg,.gif,.png,.webp" id="poster-input" name="poster-input">
-                            </div>
+                        <div>
+                            温馨提示：
+                            <br/>
+                            可以点击上传选择图片，也可以直接拖拽<span id="ie-paste-fix">或粘贴</span>图片至此窗口。
                         </div>
+                        <p>
+                            一张漂亮的海报，能让你的活动锦上添花，带来更多用户报名
+                            <br/>
+                            及增加传播效果，也将影响其在活动行App被推荐的几率！
+                        </p>
                     </div>
                 </div>
             </div>
+
             <div class="form-group">
                 <label for="activityMemberLimit" class="col-sm-2 control-label">活动人数</label>
                 <div class="col-sm-10">
@@ -64,20 +69,74 @@
                 <label for="activityTheme" class="col-sm-2 control-label">活动主题</label>
                 <div class="col-sm-10">
                     <select class="activityTheme">
-                        <option>创意</option>
-                        <option>商业</option>
-                        <option>公益</option>
+                        <option value="">---请选择主题---</option>
+                        <option value="创业">创业</option>
+                        <option value="商务">商务</option>
+                        <option value="公益">公益</option>
+                        <option value="社交">社交</option>
+                        <option value="亲子">亲子</option>
+                        <option value="电影">电影</option>
+                        <option value="娱乐">娱乐</option>
+                        <option value="生活">生活</option>
+                        <option value="音乐">音乐</option>
+                        <option value="科技">科技</option>
+                        <option value="运动">运动</option>
+                        <option value="课程">课程</option>
+                        <option value="校园">校园</option>
+                        <option value="文化">文化</option>
+                        <option value="其它">其它</option>
                     </select>
                 </div>
             </div>
             <div class="form-group">
                 <label for="activityTags" class="col-sm-2 control-label">活动标签</label>
+                <div class="col-sm-10" id="selected-tag">
+                    <label for="added-tag">已添加：</label>
+                </div>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="activityTags" placeholder="输入tag">
+                    <input class="form-control typeahead" name="eventsTag" type="text"
+                           placeholder="People Name"
+                           autocomplete="on"
+                           spellcheck="off"
+                           data-source="tags"
+                           data-select="selected"
+                           data-template="TagSuggestion"
+                           />
                 </div>
             </div>
-
+            <div class="form-group">
+                <label for="activityPrivate" class="col-sm-2 control-label">隐私设置</label>
+                <div class="col-sm-10">
+                    <label class="control-label">
+                        <input type="checkbox" id="activityPrivate"> 私密活动
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="activityDesc" class="col-sm-2 control-label">活动描述</label>
+                <div class="col-sm-10">
+                    <div id="activityDesc"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-off-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </div>
+            </div>
         </form>
     </div>
+</template>
 
+
+<template name="TagSuggestion">
+    <div class="container">
+        <div>{{name}} <span class="badge">{{refers}}</span></div>
+    </div>
+</template>
+
+<template name="eventTag">
+    <span class="tag label label-info" id="{{_id}}">
+        {{name}}
+        <i class="fa fa-trash-o delete-event-tag"></i>
+    </span>
 </template>
