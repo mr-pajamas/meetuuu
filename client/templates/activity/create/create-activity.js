@@ -26,9 +26,7 @@ Template.createActivity.onRendered(function(){
   //  radioClass: 'iradio_flat'
   //});
 
-  $('#activityDesc').summernote({
-    height: 300
-  });
+  $('#activityDesc').wysiwyg();
 
   this.$('.selectCity').selectpicker({
     style: 'btn-default',
@@ -84,6 +82,13 @@ Template.createActivity.onRendered(function(){
 
   // 初始化 typeahead
   Meteor.typeahead.inject();
+
+  // 富文本框固定
+  //Meteor.setTimeout(function(){
+  //  $('.note-toolbar').stickUp({
+  //    marginTop: '50px'
+  //  });
+  //}, 3000);
 });
 
 
@@ -112,7 +117,7 @@ Template.createActivity.helpers({
         if (!err && tagId) {
           selectedSuggestion._id = tagId;
           selectedSuggestion.name = selectedSuggestion.value;
-          insertTag(selectedSuggestion);
+          insertTag(_.extend(selectedSuggestion, {'refers': 1}));
         }
       });
     } else {
@@ -168,6 +173,21 @@ Template.createActivity.events({
     // 重置地图
     bdmap = null;
     Session.set('selectedCity', cityName);
+  },
+  'click #submitBaiscInfo': function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('保存基本信息');
+    var eventInfo = saveEventBaiscInfo();
+    var id = $('#eventId').val();
+    Meteor.call('Activities.saveBasicInfo', id, eventInfo, function(err, res) {
+      if (!err && 0 === res.code) {
+        alert('保存成功');
+        if (res.eventId) {
+          $('#eventId').val(res.eventId);
+        }
+      }
+    });
   }
 });
 
@@ -181,3 +201,42 @@ Template.eventTag.events({
     $spanTag.remove();
   }
 });
+
+
+function saveEventBaiscInfo() {
+  var title = $('#activityName').val(),
+      startTime = $('input[name="daterange"]').data('daterangepicker').startDate._d,
+      endTime = $('input[name="daterange"]').data('daterangepicker').endDate._d,
+      //duration = moment.duration(endTime - startTime).humanize(),
+      cityName = Session.get('selectedCity'),
+      address = $('input[name="activityAddress"]').val(),
+      lnglat = bdmap && bdmap.getCenter(),
+      posterUrl = 'http://www.huodongxing.com/Content/v2.0/img/poster/school.jpg',
+      eventMemberLimit = $('#activityMemberLimit').val() || 0,
+      eventTheme = $('.activityTheme').val(),
+      tags = GeventTag.getAllTags(),
+      private = $('#activityPrivate').prop("checked") || false,
+      desc = $('#activityDesc').html();
+
+  var eventInfo = {
+    title: title,
+    time: {
+      start: startTime,
+      end: endTime
+    },
+    location: {
+      city: cityName,
+      address: address,
+      lat: lnglat.lat,
+      lng: lnglat.lng
+    },
+    poster: posterUrl,
+    member: eventMemberLimit,
+    theme: eventTheme,
+    tags: tags,
+    private: private,
+    desc: desc
+  };
+  return eventInfo;
+
+}

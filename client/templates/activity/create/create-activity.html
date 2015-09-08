@@ -3,127 +3,184 @@
         {{> header}}
     </header>
     <div class="container">
-        <form class="form-horizontal">
-            <div class="form-group">
-                <label for="activityName" class="col-sm-2 control-label">活动名称<em>*</em></label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="activityName" placeholder="活动名称(不少于5个字)">
+        <input type="text" value="" id="eventId" hidden/>
+        <div class="eventBaiscInfo">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label for="activityName" class="col-sm-2 control-label">活动名称<em>*</em></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="activityName" placeholder="活动名称，不少于5个字">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="activityTime" class="col-sm-2 control-label">活动时间<em>*</em></label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" name="daterange" value="01/01/2015 1:30 PM - 01/01/2015 2:00 PM" />
+                <div class="form-group">
+                    <label for="activityTime" class="col-sm-2 control-label">活动时间<em>*</em></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="daterange" value="01/01/2015 1:30 PM - 01/01/2015 2:00 PM" />
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="activityAddress" class="col-sm-2 control-label">活动地点</label>
-                <div class="col-sm-10">
-                    <div class="col-sm-4">
-                        <select class="selectCity">
-                            <option value="">---请选择城市---</option>
-                            <option value="上海">上海</option>
-                            <option value="北京">北京</option>
-                            <option value="深圳">深圳</option>
+                <div class="form-group">
+                    <label for="activityAddress" class="col-sm-2 control-label">活动地点</label>
+                    <div class="col-sm-10">
+                        <div class="col-sm-4">
+                            <select class="selectCity">
+                                <option value="">---请选择城市---</option>
+                                <option value="上海">上海</option>
+                                <option value="北京">北京</option>
+                                <option value="深圳">深圳</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-offset-1 col-sm-6">
+                            <input type="text" class="form-control" name="activityAddress" placeholder="请输入详细地址" />
+                            <div id="bdmap"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">上传海报</label>
+                    <div class="media event-create-poster" id="event-create-poster">
+                        <img class="drop-zone" src="http://cdn.huodongxing.com/Content/v2.0/img/event-create-drop-zone.png">
+                        <div class="pull-left" id="poster-preview">
+                            <img id="event_logo_image" class="pull-left" src="http://cdn.huodongxing.com/Content/v2.0/img/event-create-poster-holder.png" alt="海报 尺寸：1080*640 px" style="width:472px;height:280px;"/>
+                        </div>
+                        <div class="media-body">
+                            <div class="btn btn-default btn-lg">
+                                <span>上传</span>
+                                <input type="file" accept=".jpg,.jpeg,.gif,.png,.webp" id="poster-input" name="poster-input">
+                            </div>
+                            <div>
+                                温馨提示：
+                                <br/>
+                                可以点击上传选择图片，也可以直接拖拽<span id="ie-paste-fix">或粘贴</span>图片至此窗口。
+                            </div>
+                            <p>
+                                一张漂亮的海报，能让你的活动锦上添花，带来更多用户报名
+                                <br/>
+                                及增加传播效果，也将影响其在活动行App被推荐的几率！
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="activityMemberLimit" class="col-sm-2 control-label">活动人数</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="activityMemberLimit" placeholder="活动人数限制，0 代表不限名额">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="activityTheme" class="col-sm-2 control-label">活动主题</label>
+                    <div class="col-sm-10">
+                        <select class="activityTheme">
+                            <option value="">---请选择主题---</option>
+                            <option value="创业">创业</option>
+                            <option value="商务">商务</option>
+                            <option value="公益">公益</option>
+                            <option value="社交">社交</option>
+                            <option value="亲子">亲子</option>
+                            <option value="电影">电影</option>
+                            <option value="娱乐">娱乐</option>
+                            <option value="生活">生活</option>
+                            <option value="音乐">音乐</option>
+                            <option value="科技">科技</option>
+                            <option value="运动">运动</option>
+                            <option value="课程">课程</option>
+                            <option value="校园">校园</option>
+                            <option value="文化">文化</option>
+                            <option value="其它">其它</option>
                         </select>
                     </div>
-                    <div class="col-sm-offset-1 col-sm-6">
-                        <input type="text" class="form-control" name="activityAddress" placeholder="请输入详细地址" />
-                        <div id="bdmap"></div>
+                </div>
+                <div class="form-group">
+                    <label for="activityTags" class="col-sm-2 control-label">活动标签</label>
+                    <div class="col-sm-10" id="selected-tag">
+                        <label for="added-tag">已添加：</label>
+                    </div>
+                    <div class="col-sm-10">
+                        <input class="form-control typeahead" name="eventsTag" type="text"
+                               placeholder="输入标签名字"
+                               autocomplete="on"
+                               spellcheck="off"
+                               data-source="tags"
+                               data-select="selected"
+                               data-template="TagSuggestion"
+                                />
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">上传海报</label>
-                <div class="media event-create-poster" id="event-create-poster">
-                    <img class="drop-zone" src="http://cdn.huodongxing.com/Content/v2.0/img/event-create-drop-zone.png">
-                    <div class="pull-left" id="poster-preview">
-                        <img id="event_logo_image" class="pull-left" src="http://cdn.huodongxing.com/Content/v2.0/img/event-create-poster-holder.png" alt="海报 尺寸：1080*640 px" style="width:472px;height:280px;"/>
-                    </div>
-                    <div class="media-body">
-                        <div class="btn btn-primary btn-lg">
-                            <span>上传</span>
-                            <input type="file" accept=".jpg,.jpeg,.gif,.png,.webp" id="poster-input" name="poster-input">
-                        </div>
-                        <div>
-                            温馨提示：
-                            <br/>
-                            可以点击上传选择图片，也可以直接拖拽<span id="ie-paste-fix">或粘贴</span>图片至此窗口。
-                        </div>
-                        <p>
-                            一张漂亮的海报，能让你的活动锦上添花，带来更多用户报名
-                            <br/>
-                            及增加传播效果，也将影响其在活动行App被推荐的几率！
-                        </p>
+                <div class="form-group">
+                    <label for="activityPrivate" class="col-sm-2 control-label">隐私设置</label>
+                    <div class="col-sm-10">
+                        <label class="control-label">
+                            <input type="checkbox" id="activityPrivate"> 私密活动
+                        </label>
                     </div>
                 </div>
-            </div>
+                <div class="form-group">
+                    <label for="activityDesc" class="col-sm-2 control-label">活动描述</label>
+                    <div class="col-sm-10">
+                        <div class="btn-toolbar" data-role="editor-toolbar" data-target="#activityDesc">
+                            <div class="btn-group">
+                                <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="" data-original-title="Font"><i class="glyphicon glyphicon-font"></i><b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a data-edit="fontName Serif" style="font-family:'Serif'">Serif</a></li>
+                                    <li><a data-edit="fontName Sans" style="font-family:'Sans'">Sans</a></li>
+                                    <li><a data-edit="fontName Arial" style="font-family:'Arial'">Arial</a></li>
+                                    <li><a data-edit="fontName Arial Black" style="font-family:'Arial Black'">Arial Black</a></li>
+                                    <li><a data-edit="fontName Courier" style="font-family:'Courier'">Courier</a></li>
+                                    <li><a data-edit="fontName Courier New" style="font-family:'Courier New'">Courier New</a></li>
+                                    <li><a data-edit="fontName Comic Sans MS" style="font-family:'Comic Sans MS'">Comic Sans MS</a></li>
+                                    <li><a data-edit="fontName Helvetica" style="font-family:'Helvetica'">Helvetica</a></li>
+                                    <li><a data-edit="fontName Impact" style="font-family:'Impact'">Impact</a></li>
+                                    <li><a data-edit="fontName Lucida Grande" style="font-family:'Lucida Grande'">Lucida Grande</a></li>
+                                    <li><a data-edit="fontName Lucida Sans" style="font-family:'Lucida Sans'">Lucida Sans</a></li>
+                                    <li><a data-edit="fontName Tahoma" style="font-family:'Tahoma'">Tahoma</a></li>
+                                    <li><a data-edit="fontName Times" style="font-family:'Times'">Times</a></li>
+                                    <li><a data-edit="fontName Times New Roman" style="font-family:'Times New Roman'">Times New Roman</a></li>
+                                    <li><a data-edit="fontName Verdana" style="font-family:'Verdana'">Verdana</a></li></ul>
+                            </div>
+                            <div class="btn-group">
+                                <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="" data-original-title="Font Size"><i class="glyphicon glyphicon-text-height"></i>&nbsp;<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a data-edit="fontSize 5"><span style="font-size: large">大</span></a></li>
+                                    <li><a data-edit="fontSize 3"><span style="font-size: medium">中</span></a></li>
+                                    <li><a data-edit="fontSize 1"><span style="font-size: small">小</span></a></li>
+                                </ul>
+                            </div>
+                            <div class="btn-group">
+                                <a class="btn btn-default" data-edit="bold" title="" data-original-title="Bold (Ctrl/Cmd+B)"><i class="glyphicon glyphicon-bold"></i></a>
+                                <a class="btn btn-default" data-edit="italic" title="" data-original-title="Italic (Ctrl/Cmd+I)"><i class="glyphicon glyphicon-italic"></i></a>
+                                <a class="btn btn-default" data-edit="underline" title="" data-original-title="Underline (Ctrl/Cmd+U)"><i class="glyphicon glyphicon-text-width"></i></a>
+                            </div>
+                            <div class="btn-group">
+                                <a class="btn btn-default" data-edit="insertunorderedlist" title="" data-original-title="Bullet list"><i class="glyphicon glyphicon-list"></i></a>
+                                <a class="btn btn-default" data-edit="insertorderedlist" title="" data-original-title="Number list"><i class="glyphicon glyphicon-list-alt"></i></a>
+                                <a class="btn btn-default" data-edit="outdent" title="" data-original-title="Reduce indent (Shift+Tab)"><i class="glyphicon glyphicon-indent-left"></i></a>
+                                <a class="btn btn-default" data-edit="indent" title="" data-original-title="Indent (Tab)"><i class="glyphicon glyphicon-indent-right"></i></a>
+                            </div>
+                            <div class="btn-group">
+                                <a class="btn btn-default" data-edit="justifyleft" title="" data-original-title="Align Left (Ctrl/Cmd+L)"><i class="glyphicon glyphicon-align-left"></i></a>
+                                <a class="btn btn-default" data-edit="justifycenter" title="" data-original-title="Center (Ctrl/Cmd+E)"><i class="glyphicon glyphicon-align-center"></i></a>
+                                <a class="btn btn-default" data-edit="justifyright" title="" data-original-title="Align Right (Ctrl/Cmd+R)"><i class="glyphicon glyphicon-align-right"></i></a>
+                                <a class="btn btn-default" data-edit="justifyfull" title="" data-original-title="Justify (Ctrl/Cmd+J)"><i class="glyphicon glyphicon-align-justify"></i></a>
+                            </div>
 
-            <div class="form-group">
-                <label for="activityMemberLimit" class="col-sm-2 control-label">活动人数</label>
-                <div class="col-sm-10">
-                    <input type="number" class="form-control" id="activityMemberLimit" placeholder="最多允许的人数,0不限制活动名额">
+                            <div class="btn-group">
+                                <a class="btn btn-default" title="" id="pictureBtn" data-original-title="Insert picture (or just drag &amp; drop)"><i class="glyphicon glyphicon-picture"></i></a>
+                                <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" style="opacity: 0; position: absolute; top: 0px; left: 0px; width: 37px; height: 30px;">
+                            </div>
+                        </div>
+                        <div id="activityDesc" placeholder="活动描述，不少于10个字"></div>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="activityTheme" class="col-sm-2 control-label">活动主题</label>
-                <div class="col-sm-10">
-                    <select class="activityTheme">
-                        <option value="">---请选择主题---</option>
-                        <option value="创业">创业</option>
-                        <option value="商务">商务</option>
-                        <option value="公益">公益</option>
-                        <option value="社交">社交</option>
-                        <option value="亲子">亲子</option>
-                        <option value="电影">电影</option>
-                        <option value="娱乐">娱乐</option>
-                        <option value="生活">生活</option>
-                        <option value="音乐">音乐</option>
-                        <option value="科技">科技</option>
-                        <option value="运动">运动</option>
-                        <option value="课程">课程</option>
-                        <option value="校园">校园</option>
-                        <option value="文化">文化</option>
-                        <option value="其它">其它</option>
-                    </select>
+                <div class="form-group">
+                    <div class="col-sm-off-2 col-sm-10">
+                        <button type="button" class="btn btn-default" id="submitBaiscInfo">保存基本信息</button>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="activityTags" class="col-sm-2 control-label">活动标签</label>
-                <div class="col-sm-10" id="selected-tag">
-                    <label for="added-tag">已添加：</label>
-                </div>
-                <div class="col-sm-10">
-                    <input class="form-control typeahead" name="eventsTag" type="text"
-                           placeholder="People Name"
-                           autocomplete="on"
-                           spellcheck="off"
-                           data-source="tags"
-                           data-select="selected"
-                           data-template="TagSuggestion"
-                           />
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="activityPrivate" class="col-sm-2 control-label">隐私设置</label>
-                <div class="col-sm-10">
-                    <label class="control-label">
-                        <input type="checkbox" id="activityPrivate"> 私密活动
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="activityDesc" class="col-sm-2 control-label">活动描述</label>
-                <div class="col-sm-10">
-                    <div id="activityDesc"></div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-off-2 col-sm-10">
-                    <button type="submit" class="btn btn-default">Submit</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
+        <div class="eventRegistrationForm">
+
+        </div>
     </div>
 </template>
 
