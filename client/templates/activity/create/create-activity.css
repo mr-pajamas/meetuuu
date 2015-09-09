@@ -133,3 +133,24 @@ span.tag i:hover {
     -moz-box-shadow:inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
     box-shadow:inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
 }
+
+/* 创建活动报名表单*/
+.event-create-body {
+    font-size: 14px;
+    margin-bottom: 35px;
+    border: 1px solid #eee;
+    background: #fff;
+}
+
+.basic-sign-form li {
+    display: inline-block;
+}
+
+/* 添加活动表单的多选项 */
+.delete-form-option {
+    cursor: pointer;
+}
+
+.delete-form-option:hover {
+    /*TODO add some aminition*/
+}

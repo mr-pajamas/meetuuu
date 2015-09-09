@@ -89,6 +89,9 @@ Template.createActivity.onRendered(function(){
   //    marginTop: '50px'
   //  });
   //}, 3000);
+
+  // 初始化表单控件
+  GeventSignForm.setContainerId('custom-form-container');
 });
 
 
@@ -188,6 +191,38 @@ Template.createActivity.events({
         }
       }
     });
+  },
+  // 自定义表单控件-创建
+  'click .custom-form-item': function(e) {
+    e.preventDefault();
+    var type = $(e.target).attr('data-type');
+    console.log(type);
+    GeventSignForm.createForm(type);
+  },
+  // 自定义表单控件-删除
+  'click .delete-custom-form': function (e) {
+    e.preventDefault();
+    var formId = $(e.target).attr('data-id');
+    GeventSignForm.removeForm(formId);
+  },
+  'click .submitSignForm': function(e) {
+    e.preventDefault();
+    GeventSignForm.getFromContent();
+  },
+  'click .add-form-options': function(e) {
+    e.preventDefault();
+    var formId = $(e.target).attr('data-id');
+    console.log(formId);
+    Blaze.renderWithData(Template['custom-form-options'], {'formId': formId}, $('.custom-form-options-container')[0]);
+  }
+});
+
+
+// 多选表单的复选小控件
+Template['custom-form-options'].events({
+  'click .delete-form-option': function(e) {
+    e.preventDefault();
+    $(e.target).parent().remove();
   }
 });
 
@@ -238,5 +273,4 @@ function saveEventBaiscInfo() {
     desc: desc
   };
   return eventInfo;
-
 }

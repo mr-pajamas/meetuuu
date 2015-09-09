@@ -178,8 +178,92 @@
                 </div>
             </form>
         </div>
-        <div class="eventRegistrationForm">
 
+
+        <div class="eventRegistrationForm">
+            <div class="container create-event-sign-form">
+                <div class="create-event-sign-form-label">
+                    <label for="text" class="bg-info">设置报名表单</label>
+                </div>
+                <div class="aside" id="edit_template_tools">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-2">常用栏位:</div>
+                            <div class="col-lg-10 common-form-item-container">
+                                <button type="button" class="btn col-lg-1 btn-default common-form-item" data-itemid="1"><span>公司</span></button>
+                                <button type="button" class="btn col-lg-1 btn-default common-form-item" data-itemid="2"><span>部门</span></button>
+                                <button type="button" class="btn col-lg-1 btn-default common-form-item" data-itemid="3"><span>职位</span></button>
+                                <button type="button" class="btn col-lg-1 btn-default common-form-item" data-itemid="4"><span>兴趣</span></button>
+                                <button type="button" class="btn col-lg-1 btn-default common-form-item" data-itemid="5"><span>血型</span></button>
+                                <button type="button" class="btn col-lg-1 btn-default common-form-item" data-itemid="6"><span>婚姻</span></button>
+                                <button type="button" class="btn col-lg-1 btn-default common-form-item" data-itemid="7"><span>性别</span></button>
+                                <button type="button" class="btn col-lg-1 btn-default common-form-item" data-itemid="8"><span>年龄</span></button>
+                                <button type="button" class="btn col-lg-1 btn-default common-form-item" data-itemid="9"><span>学历</span></button>
+                                <button type="button" class="btn col-lg-1 btn-default common-form-item" data-itemid="10"><span>住址</span></button>
+                                <button type="button" class="btn col-lg-1 btn-default common-form-item" data-itemid="11"><span>月收入</span></button>
+                                <button type="button" class="btn col-lg-1 btn-default common-form-item" data-itemid="12"><span>其他</span></button>
+                                <button type="button" class="btn col-lg-1 btn-default common-form-item" data-itemid="13"><span>附件</span></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-2">自定义栏位：</div>
+                            <div class="col-lg-10 empty-from-item-container">
+                                <button type="button" class="btn col-lg-2 btn-default custom-form-item" data-type="ESF_SINGLE_TEXT">单行文本框 <i class="fa fa-plus-square-o"></i></button>
+                                <button type="button" class="btn col-lg-2 btn-default custom-form-item" data-type="ESF_SINGLE_NUMBER">数字输入框 <i class="fa fa-plus-square-o"></i></button>
+                                <button type="button" class="btn col-lg-2 btn-default custom-form-item" data-type="ESF_SINGLE_DATE">日期选择框 <i class="fa fa-plus-square-o"></i></button>
+                                <button type="button" class="btn col-lg-2 btn-default custom-form-item" data-type="ESF_SINGLE_EMAIL">邮箱输入框 <i class="fa fa-plus-square-o"></i></button>
+                                <button type="button" class="btn col-lg-2 btn-default custom-form-item" data-type="ESF_MULTI_TEXT">多行文本框 <i class="fa fa-plus-square-o"></i></button>
+                                <button type="button" class="btn col-lg-2 btn-default custom-form-item" data-type="ESF_SINGLE_CHECKBOX">单选按钮框 <i class="fa fa-plus-square-o"></i></button>
+                                <button type="button" class="btn col-lg-2 btn-default custom-form-item" data-type="ESF_MULTI_CHECKBOX">多选按钮框 <i class="fa fa-plus-square-o"></i></button>
+                                <button type="button" class="btn col-lg-2 btn-default custom-form-item" data-type="ESF_PULL_SELECT">下拉选择框 <i class="fa fa-plus-square-o"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container" id="custom-form-container">
+
+                </div>
+                <div>
+                    <buttom class="submitSignForm">提交报名表单</buttom>
+                </div>
+                <div id="edit_template_items" class="event-create-sign-form" style="min-height:518px;">
+                    <form action="/myevent/SaveEventForm" id="event_template_form" method="post" style="margin-bottom:5px;" novalidate="novalidate">			<fieldset>
+                        <input type="hidden" name="activityId" value="8298773552100">
+                        <input type="hidden" name="version" value="1">
+                        <input type="hidden" id="template_form_sort_max" name="sortmax" value="0">
+                        <h3>联系方式<strong>（报名用户注册资料，必填）</strong></h3>
+                        <div id="event_template_form_contact" class="event-create-sign-required">
+                            <div class="form-group">
+                                <label><input type="checkbox" checked="checked" disabled="disabled">必填</label><span>姓名</span><input type="text" class="form-control" placeholder="报名用户的姓名或昵称" disabled="disabled">
+                            </div>
+                            <div class="form-group">
+                                <label><input type="checkbox" checked="checked" disabled="disabled">必填</label><span>手机号码</span><input type="text" class="form-control" placeholder="报名用户的手机号码" disabled="disabled">
+                            </div>
+                            <div class="form-group">
+                                <label><input type="checkbox" checked="checked" disabled="disabled">必填</label><span>电子邮箱</span><input type="text" class="form-control" placeholder="报名用户的电子邮箱" disabled="disabled">
+                            </div>
+                        </div>
+                        <h3>其他</h3>
+                        <p style="font-size:14px;padding:5px 15px;color:gray;">未添加其他栏位（即不需要报名/购票人提供额外信息）。</p><div id="event_template_form_items"></div>
+                        <div style="clear:both;"></div>
+                        <div class="form-actions" style="padding-left:20px;margin-top:20px;">
+                            <button href="#" class="btn btn-primary" onclick="javascript:saveEventForm(null);return false;" style="margin-right:15px;">
+                                <i class="icon-hdd icon-white"></i>保&nbsp;存
+                            </button>
+                            <button href="#" class="btn" onclick="javascript:reviewEventFormView();return false;">
+                                <i class="icon-play"></i>预&nbsp;览
+                            </button>
+                        </div>
+                    </fieldset>
+                    </form>
+                </div>
+                <div class="clear text-center">
+                    <button class="btn" id="event-create-item-toggle"><span class="icon-top-arrow"></span>收起表单</button>
+                </div>
+            </div>
         </div>
     </div>
 </template>

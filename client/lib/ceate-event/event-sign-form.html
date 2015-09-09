@@ -1,0 +1,43 @@
+<template name="ESF_CUSTOM">
+    <div class="container">
+        <div
+            class="event-sign-form-setting row"
+            data-type="{{type}}"
+            data-category="2"
+        >
+            <label class="col-lg-1">
+                <input type="checkbox" name="required" id="need-{{formId}}"> 是否必填
+            </label>
+            <div class="col-lg-3">
+                <input type="text" class="form-control required" id="title-{{formId}}" title="{{title}}" placeholder="{{title}}" name="title">
+            </div>
+            <div class="col-lg-7">
+                <input type="text" name="description" id="tips-{{formId}}" class="form-control" placeholder="提示信息写在这里！">
+            </div>
+            <div class="col-lg-1">
+                <i title="删除栏位" class="fa fa-trash-o delete-custom-form" data-id="{{formId}}"></i>
+            </div>
+        </div>
+        {{#if multi}}
+        <div class="row">
+            <div class="option-container col-lg-offset-4 col-lg-7">
+                <div style="border: 1px solid #ccc;">
+                    <div class="custom-form-options-container">
+                        <div class="container">
+                            <label for="text" class="label label-info">选项列表</label>
+                        </div>
+                    </div>
+                    <button class="btn btn-default add-form-options" data-id="{{formId}}"><i class="fa fa-plus"></i></button>
+                </div>
+            </div>
+        </div>
+        {{/if}}
+    </div>
+</template>
+
+<template name="custom-form-options">
+    <span>
+        <input type="text" style="width: 30%;" class="options-{{formId}}"/>
+        <i class="fa fa-minus-square-o delete-form-option"></i>
+    </span>
+</template>
