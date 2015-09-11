@@ -23,8 +23,7 @@ GeventSignForm = (function() {
     },
     'ESF_MULTI_TEXT': {
       title: '多行文本框',
-      type: 'ESF_MULTI_TEXT',
-      multi: true
+      type: 'ESF_MULTI_TEXT'
     },
     'ESF_SINGLE_CHECKBOX': {
       title: '单选框',
@@ -87,8 +86,8 @@ GeventSignForm = (function() {
   // 获取所有的数据
   signform.getFromContent = function() {
     var forms = this.forms,
-        formArr = [],
-        errFlag = false;
+        errFlag = false,
+        formSchema = {};
     for (var fid in forms) {
       if (forms.hasOwnProperty(fid)) {
         var isNeed = $('#need-' + fid).prop("checked"),
@@ -105,24 +104,113 @@ GeventSignForm = (function() {
         // 添加多选的可选参数
         var options = [];
         $('.options-' + fid).each(function(idx, dom) {
-          options.push($(dom).val());
+          var value = $(dom).val();
+          options.push({'label': value, 'value': value});
         });
 
-        formArr.push({
-          isNeed: isNeed,
-          title: title,
-          tips: tips,
-          type: type,
-          options: options.length ? options : null
-        });
+
+        switch (type) {
+          case 'ESF_SINGLE_TEXT':
+            formSchema[title] = {
+              label: title,
+              type: String,
+              optional: !isNeed
+            };
+            console.log(formSchema);
+            break;
+          case 'ESF_SINGLE_DATE':
+            formSchema[title] = {
+              label: title,
+              type: Date,
+              optional: !isNeed,
+              autoform: {
+                value: new Date()
+              }
+            };
+            break;
+          case 'ESF_SINGLE_NUMBER':
+            formSchema[title] = {
+              label: title,
+              type: Number,
+              optional: !isNeed
+            };
+            break;
+          case 'ESF_SINGLE_EMAIL':
+            formSchema[title] = {
+              label: title,
+              optional: !isNeed,
+              type: String,
+              regEx: SimpleSchema.RegEx.Email,
+              autoform: {
+                type: "email"
+              }
+            };
+            break;
+          case 'ESF_MULTI_TEXT':
+            formSchema[title] = {
+              label: title,
+              optional: !isNeed,
+              type: String,
+              autoform: {
+                rows: 5
+              }
+            };
+            break;
+          case 'ESF_SINGLE_CHECKBOX':
+            formSchema[title] = {
+              label: title,
+              optional: !isNeed,
+              type: Boolean,
+            };
+            break;
+          case 'ESF_MULTI_TEXT':
+            formSchema[title] = {
+              label: title,
+              optional: !isNeed,
+              type: String,
+              autoform: {
+                rows: 5
+              }
+            };
+            break;
+          case 'ESF_MULTI_CHECKBOX':
+            formSchema[title] = {
+              label: title,
+              optional: !isNeed,
+              type: String,
+              autoform: {
+                type: "select-checkbox",
+                options: function () {
+                  return options;
+                }
+              }
+            };
+            break;
+          case 'ESF_PULL_SELECT':
+            formSchema[title] = {
+              label: title,
+              optional: !isNeed,
+              type: String,
+              autoform: {
+                type: "select",
+                options: function () {
+                  return options;
+                }
+              }
+            };
+            break;
+          default: break;
+        }
       }
     }
     if (!errFlag) {
-      console.log(formArr);
-      return formArr;
+      return formSchema;
     }
     return [];
   };
+
+
+
 
 
   return signform;

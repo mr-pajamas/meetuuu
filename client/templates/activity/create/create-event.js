@@ -3,6 +3,8 @@
 Session.set("selectedCity", "上海");
 bdmap = null;
 
+var previewForms = new ReactiveVar({});
+
 Template.createActivity.onCreated(function(){
   console.log('onCreated');
 });
@@ -126,6 +128,13 @@ Template.createActivity.helpers({
     } else {
       insertTag(selectedSuggestion);
     }
+  },
+  previewForms: function() {
+    var schema = previewForms.get();
+    if (!schema) {
+      return ;
+    }
+    return new SimpleSchema(schema);;
   }
 });
 
@@ -209,6 +218,13 @@ Template.createActivity.events({
     e.preventDefault();
     GeventSignForm.getFromContent();
   },
+  'click .previewSignForm': function(e) {
+    e.preventDefault();
+    var forms = GeventSignForm.getFromContent();
+    console.log('---click---');
+    console.log(forms);
+    previewForms.set(forms);
+  },
   'click .add-form-options': function(e) {
     e.preventDefault();
     var formId = $(e.target).attr('data-id');
@@ -242,7 +258,6 @@ function saveEventBaiscInfo() {
   var title = $('#activityName').val(),
       startTime = $('input[name="daterange"]').data('daterangepicker').startDate._d,
       endTime = $('input[name="daterange"]').data('daterangepicker').endDate._d,
-      //duration = moment.duration(endTime - startTime).humanize(),
       cityName = Session.get('selectedCity'),
       address = $('input[name="activityAddress"]').val(),
       lnglat = bdmap && bdmap.getCenter(),

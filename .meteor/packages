@@ -25,3 +25,4 @@ mrt:bootstrap-select
 sergeyt:typeahead
 summernote:standalone
 reactive-var
+aldeed:autoform

@@ -2,7 +2,7 @@
     <header class="index-header">
         {{> header}}
     </header>
-    <div class="container">
+    <div class="container create-event-container">
         <input type="text" value="" id="eventId" hidden/>
         <div class="eventBaiscInfo">
             <form class="form-horizontal">
@@ -38,9 +38,9 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">上传海报</label>
                     <div class="media event-create-poster" id="event-create-poster">
-                        <img class="drop-zone" src="http://cdn.huodongxing.com/Content/v2.0/img/event-create-drop-zone.png">
+                        <img class="drop-zone" src="event-create-drop-zone.png">
                         <div class="pull-left" id="poster-preview">
-                            <img id="event_logo_image" class="pull-left" src="http://cdn.huodongxing.com/Content/v2.0/img/event-create-poster-holder.png" alt="海报 尺寸：1080*640 px" style="width:472px;height:280px;"/>
+                            <img id="event_logo_image" class="pull-left" src="event-create-poster-holder.png" alt="海报 尺寸：1080*640 px" style="width:472px;height:280px;"/>
                         </div>
                         <div class="media-body">
                             <div class="btn btn-default btn-lg">
@@ -227,8 +227,39 @@
 
                 </div>
                 <div>
-                    <buttom class="submitSignForm">提交报名表单</buttom>
+                    <buttom class="btn btn-default submitSignForm">提交报名表单</buttom>
+                    <buttom class="btn btn-default previewSignForm">预览报名表单</buttom>
                 </div>
+
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                    Launch demo modal
+                </button>
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                            </div>
+                            {{#if previewForms}}
+                                <div class="modal-body">
+                                    {{> quickForm schema=previewForms id="contactForm" type="insert"}}
+                                </div>
+                            {{/if}}
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
                 <div id="edit_template_items" class="event-create-sign-form" style="min-height:518px;">
                     <form action="/myevent/SaveEventForm" id="event_template_form" method="post" style="margin-bottom:5px;" novalidate="novalidate">			<fieldset>
                         <input type="hidden" name="activityId" value="8298773552100">
@@ -261,7 +292,7 @@
                     </form>
                 </div>
                 <div class="clear text-center">
-                    <button class="btn" id="event-create-item-toggle"><span class="icon-top-arrow"></span>收起表单</button>
+                    <button class="btn btn-default" id="event-create-item-toggle"><span class="icon-top-arrow"></span>收起表单</button>
                 </div>
             </div>
         </div>
