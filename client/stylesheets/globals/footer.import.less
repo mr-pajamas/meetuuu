@@ -1,0 +1,31 @@
+.footer-secondary {
+  @bg: @color-secondary;
+  @border: darken(@bg, 10%);
+  @heading-color: lighten(@bg, 25%);
+  @color: lighten(@bg, 45%);
+
+  background-color: @bg;
+  border-color: @border;
+
+  .footer-nav {
+    color: @color;
+
+    .footer-brand {
+      .opacity(.6);
+    }
+
+    h5 {
+      color: @heading-color;
+    }
+
+    ul > li > a {
+      color: @color;
+      text-decoration: none;
+    }
+  }
+
+  .footer-copyright {
+    color: @heading-color;
+    border-color: @heading-color;
+  }
+}

@@ -1,20 +1,13 @@
-@footer-bg: @gray-light;
-@footer-border: darken(@footer-bg, 10%);
-@footer-heading-color: lighten(@footer-bg, 25%);
-@footer-color: lighten(@footer-bg, 45%);
-
 .footer {
   position: absolute;
   width: 100%;
   bottom: 0;
-  background-color: @footer-bg;
-  border-top: 1px solid @footer-border;
+  border-top: 1px solid;
   //padding: 40px 0;
   text-align: center;
 
   .footer-nav {
     padding: 40px 0;
-    color: @footer-color;
 
     > div {
       margin-bottom: 25px;
@@ -26,28 +19,19 @@
 
     .footer-brand {
       width: 80px;
-      .opacity(.6);
     }
 
     h5 {
-      color: @footer-heading-color;
       font-size: 16px;
     }
 
-    ul {
-      > li {
-        margin-bottom: 5px;
-        > a {
-          color: @footer-color;
-          text-decoration: none;
-        }
-      }
+    ul > li {
+      margin-bottom: 5px;
     }
   }
 
   .footer-copyright {
-    color: @footer-heading-color;
-    border-top: 1px solid @footer-heading-color;
+    border-top: 1px solid;
     padding: 5px 0;
   }
 
