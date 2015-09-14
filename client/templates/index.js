@@ -1,13 +1,25 @@
 /**
  * Created by Michael on 2015/9/6.
  */
+var expandJumbotron;
 var fixSearchBar;
 
 Template.index.onRendered(function () {
 
-  var $headerNavbar = $(".header-navbar");
+  //var $headerNavbar = $(".header-navbar");
   var $indexJumbotron = this.$(".index-jumbotron");
   var $searchBar = this.$(".index-search-bar");
+
+  expandJumbotron = function () {
+    $indexJumbotron.css("height", $(window).height() - $indexJumbotron.offset().top);
+  };
+
+  expandJumbotron();
+
+  $(window).on({
+    "resize": expandJumbotron
+  });
+
 
   fixSearchBar = function () {
     var top = $indexJumbotron.outerHeight(true);
@@ -15,24 +27,23 @@ Template.index.onRendered(function () {
     if ($(this).scrollTop() >= top) {
       $searchBar.css({
         position: "fixed",
-        top: $headerNavbar.outerHeight(),
+        top: $indexJumbotron.offset().top,
         left: 0,
         right: 0,
         zIndex: 1000
       });
-
-      // We assume that the parent hasn't set paddingTop
-      $searchBar.parent().css("paddingTop", $searchBar.outerHeight(true));
     } else {
       $searchBar.css({
-        position: "",
-        top: "",
-        left: "",
-        right: "",
-        zIndex: ""
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000
       });
-      $searchBar.parent().css("paddingTop", "");
     }
+
+    // 我们假设搜索栏的父级元素没有设置paddingTop
+    $searchBar.parent().css("paddingTop", $searchBar.outerHeight(true));
   };
 
   fixSearchBar();
@@ -47,5 +58,9 @@ Template.index.onDestroyed(function () {
   $(window).off({
     "scroll": fixSearchBar,
     "resize": fixSearchBar
+  });
+
+  $(window).off({
+    "resize": expandJumbotron
   });
 });

@@ -1,78 +1,40 @@
 <template name="header">
-
-  <nav class="navbar navbar-inverse navbar-fixed-top header-navbar">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-          <span class="sr-only">展开导航栏</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-
-        <a class="navbar-brand" href="{{pathFor route='index'}}">
-          <img alt="蜜柚网" src="/images/logo-navbar.png">
-        </a>
-<!--
-
-        <form class="navbar-form navbar-left">
-          <div class="form-group">
-            <select class="form-control">
-              <option>上海</option>
-              <option>北京</option>
-              <option>广州</option>
-            </select>
-          </div>
-        </form>
--->
-
-        <div class="dropdown navbar-left">
-          <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">上海 <span class="caret"></span>
+  <header>
+    <nav class="navbar navbar-primary navbar-fixed-top header-navbar">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                  data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">展开导航栏</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
           </button>
-          <ul class="dropdown-menu">
-            <li><a href="#">上海</a></li>
-            <li><a href="#">北京</a></li>
-            <li><a href="#">广州</a></li>
-          </ul>
-        </div>
 
-<!--
-        <ul class="nav navbar-nav navbar-left">
-          <li class="dropdown">
-            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown"
-               role="button" aria-haspopup="true" aria-expanded="false">上海 <span class="caret"></span></a>
+          <a class="navbar-brand" href="{{pathFor route='index'}}">
+            <img alt="蜜柚网" src="/images/logo-navbar.png">
+          </a>
+
+          <div class="dropdown navbar-left">
+            <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">上海 <span class="caret"></span>
+            </button>
             <ul class="dropdown-menu">
+              <li><a href="#">上海</a></li>
               <li><a href="#">北京</a></li>
               <li><a href="#">广州</a></li>
             </ul>
-          </li>
-        </ul>
-        -->
+          </div>
 
+        </div>
 
-        <!--<div class="navbar-header-menu">
-          <ul class="nav navbar-nav">
-            <li class="dropdown">
-              <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown"
-                 role="button" aria-haspopup="true" aria-expanded="false">上海 <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">北京</a></li>
-                <li><a href="#">广州</a></li>
-              </ul>
-            </li>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="javascript:void(0)">发布活动</a></li>
+            <li><a href="{{pathFor route='group.create'}}">创建组织</a></li>
+            <li><a href="{{pathFor route='index'}}">登录 / 注册</a></li>
           </ul>
-        </div>-->
+        </div>
       </div>
-
-      <div id="navbar" class="collapse navbar-collapse">
-        <ul class="nav navbar-nav navbar-right">
-          <li class="active"><a href="/event/create">发布活动</a></li>
-          <li><a href="{{pathFor route='group.create'}}">创建组织</a></li>
-          <li><a href="{{pathFor route='index'}}">登录 / 注册</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
+    </nav>
+  </header>
 </template>

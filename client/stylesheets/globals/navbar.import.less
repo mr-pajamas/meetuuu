@@ -1,0 +1,136 @@
+.navbar-btn {
+  background-color: transparent;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: @border-radius-base;
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+.navbar-primary {
+  @bg: @color-primary;
+
+  @link-color: lighten(@bg, 35%);
+  @link-hover-color: white;
+  @link-hover-bg: transparent;
+  @link-active-color: white;
+  @link-active-bg: darken(@bg, 10%);
+  @link-disabled-color: @color-secondary;
+  @link-disabled-bg: transparent;
+
+  @border: darken(@bg, 10%);
+
+  background-color: @bg;
+  border-color: @border;
+
+  .navbar-brand {
+    color: @link-color;
+    &:hover,
+    &:focus {
+      color: @link-hover-color;
+      background-color: @link-hover-bg;
+    }
+  }
+
+  .navbar-btn {
+    border-color: @link-active-bg;
+    color: @link-active-color;
+    &:hover,
+    &:focus {
+      background-color: @link-active-bg;
+    }
+  }
+
+  .navbar-nav {
+    > li > a {
+      color: @link-color;
+
+      &:hover,
+      &:focus {
+        color: @link-hover-color;
+        background-color: @link-hover-bg;
+      }
+    }
+    > .active > a {
+      &,
+      &:hover,
+      &:focus {
+        color: @link-active-color;
+        background-color: @link-active-bg;
+      }
+    }
+    > .disabled > a {
+      &,
+      &:hover,
+      &:focus {
+        color: @link-disabled-color;
+        background-color: @link-disabled-bg;
+      }
+    }
+  }
+
+  .navbar-toggle {
+    border-color: @link-active-bg;
+    &:hover,
+    &:focus {
+      background-color: @link-active-bg;
+    }
+    .icon-bar {
+      background-color: @link-active-color;
+    }
+  }
+
+  .navbar-collapse,
+  .navbar-form {
+    border-color: darken(@bg, 7%);
+  }
+
+  .navbar-nav {
+    > .open > a {
+      &,
+      &:hover,
+      &:focus {
+        background-color: @link-active-bg;
+        color: @link-active-color;
+      }
+    }
+
+    @media (max-width: @grid-float-breakpoint-max) {
+      // Dropdowns get custom display
+      .open .dropdown-menu {
+        > .dropdown-header {
+          border-color: @border;
+        }
+        .divider {
+          background-color: @border;
+        }
+        > li > a {
+          color: @link-color;
+          &:hover,
+          &:focus {
+            color: @link-hover-color;
+            background-color: @link-hover-bg;
+          }
+        }
+        > .active > a {
+          &,
+          &:hover,
+          &:focus {
+            color: @link-active-color;
+            background-color: @link-active-bg;
+          }
+        }
+        > .disabled > a {
+          &,
+          &:hover,
+          &:focus {
+            color: @link-disabled-color;
+            background-color: @link-disabled-bg;
+          }
+        }
+      }
+    }
+  }
+}
