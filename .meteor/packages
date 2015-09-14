@@ -20,7 +20,7 @@ arillo:flow-router-helpers
 
 fortawesome:fontawesome
 momentjs:moment
-chenkaic4:bootstrap-daterangepicker
+rajit:bootstrap3-datepicker
 mrt:bootstrap-select
 sergeyt:typeahead
 summernote:standalone

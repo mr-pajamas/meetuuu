@@ -1,6 +1,12 @@
 /* 最外层包裹层 */
+.create-event-container {
+    width: 80%;
+    padding: 30px 0px;
+}
 
-
+.create-event-need-info {
+    color: red;
+}
 
 
 
@@ -19,6 +25,38 @@
 
 
 /* typeheader css */
+
+/*标签容器*/
+.selected-tags-container {
+    padding-top: 45px;
+}
+
+.tag-tips {
+    font-size: 10px;
+    margin-bottom: 3px;
+    color: #cccccc;
+}
+
+#selected-tag {
+    padding-left: 13px;
+    padding-top: 3px;
+    min-width: 200px;
+    min-height: 100px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.event-tag {
+    margin: 3px 7px 3px 0px;
+
+}
+.delete-event-tag {
+    padding-left: 5px;
+    border-left: #f5f5f5 1px solid;
+    cursor: pointer;
+}
+
+
 .tt-query,
 .tt-hint {
     width: 396px;
@@ -98,13 +136,15 @@ span.tag i:hover {
 }
 
 /* bdmap */
+
+.event-map-container {
+    margin-top: 10px;
+}
+
 #bdmap {
-    position: absolute;
     height: 300px;
     display: none;
     overflow: hidden;
-    margin:0;
-    z-index: 99;
     border: 1px solid #a0a0a0;
     box-shadow: 1px 1px 5px rgba(0,0,0,.5);
     -webkit-box-shadow: 1px 1px 5px rgba(0,0,0,.5);
@@ -117,7 +157,7 @@ span.tag i:hover {
     margin-bottom: 10px;
 }
 
-#activityDesc {
+#event-desc {
     max-height: 250px;
     height: 250px;
     background-color: white;
@@ -162,4 +202,8 @@ span.tag i:hover {
 
 .delete-form-option:hover {
     /*TODO add some aminition*/
+}
+
+.event-sign-form-setting {
+    margin: 7px auto;
 }

@@ -1,17 +1,15 @@
 /* created by ck 2015-09-02 */
 
+// 城市选择
 Session.set("selectedCity", "上海");
-bdmap = null;
-
+// 百度地图
+var bdmap = null;
+// 预览表单
 var previewForms = new ReactiveVar({});
 
-Template.createActivity.onCreated(function(){
-  console.log('onCreated');
-});
 
-Template.createActivity.onRendered(function(){
-  console.log('onRendered');
-
+Template.createEvent.onRendered(function() {
+  // 初始化地图
   function initialize() {
     new BMap.Map('bdmap');
   }
@@ -23,82 +21,27 @@ Template.createActivity.onRendered(function(){
     '&v=1.0&callback=initialize';
   document.body.appendChild(script);
 
-  //$('input').iCheck({
-  //  checkboxClass: 'icheckbox_flat',
-  //  radioClass: 'iradio_flat'
-  //});
+  // 富文本编辑器
+  $('#event-desc').wysiwyg();
 
-  $('#activityDesc').wysiwyg();
-
-  this.$('.selectCity').selectpicker({
-    style: 'btn-default',
-    width: '150px'
-  });
-  this.$('.activityTheme').selectpicker({
-    style: 'btn-default',
-    width: '320px'
-  });
-
-  // 初始化 时间
-  this.$('input[name="daterange"]').daterangepicker({
-    "timePicker": true,
-    "autoApply": true,
-    "timePickerIncrement": 10,
-    "showDropdowns": true,
-    "locale": {
-      "format": "MM/DD/YYYY A h:mm",
-      "separator": " 至 ",
-      "applyLabel": "确认",
-      "cancelLabel": "取消",
-      "fromLabel": "开始时间",
-      "toLabel": "结束时间",
-      "customRangeLabel": "Custom",
-      "daysOfWeek": [
-        "日",
-        "一",
-        "二",
-        "三",
-        "四",
-        "五",
-        "六"
-      ],
-      "monthNames": [
-        "一月",
-        "二月",
-        "三月",
-        "四月",
-        "五月",
-        "六月",
-        "七月",
-        "八月",
-        "九月",
-        "十月",
-        "十一月",
-        "十二月"
-      ],
-      "firstDay": 1,
-    }
-  }, function(start, end, label) {
-    console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
-  });
-
-  // 初始化 typeahead
+  // 自动补全提示
   Meteor.typeahead.inject();
-
-  // 富文本框固定
-  //Meteor.setTimeout(function(){
-  //  $('.note-toolbar').stickUp({
-  //    marginTop: '50px'
-  //  });
-  //}, 3000);
 
   // 初始化表单控件
   GeventSignForm.setContainerId('custom-form-container');
+
+  // 初始化时间信息
+  var datepickerOptions = {
+    format: "yyyy/mm/dd",
+    clearBtn: true,
+    language: "zh-CN",
+    todayHighlight: true
+  };
+  $('.datetimepicker-start').datepicker(datepickerOptions);
+  $('.datetimepicker-end').datepicker(datepickerOptions);
 });
 
-
-// helpers
-Template.createActivity.helpers({
+Template.createEvent.helpers({
   tags: function(query, sync, callback) {
     Meteor.call('queryByName', query, {}, function(err, res) {
       if (err) {
@@ -106,8 +49,10 @@ Template.createActivity.helpers({
         return;
       }
       if (_.isArray(res) && res.length === 0) {
+        // 未找到匹配信息，提示创建新 Tag
         res.push({'name': '创建 "' + query + ' "标签', 'refers': 0, 'type': 'new', 'value': query});
       }
+      // callback 为提示框提供选项
       callback(res);
     })
   },
@@ -134,21 +79,18 @@ Template.createActivity.helpers({
     if (!schema) {
       return ;
     }
-    return new SimpleSchema(schema);;
+    return new SimpleSchema(schema);
   }
 });
 
 
 // events
-Template.createActivity.events({
+Template.createEvent.events({
   'keydown input[name="eventsTag"]': function(e) {
     console.log(e.which);
   },
-  'focus input[name="activityAddress"]': function(e) {
-    var width = $('input[name="activityAddress"]').width();
-    $('#bdmap').css({
-      width: width + 20
-    }).show();
+  'focus #event-detail-address': function(e) {
+    $('#bdmap').slideDown();
     if (!bdmap) {
       bdmap = new BMap.Map('bdmap');
       bdmap.centerAndZoom(Session.get('selectedCity'), 11);
@@ -163,39 +105,48 @@ Template.createActivity.events({
         width = $bdmap.width(),
         height = $bdmap.height();
     if (e.pageX < left || e.pageX > left + width || e.pageY < top || e.pageY > top + height) {
-      $('#bdmap').hide();
+      $('#bdmap').slideUp();
     }
   },
-  'keyup input[name="activityAddress"]': function(e) {
+  'keyup #event-detail-address': function(e) {
     var address = $(e.target).val();
     //创建地址解析器实例
     var myGeo = new BMap.Geocoder();
     // 将地址解析结果显示在地图上,并调整地图视野
     myGeo.getPoint(address, function(point){
       if (point) {
-        console.log(point);
+        // TODO 平滑过渡
         bdmap.centerAndZoom(point, 16);
         bdmap.clearOverlays();
         bdmap.addOverlay(new BMap.Marker(point));
       }
     }, Session.get('selectedCity'));
   },
-  'change .selectCity': function(e) {
-    var cityName = $('.selectCity').val();
-    // 重置地图
+  'change #event-city-select': function(e) {
+    var cityName = $('#event-city-select').val();
     bdmap = null;
     Session.set('selectedCity', cityName);
+  },
+  'change #event-private': function(e) {
+    var isPublic = $(e.target).prop("checked");
+    if (!isPublic) {
+      $('#event-member-limit').attr('disabled', true);
+    } else {
+      $('#event-member-limit').attr('disabled', false);
+    }
   },
   'click #submitBaiscInfo': function(e) {
     e.preventDefault();
     e.stopPropagation();
     console.log('保存基本信息');
     var eventInfo = saveEventBaiscInfo();
+    console.log(eventInfo);
     var id = $('#eventId').val();
-    Meteor.call('Activities.saveBasicInfo', id, eventInfo, function(err, res) {
+    Meteor.call('event.save', id, eventInfo, function(err, res) {
       if (!err && 0 === res.code) {
         alert('保存成功');
         if (res.eventId) {
+          // 第一次保存，返回保存后的 id
           $('#eventId').val(res.eventId);
         }
       }
@@ -205,74 +156,60 @@ Template.createActivity.events({
   'click .custom-form-item': function(e) {
     e.preventDefault();
     var type = $(e.target).attr('data-type');
-    console.log(type);
     GeventSignForm.createForm(type);
   },
-  // 自定义表单控件-删除
-  'click .delete-custom-form': function (e) {
-    e.preventDefault();
-    var formId = $(e.target).attr('data-id');
-    GeventSignForm.removeForm(formId);
-  },
+  // 提交表单-保存
   'click .submitSignForm': function(e) {
     e.preventDefault();
     GeventSignForm.getFromContent();
   },
+  // 预览表单
   'click .previewSignForm': function(e) {
     e.preventDefault();
     var forms = GeventSignForm.getFromContent();
-    console.log('---click---');
-    console.log(forms);
     previewForms.set(forms);
-  },
-  'click .add-form-options': function(e) {
-    e.preventDefault();
-    var formId = $(e.target).attr('data-id');
-    console.log(formId);
-    Blaze.renderWithData(Template['custom-form-options'], {'formId': formId}, $('.custom-form-options-container')[0]);
   }
 });
 
 
-// 多选表单的复选小控件
-Template['custom-form-options'].events({
-  'click .delete-form-option': function(e) {
-    e.preventDefault();
-    $(e.target).parent().remove();
-  }
-});
 
-
-Template.eventTag.events({
-  'click i.delete-event-tag': function(e) {
-    e.preventDefault();
-    var $spanTag = $(e.target).parent(),
-        id = $spanTag.attr('id');
-    GeventTag.delTag(id);
-    $spanTag.remove();
-  }
-});
+// input: '17:30', return second
+function timeTrans(tstr) {
+  var tt = tstr.split(':'),
+      h = Number(tt[0]),
+      m = Number(tt[1]),
+      totalMinute = h * 60 + m,
+      totalSecond = totalMinute * 60;
+  return totalSecond;
+}
 
 
 function saveEventBaiscInfo() {
-  var title = $('#activityName').val(),
-      startTime = $('input[name="daterange"]').data('daterangepicker').startDate._d,
-      endTime = $('input[name="daterange"]').data('daterangepicker').endDate._d,
+  var title = $('#event-name').val(),
+      startTime = $('.datetimepicker-start').datepicker('getDate'),
+      endTime = $('.datetimepicker-end').datepicker('getDate'),
       cityName = Session.get('selectedCity'),
-      address = $('input[name="activityAddress"]').val(),
+      address = $('#event-detail-address').val(),
       lnglat = bdmap && bdmap.getCenter(),
+      // TODO 海报 url
       posterUrl = 'http://www.huodongxing.com/Content/v2.0/img/poster/school.jpg',
-      eventMemberLimit = $('#activityMemberLimit').val() || 0,
-      eventTheme = $('.activityTheme').val(),
+      eventTheme = $('.event-theme').val(),
       tags = GeventTag.getAllTags(),
-      private = $('#activityPrivate').prop("checked") || false,
-      desc = $('#activityDesc').html();
+      private = !$('#event-private').prop("checked"),
+      desc = $('#event-desc').html(),
+      signForm = GeventSignForm.getFromContent(),
+      endDayTime = timeTrans($('#end-time').val()),
+      startDayTime = timeTrans($('#start-time').val()),
+      eventMemberLimit = 0;
 
+  if (!private) {
+    eventMemberLimit = $('#event-member-limit').val() || 0;
+  }
   var eventInfo = {
     title: title,
     time: {
-      start: startTime,
-      end: endTime
+      start: new Date((startTime.getTime() / 1000 + startDayTime) * 1000),
+      end: new Date((endTime.getTime() / 1000 + endDayTime) * 1000)
     },
     location: {
       city: cityName,
@@ -285,7 +222,8 @@ function saveEventBaiscInfo() {
     theme: eventTheme,
     tags: tags,
     private: private,
-    desc: desc
+    desc: desc,
+    signForm: signForm
   };
   return eventInfo;
 }

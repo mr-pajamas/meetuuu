@@ -41,18 +41,19 @@ Meteor.methods({
     }
 
   },
-  'Activities.saveBasicInfo': function(id, eventInfo) {
+  'event.save': function(id, eventInfo) {
     // 更新tags
+    console.log(eventInfo);
     eventInfo.tags.forEach(function(tag) {
       EventTag.update({'_id': tag._id}, {$inc: {refers: 1}});
     });
     if (id) {
       // 后续更新
-      Activities.update({_id: id},{'$set': eventInfo});
+      Event.update({_id: id},{'$set': eventInfo});
       return {code: 0};
     } else {
       // 第一次保存
-      var nid = Activities.insert(eventInfo);
+      var nid = Event.insert(eventInfo);
       return {code: 0, eventId: nid};
     }
 
