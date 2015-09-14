@@ -21,8 +21,6 @@ arillo:flow-router-helpers
 fortawesome:fontawesome
 momentjs:moment
 rajit:bootstrap3-datepicker
-mrt:bootstrap-select
 sergeyt:typeahead
-summernote:standalone
 reactive-var
 aldeed:autoform

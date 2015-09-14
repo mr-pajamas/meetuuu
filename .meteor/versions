@@ -43,7 +43,6 @@ minimongo@1.0.8
 mobile-status-bar@1.0.3
 momentjs:moment@2.10.3
 mongo@1.1.0
-mrt:bootstrap-select@1.5.4
 nemo64:bootstrap@3.3.5_2
 nemo64:bootstrap-data@3.3.5
 npm-bcrypt@0.7.8_2
@@ -65,7 +64,6 @@ sha@1.0.3
 spacebars@1.0.6
 spacebars-compiler@1.0.6
 srp@1.0.3
-summernote:standalone@0.6.16
 templating@1.1.1
 tracker@1.0.7
 ui@1.0.6
