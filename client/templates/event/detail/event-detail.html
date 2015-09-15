@@ -1,0 +1,142 @@
+<template name="eventDetail">
+    <header class="index-header">
+        {{> header}}
+    </header>
+
+    <!-- 活动详情介绍 -->
+    <div class="container event-home">
+        <div class="row">
+            <div class="col-md-9">
+                <!-- 活动基本信息 -->
+                {{#with eventDetail}}
+                    <section class="event-poster" id="poster">
+                        <img src="{{poster}}" alt="rifare">
+                        <div class="introduction event-post-padding">
+                            <header class="poster-header">{{title}}</header>
+                            <ul class="list-inline event-intro-share">
+                                <li><a title="分享到微信" class="fa fa-weixin small-img" href="#"></a></li>
+                                <li><a title="分享到新浪微博" class="fa fa-weibo small-img" href="#"></a></li>
+                                <li><a title="分享到qq空间" class="fa fa-qq small-img" href="#"></a></li>
+                            </ul>
+
+                            <ul class="list-unstyled event-intro-list">
+                                <li class="clearfix"><i class="fa fa-calendar"></i><p>{{time.start}}&nbsp;--&nbsp;{{time.end}}</p></li>
+                                <li class="clearfix"><i class="fa fa-map-marker"></i><p>{{location.city}}{{location.address}}</p></li>
+                                <li class="clearfix"><i class="fa fa-group"></i><p>0&nbsp;/&nbsp;{{member}}</p></li>
+                                <li class="clearfix"><i class="fa fa-dot-circle-o"></i>
+                                    {{#each tags}}
+                                        <!-- TODO href 替换为tag 归类活动 -->
+                                        <a href="#">
+                                            <span class="badge" id="{{_id}}">{{name}}</span>
+                                        </a>
+                                    {{/each}}
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                {{/with}}
+
+                <!-- 活动详情描述 -->
+                <section class="event-all-info event-post-padding" id="information">
+                    <!-- 插入活动详情的 html string -->
+                </section>
+
+
+                <section id="comment">
+                    <div class="media new-comment">
+                        <div class="row">
+                            <div class="media-left col-sm-2 col-xs-3">
+                                <a href="#"><img src="714468542.jpg" alt="xxx"/></a>
+                            </div>
+                            <div class="media-info col-sm-10 col-xs-9">
+                                <h4 class="media-heading">陈元</h4>
+                                <div class="media-date">2015, 09, 05</div>
+                            </div>
+                            <div class="col-sm-10 col-xs-12 media-text">
+                                <form action="test.js" method="post" class="new-comment-form">
+                                    <textarea name="comment" class="new-comment-area" rows="6" placeholder="感兴趣吗？评论一下吧！"></textarea>
+                                    <input type="submit" class="btn pull-right btn-primary" name="submit" value="提交"/>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment-item">
+                        <div class="media">
+                            <div class="row">
+                                <div class="media-left col-sm-2 col-xs-3">
+                                    <a href="#"><img src="714468542.jpg" alt="xxx"/></a>
+                                </div>
+                                <div class="media-info col-sm-10 col-xs-9">
+                                    <h4 class="media-heading">陈元</h4>
+                                    <div class="media-date">09, 4, 2015</div>
+                                </div>
+                                <div class="col-sm-10 col-xs-12 media-text">
+                                    <p>我们找到不同的创业团队跟您分享他们曾经遇到的各种管理技术团队的
+                                        困难和错误，让您不走冤枉路，如何搭建最佳的技术团队帮您简历一流的产品？
+                                        技术架构如何才能让您更有效率但也同时能够快速增长，</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reply clearfix">
+                            <a href="javascript:void(0);" title="回复该帖子" class="fa pull-right fa-reply"><span>回复</span></a>
+                        </div>
+                    </div>
+                    <div class="comment-item">
+                        <div class="media">
+                            <div class="row">
+                                <div class="media-left col-sm-2 col-xs-3">
+                                    <a href="#"> <img src="714468542.jpg" alt="xxx"/></a>
+                                </div>
+                                <div class="media-info col-sm-10 col-xs-9">
+                                    <h4 class="media-heading">陈元</h4>
+                                    <div class="media-date">09, 4, 2015</div>
+                                </div>
+                                <div class="col-sm-10 col-xs-12 media-text">
+                                    <p>我们找到不同的创业团队跟您分享他们曾经遇到的各种管理技术团队的
+                                        困难和错误，让您不走冤枉路，如何搭建最佳的技术团队帮您简历一流的产品？
+                                        技术架构如何才能让您更有效率但也同时能够快速增长，</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reply clearfix">
+                            <a href="javascript:void(0);" title="回复该帖子" class="fa fa-reply pull-right"><span>回复</span></a>
+                        </div>
+                    </div>
+                    <div class="comment-item">
+                        <div class="media">
+                            <div class="row">
+                                <div class="media-left col-sm-2 col-xs-3">
+                                    <a href="#"> <img src="714468542.jpg" alt="xxx"/></a>
+                                </div>
+                                <div class="media-info col-sm-10 col-xs-9">
+                                    <h4 class="media-heading">陈元</h4>
+                                    <div class="media-date">09, 4, 2015</div>
+                                </div>
+                                <div class="col-sm-10 col-xs-12 media-text">
+                                    <p>我们找到不同的创业团队跟您分享他们曾经遇到的各种管理技术团队的
+                                        困难和错误，让您不走冤枉路，如何搭建最佳的技术团队帮您简历一流的产品？
+                                        技术架构如何才能让您更有效率但也同时能够快速增长，</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reply clearfix">
+                            <a href="javascript:void(0);" title="回复该帖子" class="fa fa-reply pull-right"><span>回复</span></a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <!--event nav bar begin-->
+            <div class="event-sidebar col-md-3">
+                <div class="content" id="fixed-bar-wrap">
+                    <ul class="nav nav-pills nav-stacked" id="fixed-sidebar">
+                        <li id="nav-poster" role="presentation"><a href="#poster">主题海报</a></li>
+                        <li id="nav-information" role="presentation"><a href="#information">活动详情</a></li>
+                        <li id="nav-comment" role="presentation"><a href="#comment">留言</a></li>
+                        <li id="nav-join" role="presentation"><a href="#join">报名参加</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!--event nav bar end-->
+        </div>
+    </div>
+</template>
