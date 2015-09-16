@@ -33,6 +33,25 @@
                                 </li>
                             </ul>
                         </div>
+                        <!-- Modal -->
+                        <div class="modal fade" id="joinEventFormModal" tabindex="-1" role="dialog" aria-labelledby="joinEventForm">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">报名活动</h4>
+                                    </div>
+                                    {{#if signForm}}
+                                        <div class="modal-body">
+                                            {{> quickForm schema=signForm id="joinEvent" type='normal' template="bootstrap3-horizontal" label-class="col-sm-3" input-col-class="col-sm-9"}}
+                                        </div>
+                                    {{/if}}
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </section>
                 {{/with}}
 
@@ -46,7 +65,7 @@
                     <div class="media new-comment">
                         <div class="row">
                             <div class="media-left col-sm-2 col-xs-3">
-                                <a href="#"><img src="714468542.jpg" alt="xxx"/></a>
+                                <a href="#"><img src="/714468542.jpg" alt="xxx"/></a>
                             </div>
                             <div class="media-info col-sm-10 col-xs-9">
                                 <h4 class="media-heading">陈元</h4>
@@ -125,18 +144,17 @@
                     </div>
                 </section>
             </div>
-            <!--event nav bar begin-->
+            <!-- 活动详情导航Tab -->
             <div class="event-sidebar col-md-3">
                 <div class="content" id="fixed-bar-wrap">
                     <ul class="nav nav-pills nav-stacked" id="fixed-sidebar">
                         <li id="nav-poster" role="presentation"><a href="#poster">主题海报</a></li>
                         <li id="nav-information" role="presentation"><a href="#information">活动详情</a></li>
                         <li id="nav-comment" role="presentation"><a href="#comment">留言</a></li>
-                        <li id="nav-join" role="presentation"><a href="#join">报名参加</a></li>
+                        <li id="nav-join" role="presentation"><a href="#join" data-toggle="modal" data-target="#joinEventFormModal">报名参加</a></li>
                     </ul>
                 </div>
             </div>
-            <!--event nav bar end-->
         </div>
     </div>
 </template>

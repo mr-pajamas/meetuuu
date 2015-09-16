@@ -1,0 +1,4 @@
+Template.eventComment.onRendered(function() {
+
+});
+

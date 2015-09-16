@@ -57,18 +57,24 @@ GeventSignForm = (function() {
   signform.getFromContent = function() {
     var forms = this.forms,
         errFlag = false,
-        formSchema = {};
+        formSchema = {},
+        formSchemaForDataBase = {};
     // 添加姓名和电话表单，作为默认表单
-    formSchema['姓名'] = {
+    var username = {
       label: '姓名',
       type: String,
       optional: false
     };
-    formSchema['电话'] = {
+    var telephone = {
       label: '电话',
-      type: String,
+        type: String,
       optional: false
     };
+    formSchema['姓名'] = username;
+    formSchema['电话'] = telephone;
+    formSchemaForDataBase['姓名'] = username;
+    formSchemaForDataBase['电话'] = telephone;
+
     for (var fid in forms) {
       if (forms.hasOwnProperty(fid)) {
         var isNeed = $('#need-' + fid).prop("checked"),
@@ -92,14 +98,16 @@ GeventSignForm = (function() {
         (function(options) {
           switch (type) {
             case 'ESF_SINGLE_TEXT':
-              formSchema[title] = {
+              var setting = {
                 label: title,
                 type: String,
                 optional: !isNeed
               };
+              formSchema[title] = setting;
+              formSchemaForDataBase[title] = Object.assign({}, setting, {'opts': options});
               break;
             case 'ESF_MULTI_TEXT':
-              formSchema[title] = {
+              var setting = {
                 label: title,
                 optional: !isNeed,
                 type: String,
@@ -107,9 +115,11 @@ GeventSignForm = (function() {
                   rows: 5
                 }
               };
+              formSchema[title] = setting;
+              formSchemaForDataBase[title] = Object.assign({}, setting, {'opts': options});
               break;
             case 'ESF_SELECT_RADIO':
-              formSchema[title] = {
+              var setting = {
                 label: title,
                 optional: !isNeed,
                 type: String,
@@ -120,10 +130,13 @@ GeventSignForm = (function() {
                   }
                 }
               };
+              formSchema[title] = setting;
+              formSchemaForDataBase[title] = Object.assign({}, setting, {'opts': options});
               break;
             case 'ESF_SELECT_CHECKBOX':
-              formSchema[title] = {
+              var setting = {
                 type: String,
+                label: title,
                 optional: !isNeed,
                 autoform: {
                   type: "select-checkbox",
@@ -132,6 +145,8 @@ GeventSignForm = (function() {
                   }
                 }
               };
+              formSchema[title] = setting;
+              formSchemaForDataBase[title] = Object.assign({}, setting, {'opts': options, 'isArr': true});
               break;
             default :
               console.log('表单制作匹配失败');
@@ -141,10 +156,17 @@ GeventSignForm = (function() {
       }
     }
     if (!errFlag) {
-      return formSchema;
+      return {
+        'formSchema': formSchema,
+        'formSchemaForDataBase': formSchemaForDataBase
+      };
     }
-    return [];
+    return {
+      'formSchema': [],
+      'formSchemaForDataBase': []
+    };
   };
+
 
   return signform;
 

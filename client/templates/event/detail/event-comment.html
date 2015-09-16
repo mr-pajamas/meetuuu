@@ -1,0 +1,23 @@
+<template name="eventComment">
+    <div class="media">
+        <div class="row">
+            <div class="media-left col-sm-2 col-xs-3">
+                <!-- TODO 替换用户头像 -->
+                <a href="#"> <img src="714468542.jpg" alt="xxx"/></a>
+            </div>
+            <div class="media-info col-sm-10 col-xs-9">
+                <h4 class="media-heading">{{commentBy.username}}</h4>
+                <div class="media-date">{{createAt}}</div>
+            </div>
+            <div class="col-sm-10 col-xs-12 media-text">
+                <p>{{content}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="reply clearfix">
+        <a href="javascript:void(0);" title="回复该帖子" class="fa fa-reply pull-right"><span data-id="{{_id}}">回复</span></a>
+        <!-- TODO 判断属于者信息显示 -->
+        <a href="javascript:void(0);" title="回复该帖子" class="fa fa-trash-o pull-right"><span data-id="{{_id}}">删除</span></a>
+        <a href="javascript:void(0);" title="回复该帖子" class="fa fa-pencil-square-o pull-right"><span data-id="{{_id}}">编辑</span></a>
+    </div>
+</template>
