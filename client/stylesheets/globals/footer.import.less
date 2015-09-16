@@ -24,8 +24,22 @@
     }
   }
 
-  .footer-copyright {
+  .footer-links {
+    > li > a {
+      color: @color;
+      text-decoration: none;
+    }
+  }
+
+  .footer-callcenter {
     color: @heading-color;
-    border-color: @heading-color;
+    strong {
+      color: @color;
+    }
+  }
+
+  .footer-copyright {
+    color: darken(@heading-color, 10%);
+    border-color: darken(@heading-color, 10%);
   }
 }
