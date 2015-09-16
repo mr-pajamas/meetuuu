@@ -1,42 +1,46 @@
 <template name="ESF_CUSTOM">
-    <div class="container">
-        <div class="event-sign-form-setting row" data-type="{{type}}">
-            <div class="col-lg-1 text-center">
-                <input type="checkbox" name="required" id="need-{{formId}}" checked> 必填
-            </div>
-            <div class="col-lg-3">
-                <input type="text" class="form-control required" id="title-{{formId}}" title="{{title}}" placeholder="{{title}}" name="title">
-            </div>
-            <div class="col-lg-3">
-                <input type="text" name="description" id="tips-{{formId}}" class="form-control" placeholder="提示信息写在这里！">
-            </div>
-            <div class="col-lg-1">
-                <i title="删除栏位" class="fa fa-trash-o delete-custom-form" data-id="{{formId}}"></i>
-            </div>
-        </div>
-
-        {{#if multi}}
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-offset-1 col-lg-6">
-                        <div class="option-container">
-                            <div class="custom-form-options-container-{{formId}}">
-                                <!-- option container -->
-                            </div>
-                        </div>
-                        <button class="btn btn-default add-form-options" data-id="{{formId}}">添加选项&nbsp;<i class="fa fa-plus"></i></button>
-                    </div>
-                </div>
-            </div>
-        {{/if}}
+    <div class="event-sign-form-setting" data-type="{{type}}">
+      <div class="input-type">
+         <!-- 用来插入输入框类型的图片. -->
+      </div>
+      <div class="event-sign-form-input">
+          <input type="text" class="form-control required" id="title-{{formId}}" title="{{title}}" placeholder="{{title}}" name="title">
+      </div>
+      <button class="btn pull-right btn-danger"><i class="fa fa-times delete-custom-form" data-id="{{formId}}"></i></button>
     </div>
+
+    {{#if multi}}
+      <div class="row">   <!-- modified by chenyuan, on 2015-09-15 -->
+          <div class="col-lg-6 col-lg-offset-1"> <!-- modified by chenyuan, 9, 15 -->
+              <div class="option-container">
+                  <div class="custom-form-options-container-{{formId}}">
+                      <!-- option container -->
+                  </div>
+              </div>
+              <button class="btn btn-default add-form-options" data-id="{{formId}}">添加选项&nbsp;<i class="fa fa-plus"></i></button>
+          </div>
+      </div>
+    {{/if}}
 </template>
 
 <template name="custom-form-options">
-    <div class="row">
-        <div class="col-lg-10">
-            <input type="text" class="form-control options-{{formId}}"/>
-        </div>
-        <i class="fa fa-minus-square-o delete-form-option"></i>
-    </div>
+      <div class="event-sign-form-input">
+        <input type="text" class="form-control options-{{formId}}"/>
+      </div>
+      <button class="btn pull-right btn-danger">
+        <i title="删除该选项" class="fa fa-trash-o delete-form-option"></i>
+      </button>
+</template>
+
+<template name="one-line-text">
+      <span class="pull-left one-line-text"></span>
+</template>
+<template name="multi-line-text">
+      <span class="pull-left multi-line-text"></span>
+</template>
+<template name="radio-text">
+      <span class="pull-left radio-text"></span>
+</template>
+<template name="checkbox-text">
+      <span class="pull-left checkbox-text"></span>
 </template>

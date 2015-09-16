@@ -31,6 +31,11 @@ GeventSignForm = (function() {
     this.container = $('#' + id)[0];
   };
 
+  signform.inputboxType = function (className) {
+    this.inputBoxType = $("." + className)[0];
+  };
+  // 用来嵌入不同的输入框类型的图片。
+
   signform.forms = {};
 
   // 创建
@@ -161,7 +166,8 @@ Template.ESF_CUSTOM.events({
   // 多选表单-添加选项
   'click .add-form-options': function(e) {
     e.preventDefault();
-    var formId = $(e.target).attr('data-id');
+    var formId = $(e.currentTarget).attr('data-id');
+
     Blaze.renderWithData(
       Template['custom-form-options'],
       {'formId': formId},
@@ -175,7 +181,7 @@ Template.ESF_CUSTOM.events({
 Template['custom-form-options'].events({
   'click .delete-form-option': function(e) {
     e.preventDefault();
-    $(e.target).parent().remove();
+    $(e.target).parent().parent().remove();
   }
 });
 

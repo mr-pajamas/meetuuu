@@ -6,318 +6,322 @@
         <!-- event-id -->
         <input type="text" value="" id="eventId" hidden/>
         <!-- 活动基本信息 -->
-        <div class="event-baisc-info-container">
-            <form class="form-horizontal">
-                <!-- 活动名称 -->
-                <div class="form-group">
-                    <label class="col-lg-2 control-label">活动名称<em class="create-event-need-info">*</em></label>
-                    <div class="col-lg-10">
-                        <input type="text" class="form-control" id="event-name" placeholder="活动名称，不少于5个字">
-                    </div>
-                </div>
-                <!-- 活动时间 -->
-                <div class="form-group">
-                    <label class="col-lg-2 control-label">活动时间&nbsp;</label>
-                    <div class="col-lg-3">
-                        <input type="text" class="form-control datetimepicker-start" id="start-date" name="start-time" placeholder="开始时间"/>
-                    </div>
-                    <div class="col-lg-2">
-                        <select class="form-control" id="start-time">
-                            <option value="00:00" >00:00</option>
-                            <option value="00:30" >00:30</option>
-                            <option value="01:00" >01:00</option>
-                            <option value="01:30" >01:30</option>
-                            <option value="02:00" >02:00</option>
-                            <option value="02:30" >02:30</option>
-                            <option value="03:00" >03:00</option>
-                            <option value="03:30" >03:30</option>
-                            <option value="04:00" >04:00</option>
-                            <option value="04:30" >04:30</option>
-                            <option value="05:00" >05:00</option>
-                            <option value="05:30" >05:30</option>
-                            <option value="06:00" >06:00</option>
-                            <option value="06:30" >06:30</option>
-                            <option value="07:00" >07:00</option>
-                            <option value="07:30" >07:30</option>
-                            <option value="08:00" >08:00</option>
-                            <option value="08:30" >08:30</option>
-                            <option value="09:00" >09:00</option>
-                            <option value="09:30" >09:30</option>
-                            <option value="10:00" >10:00</option>
-                            <option value="10:30" >10:30</option>
-                            <option value="11:00" >11:00</option>
-                            <option value="11:30" >11:30</option>
-                            <option value="12:00" >12:00</option>
-                            <option value="12:30" >12:30</option>
-                            <option value="13:00" >13:00</option>
-                            <option value="13:30" >13:30</option>
-                            <option value="14:00" >14:00</option>
-                            <option value="14:30" >14:30</option>
-                            <option value="15:00" >15:00</option>
-                            <option value="15:30" >15:30</option>
-                            <option value="16:00" >16:00</option>
-                            <option value="16:30" >16:30</option>
-                            <option value="17:00" >17:00</option>
-                            <option value="17:30" >17:30</option>
-                            <option value="18:00" >18:00</option>
-                            <option value="18:30" >18:30</option>
-                            <option value="19:00" >19:00</option>
-                            <option value="19:30" >19:30</option>
-                            <option value="20:00" >20:00</option>
-                            <option value="20:30" >20:30</option>
-                            <option value="21:00" >21:00</option>
-                            <option value="21:30" >21:30</option>
-                            <option value="22:00" >22:00</option>
-                            <option value="22:30" >22:30</option>
-                            <option value="23:00" >23:00</option>
-                            <option value="23:30" >23:30</option>
-                        </select>
-                    </div>
 
-                    <div class="col-lg-3">
-                        <input type="text" class="form-control datetimepicker-end" id="end-date" name="end-time" placeholder="结束时间"/>
-                    </div>
-                    <div class="col-lg-2">
-                        <select class="form-control" id="end-time">
-                            <option value="00:00" >00:00</option>
-                            <option value="00:30" >00:30</option>
-                            <option value="01:00" >01:00</option>
-                            <option value="01:30" >01:30</option>
-                            <option value="02:00" >02:00</option>
-                            <option value="02:30" >02:30</option>
-                            <option value="03:00" >03:00</option>
-                            <option value="03:30" >03:30</option>
-                            <option value="04:00" >04:00</option>
-                            <option value="04:30" >04:30</option>
-                            <option value="05:00" >05:00</option>
-                            <option value="05:30" >05:30</option>
-                            <option value="06:00" >06:00</option>
-                            <option value="06:30" >06:30</option>
-                            <option value="07:00" >07:00</option>
-                            <option value="07:30" >07:30</option>
-                            <option value="08:00" >08:00</option>
-                            <option value="08:30" >08:30</option>
-                            <option value="09:00" >09:00</option>
-                            <option value="09:30" >09:30</option>
-                            <option value="10:00" >10:00</option>
-                            <option value="10:30" >10:30</option>
-                            <option value="11:00" >11:00</option>
-                            <option value="11:30" >11:30</option>
-                            <option value="12:00" >12:00</option>
-                            <option value="12:30" >12:30</option>
-                            <option value="13:00" >13:00</option>
-                            <option value="13:30" >13:30</option>
-                            <option value="14:00" >14:00</option>
-                            <option value="14:30" >14:30</option>
-                            <option value="15:00" >15:00</option>
-                            <option value="15:30" >15:30</option>
-                            <option value="16:00" >16:00</option>
-                            <option value="16:30" >16:30</option>
-                            <option value="17:00" >17:00</option>
-                            <option value="17:30" >17:30</option>
-                            <option value="18:00" >18:00</option>
-                            <option value="18:30" >18:30</option>
-                            <option value="19:00" >19:00</option>
-                            <option value="19:30" >19:30</option>
-                            <option value="20:00" >20:00</option>
-                            <option value="20:30" >20:30</option>
-                            <option value="21:00" >21:00</option>
-                            <option value="21:30" >21:30</option>
-                            <option value="22:00" >22:00</option>
-                            <option value="22:30" >22:30</option>
-                            <option value="23:00" >23:00</option>
-                            <option value="23:30" >23:30</option>
-                        </select>
-                    </div>
-                </div>
-                <!-- 活动地点 -->
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">活动地点&nbsp;</label>
-                    <div class="col-lg-3">
-                        <select class="form-control" id="event-city-select">
-                            <option value="">---请选择城市---</option>
-                            <option value="上海">上海</option>
-                            <option value="北京">北京</option>
-                            <option value="深圳">深圳</option>
-                        </select>
-                    </div>
-                    <div class="col-lg-7">
-                        <input type="text" class="form-control" id="event-detail-address" placeholder="请输入详细地址" />
-                    </div>
-                    <div class="col-lg-offset-2 col-lg-10">
-                        <div class="event-map-container">
-                            <div id="bdmap"></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- 私密活动 -->
-                <div class="form-group">
-                    <label class="col-lg-2 control-label">私密设置&nbsp;</label>
-                    <div class="col-lg-2">
-                        <label class="control-label">
-                            <input type="checkbox" id="event-private" checked> 公开活动
-                        </label>
-                    </div>
+        <form action="#" class="form-horizontal">
+                  <!-- 活动名称 -->
+                  <div class="form-group">
+                      <label class="col-lg-2 control-label">活动名称 <i class="fa fa-asterisk pull-right"></i></label>
+                      <div class="col-lg-10">
+                          <input type="text" class="form-control" id="event-name" placeholder="活动名称，不少于5个字">
+                      </div>
+                  </div>
+                  <!-- 活动时间 -->
+                  <div class="form-group">
+                      <label class="col-lg-2 control-label">活动时间&nbsp;</label>
+                      <div class="col-lg-2">  <!-- modified by chenyuan, 9-15 -->
+                          <input type="text" class="form-control datetimepicker-start" id="start-date" name="start-time" placeholder="开始时间"/>
+                      </div>
+                      <div class="col-lg-2">
+                          <select class="form-control" id="start-time">
+                              <option value="00:00" >00:00</option>
+                              <option value="00:30" >00:30</option>
+                              <option value="01:00" >01:00</option>
+                              <option value="01:30" >01:30</option>
+                              <option value="02:00" >02:00</option>
+                              <option value="02:30" >02:30</option>
+                              <option value="03:00" >03:00</option>
+                              <option value="03:30" >03:30</option>
+                              <option value="04:00" >04:00</option>
+                              <option value="04:30" >04:30</option>
+                              <option value="05:00" >05:00</option>
+                              <option value="05:30" >05:30</option>
+                              <option value="06:00" >06:00</option>
+                              <option value="06:30" >06:30</option>
+                              <option value="07:00" >07:00</option>
+                              <option value="07:30" >07:30</option>
+                              <option value="08:00" >08:00</option>
+                              <option value="08:30" >08:30</option>
+                              <option value="09:00" >09:00</option>
+                              <option value="09:30" >09:30</option>
+                              <option value="10:00" >10:00</option>
+                              <option value="10:30" >10:30</option>
+                              <option value="11:00" >11:00</option>
+                              <option value="11:30" >11:30</option>
+                              <option value="12:00" >12:00</option>
+                              <option value="12:30" >12:30</option>
+                              <option value="13:00" >13:00</option>
+                              <option value="13:30" >13:30</option>
+                              <option value="14:00" >14:00</option>
+                              <option value="14:30" >14:30</option>
+                              <option value="15:00" >15:00</option>
+                              <option value="15:30" >15:30</option>
+                              <option value="16:00" >16:00</option>
+                              <option value="16:30" >16:30</option>
+                              <option value="17:00" >17:00</option>
+                              <option value="17:30" >17:30</option>
+                              <option value="18:00" >18:00</option>
+                              <option value="18:30" >18:30</option>
+                              <option value="19:00" >19:00</option>
+                              <option value="19:30" >19:30</option>
+                              <option value="20:00" >20:00</option>
+                              <option value="20:30" >20:30</option>
+                              <option value="21:00" >21:00</option>
+                              <option value="21:30" >21:30</option>
+                              <option value="22:00" >22:00</option>
+                              <option value="22:30" >22:30</option>
+                              <option value="23:00" >23:00</option>
+                              <option value="23:30" >23:30</option>
+                          </select>
+                      </div>
+                      <!-- modified by chenyuan, 9-15 -->
+                      <div class="col-lg-2">
+                        <div class="gap-line"></div>
+                      </div>
 
-                </div>
-                <!-- 活动人数 -->
-                <div class="form-group">
-                    <label class="col-lg-2 control-label">活动人数&nbsp;</label>
-                    <div class="col-lg-10">
-                        <input type="number" class="form-control" id="event-member-limit" placeholder="活动人数限制，0 代表不限名额">
-                    </div>
-                </div>
-                <!-- 活动主题 -->
-                <div class="form-group">
-                    <label class="col-lg-2 control-label">活动主题&nbsp;</label>
-                    <div class="col-lg-3">
-                        <select class="event-theme form-control">
-                            <option value="">---请选择主题---</option>
-                            <option value="创业">创业</option>
-                            <option value="商务">商务</option>
-                            <option value="公益">公益</option>
-                            <option value="社交">社交</option>
-                            <option value="亲子">亲子</option>
-                            <option value="电影">电影</option>
-                            <option value="娱乐">娱乐</option>
-                            <option value="生活">生活</option>
-                            <option value="音乐">音乐</option>
-                            <option value="科技">科技</option>
-                            <option value="运动">运动</option>
-                            <option value="课程">课程</option>
-                            <option value="校园">校园</option>
-                            <option value="文化">文化</option>
-                            <option value="其它">其它</option>
-                        </select>
-                    </div>
-                </div>
-                <!-- 活动标签 -->
-                <div class="form-group">
-                    <label class="col-lg-2 control-label">活动标签&nbsp;</label>
-                    <!-- TODO: 长度调整 -->
-                    <div class="col-lg-6">
-                        <input class="form-control typeahead"
-                               type="text"
-                               placeholder="输入标签名字"
-                               autocomplete="on"
-                               spellcheck="off"
-                               data-source="tags"
-                               data-select="selected"
-                               data-template="TagSuggestion"/>
-                    </div>
-                </div>
-                <!-- 已选标签容器 -->
-                <div class="form-group">
-                    <div class="col-lg-offset-2 col-lg-6">
-                        <div id="selected-tag">
-                            <div class="tag-tips">已选标签</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- 活动详情描述 -->
-                <div class="form-group">
-                    <label class="col-lg-2 control-label">活动描述&nbsp;</label>
-                    <div class="col-lg-10">
-                        <div class="btn-toolbar" data-role="editor-toolbar" data-target="#event-desc">
-                            <div class="btn-group">
-                                <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="" data-original-title="Font"><i class="glyphicon glyphicon-font"></i><b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a data-edit="fontName Serif" style="font-family:'Serif'">Serif</a></li>
-                                    <li><a data-edit="fontName Sans" style="font-family:'Sans'">Sans</a></li>
-                                    <li><a data-edit="fontName Arial" style="font-family:'Arial'">Arial</a></li>
-                                    <li><a data-edit="fontName Arial Black" style="font-family:'Arial Black'">Arial Black</a></li>
-                                    <li><a data-edit="fontName Courier" style="font-family:'Courier'">Courier</a></li>
-                                    <li><a data-edit="fontName Courier New" style="font-family:'Courier New'">Courier New</a></li>
-                                    <li><a data-edit="fontName Comic Sans MS" style="font-family:'Comic Sans MS'">Comic Sans MS</a></li>
-                                    <li><a data-edit="fontName Helvetica" style="font-family:'Helvetica'">Helvetica</a></li>
-                                    <li><a data-edit="fontName Impact" style="font-family:'Impact'">Impact</a></li>
-                                    <li><a data-edit="fontName Lucida Grande" style="font-family:'Lucida Grande'">Lucida Grande</a></li>
-                                    <li><a data-edit="fontName Lucida Sans" style="font-family:'Lucida Sans'">Lucida Sans</a></li>
-                                    <li><a data-edit="fontName Tahoma" style="font-family:'Tahoma'">Tahoma</a></li>
-                                    <li><a data-edit="fontName Times" style="font-family:'Times'">Times</a></li>
-                                    <li><a data-edit="fontName Times New Roman" style="font-family:'Times New Roman'">Times New Roman</a></li>
-                                    <li><a data-edit="fontName Verdana" style="font-family:'Verdana'">Verdana</a></li></ul>
-                            </div>
-                            <div class="btn-group">
-                                <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="" data-original-title="Font Size"><i class="glyphicon glyphicon-text-height"></i>&nbsp;<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a data-edit="fontSize 5"><span style="font-size: large">大</span></a></li>
-                                    <li><a data-edit="fontSize 3"><span style="font-size: medium">中</span></a></li>
-                                    <li><a data-edit="fontSize 1"><span style="font-size: small">小</span></a></li>
-                                </ul>
-                            </div>
-                            <div class="btn-group">
-                                <a class="btn btn-default" data-edit="bold" title="" data-original-title="Bold (Ctrl/Cmd+B)"><i class="glyphicon glyphicon-bold"></i></a>
-                                <a class="btn btn-default" data-edit="italic" title="" data-original-title="Italic (Ctrl/Cmd+I)"><i class="glyphicon glyphicon-italic"></i></a>
-                                <a class="btn btn-default" data-edit="underline" title="" data-original-title="Underline (Ctrl/Cmd+U)"><i class="glyphicon glyphicon-text-width"></i></a>
-                            </div>
-                            <div class="btn-group">
-                                <a class="btn btn-default" data-edit="insertunorderedlist" title="" data-original-title="Bullet list"><i class="glyphicon glyphicon-list"></i></a>
-                                <a class="btn btn-default" data-edit="insertorderedlist" title="" data-original-title="Number list"><i class="glyphicon glyphicon-list-alt"></i></a>
-                                <a class="btn btn-default" data-edit="outdent" title="" data-original-title="Reduce indent (Shift+Tab)"><i class="glyphicon glyphicon-indent-left"></i></a>
-                                <a class="btn btn-default" data-edit="indent" title="" data-original-title="Indent (Tab)"><i class="glyphicon glyphicon-indent-right"></i></a>
-                            </div>
-                            <div class="btn-group">
-                                <a class="btn btn-default" data-edit="justifyleft" title="" data-original-title="Align Left (Ctrl/Cmd+L)"><i class="glyphicon glyphicon-align-left"></i></a>
-                                <a class="btn btn-default" data-edit="justifycenter" title="" data-original-title="Center (Ctrl/Cmd+E)"><i class="glyphicon glyphicon-align-center"></i></a>
-                                <a class="btn btn-default" data-edit="justifyright" title="" data-original-title="Align Right (Ctrl/Cmd+R)"><i class="glyphicon glyphicon-align-right"></i></a>
-                                <a class="btn btn-default" data-edit="justifyfull" title="" data-original-title="Justify (Ctrl/Cmd+J)"><i class="glyphicon glyphicon-align-justify"></i></a>
-                            </div>
+                      <div class="col-lg-2"> <!-- modified by chenyuan, 9-15 -->
+                          <input type="text" class="form-control datetimepicker-end" id="end-date" name="end-time" placeholder="结束时间"/>
+                      </div>
+                      <div class="col-lg-2">
+                          <select class="form-control" id="end-time">
+                              <option value="00:00" >00:00</option>
+                              <option value="00:30" >00:30</option>
+                              <option value="01:00" >01:00</option>
+                              <option value="01:30" >01:30</option>
+                              <option value="02:00" >02:00</option>
+                              <option value="02:30" >02:30</option>
+                              <option value="03:00" >03:00</option>
+                              <option value="03:30" >03:30</option>
+                              <option value="04:00" >04:00</option>
+                              <option value="04:30" >04:30</option>
+                              <option value="05:00" >05:00</option>
+                              <option value="05:30" >05:30</option>
+                              <option value="06:00" >06:00</option>
+                              <option value="06:30" >06:30</option>
+                              <option value="07:00" >07:00</option>
+                              <option value="07:30" >07:30</option>
+                              <option value="08:00" >08:00</option>
+                              <option value="08:30" >08:30</option>
+                              <option value="09:00" >09:00</option>
+                              <option value="09:30" >09:30</option>
+                              <option value="10:00" >10:00</option>
+                              <option value="10:30" >10:30</option>
+                              <option value="11:00" >11:00</option>
+                              <option value="11:30" >11:30</option>
+                              <option value="12:00" >12:00</option>
+                              <option value="12:30" >12:30</option>
+                              <option value="13:00" >13:00</option>
+                              <option value="13:30" >13:30</option>
+                              <option value="14:00" >14:00</option>
+                              <option value="14:30" >14:30</option>
+                              <option value="15:00" >15:00</option>
+                              <option value="15:30" >15:30</option>
+                              <option value="16:00" >16:00</option>
+                              <option value="16:30" >16:30</option>
+                              <option value="17:00" >17:00</option>
+                              <option value="17:30" >17:30</option>
+                              <option value="18:00" >18:00</option>
+                              <option value="18:30" >18:30</option>
+                              <option value="19:00" >19:00</option>
+                              <option value="19:30" >19:30</option>
+                              <option value="20:00" >20:00</option>
+                              <option value="20:30" >20:30</option>
+                              <option value="21:00" >21:00</option>
+                              <option value="21:30" >21:30</option>
+                              <option value="22:00" >22:00</option>
+                              <option value="22:30" >22:30</option>
+                              <option value="23:00" >23:00</option>
+                              <option value="23:30" >23:30</option>
+                          </select>
+                      </div>
+                  </div>
+                  <!-- 活动地点 -->
+                  <div class="form-group">
+                      <label class="col-lg-2 control-label">活动地点&nbsp;</label>
+                      <div class="col-lg-4">
+                          <select class="form-control" id="event-city-select">
+                              <option value="">---请选择城市---</option>
+                              <option value="上海">上海</option>
+                              <option value="北京">北京</option>
+                              <option value="深圳">深圳</option>
+                          </select>
+                      </div>
+                      <div class="col-lg-6">
+                          <input type="text" class="form-control" id="event-detail-address" placeholder="请输入详细地址" />
+                      </div>
+                      <div class="col-lg-offset-2 col-lg-10">
+                          <div class="event-map-container">
+                              <div id="bdmap"></div>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- 私密活动 -->
+                  <div class="form-group">
+                      <label class="col-lg-2 control-label">私密设置&nbsp;</label>
+                      <div class="col-lg-2 checkbox" style="height: 34px;">
+                          <label>
+                              <input type="checkbox" id="event-private" checked> 公开活动
+                          </label>
+                      </div>
 
-                            <div class="btn-group">
-                                <a class="btn btn-default" title="" id="pictureBtn" data-original-title="Insert picture (or just drag &amp; drop)"><i class="glyphicon glyphicon-picture"></i></a>
-                                <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" style="opacity: 0; position: absolute; top: 0px; left: 0px; width: 37px; height: 30px;">
-                            </div>
-                        </div>
-                        <div id="event-desc" placeholder="活动描述，不少于10个字"></div>
-                    </div>
-                </div>
+                  </div>
+                  <!-- 活动人数 -->
+                  <div class="form-group">
+                      <label class="col-lg-2 control-label">活动人数&nbsp;</label>
+                      <div class="col-lg-10">
+                          <input type="number" class="form-control" id="event-member-limit" placeholder="活动人数限制，0 代表不限名额">
+                      </div>
+                  </div>
+                  <!-- 活动主题 -->
+                  <div class="form-group">
+                      <label class="col-lg-2 control-label">活动主题&nbsp;</label>
+                      <div class="col-lg-4">
+                          <select class="event-theme form-control">
+                              <option value="">---请选择主题---</option>
+                              <option value="创业">创业</option>
+                              <option value="商务">商务</option>
+                              <option value="公益">公益</option>
+                              <option value="社交">社交</option>
+                              <option value="亲子">亲子</option>
+                              <option value="电影">电影</option>
+                              <option value="娱乐">娱乐</option>
+                              <option value="生活">生活</option>
+                              <option value="音乐">音乐</option>
+                              <option value="科技">科技</option>
+                              <option value="运动">运动</option>
+                              <option value="课程">课程</option>
+                              <option value="校园">校园</option>
+                              <option value="文化">文化</option>
+                              <option value="其它">其它</option>
+                          </select>
+                      </div>
+                  </div>
+                  <!-- 活动标签 -->
+                  <div class="form-group">
+                      <label class="col-lg-2 control-label">活动标签&nbsp;</label>
+                      <!-- TODO: 长度调整 -->
+                      <div class="col-lg-6">
+                          <input class="form-control typeahead"
+                                 type="text"
+                                 placeholder="输入标签名字"
+                                 autocomplete="on"
+                                 spellcheck="off"
+                                 data-source="tags"
+                                 data-select="selected"
+                                 data-template="TagSuggestion"/>
+                      </div>
+                  </div>
+                  <!-- 已选标签容器 -->
+                  <div class="form-group">
+                      <div class="col-lg-offset-2 col-lg-10">
+                          <div id="selected-tag">
+                              <div class="tag-tips">已选标签</div>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- 活动详情描述 -->
+                  <div class="form-group">
+                      <label class="col-lg-2 control-label">活动描述&nbsp;</label>
+                      <div class="col-lg-10">
+                          <div class="btn-toolbar" data-role="editor-toolbar" data-target="#event-desc">
+                              <div class="btn-group">
+                                  <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="" data-original-title="Font"><i class="glyphicon glyphicon-font"></i><b class="caret"></b></a>
+                                  <ul class="dropdown-menu">
+                                      <li><a data-edit="fontName Serif" style="font-family:'Serif'">Serif</a></li>
+                                      <li><a data-edit="fontName Sans" style="font-family:'Sans'">Sans</a></li>
+                                      <li><a data-edit="fontName Arial" style="font-family:'Arial'">Arial</a></li>
+                                      <li><a data-edit="fontName Arial Black" style="font-family:'Arial Black'">Arial Black</a></li>
+                                      <li><a data-edit="fontName Courier" style="font-family:'Courier'">Courier</a></li>
+                                      <li><a data-edit="fontName Courier New" style="font-family:'Courier New'">Courier New</a></li>
+                                      <li><a data-edit="fontName Comic Sans MS" style="font-family:'Comic Sans MS'">Comic Sans MS</a></li>
+                                      <li><a data-edit="fontName Helvetica" style="font-family:'Helvetica'">Helvetica</a></li>
+                                      <li><a data-edit="fontName Impact" style="font-family:'Impact'">Impact</a></li>
+                                      <li><a data-edit="fontName Lucida Grande" style="font-family:'Lucida Grande'">Lucida Grande</a></li>
+                                      <li><a data-edit="fontName Lucida Sans" style="font-family:'Lucida Sans'">Lucida Sans</a></li>
+                                      <li><a data-edit="fontName Tahoma" style="font-family:'Tahoma'">Tahoma</a></li>
+                                      <li><a data-edit="fontName Times" style="font-family:'Times'">Times</a></li>
+                                      <li><a data-edit="fontName Times New Roman" style="font-family:'Times New Roman'">Times New Roman</a></li>
+                                      <li><a data-edit="fontName Verdana" style="font-family:'Verdana'">Verdana</a></li></ul>
+                              </div>
+                              <div class="btn-group">
+                                  <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="" data-original-title="Font Size"><i class="glyphicon glyphicon-text-height"></i>&nbsp;<b class="caret"></b></a>
+                                  <ul class="dropdown-menu">
+                                      <li><a data-edit="fontSize 5"><span style="font-size: large">大</span></a></li>
+                                      <li><a data-edit="fontSize 3"><span style="font-size: medium">中</span></a></li>
+                                      <li><a data-edit="fontSize 1"><span style="font-size: small">小</span></a></li>
+                                  </ul>
+                              </div>
+                              <div class="btn-group">
+                                  <a class="btn btn-default" data-edit="bold" title="" data-original-title="Bold (Ctrl/Cmd+B)"><i class="glyphicon glyphicon-bold"></i></a>
+                                  <a class="btn btn-default" data-edit="italic" title="" data-original-title="Italic (Ctrl/Cmd+I)"><i class="glyphicon glyphicon-italic"></i></a>
+                                  <a class="btn btn-default" data-edit="underline" title="" data-original-title="Underline (Ctrl/Cmd+U)"><i class="glyphicon glyphicon-text-width"></i></a>
+                              </div>
+                              <div class="btn-group">
+                                  <a class="btn btn-default" data-edit="insertunorderedlist" title="" data-original-title="Bullet list"><i class="glyphicon glyphicon-list"></i></a>
+                                  <a class="btn btn-default" data-edit="insertorderedlist" title="" data-original-title="Number list"><i class="glyphicon glyphicon-list-alt"></i></a>
+                                  <a class="btn btn-default" data-edit="outdent" title="" data-original-title="Reduce indent (Shift+Tab)"><i class="glyphicon glyphicon-indent-left"></i></a>
+                                  <a class="btn btn-default" data-edit="indent" title="" data-original-title="Indent (Tab)"><i class="glyphicon glyphicon-indent-right"></i></a>
+                              </div>
+                              <div class="btn-group">
+                                  <a class="btn btn-default" data-edit="justifyleft" title="" data-original-title="Align Left (Ctrl/Cmd+L)"><i class="glyphicon glyphicon-align-left"></i></a>
+                                  <a class="btn btn-default" data-edit="justifycenter" title="" data-original-title="Center (Ctrl/Cmd+E)"><i class="glyphicon glyphicon-align-center"></i></a>
+                                  <a class="btn btn-default" data-edit="justifyright" title="" data-original-title="Align Right (Ctrl/Cmd+R)"><i class="glyphicon glyphicon-align-right"></i></a>
+                                  <a class="btn btn-default" data-edit="justifyfull" title="" data-original-title="Justify (Ctrl/Cmd+J)"><i class="glyphicon glyphicon-align-justify"></i></a>
+                              </div>
+
+                              <div class="btn-group">
+                                  <a class="btn btn-default" title="" id="pictureBtn" data-original-title="Insert picture (or just drag &amp; drop)"><i class="glyphicon glyphicon-picture"></i></a>
+                                  <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" style="opacity: 0; position: absolute; top: 0px; left: 0px; width: 37px; height: 30px;">
+                              </div>
+                          </div>
+                          <div id="event-desc" placeholder="活动描述，不少于10个字"></div>
+                      </div>
+                  </div>
+
 
                 <!-- 设置报名表单 -->
+                <!-- modified by chenyaun, 2015-09-15-->
+                <!-- 由于页面中其他部分都没有添加container, 故删除以下模块中的container以及row 部分。-->
                 <div class="form-group">
-                    <label class="col-lg-2 control-label">报名表单&nbsp;</label>
-                    <div class="col-lg-10">
-                        <div class="container">
-                            <div class="event-sign-form-setting row" data-type="ESF_SINGLE_TEXT">
-                                <div class="col-lg-1 text-center">
-                                    <input type="checkbox" name="required" checked disabled> 必填
-                                </div>
-                                <div class="col-lg-3">
-                                    <input type="text" class="form-control required" title="姓名" disabled placeholder="姓名" name="姓名">
-                                </div>
-                                <div class="col-lg-3">
-                                    <input type="text" name="description" class="form-control" placeholder="请输入姓名" disabled>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="container">
-                            <div class="event-sign-form-setting row" data-type="ESF_SINGLE_TEXT">
-                                <div class="col-lg-1 text-center">
-                                    <input type="checkbox" name="required" checked disabled> 必填
-                                </div>
-                                <div class="col-lg-3">
-                                    <input type="text" class="form-control required" title="电话" disabled placeholder="电话" name="电话">
-                                </div>
-                                <div class="col-lg-3">
-                                    <input type="text" name="description" class="form-control" placeholder="请输入电话号码" disabled>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="container" id="custom-form-container">
-                            <!-- container for evnet sign forms -->
-                        </div>
-
-                        <div class="col-lg-10 empty-from-item-container">
-                            <button type="button" class="btn col-lg-2 btn-default custom-form-item" data-type="ESF_SINGLE_TEXT">单行文本<i class="fa fa-plus-square-o"></i></button>
-                            <button type="button" class="btn col-lg-2 btn-default custom-form-item" data-type="ESF_MULTI_TEXT">多行文本<i class="fa fa-plus-square-o"></i></button>
-                            <button type="button" class="btn col-lg-2 btn-default custom-form-item" data-type="ESF_SELECT_RADIO">单选栏目<i class="fa fa-plus-square-o"></i></button>
-                            <button type="button" class="btn col-lg-2 btn-default custom-form-item" data-type="ESF_SELECT_CHECKBOX">多选栏目<i class="fa fa-plus-square-o"></i></button>
-                        </div>
+                  <label class="col-lg-2 control-label">报名表单&nbsp;</label>
+                  <div class="col-lg-10">
+                    <div class="event-sign-form-setting" data-type="ESF_SINGLE_TEXT">
+                      <span class="pull-left one-line-text"></span>
+                      <button class="btn pull-right btn-danger" disabled>
+                        <i class="fa fa-times"></i>
+                      </button>
+                      <div class="event-sign-form-input"><input type="text" class="form-control required" title="姓名" readonly placeholder="姓名" name="姓名"></div>
                     </div>
-                </div>
-            </form>
-        </div>
+                    <div class="event-sign-form-setting" data-type="ESF_SINGLE_TEXT">
+                      <span class="one-line-text pull-left"></span>
+                      <button class="btn pull-right btn-danger" disabled>
+                        <i class="fa fa-times"></i>
+                      </button>
+                      <div class="event-sign-form-input"><input type="text" class="form-control required" title="姓名" readonly placeholder="姓名" name="姓名"></div>
+                    </div>
 
+                    <div id="custom-form-container">
+                      <!-- container for evnet sign forms -->
+                    </div>
+                    <div class="clearfix empty-from-item-container event-sign-form-setting btn-group" role="group">
+                      <button type="button" class="btn col-lg-3 btn-default custom-form-item" data-type="ESF_SINGLE_TEXT">单行文本 <i class="fa fa-plus-square-o"></i></button>
+                      <button type="button" class="btn col-lg-3 btn-default custom-form-item" data-type="ESF_MULTI_TEXT">多行文本 <i class="fa fa-plus-square-o"></i></button>
+                      <button type="button" class="btn col-lg-3 btn-default custom-form-item" data-type="ESF_SELECT_RADIO">单选栏目 <i class="fa fa-plus-square-o"></i></button>
+                      <button type="button" class="btn col-lg-3 btn-default custom-form-item" data-type="ESF_SELECT_CHECKBOX">多选栏目 <i class="fa fa-plus-square-o"></i></button>
+                    </div>
+                  </div>
+                </div>
+               <!-- 提交信息-->
+               <!-- 保存活动基本信息 -->
+               <div class="form-group">
+                   <div class="col-lg-offset-4 col-lg-2">
+                       <buttom class="btn btn-default previewSignForm" data-toggle="modal" data-target="#preview-sign-form-modal">预览报名表单</buttom>
+                   </div>
+                   <div class="col-lg-2">
+                       <button type="button" class="btn btn-primary" id="submitBaiscInfo">保存基本信息</button>
+                   </div>
+
+               </div>
+        </form>
         <!-- Modal -->
         <div class="modal fade" id="preview-sign-form-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
@@ -337,18 +341,6 @@
                 </div>
             </div>
         </div>
-        <!-- 提交信息-->
-        <div class="submit-event-info-contanier">
-            <!-- 保存活动基本信息 -->
-            <div class="form-group">
-                <div class="col-lg-offset-4 col-lg-2">
-                    <buttom class="btn btn-default previewSignForm" data-toggle="modal" data-target="#preview-sign-form-modal">预览报名表单</buttom>
-                </div>
-                <div class="col-lg-2">
-                    <button type="button" class="btn btn-primary" id="submitBaiscInfo">保存基本信息</button>
-                </div>
 
-            </div>
-        </div>
     </div>
 </template>
