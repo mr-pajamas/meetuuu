@@ -20,7 +20,7 @@
                             </ul>
 
                             <ul class="list-unstyled event-intro-list">
-                                <li class="clearfix"><i class="fa fa-calendar"></i><p>{{time.start}}&nbsp;--&nbsp;{{time.end}}</p></li>
+                                <li class="clearfix"><i class="fa fa-calendar"></i><p>{{eventTime.start}}&nbsp;--&nbsp;{{eventTime.end}}</p></li>
                                 <li class="clearfix"><i class="fa fa-map-marker"></i><p>{{location.city}}{{location.address}}</p></li>
                                 <li class="clearfix"><i class="fa fa-group"></i><p>0&nbsp;/&nbsp;{{member}}</p></li>
                                 <li class="clearfix"><i class="fa fa-dot-circle-o"></i>
@@ -33,25 +33,6 @@
                                 </li>
                             </ul>
                         </div>
-                        <!-- Modal -->
-                        <div class="modal fade" id="joinEventFormModal" tabindex="-1" role="dialog" aria-labelledby="joinEventForm">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title">报名活动</h4>
-                                    </div>
-                                    {{#if signForm}}
-                                        <div class="modal-body">
-                                            {{> quickForm schema=signForm id="joinEvent" type='normal' template="bootstrap3-horizontal" label-class="col-sm-3" input-col-class="col-sm-9"}}
-                                        </div>
-                                    {{/if}}
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </section>
                 {{/with}}
 
@@ -60,97 +41,62 @@
                     <!-- 插入活动详情的 html string -->
                 </section>
 
-
                 <section id="comment">
+                    <!-- 新建评论输入框 -->
                     <div class="media new-comment">
                         <div class="row">
                             <div class="media-left col-sm-2 col-xs-3">
                                 <a href="#"><img src="/714468542.jpg" alt="xxx"/></a>
                             </div>
+                            <!-- todo 替换为用户的数据 -->
                             <div class="media-info col-sm-10 col-xs-9">
                                 <h4 class="media-heading">陈元</h4>
                                 <div class="media-date">2015, 09, 05</div>
                             </div>
                             <div class="col-sm-10 col-xs-12 media-text">
-                                <form action="test.js" method="post" class="new-comment-form">
-                                    <textarea name="comment" class="new-comment-area" rows="6" placeholder="感兴趣吗？评论一下吧！"></textarea>
-                                    <input type="submit" class="btn pull-right btn-primary" name="submit" value="提交"/>
+                                <form class="new-comment-form">
+                                    <textarea name="comment" id="commentContent" class="new-comment-area" rows="6" placeholder="感兴趣吗？评论一下吧！"></textarea>
+                                    <input type="button" id="submitComment" class="btn pull-right btn-primary" name="评论" value="评论"/>
                                 </form>
                             </div>
                         </div>
                     </div>
-                    <div class="comment-item">
-                        <div class="media">
-                            <div class="row">
-                                <div class="media-left col-sm-2 col-xs-3">
-                                    <a href="#"><img src="714468542.jpg" alt="xxx"/></a>
-                                </div>
-                                <div class="media-info col-sm-10 col-xs-9">
-                                    <h4 class="media-heading">陈元</h4>
-                                    <div class="media-date">09, 4, 2015</div>
-                                </div>
-                                <div class="col-sm-10 col-xs-12 media-text">
-                                    <p>我们找到不同的创业团队跟您分享他们曾经遇到的各种管理技术团队的
-                                        困难和错误，让您不走冤枉路，如何搭建最佳的技术团队帮您简历一流的产品？
-                                        技术架构如何才能让您更有效率但也同时能够快速增长，</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="reply clearfix">
-                            <a href="javascript:void(0);" title="回复该帖子" class="fa pull-right fa-reply"><span>回复</span></a>
-                        </div>
-                    </div>
-                    <div class="comment-item">
-                        <div class="media">
-                            <div class="row">
-                                <div class="media-left col-sm-2 col-xs-3">
-                                    <a href="#"> <img src="714468542.jpg" alt="xxx"/></a>
-                                </div>
-                                <div class="media-info col-sm-10 col-xs-9">
-                                    <h4 class="media-heading">陈元</h4>
-                                    <div class="media-date">09, 4, 2015</div>
-                                </div>
-                                <div class="col-sm-10 col-xs-12 media-text">
-                                    <p>我们找到不同的创业团队跟您分享他们曾经遇到的各种管理技术团队的
-                                        困难和错误，让您不走冤枉路，如何搭建最佳的技术团队帮您简历一流的产品？
-                                        技术架构如何才能让您更有效率但也同时能够快速增长，</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="reply clearfix">
-                            <a href="javascript:void(0);" title="回复该帖子" class="fa fa-reply pull-right"><span>回复</span></a>
-                        </div>
-                    </div>
-                    <div class="comment-item">
-                        <div class="media">
-                            <div class="row">
-                                <div class="media-left col-sm-2 col-xs-3">
-                                    <a href="#"> <img src="714468542.jpg" alt="xxx"/></a>
-                                </div>
-                                <div class="media-info col-sm-10 col-xs-9">
-                                    <h4 class="media-heading">陈元</h4>
-                                    <div class="media-date">09, 4, 2015</div>
-                                </div>
-                                <div class="col-sm-10 col-xs-12 media-text">
-                                    <p>我们找到不同的创业团队跟您分享他们曾经遇到的各种管理技术团队的
-                                        困难和错误，让您不走冤枉路，如何搭建最佳的技术团队帮您简历一流的产品？
-                                        技术架构如何才能让您更有效率但也同时能够快速增长，</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="reply clearfix">
-                            <a href="javascript:void(0);" title="回复该帖子" class="fa fa-reply pull-right"><span>回复</span></a>
-                        </div>
-                    </div>
+                    <!-- 包含两个template，评论以及隐藏的回复评论-->
+                    {{#each comments}}
+                        {{> eventComment}}
+                    {{/each}}
+
+
                 </section>
             </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="joinEventFormModal" tabindex="-1" role="dialog" aria-labelledby="joinEventForm">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">报名活动</h4>
+                        </div>
+                        {{#if signForm}}
+                            <div class="modal-body">
+                                {{> quickForm schema=signForm id="joinEvent" type='normal' template="bootstrap3-horizontal" label-class="col-sm-3" input-col-class="col-sm-9"}}
+                            </div>
+                        {{/if}}
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- 活动详情导航Tab -->
             <div class="event-sidebar col-md-3">
                 <div class="content" id="fixed-bar-wrap">
                     <ul class="nav nav-pills nav-stacked" id="fixed-sidebar">
-                        <li id="nav-poster" role="presentation"><a href="#poster">主题海报</a></li>
-                        <li id="nav-information" role="presentation"><a href="#information">活动详情</a></li>
-                        <li id="nav-comment" role="presentation"><a href="#comment">留言</a></li>
+                        <li id="nav-poster" role="presentation" class="navi-li"><a href="#poster">主题海报</a></li>
+                        <li id="nav-information" role="presentation" class="navi-li"><a href="#information">活动详情</a></li>
+                        <li id="nav-comment" role="presentation" class="navi-li"><a href="#comment">留言</a></li>
                         <li id="nav-join" role="presentation"><a href="#join" data-toggle="modal" data-target="#joinEventFormModal">报名参加</a></li>
                     </ul>
                 </div>

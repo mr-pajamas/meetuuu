@@ -108,7 +108,7 @@ textarea {
 }
 .fixed-block {
     position: fixed;
-    top: 0px;
+    top: 61px;
     z-index: 999;
 }
 .event-home #comment .comment-item {
@@ -123,6 +123,7 @@ textarea {
 }
 .event-home .media-heading {
     font-weight: bold;
+    margin-bottom: 13px;
 }
 .event-home #comment .media-date {
     margin-bottom: 15px;
@@ -169,7 +170,7 @@ textarea {
     padding-top: 6px;
     margin-right: 20px;
 }
-.event-home #inserted-dom {
+.event-home .to-insert {
     display: none;
 }
 .event-home .to-insert .inserted-content {
