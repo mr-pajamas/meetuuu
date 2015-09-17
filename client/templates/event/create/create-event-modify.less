@@ -1,9 +1,15 @@
 /*修改 container width.*/
 .create-event-container {
+  .form-horizontal {
+    .form-group {
+      margin-left: -10px;
+      margin-right: -10px;
+    }
+  }
   padding-top: 30px;
   .form-group {
-    margin-bottom: 25px;
-    div[class^=col-lg] {
+    margin-bottom: 20px;
+    [class^=col-] {
       padding-left: 10px;
       padding-right: 10px;
     }
@@ -14,15 +20,33 @@
         color: red;
       }
     }
-    .event-sign-form-setting {
-      .col-lg-1 {
-        line-height: 34px;
+    .empty-from-item-container {
+     .row {
+       margin-left: 0 !important;
+       margin-right: -13px !important;
+     }
+      [class^=col-] {
+        padding-left: 0 !important;
+        padding-right: 13px !important;
       }
+      [class^=col-]:not(:last-child) {
+        margin-bottom: 13px;
+
+        @media (min-width: 992px ) {
+          margin-bottom: 0px;
+        }
+      }
+    }
+    .event-sign-form-setting {
       border: 1px solid #ccc;
       padding: 13px;
       -webkit-border-radius: 3px;
       -moz-border-radius: 3px;
       border-radius: 3px;
+
+      .custom-form-item {
+        width: 100%;
+      }
     }
     .event-sign-form-input {
       margin-left: 47px;
@@ -30,11 +54,6 @@
       input {
         width: 100%;
       }
-    }
-    div[data-type=ESF_SELECT_RADIO], div[data-type=ESF_SELECT_CHECKBOX] {
-       .col-lg-3:nth-child(2n+1) {
-         display: none;
-       }
     }
     .row {
       margin-left: -10px;
@@ -45,26 +64,53 @@
       width: 80%;
       height: 17px;
       border-bottom: 1px solid #cccccc;
-    }
-    .fa-trash-o, .fa-minus-square-o {
-      line-height: 34px;
+      display: none;
+      @media (min-width: 992px ) {
+        display: block;
+      }
     }
     .option-container {
       .row {
         margin-bottom: 7px;
       }
     }
-    .col-lg-10 {
+    .col-md-10 {
+        .new-added-form {
+          margin-bottom: 13px;
+        }
+        #custom-form-container {
+          .option-container {
+            .custom-form-options {
+              margin-bottom: 13px;
+            }
+          }
+        }
         .event-sign-form-setting {
-          .one-line-text {
+          .one-line-text, .multi-line-text, .radio-text, .checkbox-text {
             width: 34px;
             height: 34px;
             background: url("icon_join.png") no-repeat;
             background-position: 7px -145px;
           }
-        }
-        .btn-group {
-          display: block;
+          .tip-info {
+            display: inline-block;
+            line-height: 34px;
+            width: 34px;
+          }
+          .multi-line-text {
+            background-position: 7px -244px;
+          }
+          .radio-text {
+            background-position: 6px -394px;
+          }
+          .checkbox-text {
+            background-position: 6px -444px;
+          }
+          .input-added {
+            border-style: dashed;
+            cursor: pointer;
+            color: #ccc;
+          }
         }
     }
   }
