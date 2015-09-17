@@ -101,6 +101,9 @@ Template.eventDetail.helpers({
   // 提取表单，构造 SimpleSchema
   'signForm': function() {
     var eventDetail = Events.findOne({'_id': FlowRouter.getParam('eid')});
+    if (!eventDetail) {
+      return;
+    }
     var signForm = eventDetail.signForm;
     for (var key in signForm) {
       if (signForm.hasOwnProperty(key)) {
@@ -160,8 +163,7 @@ Template.eventDetail.events({
     };
     Meteor.call('submitEventComment', comment, function(err, res) {
       if (!err && res.code === 0) {
-        console.log('评论成功');
-        $('#replyContainer').hiden();
+        alert('评论成功');
         $('#commentContent').val('');
       }
     });
