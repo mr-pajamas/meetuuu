@@ -158,15 +158,10 @@ Template.createEvent.events({
     var type = $(e.target).attr('data-type');
     GeventSignForm.createForm(type);
   },
-  // 提交表单-保存
-  'click .submitSignForm': function(e) {
-    e.preventDefault();
-    GeventSignForm.getFromContent();
-  },
   // 预览表单
   'click .previewSignForm': function(e) {
     e.preventDefault();
-    var forms = GeventSignForm.getFromContent();
+    var forms = GeventSignForm.getFromContent().formSchema;
     previewForms.set(forms);
   }
 });
@@ -197,11 +192,10 @@ function saveEventBaiscInfo() {
       tags = GeventTag.getAllTags(),
       private = !$('#event-private').prop("checked"),
       desc = $('#event-desc').html(),
-      signForm = GeventSignForm.getFromContent(),
+      signForm = GeventSignForm.getFromContent().formSchemaForDataBase,
       endDayTime = timeTrans($('#end-time').val()),
       startDayTime = timeTrans($('#start-time').val()),
       eventMemberLimit = 0;
-
   if (!private) {
     eventMemberLimit = $('#event-member-limit').val() || 0;
   }

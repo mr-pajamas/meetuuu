@@ -6,11 +6,11 @@ Meteor.methods({
     });
     if (id) {
       // 后续更新
-      Event.update({_id: id},{'$set': eventInfo});
+      Events.update({_id: id},{'$set': eventInfo});
       return {code: 0};
     } else {
       // 第一次保存
-      var nid = Event.insert(eventInfo);
+      var nid = Events.insert(eventInfo);
       return {code: 0, eventId: nid};
     }
   }
