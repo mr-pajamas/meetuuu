@@ -1,18 +1,20 @@
 // 左侧Tag跟随界面下滑滚动
 function tagScroll() {
   /*fix nav bar to the top.*/
+
+
   var target = $("#fixed-sidebar");
   var navFixBar = $('.navbar-fixed-top');
   var reference = $(".event-sidebar .content");
 
   function fixedBar() {
-    var Top = reference.offset().top;
+    //var Top = reference.offset().top;
     var Width = reference.width();
     var Height = reference.height();
     var navFixBarHeight = navFixBar.height();
     target.width(Width);
     target.height(Height);
-    if ($('body').scrollTop() >= Top - navFixBarHeight) {
+    if ($('body').scrollTop() ) {
       target.addClass('fixed-block');
     } else if (target.hasClass('fixed-block')) {
       target.removeClass('fixed-block');
@@ -23,9 +25,10 @@ function tagScroll() {
     'resize': fixedBar
   });
 
+
   /*fix nav bar end.*/
 
-  var anchors = $("#fixed-sidebar .navi-li a");
+  var anchors = $("#fixed-sidebar li a");
   $.each(anchors, function (index, item) {
     $(this).click(function (event) {
       if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
@@ -33,7 +36,7 @@ function tagScroll() {
         target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
         if (target.length) {
           $('body').animate({
-            scrollTop: target.offset().top - navFixBar.height()
+            scrollTop: target.offset().top - $(navFixBar).height()
           }, 300);
         }
       }
@@ -42,20 +45,7 @@ function tagScroll() {
   });
 }
 
-//created by Chen Yuan. 2015, 09, 18, to bind scrollSpy properties to body tag.
 
-Template.testScrollSpy.onRendered(function () {
-  $(document.body).attr({
-    "data-spy": "scroll",
-    "data-target": "#fixed-bar-wrap"
-  });
-});
-
-Template.testScrollSpy.onDestroyed(function () {
-  $(document.body).removeAttr("data-spy data-target");
-});
-
-// end.
 
 
 // autoForm hooks
@@ -79,6 +69,12 @@ Template.testScrollSpy.onDestroyed(function () {
 }());
 
 Template.eventDetail.onRendered(function() {
+  //created by Chen Yuan. 2015, 09, 18, to bind scrollSpy properties to body tag.
+  $("body").scrollspy({
+    target: "#fixed-bar-wrap",
+    offset: 60
+  });
+  //fix scrollspy error. modified by chenyuan.
   tagScroll();
   var self = this,
       eid = FlowRouter.getParam('eid');
@@ -97,6 +93,12 @@ Template.eventDetail.onRendered(function() {
     });
   });
 });
+
+//created by Chen Yuan.
+Template.eventDetail.onDestroyed(function () {
+  //$(document.body).removeAttr("data-spy data-target");
+});
+// end.
 
 
 Template.eventDetail.helpers({
