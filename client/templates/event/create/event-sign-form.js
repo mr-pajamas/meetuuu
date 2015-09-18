@@ -3,21 +3,27 @@ GeventSignForm = (function() {
   var customFormType = {
     'ESF_SINGLE_TEXT': {
       title: '单行文本框',
-      type: 'ESF_SINGLE_TEXT'
+      type: 'ESF_SINGLE_TEXT',
+      singleText: true
     },
     'ESF_MULTI_TEXT': {
       title: '多行文本框',
-      type: 'ESF_MULTI_TEXT'
+      type: 'ESF_MULTI_TEXT',
+      multiText: true
     },
     'ESF_SELECT_RADIO': {
       title: '单选框',
+      option: '单选选项',
       type: 'ESF_SELECT_RADIO',
-      multi: true
+      multi: true,
+      radioText: true
     },
     'ESF_SELECT_CHECKBOX': {
       title: '多选框',
+      option: '多选选项',
       type: 'ESF_SELECT_CHECKBOX',
-      multi: true
+      multi: true,
+      checkboxText: true
     }
   };
 
@@ -31,6 +37,7 @@ GeventSignForm = (function() {
     this.container = $('#' + id)[0];
   };
 
+
   signform.forms = {};
 
   // 创建
@@ -41,6 +48,7 @@ GeventSignForm = (function() {
       _.extend(this.customFormType[type], {'formId': id}),
       this.container
     );
+
     this.forms[id] = {
       'blazeView': blazeView,
       'type': type
@@ -177,35 +185,84 @@ Template.ESF_CUSTOM.events({
   // 自定义表单控件-删除
   'click .delete-custom-form': function (e) {
     e.preventDefault();
-    var formId = $(e.target).attr('data-id');
+    var formId = $(e.currentTarget).attr('data-id');
+
     GeventSignForm.removeForm(formId);
   },
   // 多选表单-添加选项
   'click .add-form-options': function(e) {
     e.preventDefault();
-    var formId = $(e.target).attr('data-id');
+    var formId = $(e.currentTarget).attr('data-id');
+    var type = $(e.currentTarget).attr('data-type');
+
+    var container =  $('.custom-form-options-container-' + formId)[0];
+    var totalDeletes = $(container).find(".delete-form-option");
+
+    //created by Chen yuan, at 2015, 09, 17
+    var radioText = false;
+    var checkboxText = false;
+    var option = null;
+
+    if (type === 'ESF_SELECT_RADIO') {
+      radioText = true;
+      option = "单选选项";
+    } else if (type === 'ESF_SELECT_CHECKBOX') {
+      checkboxText = true;
+      option = "多选选项";
+    }
+    // end.
     Blaze.renderWithData(
       Template['custom-form-options'],
-      {'formId': formId},
-      $('.custom-form-options-container-' + formId)[0]
+      {'formId': formId, 'radioText': radioText, 'checkboxText': checkboxText, 'option': option},
+      container
     );
+
+    //created by Chen yuan. 2015, 09, 27.
+    var totalDeletes = $(container).find(".delete-form-option");
+
+    if ($(totalDeletes).size() > 2) {
+         $(totalDeletes).removeAttr("disabled");
+       }
+
+    // end.
   }
-})
+});
 
 
-// 多选表单的删除
+/* commended by Chen Yuan, at 2015, 09, 17. for i move event to template ESF_SUCTOM.
 Template['custom-form-options'].events({
   'click .delete-form-option': function(e) {
     e.preventDefault();
-    $(e.target).parent().remove();
+    $(e.currentTarget).parent().remove();
+  }
+});*/
+
+// 多选表单的删除
+//created  by Chen Yuan. 2015, 09, 17.
+Template['ESF_CUSTOM'].events({
+  'click .delete-form-option': function(e) {
+    e.preventDefault();
+
+    var formId = $(e.currentTarget).attr("data-id");
+    var container =  $('.custom-form-options-container-' + formId)[0];
+
+    $(e.currentTarget).parent().remove();
+
+    //created by Chen Yuan on 2015, 09, 17.
+    var totalDeletes = $(container).find(".delete-form-option");
+
+    if ($(totalDeletes).size() < 3) {
+      $(totalDeletes).attr("disabled", "disabled");
+    }
   }
 });
+//end.
 
 
 Template.eventTag.events({
   'click i.delete-event-tag': function(e) {
     e.preventDefault();
-    var $spanTag = $(e.target).parent(),
+    var $spanTag = $(e.currentTarget).parent(),
         id = $spanTag.attr('id');
     GeventTag.delTag(id);
     $spanTag.remove();

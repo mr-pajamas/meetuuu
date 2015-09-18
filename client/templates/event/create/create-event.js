@@ -155,7 +155,7 @@ Template.createEvent.events({
   // 自定义表单控件-创建
   'click .custom-form-item': function(e) {
     e.preventDefault();
-    var type = $(e.target).attr('data-type');
+    var type = $(e.currentTarget).attr('data-type');
     GeventSignForm.createForm(type);
   },
   // 预览表单
