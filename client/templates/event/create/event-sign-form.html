@@ -1,67 +1,66 @@
 <template name="ESF_CUSTOM">
-    <div class="event-sign-form-setting " data-type="{{type}}">
-         <!-- 用来插入输入框类型的图片. created by ChenYuan.-->
-      {{#if singleText}}
-        <span class="pull-left one-line-text"></span>
-      {{/if}}
-      {{#if multiText}}
-        <span class="pull-left multi-line-text"></span>
-      {{/if}}
-      {{#if radioText}}
-        <span class="pull-left radio-text"></span>
-      {{/if}}
-      {{#if checkboxText}}
-        <span class="pull-left checkbox-text"></span>
-      {{/if}}
-      <button class="btn pull-right btn-danger delete-custom-form" data-id="{{formId}}"><i class="fa fa-trash-o"></i></button>
-      <div class="event-sign-form-input{{#if multi}} new-added-form{{/if}}">
-        <input type="text" class="form-control required" id="title-{{formId}}" title="{{title}}" placeholder="{{title}}" name="title">
-      </div>
-      {{#if multi}}
-        <div class="option-container">
-          <div class="custom-form-options-container-{{formId}}">
-            <div class="custom-form-options">
-
-              {{#if radioText}}
-                <i class="pull-left fa fa-circle-o text-center tip-info"></i>
-              {{/if}}
-              {{#if checkboxText}}
-                <i class="pull-left fa fa-square-o text-center tip-info"></i>
-              {{/if}}
-              <button class="btn pull-right btn-default delete-form-option" data-id="{{formId}}"  title="删除该选项" disabled><i class="fa fa-trash-o"></i></button>
-              <div class="event-sign-form-input{{#if multi}} new-added-form{{/if}}">
-                <input type="text" class="form-control required" id="title-{{formId}}" title="{{title}}" placeholder="添加{{option}}" name="title">
-              </div>
-
-            </div>
-            <div class="custom-form-options">
-
-              {{#if radioText}}
-                <i class="pull-left fa fa-circle-o text-center tip-info"></i>
-              {{/if}}
-              {{#if checkboxText}}
-                <i class="pull-left fa fa-square-o text-center tip-info"></i>
-              {{/if}}
-              <button class="btn pull-right btn-default delete-form-option" data-id="{{formId}}" title="删除该选项" disabled><i class="fa fa-trash-o"></i></button>
-              <div class="event-sign-form-input{{#if multi}} new-added-form{{/if}}">
-                <input type="text" class="form-control required" id="title-{{formId}}" title="{{title}}" placeholder="添加{{option}}" name="title">
-              </div>
-
-            </div>
-            <!-- option container -->
-          </div>
-        </div>
-      {{/if}}
-
-      <!-- created by chenyuan, 底部的虚线框中的指示性内容。-->
-      {{#if multi}}
-        <button class="btn btn-default pull-right add-form-options" data-id="{{formId}}" data-type="{{type}}"><i class="fa fa-plus"></i></button>
-        <div class="event-sign-form-input add-form-options" data-id="{{formId}}" data-type="{{type}}">
-          <div  class="form-control input-added" id="title-{{formId}}" title="添加{{option}}">添加{{option}}</div>
-        </div>
-      {{/if}}
+  <div class="event-sign-form-setting " data-type="{{type}}">
+    <!-- 用来插入输入框类型的图片. created by ChenYuan.-->
+    {{#if singleText}}
+      <span class="pull-left one-line-text"></span>
+    {{/if}}
+    {{#if multiText}}
+      <span class="pull-left multi-line-text"></span>
+    {{/if}}
+    {{#if radioText}}
+      <span class="pull-left radio-text"></span>
+    {{/if}}
+    {{#if checkboxText}}
+      <span class="pull-left checkbox-text"></span>
+    {{/if}}
+    <button class="btn pull-right btn-danger delete-custom-form" data-id="{{formId}}"><i class="fa fa-trash-o"></i></button>
+    <div class="event-sign-form-input{{#if multi}} new-added-form{{/if}}">
+      <input type="text" class="form-control required" id="title-{{formId}}" title="{{title}}" placeholder="{{title}}" name="title">
     </div>
+    {{#if multi}}
+      <div class="option-container">
+        <div class="custom-form-options-container-{{formId}}">
 
+          <!-- 多选项默认的两个输入框 -->
+          <div class="custom-form-options">
+            {{#if radioText}}
+              <i class="pull-left fa fa-circle-o text-center tip-info"></i>
+            {{/if}}
+            {{#if checkboxText}}
+              <i class="pull-left fa fa-square-o text-center tip-info"></i>
+            {{/if}}
+            <button class="btn pull-right btn-default delete-form-option" data-id="{{formId}}"  title="删除该选项" disabled><i class="fa fa-trash-o"></i></button>
+            <div class="event-sign-form-input{{#if multi}} new-added-form{{/if}}">
+              <input type="text" class="form-control required options-{{formId}}" title="{{title}}" placeholder="添加{{option}}" name="title">
+            </div>
+          </div>
+          <div class="custom-form-options">
+            {{#if radioText}}
+              <i class="pull-left fa fa-circle-o text-center tip-info"></i>
+            {{/if}}
+            {{#if checkboxText}}
+              <i class="pull-left fa fa-square-o text-center tip-info"></i>
+            {{/if}}
+            <button class="btn pull-right btn-default delete-form-option" data-id="{{formId}}" title="删除该选项" disabled><i class="fa fa-trash-o"></i></button>
+            <div class="event-sign-form-input{{#if multi}} new-added-form{{/if}}">
+              <input type="text" class="form-control required options-{{formId}}" title="{{title}}" placeholder="添加{{option}}" name="title">
+            </div>
+          </div>
+
+          <!-- option container -->
+
+        </div>
+      </div>
+    {{/if}}
+
+    <!-- created by chenyuan, 底部的虚线框中的指示性内容。-->
+    {{#if multi}}
+      <button class="btn btn-default pull-right add-form-options" data-id="{{formId}}" data-type="{{type}}"><i class="fa fa-plus"></i></button>
+      <div class="event-sign-form-input add-form-options" data-id="{{formId}}" data-type="{{type}}">
+        <div  class="form-control input-added" id="title-{{formId}}" title="添加{{option}}">添加{{option}}</div>
+      </div>
+    {{/if}}
+  </div>
 </template>
 
 <template name="custom-form-options">

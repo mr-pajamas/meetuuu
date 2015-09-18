@@ -120,26 +120,47 @@ Template.eventDetail.helpers({
     if (!eventDetail) {
       return;
     }
-    var signForm = eventDetail.signForm;
-    for (var key in signForm) {
-      if (signForm.hasOwnProperty(key)) {
-        var type = String;
-        if (signForm[key].isArr) {
-          type = [String];
-          delete signForm[key].isArr;
-        }
-        signForm[key].type = type;
-        var opt = signForm[key].opts;
-        delete signForm[key].opts;
-        if (
-          signForm[key].autoform &&
-          Object.prototype.toString.call(opt) === '[object Array]' &&
-          opt.length !== 0
-        ) {
-          signForm[key].autoform.options = opt;
-        }
+    var forms = eventDetail.signForm,
+        signForm = {};
+    _.forEach(forms, function(form) {
+      var type = String;
+      if (form.isArr) {
+        type = [String];
+        delete form.isArr;
       }
-    }
+      form.type = type;
+      var opt = form.opts;
+      delete form.opts;
+      if (
+        form.autoform &&
+        Object.prototype.toString.call(opt) === '[object Array]' &&
+        opt.length !== 0
+      ) {
+        form.autoform.options = opt;
+      }
+      var id = form.id;
+      delete form.id;
+      signForm[id] = form;
+    });
+    //for (var key in signForm) {
+    //  if (signForm.hasOwnProperty(key)) {
+    //    var type = String;
+    //    if (signForm[key].isArr) {
+    //      type = [String];
+    //      delete signForm[key].isArr;
+    //    }
+    //    signForm[key].type = type;
+    //    var opt = signForm[key].opts;
+    //    delete signForm[key].opts;
+    //    if (
+    //      signForm[key].autoform &&
+    //      Object.prototype.toString.call(opt) === '[object Array]' &&
+    //      opt.length !== 0
+    //    ) {
+    //      signForm[key].autoform.options = opt;
+    //    }
+    //  }
+    //}
     return new SimpleSchema(signForm);
   },
   'comments': function() {
