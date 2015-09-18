@@ -148,6 +148,7 @@ Template.createEvent.events({
         if (res.eventId) {
           // 第一次保存，返回保存后的 id
           $('#eventId').val(res.eventId);
+          console.log('活动id：' + res.eventId);
         }
       }
     });
