@@ -47,6 +47,24 @@
       .custom-form-item {
         width: 100%;
       }
+
+    }
+    .pre-show-and-submit {
+      margin-left: 0 !important;
+      margin-right: -13px !important;
+      [class^=col-] {
+        padding-left: 0 !important;
+        padding-right: 13px !important;
+      }
+      [class^=col-]:not(:last-child) {
+        margin-bottom: 13px;
+        @media (min-width: 992px ) {
+          margin-bottom: 0px;
+        }
+      }
+      button {
+        width: 100%;
+      }
     }
     .event-sign-form-input {
       margin-left: 47px;

@@ -90,7 +90,11 @@ Template.createEvent.events({
     console.log(e.which);
   },
   'focus #event-detail-address': function(e) {
-    $('#bdmap').slideDown();
+    $('#bdmap').slideDown({
+      start: function () {
+        $(".event-map-container").show();       // modified by Chen yuan. 2015-09-18
+      }
+    });
     if (!bdmap) {
       bdmap = new BMap.Map('bdmap');
       bdmap.centerAndZoom(Session.get('selectedCity'), 11);
@@ -105,7 +109,11 @@ Template.createEvent.events({
         width = $bdmap.width(),
         height = $bdmap.height();
     if (e.pageX < left || e.pageX > left + width || e.pageY < top || e.pageY > top + height) {
-      $('#bdmap').slideUp();
+      $('#bdmap').slideUp({
+        done: function () {
+          $(".event-map-container").hide();   // modified by Chen yuan. 2015-09-18
+        }
+      });
     }
   },
   'keyup #event-detail-address': function(e) {

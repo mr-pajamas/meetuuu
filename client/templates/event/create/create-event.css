@@ -40,6 +40,7 @@
     min-height: 100px;
     border: 1px solid #ccc;
     border-radius: 3px;
+  background-color: #ffffff;
 }
 
 .event-tag {

@@ -296,7 +296,7 @@
               <button class="btn pull-right btn-danger" disabled>
                 <i class="fa fa-trash-o"></i>
               </button>
-              <div class="event-sign-form-input"><input type="text" class="form-control required" title="姓名" readonly placeholder="姓名" name="姓名"></div>
+              <div class="event-sign-form-input"><input type="text" class="form-control required" title="电话" readonly placeholder="电话" name="电话"></div>
             </div>
 
             <div id="custom-form-container">
@@ -324,8 +324,16 @@
         <!-- 保存活动基本信息 -->
         <div class="form-group">
           <div class="col-md-10 col-md-offset-2">
-            <button type="button" class="btn btn-primary pull-right" id="submitBaiscInfo">保存基本信息</button>
-            <buttom type="button" class="btn btn-default previewSignForm col-md-offset-8" data-toggle="modal" data-target="#preview-sign-form-modal">预览报名表单</buttom>
+            <div class="event-sign-form-setting">
+              <div class="pre-show-and-submit clearfix">
+                <div class="col-md-3 col-md-offset-3">
+                  <button type="button" class="btn btn-default previewSignForm" data-toggle="modal" data-target="#preview-sign-form-modal">预览报名表单</button>
+                </div>
+                <div class="col-md-3">
+                  <button type="button" class="btn btn-primary" id="submitBaiscInfo">保存</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </form>
