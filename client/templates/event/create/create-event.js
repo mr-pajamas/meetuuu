@@ -90,6 +90,7 @@ Template.createEvent.events({
     console.log(e.which);
   },
   'focus #event-detail-address': function(e) {
+    $(".event-map-container").show();       // modified by Chen yuan. 2015-09-18
     $('#bdmap').slideDown();
     if (!bdmap) {
       bdmap = new BMap.Map('bdmap');
@@ -106,6 +107,7 @@ Template.createEvent.events({
         height = $bdmap.height();
     if (e.pageX < left || e.pageX > left + width || e.pageY < top || e.pageY > top + height) {
       $('#bdmap').slideUp();
+     // $(".event-map-container").hide();   // modified by Chen yuan. 2015-09-18
     }
   },
   'keyup #event-detail-address': function(e) {

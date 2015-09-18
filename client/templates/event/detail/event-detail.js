@@ -22,6 +22,7 @@ function tagScroll() {
     'scroll': fixedBar,
     'resize': fixedBar
   });
+
   /*fix nav bar end.*/
 
   var anchors = $("#fixed-sidebar .navi-li a");
@@ -40,6 +41,21 @@ function tagScroll() {
     });
   });
 }
+
+//created by Chen Yuan. 2015, 09, 18, to bind scrollSpy properties to body tag.
+
+Template.testScrollSpy.onRendered(function () {
+  $(document.body).attr({
+    "data-spy": "scroll",
+    "data-target": "#fixed-bar-wrap"
+  });
+});
+
+Template.testScrollSpy.onDestroyed(function () {
+  $(document.body).removeAttr("data-spy data-target");
+});
+
+// end.
 
 
 // autoForm hooks

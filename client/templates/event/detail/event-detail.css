@@ -5,6 +5,9 @@ body {
 textarea {
     resize: vertical;
 }
+.event-home {
+  padding-top: 35px;
+}
 .event-home .row section:not(:last-child) {
     margin-bottom: 15px;
 }
