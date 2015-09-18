@@ -29,44 +29,52 @@ GeventSignForm = (function() {
 
   var signform = {};
 
+
   signform.customFormType = customFormType;
+  signform.errFlag = false;
 
-
+  // 限定dom 容器范围，用于 blaze render
   signform.containerId = null;
   signform.setContainerId = function(id) {
     this.container = $('#' + id)[0];
   };
 
 
-  signform.forms = {};
+  signform.forms = [];
 
   // 创建
   signform.createForm = function(type) {
     var id = Meteor.uuid();
+
     var blazeView = Blaze.renderWithData(
       Template.ESF_CUSTOM,
       _.extend(this.customFormType[type], {'formId': id}),
       this.container
     );
 
-    this.forms[id] = {
-      'blazeView': blazeView,
-      'type': type
-    };
+    this.forms.push({
+      blazeView: blazeView,
+      type: type,
+      id: id
+    });
   };
 
-  // 删除
+  // 删除一个表单项 use lodash remove function
   signform.removeForm = function(formId) {
-    Blaze.remove(this.forms[formId].blazeView);
-    delete this.forms[formId];
+    var removed = _.remove(this.forms, function(form) {
+      return form.id === formId;
+    });
+    // length === 1
+    Blaze.remove(removed[0].blazeView);
   };
 
   // 获取所有的数据
   signform.getFromContent = function() {
-    var forms = this.forms,
-        errFlag = false,
-        formSchema = {},
-        formSchemaForDataBase = {};
+    var self = this;
+    // 由于数据库无法储存 String， Object类元数据
+    var formSchema = {},              // 用于预览，SimpleSchema 结构
+        formSchemaForDataBase = [];   // array 结构，储存于数据库，用于今后构建 SimpleSchema
+
     // 添加姓名和电话表单，作为默认表单
     var username = {
       label: '姓名',
@@ -75,99 +83,112 @@ GeventSignForm = (function() {
     };
     var telephone = {
       label: '电话',
-        type: String,
+      type: String,
       optional: false
     };
-    formSchema['姓名'] = username;
-    formSchema['电话'] = telephone;
-    formSchemaForDataBase['姓名'] = username;
-    formSchemaForDataBase['电话'] = telephone;
+    formSchema[Meteor.uuid()] = username;
+    formSchema[Meteor.uuid()] = telephone;
+    formSchemaForDataBase.push(_.assign({}, username, {'id': Meteor.uuid()}));
+    formSchemaForDataBase.push(_.assign({}, telephone, {'id': Meteor.uuid()}));
 
-    for (var fid in forms) {
-      if (forms.hasOwnProperty(fid)) {
-        var isNeed = $('#need-' + fid).prop("checked"),
-            title = $('#title-' + fid).val(),
-            tips = $('#tips-' + fid).val(),
-            type = forms[fid].type;
-        // 如果需要，清除历史错误信息
-        $('#title-' + fid).parent().removeClass('has-error');
-        // 检测是否未定义名称
-        if (!title) {
-          $('#title-' + fid).parent().addClass('has-error');
-          errFlag = true;
-        }
-        // 添加多选的可选参数
-        var options = [];
-        $('.options-' + fid).each(function(idx, dom) {
-          var value = $(dom).val();
-          options.push({'label': value, 'value': value});
-        });
-        // 闭包存放 options，否则所有选项是一样的
-        (function(options) {
-          switch (type) {
-            case 'ESF_SINGLE_TEXT':
-              var setting = {
-                label: title,
-                type: String,
-                optional: !isNeed
-              };
-              formSchema[title] = setting;
-              var temp = {};
-              formSchemaForDataBase[title] = _.extend(temp, setting, {'opts': options});
-              break;
-            case 'ESF_MULTI_TEXT':
-              var setting = {
-                label: title,
-                optional: !isNeed,
-                type: String,
-                autoform: {
-                  rows: 5
-                }
-              };
-              formSchema[title] = setting;
-              var temp = {};
-              formSchemaForDataBase[title] = _.extend(temp, setting, {'opts': options});
-              break;
-            case 'ESF_SELECT_RADIO':
-              var setting = {
-                label: title,
-                optional: !isNeed,
-                type: String,
-                autoform: {
-                  type: "select-radio",
-                  options: function () {
-                    return options;
-                  }
-                }
-              };
-              formSchema[title] = setting;
-              var temp = {};
-              formSchemaForDataBase[title] = _.extend(temp, setting, {'opts': options});
-              break;
-            case 'ESF_SELECT_CHECKBOX':
-              var setting = {
-                type: String,
-                label: title,
-                optional: !isNeed,
-                autoform: {
-                  type: "select-checkbox",
-                  options: function () {
-                    return options;
-                  }
-                }
-              };
-              formSchema[title] = setting;
-              var temp = {};
-              formSchemaForDataBase[title] = _.extend(temp, setting, {'opts': options, 'isArr': true});
-              break;
-            default :
-              console.log('表单制作匹配失败');
-              break;
-          }
-        })(options);
+    _.forEach(this.forms, function(form) {
+      var fid = form.id,
+          isNeed = $('#need-' + fid).prop("checked"),
+          title = $('#title-' + fid).val(),
+          tips = $('#tips-' + fid).val(),
+          type = form.type;
+
+      // 清除历史错误信息
+      $('#title-' + fid).parent().removeClass('has-error');
+      // 检测是否未定义名称
+      if (!title) {
+        $('#title-' + fid).parent().addClass('has-error');
+        self.errFlag = true;
       }
-    }
-    if (!errFlag) {
+
+      // 添加多选的可选参数
+      var options = [];
+      $('.options-' + fid).each(function(idx, dom) {
+        var $dom = $(dom);
+        var value = $dom.val();
+        $dom.parent().removeClass('has-error');
+        if (!value) {
+          $dom.parent().addClass('has-error');
+          self.errFlag = true;
+          return;
+        }
+        // TODO label 和 value 的值
+        options.push({'label': value, 'value': idx});
+      });
+
+      // 闭包存放 options，否则所有选项是一样的
+      (function(options) {
+        switch (type) {
+          case 'ESF_SINGLE_TEXT':
+            var setting = {
+              label: title,
+              type: String,
+              optional: !isNeed
+            };
+            var uuid = Meteor.uuid();
+            formSchema[uuid] = setting;
+            formSchemaForDataBase.push(_.assign({}, setting, {'id': uuid}));
+            break;
+          case 'ESF_MULTI_TEXT':
+            var setting = {
+              label: title,
+              optional: !isNeed,
+              type: String,
+              autoform: {
+                rows: 5
+              }
+            };
+            var uuid = Meteor.uuid();
+            formSchema[uuid] = setting;
+            formSchemaForDataBase.push(_.assign({}, setting, {'id': uuid}));
+            break;
+          case 'ESF_SELECT_RADIO':
+            var setting = {
+              label: title,
+              optional: !isNeed,
+              type: String,
+              autoform: {
+                type: "select-radio",
+                options: function () {
+                  return options;
+                }
+              }
+            };
+            var uuid = Meteor.uuid();
+            formSchema[uuid] = setting;
+            formSchemaForDataBase.push(_.assign({}, setting, {'opts': options}, {id: uuid}));
+            break;
+          case 'ESF_SELECT_CHECKBOX':
+            var setting = {
+              type: String,
+              label: title,
+              optional: !isNeed,
+              autoform: {
+                type: "select-checkbox",
+                options: function () {
+                  return options;
+                }
+              }
+            };
+            var uuid = Meteor.uuid();
+            formSchema[uuid] = setting;
+            formSchemaForDataBase.push(_.assign({}, setting, {'opts': options, 'isArr': true}, {id: uuid}));
+            break;
+          default :
+            console.log('表单制作匹配失败');
+            break;
+        }
+      })(options);
+    });
+
+    if (!self.errFlag) {
+      console.log(formSchema);
+      console.log(formSchemaForDataBase);
       return {
         'formSchema': formSchema,
         'formSchemaForDataBase': formSchemaForDataBase
@@ -175,10 +196,10 @@ GeventSignForm = (function() {
     }
     return {
       'formSchema': [],
-      'formSchemaForDataBase': []
+      'formSchemaForDataBase': [],
+      'errFlag': self.errFlag
     };
   };
-
 
   return signform;
 
@@ -214,7 +235,7 @@ Template.ESF_CUSTOM.events({
       checkboxText = true;
       option = "多选选项";
     }
-    // end.
+
     Blaze.renderWithData(
       Template['custom-form-options'],
       {'formId': formId, 'radioText': radioText, 'checkboxText': checkboxText, 'option': option},
@@ -225,21 +246,11 @@ Template.ESF_CUSTOM.events({
     var totalDeletes = $(container).find(".delete-form-option");
 
     if ($(totalDeletes).size() > 2) {
-         $(totalDeletes).removeAttr("disabled");
-       }
-
-    // end.
+       $(totalDeletes).removeAttr("disabled");
+     }
   }
 });
 
-
-/* commended by Chen Yuan, at 2015, 09, 17. for i move event to template ESF_SUCTOM.
-Template['custom-form-options'].events({
-  'click .delete-form-option': function(e) {
-    e.preventDefault();
-    $(e.currentTarget).parent().remove();
-  }
-});*/
 
 // 多选表单的删除
 //created  by Chen Yuan. 2015, 09, 17.
@@ -248,19 +259,17 @@ Template['ESF_CUSTOM'].events({
     e.preventDefault();
 
     var formId = $(e.currentTarget).attr("data-id");
-    var container =  $('.custom-form-options-container-' + formId)[0];
+    var container =  $('.custom-form-options-container-' + formId);
 
     $(e.currentTarget).parent().remove();
 
-    //created by Chen Yuan on 2015, 09, 17.
     var totalDeletes = $(container).find(".delete-form-option");
-
+    // 多选项保留至少两个输入框
     if ($(totalDeletes).size() < 3) {
       $(totalDeletes).attr("disabled", "disabled");
     }
   }
 });
-//end.
 
 
 Template.eventTag.events({

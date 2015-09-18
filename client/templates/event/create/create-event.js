@@ -74,7 +74,7 @@ Template.createEvent.helpers({
       insertTag(selectedSuggestion);
     }
   },
-  previewForms: function() {
+  form: function() {
     var schema = previewForms.get();
     if (!schema) {
       return ;
@@ -146,7 +146,6 @@ Template.createEvent.events({
   'click #submitBaiscInfo': function(e) {
     e.preventDefault();
     e.stopPropagation();
-    console.log('保存基本信息');
     var eventInfo = saveEventBaiscInfo();
     console.log(eventInfo);
     var id = $('#eventId').val();
@@ -170,8 +169,14 @@ Template.createEvent.events({
   // 预览表单
   'click .previewSignForm': function(e) {
     e.preventDefault();
-    var forms = GeventSignForm.getFromContent().formSchema;
-    previewForms.set(forms);
+    var formInfo = GeventSignForm.getFromContent(),
+        errFlag = formInfo.errFlag,
+        form = formInfo.formSchema;
+    if (errFlag) {
+      alert('信息填写不完全，表单创建失败');
+      return;
+    }
+    previewForms.set(form);
   }
 });
 
@@ -201,10 +206,16 @@ function saveEventBaiscInfo() {
       tags = GeventTag.getAllTags(),
       private = !$('#event-private').prop("checked"),
       desc = $('#event-desc').html(),
-      signForm = GeventSignForm.getFromContent().formSchemaForDataBase,
+      signFormInfo = GeventSignForm.getFromContent(),
+      signForm = signFormInfo.formSchemaForDataBase,
+      errFlag = signFormInfo.errFlag,
       endDayTime = timeTrans($('#end-time').val()),
       startDayTime = timeTrans($('#start-time').val()),
       eventMemberLimit = 0;
+  if (errFlag) {
+    alert('信息填写不完全，表单创建失败');
+    return;
+  }
   if (!private) {
     eventMemberLimit = $('#event-member-limit').val() || 0;
   }
