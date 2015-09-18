@@ -112,7 +112,8 @@ GeventSignForm = (function() {
                 optional: !isNeed
               };
               formSchema[title] = setting;
-              formSchemaForDataBase[title] = Object.assign({}, setting, {'opts': options});
+              var temp = {};
+              formSchemaForDataBase[title] = _.extend(temp, setting, {'opts': options});
               break;
             case 'ESF_MULTI_TEXT':
               var setting = {
@@ -124,7 +125,8 @@ GeventSignForm = (function() {
                 }
               };
               formSchema[title] = setting;
-              formSchemaForDataBase[title] = Object.assign({}, setting, {'opts': options});
+              var temp = {};
+              formSchemaForDataBase[title] = _.extend(temp, setting, {'opts': options});
               break;
             case 'ESF_SELECT_RADIO':
               var setting = {
@@ -139,7 +141,8 @@ GeventSignForm = (function() {
                 }
               };
               formSchema[title] = setting;
-              formSchemaForDataBase[title] = Object.assign({}, setting, {'opts': options});
+              var temp = {};
+              formSchemaForDataBase[title] = _.extend(temp, setting, {'opts': options});
               break;
             case 'ESF_SELECT_CHECKBOX':
               var setting = {
@@ -154,7 +157,8 @@ GeventSignForm = (function() {
                 }
               };
               formSchema[title] = setting;
-              formSchemaForDataBase[title] = Object.assign({}, setting, {'opts': options, 'isArr': true});
+              var temp = {};
+              formSchemaForDataBase[title] = _.extend(temp, setting, {'opts': options, 'isArr': true});
               break;
             default :
               console.log('表单制作匹配失败');
