@@ -1,0 +1,29 @@
+@import "../bootstrap/custom.bootstrap.import.less";
+
+.select-div {
+  position: relative;
+  &.select-div-inline {
+    display: inline-block;
+  }
+
+  > .select-face {
+    .fa-caret-down {
+      line-height: inherit;
+    }
+
+    .select-text {
+      margin-right: 20px;
+      .text-overflow();
+    }
+  }
+
+  > select.form-control {
+    .opacity(0);
+    position: absolute;
+    top: 0;
+    left: 0;
+    .size(100%, 100%);
+    display: block;
+    z-index: 100;
+  }
+}

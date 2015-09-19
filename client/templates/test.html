@@ -4,7 +4,21 @@
       <div class="col-xs-3" style="background-color: black; height: 200px"></div>
       <div class="col-xs-9" style="background-color: red; height: 100px"></div>
       <div class="clearfix visible-sm-block visible-xs-block"></div>
-      <div class="col-md-9" style="background-color: blue; height: 500px"></div>
+      <div class="col-md-9" style="background-color: blue; height: 500px">
+
+        {{#styledSelect inline=true}}
+          <option value="" disabled selected class="hidden">请选择</option>
+          {{#each testArray}}
+            <option>{{this}}</option>
+          {{/each}}
+        {{/styledSelect}}
+
+        {{#styledSelect extraClasses="text-muted"}}
+          <option>上海</option>
+          <option>北京</option>
+          <option>广州</option>
+        {{/styledSelect}}
+      </div>
     </div>
     <!--
     <div class="row">

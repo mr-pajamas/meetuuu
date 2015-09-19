@@ -2,12 +2,13 @@
  * Created by Michael on 2015/9/6.
  */
 Template.testScrollSpy.onRendered(function () {
-  $(document.body).attr({
-    "data-spy": "scroll",
-    "data-target": "#navbar-example2"
-  });
+  var that = this;
+
+  $(document.body).scrollspy({target: "#navbar-example2", offset: function () {
+    return that.$("main").offset().top + 50;
+  }});
 });
 
 Template.testScrollSpy.onDestroyed(function () {
-  $(document.body).removeAttr("data-spy data-target");
+  $(document.body).scrollspy("destroy");
 });

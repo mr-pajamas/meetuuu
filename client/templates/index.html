@@ -23,10 +23,22 @@
           <div class="input-group input-group-lg">
             <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
             <input type="text" class="form-control" placeholder="车友协会&hellip;">
-            <div class="input-group-btn">
-              <button type="button" class="btn btn-default active">找活动</button>
-              <button type="button" class="btn btn-default">找组织</button>
+            <div class="input-group-btn hidden-xs" data-toggle="buttons">
+              <label class="btn btn-default active">
+                <input type="radio" name="searchOptions" autocomplete="off" checked> 找活动
+              </label>
+              <label class="btn btn-default">
+                <input type="radio" name="searchOptions" autocomplete="off"> 找组织
+              </label>
             </div>
+            <!--            <div class="input-group-btn hidden-xs" data-toggle="buttons">
+                          <label class="btn btn-default active">
+                            <input type="radio" name="searchOptions" autocomplete="off" checked> 找活动
+                          </label>
+                          <label class="btn btn-default">
+                            <input type="radio" name="searchOptions" autocomplete="off"> 找组织
+                          </label>
+                        </div>-->
           </div>
         </form>
       </div>
