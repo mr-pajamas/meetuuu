@@ -2,9 +2,51 @@
   <header class="index-header">
     {{> header}}
   </header>
-  <div class="container-fluid">
+  <div class="container-fluid event-manage-container">
     <div class="event-manage-header-container">
+      <div class="row event-manage-header">
+        <div class="col-md-6">
+          <div class="event-manage-title">
+            {{eventInfo.title}}
+          </div>
+        </div>
+        <div class="col-md-1">
+          <a href="/event/detail/{{eventInfo._id}}" class="btn btn-default" id="previewEvent">预览</a>
+        </div>
+        <div class="col-md-1">
+          <a href="/event/edit/{{eventInfo._id}}" class="btn btn-primary" id="editEvent">编辑</a>
+        </div>
+      </div>
+    </div>
+    <div class="event-manage-border-container">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs nav-justified" role="tablist">
+          <li role="presentation" class="active"><a href="#event-member" aria-controls="event-member" role="tab" data-toggle="tab">参与人员</a></li>
+          <li role="presentation"><a href="#event-material" aria-controls="event-material" role="tab" data-toggle="tab">活动材料</a></li>
+          <li role="presentation"><a href="#event-statistics" aria-controls="event-statistics" role="tab" data-toggle="tab">活动统计</a></li>
+          <li role="presentation"><a href="#event-spread" aria-controls="event-spread" role="tab" data-toggle="tab">活动推广</a></li>
+          <li role="presentation"><a href="#event-settings" aria-controls="event-settings" role="tab" data-toggle="tab">高级设置</a></li>
+        </ul>
 
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active fade" id="event-member">
+            活动人员
+          </div>
+          <div role="tabpanel" class="tab-pane fade" id="event-material">
+            活动材料
+          </div>
+          <div role="tabpanel" class="tab-pane fade" id="event-statistics">
+            活动数据统计
+          </div>
+          <div role="tabpanel" class="tab-pane fade" id="event-spread">
+            活动推广
+          </div>
+          <div role="tabpanel" class="tab-pane fade" id="event-settings">
+            活动设置
+          </div>
+        </div>
     </div>
   </div>
 </template>

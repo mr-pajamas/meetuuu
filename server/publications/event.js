@@ -1,4 +1,4 @@
-Meteor.publish('eventDetailById', function(eid) {
-  check(eid, String);
-  return Events.find({'_id': eid});
+Meteor.publish('eventDetailById', function(id) {
+  check(id, Mongo.ObjectID);
+  return Events.find({'_id': id});
 });

@@ -32,13 +32,13 @@
     "list-group"           : true,
     "panels"               : true,
     "responsive-embed"     : false,
-    "wells"                : false,
+    "wells"                : true,
     "close"                : true,
 
     "modals"               : true,
-    "tooltip"              : false,
-    "popovers"             : false,
-    "carousel"             : false,
+    "tooltip"              : true,
+    "popovers"             : true,
+    "carousel"             : true,
 
     "affix"                : true,
     "alert"                : true,

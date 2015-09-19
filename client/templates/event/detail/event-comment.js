@@ -1,3 +1,36 @@
+Template.eventComment.onRendered(function() {
+  var self = this,
+      eid = FlowRouter.getParam('eid');
+
+  self.autorun(function() {
+    // 订阅活动评论
+    self.subscribe('eventComments', eid);
+  });
+});
+
+
+Template.eventComment.helpers({
+  'replys': function() {
+    var eid = FlowRouter.getParam('eid');
+    var replys = EventComments.find({'eventId': eid}, {'sort': {'createAt': -1}});
+    var fc = replys.map(function(reply) {
+      // 更新留言时间
+      reply.createAt = moment(reply.createAt).fromNow();
+      // 更新子评论时间
+      if (reply.comments && reply.comments.length > 0) {
+        reply.comments = reply.comments.map(function(comment) {
+          comment.createAt = moment(comment.createAt).fromNow();
+          return comment;
+        });
+      }
+      return reply;
+    });
+    return fc;
+  }
+});
+
+
+
 Template.eventComment.events({
   // 删除评论
   'click .deleteComment': function(e) {

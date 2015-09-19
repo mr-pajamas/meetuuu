@@ -38,16 +38,14 @@ Template.eventDetail.onRendered(function() {
     var eid = FlowRouter.getParam('eid');
     self.data.eid = eid;  // 存到template data 中
 
-    // 订阅活动评论
-    self.subscribe('eventComments', eid);
     // 订阅活动详情
     self.subscribe('eventDetailById', eid, function (err) {
-       if (err) {return;}
-       // 插入html 字符串，暂时无法直接转换
-       var eventDetail = Events.findOne({'_id': self.data.eid});
-       if (eventDetail && eventDetail.desc) {
-       $('#information').append(eventDetail.desc);
-       }
+      if (err) {return;}
+      // 插入html 字符串，暂时无法直接转换
+      var eventDetail = Events.findOne({'_id': self.data.eid});
+      if (eventDetail && eventDetail.desc) {
+        $('#information').append(eventDetail.desc);
+      }
     });
   });
 });
@@ -61,7 +59,7 @@ Template.eventDetail.onDestroyed(function () {
 
 Template.eventDetail.helpers({
   'eventDetail': function() {
-    var eventDetail = Events.findOne({'_id': FlowRouter.getParam('eid')});
+    var eventDetail = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
     Meteor.defer(function () {
       $(document.body).scrollspy("refresh");
       $(document.body).scrollspy("process");
@@ -83,7 +81,7 @@ Template.eventDetail.helpers({
   },
   // 提取表单，构造 SimpleSchema
   'signForm': function() {
-    var eventDetail = Events.findOne({'_id': FlowRouter.getParam('eid')});
+    var eventDetail = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
     if (!eventDetail) {
       return;
     }
@@ -109,43 +107,8 @@ Template.eventDetail.helpers({
       delete form.id;
       signForm[id] = form;
     });
-  /*  for (var key in signForm) {
-      if (signForm.hasOwnProperty(key)) {
-        var type = String;
-        if (signForm[key].isArr) {
-          type = [String];
-          delete signForm[key].isArr;
-        }
-        signForm[key].type = type;
-        var opt = signForm[key].opts;
-        delete signForm[key].opts;
-        if (
-          signForm[key].autoform &&
-          Object.prototype.toString.call(opt) === '[object Array]' &&
-          opt.length !== 0
-        ) {
-          signForm[key].autoform.options = opt;
-        }
-      }
-    }*/
+
     return new SimpleSchema(signForm);
-  },
-  'comments': function() {
-    var eid = FlowRouter.getParam('eid');
-    var replys = EventComments.find({'eventId': eid}, {'sort': {'createAt': -1}});
-    var fc = replys.map(function(reply) {
-      // 更新留言时间
-      reply.createAt = moment(reply.createAt).fromNow();
-      // 更新子评论时间
-      if (reply.comments && reply.comments.length > 0) {
-        reply.comments = reply.comments.map(function(comment) {
-          comment.createAt = moment(comment.createAt).fromNow();
-          return comment;
-        });
-      }
-      return reply;
-    });
-    return fc;
   }
 });
 
