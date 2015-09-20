@@ -1,32 +1,7 @@
 // 左侧Tag跟随界面下滑滚动
 function tagScroll() {
-  /*fix nav bar to the top.*/
 
-
-  var target = $("#fixed-sidebar");
   var navFixBar = $('.navbar-fixed-top');
-  var reference = $(".event-sidebar .content");
-
-  function fixedBar() {
-    //var Top = reference.offset().top;
-    var Width = reference.width();
-    var Height = reference.height();
-    var navFixBarHeight = navFixBar.height();
-    target.width(Width);
-    target.height(Height);
-    if ($('body').scrollTop() ) {
-      target.addClass('fixed-block');
-    } else if (target.hasClass('fixed-block')) {
-      target.removeClass('fixed-block');
-    }
-  };
-  $(window).on({
-    'scroll': fixedBar,
-    'resize': fixedBar
-  });
-
-
-  /*fix nav bar end.*/
 
   var anchors = $("#fixed-sidebar li a");
   $.each(anchors, function (index, item) {
@@ -70,14 +45,32 @@ function tagScroll() {
 
 Template.eventDetail.onRendered(function() {
   //created by Chen Yuan. 2015, 09, 18, to bind scrollSpy properties to body tag.
-  $("body").scrollspy({
+  /*$("body").scrollspy({
     target: "#fixed-bar-wrap",
     offset: 60
   });
+  */
+  //modified by Chenyuan. on 2015-09-20
   //fix scrollspy error. modified by chenyuan.
+
+  var self = this;
+
+  $(document.body).scrollspy({
+    target: ".fixed-bar-wrap",
+    offset: function () {
+      return self.$(".event-home").offset().top;
+    }
+  });
+
+  // affix event.
+  $(".fixed-bar-wrap").affix({
+    offset: {
+      top: 0
+    }
+  });
+
   tagScroll();
-  var self = this,
-      eid = FlowRouter.getParam('eid');
+  var eid = FlowRouter.getParam('eid');
   self.data.eid = eid;  // 存到template data 中
   self.autorun(function() {
     // 订阅活动评论
@@ -96,7 +89,7 @@ Template.eventDetail.onRendered(function() {
 
 //created by Chen Yuan.
 Template.eventDetail.onDestroyed(function () {
-  //$(document.body).removeAttr("data-spy data-target");
+  $(document.body).scrollspy("destroy");
 });
 // end.
 

@@ -40,7 +40,7 @@
     "popovers"             : false,
     "carousel"             : false,
 
-    "affix"                : false,
+    "affix"                : true,
     "alert"                : true,
     "button"               : true,
     "collapse"             : true,
