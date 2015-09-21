@@ -5,7 +5,6 @@ Meteor.startup(function () {
 
   $.fn.scrollspy.Constructor.prototype.process = function () {
     var optionsOffset = (typeof this.options.offset === "function" ? this.options.offset() : this.options.offset);
-    console.log(optionsOffset);
 
     var scrollTop    = this.$scrollElement.scrollTop() + optionsOffset;
     var scrollHeight = this.getScrollHeight();

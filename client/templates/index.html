@@ -19,11 +19,23 @@
   <main class="index-main">
     <div class="index-search-bar">
       <div class="container">
-        <form>
-          <div class="input-group input-group-lg">
+        <form class="visible-xs-block">
+          <div class="input-group input-group-md">
             <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
             <input type="text" class="form-control" placeholder="车友协会&hellip;">
-            <div class="input-group-btn hidden-xs" data-toggle="buttons">
+            <div class="input-group-btn">
+              {{#styledSelect inline=true}}
+                <option>找活动</option>
+                <option>找组织</option>
+              {{/styledSelect}}
+            </div>
+          </div>
+        </form>
+        <form class="hidden-xs">
+          <div class="input-group input-group-md">
+            <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
+            <input type="text" class="form-control" placeholder="车友协会&hellip;">
+            <div class="input-group-btn" data-toggle="buttons">
               <label class="btn btn-default active">
                 <input type="radio" name="searchOptions" autocomplete="off" checked> 找活动
               </label>
@@ -31,14 +43,6 @@
                 <input type="radio" name="searchOptions" autocomplete="off"> 找组织
               </label>
             </div>
-            <!--            <div class="input-group-btn hidden-xs" data-toggle="buttons">
-                          <label class="btn btn-default active">
-                            <input type="radio" name="searchOptions" autocomplete="off" checked> 找活动
-                          </label>
-                          <label class="btn btn-default">
-                            <input type="radio" name="searchOptions" autocomplete="off"> 找组织
-                          </label>
-                        </div>-->
           </div>
         </form>
       </div>
