@@ -6,10 +6,12 @@
   <!-- 活动详情介绍 -->
   <div class="container event-home">
     <div class="row">
+
       <div class="col-md-9" style="position: relative; z-index: 10;">
-        <!-- 活动基本信息 -->
+
         {{#with eventDetail}}
           <section class="event-poster" id="poster">
+            <!-- 活动基本信息 -->
             <img src="{{poster}}" alt="rifare">
             <div class="introduction event-post-padding">
               <header class="poster-header">{{title}}</header>
@@ -34,13 +36,25 @@
               </ul>
             </div>
           </section>
+
+          <!-- 活动详情描述 -->
+          <section class="event-all-info event-post-padding" id="information">
+            <!-- 插入活动详情的 html string -->
+
+            {{{eventDetailDesc}}}
+          </section>
+        {{else}}
+          <section class="event-poster" id="poster">
+            <!-- 活动基本信息 -->
+            正在加载信息……
+          </section>
+
+          <!-- 活动详情描述 -->
+          <section class="event-all-info event-post-padding" id="information">
+            <!-- 插入活动详情的 html string -->
+            正在加载信息……
+          </section>
         {{/with}}
-
-        <!-- 活动详情描述 -->
-        <section class="event-all-info event-post-padding" id="information">
-          <!-- 插入活动详情的 html string -->
-
-        </section>
 
         <section id="comment">
           <!-- 新建评论输入框 -->
@@ -62,12 +76,10 @@
               </div>
             </div>
           </div>
-          <!-- 包含两个template，评论以及隐藏的回复评论-->
+          <!-- 包含两个template，评论以及隐藏的回复评论 -->
           {{#each comments}}
             {{> eventComment}}
           {{/each}}
-
-
         </section>
       </div>
 
@@ -94,22 +106,14 @@
 
     </div>
   </div>
-  <!-- 移动端导航栏 -->
-  <div class="fixed-bar-wrap hidden-md hidden-lg existed-on-mobile">
-    <ul class="nav nav-pills nav-justified">
-      <li role="presentation"><a href="#poster">主题海报</a></li>
-      <li role="presentation"><a href="#information">活动详情</a></li>
-      <li role="presentation"><a href="#comment">留言</a></li>
-    </ul>
-  </div>
 
-  <div class="container  fixed-bar-wrap affix">
+  <div class="container fixed-bar-wrap affix">
     <!-- 活动详情导航Tab -->
     <div class="row">
       <div class="event-sidebar col-md-3 col-md-offset-9 hidden-xs hidden-sm">
-        <div class="content">
-          <ul class="nav nav-pills nav-stacked" id="fixed-sidebar">
-            <li id="nav-poster" class="active" role="presentation"><a href="#poster">主题海报</a></li>
+        <div class="content" id="navbar-tobe-fixed">
+          <ul class="nav nav-stacked" id="fixed-sidebar">
+            <li id="nav-poster" role="presentation"><a href="#poster">主题海报</a></li>
             <li id="nav-information" role="presentation"><a href="#information">活动详情</a></li>
             <li id="nav-comment" role="presentation"><a href="#comment">留言</a></li>
             <li id="nav-join"><a href="" data-toggle="modal" data-target="#joinEventFormModal">报名参加</a></li>
