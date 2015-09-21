@@ -1,0 +1,82 @@
+@import "../bootstrap/custom.bootstrap.import.less";
+@import "bootstrap-ext.import.less";
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  input[type="date"],
+  input[type="time"],
+  input[type="datetime-local"],
+  input[type="month"] {
+    &.input-md,
+    .input-group-md & {
+      line-height: @input-height-medium;
+    }
+  }
+}
+
+.form-control-static {
+  &.input-md {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.input-md {
+  .input-size(@input-height-medium; @padding-medium-vertical; @padding-medium-horizontal; @font-size-medium; @line-height-medium; @input-border-radius-medium);
+}
+.form-group-md {
+  .form-control {
+    height: @input-height-medium;
+    padding: @padding-medium-vertical @padding-medium-horizontal;
+    font-size: @font-size-medium;
+    line-height: @line-height-medium;
+    border-radius: @input-border-radius-medium;
+  }
+  select.form-control {
+    height: @input-height-medium;
+    line-height: @input-height-medium;
+  }
+  textarea.form-control,
+  select[multiple].form-control {
+    height: auto;
+  }
+  .form-control-static {
+    height: @input-height-medium;
+    min-height: (@line-height-computed + @font-size-medium);
+    padding: (@padding-medium-vertical + 1) @padding-medium-horizontal;
+    font-size: @font-size-medium;
+    line-height: @line-height-medium;
+  }
+}
+
+.input-md + .form-control-feedback,
+.input-group-md + .form-control-feedback,
+.form-group-md .form-control + .form-control-feedback {
+  width: @input-height-medium;
+  height: @input-height-medium;
+  line-height: @input-height-medium;
+}
+
+.form-horizontal {
+  .form-group-md {
+    @media (min-width: @screen-sm-min) {
+      .control-label {
+        padding-top: ((@padding-medium-vertical * @line-height-medium) + 1);
+        font-size: @font-size-medium;
+      }
+    }
+  }
+}
+
+.input-group-md > .form-control,
+.input-group-md > .input-group-addon,
+.input-group-md > .input-group-btn > .btn {
+  .input-md();
+}
+
+.input-group-addon {
+  &.input-md {
+    padding: @padding-medium-vertical @padding-medium-horizontal;
+    font-size: @font-size-medium;
+    border-radius: @border-radius-medium;
+  }
+}

@@ -1,4 +1,5 @@
 @import "../bootstrap/custom.bootstrap.import.less";
+@import "../bootstrap-ext/bootstrap-ext.import.less";
 
 .select-div {
   position: relative;
@@ -12,18 +13,61 @@
     }
 
     .select-text {
-      margin-right: 20px;
+      margin-right: @padding-base-horizontal + 8;
       .text-overflow();
     }
   }
 
   > select.form-control {
-    .opacity(0);
+    .opacity(0) !important;
     position: absolute;
     top: 0;
     left: 0;
-    .size(100%, 100%);
-    display: block;
+    .size(100%, 100%) !important;
+    display: block !important;
     z-index: 100;
+  }
+
+  .input-group-lg > .input-group-btn > & {
+    > .select-face,
+    > select.form-control {
+      .input-size(@input-height-large; @padding-large-vertical; @padding-large-horizontal; @font-size-large; @line-height-large; @input-border-radius-large);
+    }
+
+    > .select-face > .select-text {
+      margin-right: @padding-large-horizontal + 10;
+    }
+  }
+
+  .input-group-md > .input-group-btn > & {
+    > .select-face,
+    > select.form-control {
+      .input-size(@input-height-medium; @padding-medium-vertical; @padding-medium-horizontal; @font-size-medium; @line-height-medium; @input-border-radius-medium);
+    }
+
+    > .select-face > .select-text {
+      margin-right: @padding-medium-horizontal + 9;
+    }
+  }
+
+  .input-group-sm > .input-group-btn > & {
+    > .select-face,
+    > select.form-control {
+      .input-size(@input-height-small; @padding-small-vertical; @padding-small-horizontal; @font-size-small; @line-height-small; @input-border-radius-small);
+    }
+
+    > .select-face > .select-text {
+      margin-right: @padding-small-horizontal + 7;
+    }
+  }
+
+  .input-group-btn:first-child > & > .form-control {
+    .border-right-radius(0);
+    border-right: 0;
+  }
+
+  .input-group-btn:last-child > & > .form-control {
+    .border-left-radius(0);
+    border-left: 0;
   }
 }
