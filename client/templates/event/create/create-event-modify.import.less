@@ -1,13 +1,36 @@
 /*修改 container width.*/
+
+@small-screen-padding: 5px;
+
 .create-event-container {
+  hr {
+    border-color: #ccc;
+  }
   .form-horizontal {
     .form-group {
       margin-left: -10px;
       margin-right: -10px;
+      .col-xs-8 {
+        padding-right: @small-screen-padding;
+      }
+      .col-xs-4 {
+        padding-left: @small-screen-padding;
+      }
     }
   }
   padding-top: 30px;
   .form-group {
+    #start-time {
+      margin-bottom: 7px;
+      @media (min-width: @screen-md-min) {
+        margin-bottom: 0;
+      }
+    }
+    #event-city-select {
+      @media (max-width: @screen-sm-max) {
+        margin-bottom: 7px;
+      }
+    }
     margin-bottom: 20px;
     [class^=col-] {
       padding-left: 10px;
@@ -21,10 +44,13 @@
       }
     }
     .empty-from-item-container {
-     .row {
-       margin-left: 0 !important;
-       margin-right: -13px !important;
-     }
+      @media (max-width: @screen-sm-max) {
+        padding-bottom: 0 !important;
+      }
+      .row {
+        margin-left: 0 !important;
+        margin-right: -13px !important;
+      }
       [class^=col-] {
         padding-left: 0 !important;
         padding-right: 13px !important;
@@ -93,43 +119,68 @@
       }
     }
     .col-md-10 {
-        .new-added-form {
-          margin-bottom: 13px;
+      .new-added-form {
+        margin-bottom: 13px;
+      }
+      .previewSignForm {
+        margin-right: 0;
+        width: 100%;
+        @media (min-width: @screen-md-min) {
+          width: initial;
+          margin-right: 13px;
+          margin-bottom: 0;
         }
-        #custom-form-container {
-          .option-container {
-            .custom-form-options {
-              margin-bottom: 13px;
-            }
-          }
+      }
+      #submitBaiscInfo {
+        width: 100%;
+        margin-bottom: 13px;
+        @media (min-width: @screen-md-min) {
+          width: initial;
+          margin-bottom: 0;
         }
-        .event-sign-form-setting {
-          .one-line-text, .multi-line-text, .radio-text, .checkbox-text {
-            width: 34px;
-            height: 34px;
-            background: url("icon_join.png") no-repeat;
-            background-position: 7px -145px;
-          }
-          .tip-info {
-            display: inline-block;
-            line-height: 34px;
-            width: 34px;
-          }
-          .multi-line-text {
-            background-position: 7px -244px;
-          }
-          .radio-text {
-            background-position: 6px -394px;
-          }
-          .checkbox-text {
-            background-position: 6px -444px;
-          }
-          .input-added {
-            border-style: dashed;
-            cursor: pointer;
-            color: #ccc;
+      }
+      #custom-form-container {
+        .option-container {
+          .custom-form-options {
+            margin-bottom: 13px;
           }
         }
+      }
+      .preview-submit-wrap {
+        padding-left: 13px;
+        padding-right: 13px;
+        & > .checkbox {
+          display: inline-block;
+          padding-top: 13px;
+        }
+      }
+      .event-sign-form-setting {
+        .one-line-text, .multi-line-text, .radio-text, .checkbox-text {
+          width: 34px;
+          height: 34px;
+          background: url("icon_join.png") no-repeat;
+          background-position: 7px -145px;
+        }
+        .tip-info {
+          display: inline-block;
+          line-height: 34px;
+          width: 34px;
+        }
+        .multi-line-text {
+          background-position: 7px -244px;
+        }
+        .radio-text {
+          background-position: 6px -394px;
+        }
+        .checkbox-text {
+          background-position: 6px -444px;
+        }
+        .input-added {
+          border-style: dashed;
+          cursor: pointer;
+          color: #ccc;
+        }
+      }
     }
   }
 }

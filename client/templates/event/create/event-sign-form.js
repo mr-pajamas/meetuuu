@@ -57,6 +57,10 @@ GeventSignForm = (function() {
       type: type,
       id: id
     });
+    /* return id to be used in template events.
+    created by Chen Yuan, on 2015-09-21.
+    */
+    return id;
   };
 
   // 删除一个表单项 use lodash remove function

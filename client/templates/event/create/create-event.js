@@ -164,7 +164,10 @@ Template.createEvent.events({
   'click .custom-form-item': function(e) {
     e.preventDefault();
     var type = $(e.currentTarget).attr('data-type');
-    GeventSignForm.createForm(type);
+    var id = GeventSignForm.createForm(type);
+
+    //created by Chenyuan, to focus on newly created input box. on 2015-09-21
+    $("#title-" + id).focus();
   },
   // 预览表单
   'click .previewSignForm': function(e) {

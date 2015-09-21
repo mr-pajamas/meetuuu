@@ -18,13 +18,13 @@
       </div>
       <!-- 活动时间 -->
       <div class="form-group">
-        <label class="col-md-2 control-label">活动时间&nbsp;</label>
+        <label class="col-md-2 col-xs-12 control-label">活动时间&nbsp;</label>
 
-        <div class="col-md-2">  <!-- modified by chenyuan, 9-15 -->
+        <div class="col-md-2 col-xs-8">  <!-- modified by chenyuan, 9-15 -->
           <input type="text" class="form-control datetimepicker-start" id="start-date" name="start-time"
                  placeholder="开始时间"/>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2 col-xs-4">
           <select class="form-control" id="start-time">
             <option value="00:00">00:00</option>
             <option value="00:30">00:30</option>
@@ -81,10 +81,10 @@
           <div class="gap-line"></div>
         </div>
 
-        <div class="col-md-2"> <!-- modified by chenyuan, 9-15 -->
+        <div class="col-md-2 col-xs-8"> <!-- modified by chenyuan, 9-15 -->
           <input type="text" class="form-control datetimepicker-end" id="end-date" name="end-time" placeholder="结束时间"/>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2 col-xs-4">
           <select class="form-control" id="end-time">
             <option value="00:00">00:00</option>
             <option value="00:30">00:30</option>
@@ -334,21 +334,21 @@
           </div>
           <div class="empty-from-item-container event-sign-form-setting">
             <div class="row">
-              <div class="col-md-3">
-                <div class=" btn btn-success custom-form-item" data-type="ESF_SINGLE_TEXT">单行文本 <i
-                    class="fa fa-plus-square-o"></i></div>
+              <div class="col-md-3  col-xs-6">
+                <div class=" btn btn-success custom-form-item" data-type="ESF_SINGLE_TEXT"><i
+                    class="fa fa-plus-square-o"></i> 单行文本</div>
               </div>
-              <div class="col-md-3">
-                <div class=" btn btn-success custom-form-item" data-type="ESF_MULTI_TEXT">多行文本 <i
-                    class="fa fa-plus-square-o"></i></div>
+              <div class="col-md-3  col-xs-6">
+                <div class=" btn btn-success custom-form-item" data-type="ESF_MULTI_TEXT"> <i
+                    class="fa fa-plus-square-o"></i> 多行文本</div>
               </div>
-              <div class="col-md-3">
-                <div class=" btn btn-success custom-form-item" data-type="ESF_SELECT_RADIO">单选栏目 <i
-                    class="fa fa-plus-square-o"></i></div>
+              <div class="col-md-3  col-xs-6">
+                <div class=" btn btn-success custom-form-item" data-type="ESF_SELECT_RADIO"> <i
+                    class="fa fa-plus-square-o"></i> 单选栏目</div>
               </div>
-              <div class="col-md-3">
-                <div class=" btn btn-success custom-form-item" data-type="ESF_SELECT_CHECKBOX">多选栏目 <i
-                    class="fa fa-plus-square-o"></i></div>
+              <div class="col-md-3  col-xs-6">
+                <div class=" btn btn-success custom-form-item" data-type="ESF_SELECT_CHECKBOX"> <i
+                    class="fa fa-plus-square-o"></i> 多选栏目</div>
               </div>
             </div>
           </div>
@@ -356,19 +356,13 @@
       </div>
       <!-- 提交信息-->
       <!-- 保存活动基本信息 -->
+      <hr/>
       <div class="form-group">
         <div class="col-md-10 col-md-offset-2">
-          <div class="event-sign-form-setting">
-            <div class="pre-show-and-submit clearfix">
-              <div class="col-md-3 col-md-offset-3">
-                <button type="button" class="btn btn-default previewSignForm" data-toggle="modal"
-                        data-target="#preview-sign-form-modal">预览报名表单
-                </button>
-              </div>
-              <div class="col-md-3">
-                <button type="button" class="btn btn-primary" id="submitBaiscInfo">保存</button>
-              </div>
-            </div>
+          <div class="preview-submit-wrap clearfix">
+            <button type="button" class="btn btn-primary btn-lg pull-right" id="submitBaiscInfo">立即发布</button>
+            <button type="button" class="btn btn-default previewSignForm btn-lg pull-right" data-toggle="modal" data-target="#preview-sign-form-modal">预览</button>
+            <div class="checkbox"><label><input type="checkbox" checked/> 我同意 <a href="##">某某协议</a></label></div>
           </div>
         </div>
       </div>

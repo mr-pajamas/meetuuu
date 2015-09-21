@@ -202,7 +202,7 @@ span.tag i:hover {
     /*TODO add some aminition*/
 }
 
-.event-sign-form-setting {
+.event-sign-form-setting:not(:last-child) {
     /*margin-top: 7px;    modified by chenyuan. */
     margin-bottom: 10px;
 }
