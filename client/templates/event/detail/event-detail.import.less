@@ -3,12 +3,18 @@
 
 .event-detail-wrap {
 
-
-  @body-background: #f1f2f3;
   @white-background: #fff;
 
-
-  background-color: @body-background;
+  .event-home {
+    .main-container {
+      position: relative;
+      z-index: 10;
+      margin-bottom: 15px;
+      @media (min-width:@screen-md-min) {
+        margin-bottom: 35px;
+      }
+    }
+  }
 
   textarea {
     resize: vertical;
@@ -200,9 +206,10 @@
       z-index: 999;
     }
     #poster, #information, #comment {
-      border-top: 15px solid @body-background;
+      .background-clip(padding-box);
+      border-top: 15px solid transparent;
       @media (min-width: @screen-sm-min) {
-        border-top: 35px solid @body-background;
+        border-top: 35px solid transparent;
       }
     }
   }
