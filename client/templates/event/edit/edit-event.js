@@ -8,7 +8,11 @@ var bdmap = null;
 var previewForms = new ReactiveVar({});
 
 
-Template.createEvent.onRendered(function() {
+Template.editEvent.onRendered(function() {
+  // 构造event Id
+  if (!FlowRouter.getParam('eid')) {
+    FlowRouter.setParams({'eid': new Mongo.ObjectID()._str});
+  }
   // 初始化地图
   function initialize() {
     new BMap.Map('bdmap');
@@ -41,7 +45,7 @@ Template.createEvent.onRendered(function() {
   $('.datetimepicker-end').datepicker(datepickerOptions);
 });
 
-Template.createEvent.helpers({
+Template.editEvent.helpers({
   tags: function(query, sync, callback) {
     Meteor.call('queryByName', query, {}, function(err, res) {
       if (err) {
@@ -85,7 +89,7 @@ Template.createEvent.helpers({
 
 
 // events
-Template.createEvent.events({
+Template.editEvent.events({
   'keydown input[name="eventsTag"]': function(e) {
     console.log(e.which);
   },
@@ -148,15 +152,9 @@ Template.createEvent.events({
     e.stopPropagation();
     var eventInfo = saveEventBaiscInfo();
     console.log(eventInfo);
-    var id = $('#eventId').val();
-    Meteor.call('event.save', id, eventInfo, function(err, res) {
+    Meteor.call('event.save', eventInfo, function(err, res) {
       if (!err && 0 === res.code) {
         alert('保存成功');
-        if (res.eventId) {
-          // 第一次保存，返回保存后的 id
-          $('#eventId').val(res.eventId);
-          console.log('活动id：' + res.eventId);
-        }
       }
     });
   },
@@ -164,7 +162,10 @@ Template.createEvent.events({
   'click .custom-form-item': function(e) {
     e.preventDefault();
     var type = $(e.currentTarget).attr('data-type');
-    GeventSignForm.createForm(type);
+    var id = GeventSignForm.createForm(type);
+
+    //created by Chenyuan, to focus on newly created input box. on 2015-09-21
+    $("#title-" + id).focus();
   },
   // 预览表单
   'click .previewSignForm': function(e) {
@@ -220,6 +221,7 @@ function saveEventBaiscInfo() {
     eventMemberLimit = $('#event-member-limit').val() || 0;
   }
   var eventInfo = {
+    _id: new Mongo.ObjectID(FlowRouter.getParam('eid')),
     title: title,
     time: {
       start: new Date((startTime.getTime() / 1000 + startDayTime) * 1000),
