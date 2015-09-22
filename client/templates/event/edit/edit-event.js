@@ -178,6 +178,7 @@ Template.editEvent.events({
       alert('信息填写不完全，表单创建失败');
       return;
     }
+
     $('#preview-sign-form-modal').modal('toggle');
     previewForms.set(form);
   }
