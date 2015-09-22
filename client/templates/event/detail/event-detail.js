@@ -1,52 +1,3 @@
-// 左侧Tag跟随界面下滑滚动
-function tagScroll() {
-  /*fix nav bar to the top.*/
-
-
-  var target = $("#fixed-sidebar");
-  var navFixBar = $('.navbar-fixed-top');
-  var reference = $(".event-sidebar .content");
-
-  function fixedBar() {
-    //var Top = reference.offset().top;
-    var Width = reference.width();
-    var Height = reference.height();
-    var navFixBarHeight = navFixBar.height();
-    target.width(Width);
-    target.height(Height);
-    if ($('body').scrollTop() ) {
-      target.addClass('fixed-block');
-    } else if (target.hasClass('fixed-block')) {
-      target.removeClass('fixed-block');
-    }
-  };
-  $(window).on({
-    'scroll': fixedBar,
-    'resize': fixedBar
-  });
-
-
-  /*fix nav bar end.*/
-
-  var anchors = $("#fixed-sidebar li a");
-  $.each(anchors, function (index, item) {
-    $(this).click(function (event) {
-      if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
-        var target = $(this.hash);
-        target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-        if (target.length) {
-          $('body').animate({
-            scrollTop: target.offset().top - $(navFixBar).height()
-          }, 300);
-        }
-      }
-      return false;
-    });
-  });
-}
-
-
-
 
 // autoForm hooks
 (function() {
@@ -69,46 +20,48 @@ function tagScroll() {
 }());
 
 Template.eventDetail.onRendered(function() {
-  //created by Chen Yuan. 2015, 09, 18, to bind scrollSpy properties to body tag.
-  $("body").scrollspy({
-    target: "#fixed-bar-wrap",
-    offset: 60
+  var self = this;
+
+  $(document.body).scrollspy({
+    target: "#navbar-tobe-fixed",
+    offset: function () {
+      return self.$(".event-home").offset().top;
+    }
   });
-  //fix scrollspy error. modified by chenyuan.
-  tagScroll();
-  var self = this,
-      eid = FlowRouter.getParam('eid');
-  self.data.eid = eid;  // 存到template data 中
+
+  // affix event.
+  $(".fixed-bar-wrap").affix();
+
   self.autorun(function() {
-    // 订阅活动评论
-    self.subscribe('eventComments', eid);
+    var eid = FlowRouter.getParam('eid');
+    self.data.eid = eid;  // 存到template data 中
     // 订阅活动详情
-    self.subscribe('eventDetailById', eid, function (err) {
-      if (err) {return;}
-      // 插入html 字符串，暂时无法直接转换
-      var eventDetail = Events.findOne({'_id': self.data.eid});
-      if (eventDetail && eventDetail.desc) {
-        $('#information').append(eventDetail.desc);
-      }
-    });
+    self.subscribe('eventDetailById', new Mongo.ObjectID(eid));
   });
 });
 
 //created by Chen Yuan.
 Template.eventDetail.onDestroyed(function () {
-  //$(document.body).removeAttr("data-spy data-target");
+  $(document.body).scrollspy("destroy");
 });
 // end.
 
 
 Template.eventDetail.helpers({
   'eventDetail': function() {
-    var eventDetail = Events.findOne({'_id': FlowRouter.getParam('eid')});
+    var eventDetail = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
+    Meteor.defer(function () {
+      $(document.body).scrollspy("refresh");
+      $(document.body).scrollspy("process");
+    });
     return eventDetail;
+  },
+  "eventDetailDesc": function () {
+    return this.desc;
   },
   'eventTime': function () {
     var eventTime   = {},
-        time = this.time;  // 取了with 中的时间，用于改写格式，此 helper 优先级高于 with
+      time = this.time;  // 取了with 中的时间，用于改写格式，此 helper 优先级高于 with
     if (time) {
       // 更改时间格式 ISO -> 2015年9月15日星期二下午5点37分
       eventTime.start = moment(time.start).format('LLLL');
@@ -118,12 +71,12 @@ Template.eventDetail.helpers({
   },
   // 提取表单，构造 SimpleSchema
   'signForm': function() {
-    var eventDetail = Events.findOne({'_id': FlowRouter.getParam('eid')});
+    var eventDetail = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
     if (!eventDetail) {
       return;
     }
     var forms = eventDetail.signForm,
-        signForm = {};
+      signForm = {};
     _.forEach(forms, function(form) {
       var type = String;
       if (form.isArr) {
@@ -144,43 +97,8 @@ Template.eventDetail.helpers({
       delete form.id;
       signForm[id] = form;
     });
-    //for (var key in signForm) {
-    //  if (signForm.hasOwnProperty(key)) {
-    //    var type = String;
-    //    if (signForm[key].isArr) {
-    //      type = [String];
-    //      delete signForm[key].isArr;
-    //    }
-    //    signForm[key].type = type;
-    //    var opt = signForm[key].opts;
-    //    delete signForm[key].opts;
-    //    if (
-    //      signForm[key].autoform &&
-    //      Object.prototype.toString.call(opt) === '[object Array]' &&
-    //      opt.length !== 0
-    //    ) {
-    //      signForm[key].autoform.options = opt;
-    //    }
-    //  }
-    //}
+
     return new SimpleSchema(signForm);
-  },
-  'comments': function() {
-    var eid = FlowRouter.getParam('eid');
-    var replys = EventComments.find({'eventId': eid}, {'sort': {'createAt': -1}});
-    var fc = replys.map(function(reply) {
-      // 更新留言时间
-      reply.createAt = moment(reply.createAt).fromNow();
-      // 更新子评论时间
-      if (reply.comments && reply.comments.length > 0) {
-        reply.comments = reply.comments.map(function(comment) {
-          comment.createAt = moment(comment.createAt).fromNow();
-          return comment;
-        });
-      }
-      return reply;
-    });
-    return fc;
   }
 });
 
@@ -206,5 +124,19 @@ Template.eventDetail.events({
         $('#commentContent').val('');
       }
     });
+  },
+  // 左侧Tag跟随界面下滑滚动
+  'click #fixed-sidebar li a': function (e) {
+    var that = e.currentTarget;
+    if (location.pathname.replace(/^\//, '') == that.pathname.replace(/^\//, '') && location.hostname == that.hostname) {
+      var target = $(that.hash);
+      target = target.length ? target : $('[name=' + that.hash.slice(1) + ']');
+      if (target.length) {
+        $('body').animate({
+          scrollTop: target.offset().top - $('.navbar-fixed-top').outerHeight()
+        }, 300);
+      }
+    }
+    return false;
   }
 });

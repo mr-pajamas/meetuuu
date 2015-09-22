@@ -1,68 +1,72 @@
 <!-- 活动留言 -->
 <template name="eventComment">
+  {{#each replys}}
     <div class="comment-item">
-        <div class="media">
-            <div class="row">
-                <div class="media-left col-sm-2 col-xs-3">
-                    <!-- TODO 替换用户头像 -->
-                    <a href="#"> <img src="/714468542.jpg" alt="xxx"/></a>
-                </div>
-                <div class="media-info col-sm-10 col-xs-9">
-                    <h4 class="media-heading">{{commentBy.username}}</h4>
-                    <div class="media-date">{{createAt}}</div>
-                </div>
-                <div class="col-sm-10 col-xs-12 media-text">
-                    <p>{{content}}</p>
-                </div>
-            </div>
-        </div>
-        <!-- 评论 -->
-        {{#each comments}}
-            {{> childComment}}
-        {{/each}}
+      <div class="media">
+        <div class="row">
+          <div class="media-left col-sm-2 col-xs-3">
+            <!-- TODO 替换用户头像 -->
+            <a href="#"> <img src="/714468542.jpg" alt="xxx"/></a>
+          </div>
+          <div class="media-info col-sm-10 col-xs-9">
+            <h4 class="media-heading">{{commentBy.username}}</h4>
 
-        <!-- 回复留言 -->
-        {{> replyComment}}
-
-        <!-- 回复按钮 -->
-        <div class="reply clearfix" id="replyContainer-{{_id}}">
-            <a href="" title="回复该帖子" class="replyComment fa fa-reply pull-right" data-id="{{_id}}">&nbsp;回复</a>
-            <!--<a href="" title="删除该帖子" class="deleteComment fa fa-trash-o pull-right" data-id="{{_id}}">删除</a> -->
+            <div class="media-date">{{createAt}}</div>
+          </div>
+          <div class="col-sm-10 col-xs-12 media-text">
+            <p>{{content}}</p>
+          </div>
         </div>
+      </div>
+      <!-- 评论 -->
+      {{#each comments}}
+        {{> childComment}}
+      {{/each}}
+
+      <!-- 回复留言 -->
+      {{> replyComment}}
+
+      <!-- 回复按钮 -->
+      <div class="reply clearfix" id="replyContainer-{{_id}}">
+        <a href="" title="回复该帖子" class="replyComment fa fa-reply pull-right" data-id="{{_id}}">&nbsp;回复</a>
+        <!--<a href="" title="删除该帖子" class="deleteComment fa fa-trash-o pull-right" data-id="{{_id}}">删除</a> -->
+      </div>
     </div>
-
+  {{/each}}
 </template>
+
 
 <!-- 顶部留言框 -->
 <template name="replyComment">
-    <div class='clearfix to-insert' id='replyComment-{{_id}}'>
-        <div class='col-sm-10 col-xs-9 col-sm-offset-2 col-xs-offset-3 inserted-content'>
-            <div class='media-insert'>
-                <!-- TODO 替换为真实用户数据 -->
-                <h4 class='media-heading'>陈元</h4>
-            </div>
-            <div class='media-insert-text'>
-                <form method='post' class='new-comment-form'>
-                    <textarea name='comment' class='new-comment-area' rows='6' placeholder='感兴趣吗？评论一下吧！'></textarea>
-                    <input type='submit' class='btn pull-right btn-primary submitCommentReply' name='submit' value='提交'/>
-                    <a class='pull-right cancel-reply cancelReply' data-id="{{_id}}">取消</a>
-                </form>
-            </div>
-        </div>
+  <div class='clearfix to-insert' id='replyComment-{{_id}}'>
+    <div class='col-sm-10 col-xs-9 col-sm-offset-2 col-xs-offset-3 inserted-content'>
+      <div class='media-insert'>
+        <!-- TODO 替换为真实用户数据 -->
+        <h4 class='media-heading'>陈元</h4>
+      </div>
+      <div class='media-insert-text'>
+        <form method='post' class='new-comment-form'>
+          <textarea name='comment' class='new-comment-area' rows='6' placeholder='感兴趣吗？评论一下吧！'></textarea>
+          <input type='submit' class='btn pull-right btn-primary submitCommentReply' name='submit' value='提交'/>
+          <a class='pull-right cancel-reply cancelReply' data-id="{{_id}}">取消</a>
+        </form>
+      </div>
     </div>
+  </div>
 </template>
 
 <!-- 留言的评论容器 -->
 <template name="childComment">
-    <div class="clearfix to-insert" id style="display: block;">
-        <div class="col-sm-10 col-xs-9 col-sm-offset-2 col-xs-offset-3 inserted-content">
-            <div class="media-insert">
-                <h4 class="media-heading">{{user.username}}</h4>
-                <div class="media-date">{{createAt}}</div>
-            </div>
-            <div class="media-insert-text">
-                <p class="reply-content">{{content}}</p>
-            </div>
-        </div>
+  <div class="clearfix to-insert" id style="display: block;">
+    <div class="col-sm-10 col-xs-9 col-sm-offset-2 col-xs-offset-3 inserted-content">
+      <div class="media-insert">
+        <h4 class="media-heading">{{user.username}}</h4>
+
+        <div class="media-date">{{createAt}}</div>
+      </div>
+      <div class="media-insert-text">
+        <p class="reply-content">{{content}}</p>
+      </div>
     </div>
+  </div>
 </template>

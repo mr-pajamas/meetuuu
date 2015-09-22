@@ -1,106 +1,123 @@
 <template name="eventDetail">
+  <div class="event-detail-wrap">
     <header class="index-header">
-        {{> header}}
+      {{> header}}
     </header>
 
     <!-- 活动详情介绍 -->
     <div class="container event-home">
-        <div class="row">
-            <div class="col-md-9">
-                <!-- 活动基本信息 -->
-                {{#with eventDetail}}
-                    <section class="event-poster" id="poster">
-                        <img src="{{poster}}" alt="rifare">
-                        <div class="introduction event-post-padding">
-                            <header class="poster-header">{{title}}</header>
-                            <ul class="list-inline event-intro-share">
-                                <li><a title="分享到微信" class="fa fa-weixin small-img" href="#"></a></li>
-                                <li><a title="分享到新浪微博" class="fa fa-weibo small-img" href="#"></a></li>
-                                <li><a title="分享到qq空间" class="fa fa-qq small-img" href="#"></a></li>
-                            </ul>
+      <div class="row">
 
-                            <ul class="list-unstyled event-intro-list">
-                                <li class="clearfix"><i class="fa fa-calendar"></i><p>{{eventTime.start}}&nbsp;--&nbsp;{{eventTime.end}}</p></li>
-                                <li class="clearfix"><i class="fa fa-map-marker"></i><p>{{location.city}}{{location.address}}</p></li>
-                                <li class="clearfix"><i class="fa fa-group"></i><p>0&nbsp;/&nbsp;{{member}}</p></li>
-                                <li class="clearfix"><i class="fa fa-dot-circle-o"></i>
-                                    {{#each tags}}
-                                        <!-- TODO href 替换为tag 归类活动 -->
-                                        <a href="#">
-                                            <span class="badge" id="{{_id}}">{{name}}</span>
-                                        </a>
-                                    {{/each}}
-                                </li>
-                            </ul>
-                        </div>
-                    </section>
-                {{/with}}
+        <div class="col-md-9" style="position: relative; z-index: 10;">
 
-                <!-- 活动详情描述 -->
-                <section class="event-all-info event-post-padding" id="information">
-                    <!-- 插入活动详情的 html string -->
-                </section>
+          {{#with eventDetail}}
+            <section class="event-poster" id="poster">
+              <!-- 活动基本信息 -->
+              <img src="{{poster}}" alt="rifare">
+              <div class="introduction event-post-padding">
+                <header class="poster-header">{{title}}</header>
+                <ul class="list-inline event-intro-share">
+                  <li><a title="分享到微信" class="fa fa-weixin small-img" href="#"></a></li>
+                  <li><a title="分享到新浪微博" class="fa fa-weibo small-img" href="#"></a></li>
+                  <li><a title="分享到qq空间" class="fa fa-qq small-img" href="#"></a></li>
+                </ul>
 
-                <section id="comment">
-                    <!-- 新建评论输入框 -->
-                    <div class="media new-comment">
-                        <div class="row">
-                            <div class="media-left col-sm-2 col-xs-3">
-                                <a href="#"><img src="/714468542.jpg" alt="xxx"/></a>
-                            </div>
-                            <!-- todo 替换为用户的数据 -->
-                            <div class="media-info col-sm-10 col-xs-9">
-                                <h4 class="media-heading">陈元</h4>
-                                <div class="media-date">2015, 09, 05</div>
-                            </div>
-                            <div class="col-sm-10 col-xs-12 media-text">
-                                <form class="new-comment-form">
-                                    <textarea name="comment" id="commentContent" class="new-comment-area" rows="6" placeholder="感兴趣吗？评论一下吧！"></textarea>
-                                    <input type="button" id="submitComment" class="btn pull-right btn-primary" name="评论" value="评论"/>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 包含两个template，评论以及隐藏的回复评论-->
-                    {{#each comments}}
-                        {{> eventComment}}
+                <ul class="list-unstyled event-intro-list">
+                  <li class="clearfix"><i class="fa fa-calendar"></i><p>{{eventTime.start}}&nbsp;--&nbsp;{{eventTime.end}}</p></li>
+                  <li class="clearfix"><i class="fa fa-map-marker"></i><p>{{location.city}}{{location.address}}</p></li>
+                  <li class="clearfix"><i class="fa fa-group"></i><p>0&nbsp;/&nbsp;{{member}}</p></li>
+                  <li class="clearfix"><i class="fa fa-dot-circle-o"></i>
+                    {{#each tags}}
+                      <!-- TODO href 替换为tag 归类活动 -->
+                      <a href="#">
+                        <span class="badge" id="{{_id}}">{{name}}</span>
+                      </a>
                     {{/each}}
+                  </li>
+                </ul>
+              </div>
+            </section>
 
+            {{#if eventDetailDesc}}
+              <!-- 活动详情描述 -->
+              <section class="event-all-info event-post-padding" id="information">
+                <!-- 插入活动详情的 html string -->
+                {{{eventDetailDesc}}}
+              </section>
+            {{else}}
+              <section class="event-poster" id="poster">
+                <!-- 活动基本信息 -->
+                正在加载信息……
+              </section>
+            {{/if}}
 
-                </section>
-            </div>
+          {{/with}}
 
-            <!-- Modal -->
-            <div class="modal fade" id="joinEventFormModal" tabindex="-1" role="dialog" aria-labelledby="joinEventForm">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">报名活动</h4>
-                        </div>
-                        {{#if signForm}}
-                            <div class="modal-body">
-                                {{> quickForm schema=signForm id="joinEvent" type='normal' template="bootstrap3-horizontal" label-class="col-sm-3" input-col-class="col-sm-9"}}
-                            </div>
-                        {{/if}}
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        </div>
-                    </div>
+          <section id="comment">
+            <!-- 新建评论输入框 -->
+            <div class="media new-comment">
+              <div class="row">
+                <div class="media-left col-sm-2 col-xs-3">
+                  <a href="#"><img src="/714468542.jpg" alt="xxx"/></a>
                 </div>
-            </div>
-
-            <!-- 活动详情导航Tab -->
-            <div class="event-sidebar col-md-3">
-                <div class="content" id="fixed-bar-wrap">
-                    <ul class="nav nav-pills nav-stacked" id="fixed-sidebar">
-                        <li id="nav-poster" role="presentation"><a href="#poster">主题海报</a></li>
-                        <li id="nav-information" role="presentation"><a href="#information">活动详情</a></li>
-                        <li id="nav-comment" role="presentation"><a href="#comment">留言</a></li>
-                        <li id="nav-join"><a href="#join" data-toggle="modal" data-target="#joinEventFormModal">报名参加</a></li>
-                    </ul>
+                <!-- todo 替换为用户的数据 -->
+                <div class="media-info col-sm-10 col-xs-9">
+                  <h4 class="media-heading">陈元</h4>
+                  <div class="media-date">2015, 09, 05</div>
                 </div>
+                <div class="col-sm-10 col-xs-12 media-text">
+                  <form class="new-comment-form">
+                    <textarea name="comment" id="commentContent" class="new-comment-area" rows="6" placeholder="感兴趣吗？评论一下吧！"></textarea>
+                    <input type="button" id="submitComment" class="btn pull-right btn-primary" name="评论" value="评论"/>
+                  </form>
+                </div>
+              </div>
             </div>
+            <!-- 包含两个template，评论以及隐藏的回复评论 -->
+            {{#each comments}}
+              {{> eventComment}}
+            {{/each}}
+          </section>
         </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="joinEventFormModal" tabindex="-1" role="dialog" aria-labelledby="joinEventForm">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">报名活动</h4>
+              </div>
+              {{#if signForm}}
+                <div class="modal-body">
+                  {{> quickForm schema=signForm id="joinEvent" type='normal' template="bootstrap3-horizontal" label-class="col-sm-3" input-col-class="col-sm-9"}}
+                </div>
+              {{/if}}
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
     </div>
+
+    <div class="container fixed-bar-wrap affix">
+      <!-- 活动详情导航Tab -->
+      <div class="row">
+        <div class="event-sidebar col-md-3 col-md-offset-9 hidden-xs hidden-sm">
+          <div class="content" id="navbar-tobe-fixed">
+            <ul class="nav nav-stacked" id="fixed-sidebar">
+              <li id="nav-poster" role="presentation"><a href="#poster">主题海报</a></li>
+              <li id="nav-information" role="presentation"><a href="#information">活动详情</a></li>
+              <li id="nav-comment" role="presentation"><a href="#comment">留言</a></li>
+              <li id="nav-join"><a href="" data-toggle="modal" data-target="#joinEventFormModal">报名参加</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
