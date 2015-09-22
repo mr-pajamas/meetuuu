@@ -63,18 +63,23 @@ GeventSignForm = (function() {
     return id;
   };
 
-  // 删除一个表单项 use lodash remove function
+  // 删除一个表单项
   signform.removeForm = function(formId) {
-    var removed = _.remove(this.forms, function(form) {
+    var removed = _.filter(this.forms, function(form) {
       return form.id === formId;
     });
+
     // length === 1
     Blaze.remove(removed[0].blazeView);
+    // update this.forms, delete the removed element
+    this.forms.splice(_.indexOf(this.forms, _.findWhere(this.forms, { id : formId})), 1);
   };
 
   // 获取所有的数据
   signform.getFromContent = function() {
     var self = this;
+    // reset errFlag
+    self.errFlag = false;
     // 由于数据库无法储存 String， Object类元数据
     var formSchema = {},              // 用于预览，SimpleSchema 结构
         formSchemaForDataBase = [];   // array 结构，储存于数据库，用于今后构建 SimpleSchema
@@ -92,8 +97,8 @@ GeventSignForm = (function() {
     };
     formSchema[Meteor.uuid()] = username;
     formSchema[Meteor.uuid()] = telephone;
-    formSchemaForDataBase.push(_.assign({}, username, {'id': Meteor.uuid()}));
-    formSchemaForDataBase.push(_.assign({}, telephone, {'id': Meteor.uuid()}));
+    formSchemaForDataBase.push(_.extend({}, username, {'id': Meteor.uuid()}));
+    formSchemaForDataBase.push(_.extend({}, telephone, {'id': Meteor.uuid()}));
 
     _.forEach(this.forms, function(form) {
       var fid = form.id,
@@ -136,7 +141,7 @@ GeventSignForm = (function() {
             };
             var uuid = Meteor.uuid();
             formSchema[uuid] = setting;
-            formSchemaForDataBase.push(_.assign({}, setting, {'id': uuid}));
+            formSchemaForDataBase.push(_.extend({}, setting, {'id': uuid}));
             break;
           case 'ESF_MULTI_TEXT':
             var setting = {
@@ -149,7 +154,7 @@ GeventSignForm = (function() {
             };
             var uuid = Meteor.uuid();
             formSchema[uuid] = setting;
-            formSchemaForDataBase.push(_.assign({}, setting, {'id': uuid}));
+            formSchemaForDataBase.push(_.extend({}, setting, {'id': uuid}));
             break;
           case 'ESF_SELECT_RADIO':
             var setting = {
@@ -165,7 +170,7 @@ GeventSignForm = (function() {
             };
             var uuid = Meteor.uuid();
             formSchema[uuid] = setting;
-            formSchemaForDataBase.push(_.assign({}, setting, {'opts': options}, {id: uuid}));
+            formSchemaForDataBase.push(_.extend({}, setting, {'opts': options}, {id: uuid}));
             break;
           case 'ESF_SELECT_CHECKBOX':
             var setting = {
@@ -181,7 +186,7 @@ GeventSignForm = (function() {
             };
             var uuid = Meteor.uuid();
             formSchema[uuid] = setting;
-            formSchemaForDataBase.push(_.assign({}, setting, {'opts': options, 'isArr': true}, {id: uuid}));
+            formSchemaForDataBase.push(_.extend({}, setting, {'opts': options, 'isArr': true}, {id: uuid}));
             break;
           default :
             console.log('表单制作匹配失败');

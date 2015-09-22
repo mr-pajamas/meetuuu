@@ -173,13 +173,19 @@ Template.editEvent.events({
     var formInfo = GeventSignForm.getFromContent(),
         errFlag = formInfo.errFlag,
         form = formInfo.formSchema;
+
     if (errFlag) {
       alert('信息填写不完全，表单创建失败');
       return;
     }
+    $('#preview-sign-form-modal').modal('toggle');
     previewForms.set(form);
   }
 });
+
+/*
+* data-toggle="modal" data-target="#preview-sign-form-modal"
+* */
 
 
 
