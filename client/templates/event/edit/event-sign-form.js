@@ -65,14 +65,11 @@ GeventSignForm = (function() {
 
   // 删除一个表单项
   signform.removeForm = function(formId) {
-    var removed = _.filter(this.forms, function(form) {
-      return form.id === formId;
-    });
-
-    // length === 1
-    Blaze.remove(removed[0].blazeView);
+    var idx = _.indexOf(this.forms, _.findWhere(this.forms, { id : formId}));
+    // delete blaze view
+    Blaze.remove(this.forms[idx].blazeView);
     // update this.forms, delete the removed element
-    this.forms.splice(_.indexOf(this.forms, _.findWhere(this.forms, { id : formId})), 1);
+    this.forms.splice(idx, 1);
   };
 
   // 获取所有的数据
