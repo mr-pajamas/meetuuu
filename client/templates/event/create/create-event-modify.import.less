@@ -1,186 +1,214 @@
-/*修改 container width.*/
+/*created by Chenyuan, on 2015-09-22.*/
 
-@small-screen-padding: 5px;
+.event-create-wrap{
+  /*修改 container width.*/
 
-.create-event-container {
-  hr {
-    border-color: #ccc;
-  }
-  .form-horizontal {
+  background-color: #f1f2f3;
+
+  @small-screen-horizontal-padding: 5px;
+
+  .create-event-container {
+    hr {
+      border-color: #ccc;
+    }
+    .form-horizontal {
+      .form-group {
+        margin-left: -10px;
+        margin-right: -10px;
+        .col-xs-8 {
+          padding-right: @small-screen-horizontal-padding;
+        }
+        .col-xs-4 {
+          padding-left: @small-screen-horizontal-padding;
+        }
+      }
+    }
+    padding-top: 30px;
     .form-group {
-      margin-left: -10px;
-      margin-right: -10px;
-      .col-xs-8 {
-        padding-right: @small-screen-padding;
-      }
-      .col-xs-4 {
-        padding-left: @small-screen-padding;
-      }
-    }
-  }
-  padding-top: 30px;
-  .form-group {
-    #start-time {
-      margin-bottom: 7px;
-      @media (min-width: @screen-md-min) {
-        margin-bottom: 0;
-      }
-    }
-    #event-city-select {
-      @media (max-width: @screen-sm-max) {
+      #start-time {
         margin-bottom: 7px;
-      }
-    }
-    margin-bottom: 20px;
-    [class^=col-] {
-      padding-left: 10px;
-      padding-right: 10px;
-    }
-    .control-label {
-      .fa-asterisk {
-        margin-top: .4em;
-        font-size: 10px;
-        color: red;
-      }
-    }
-    .empty-from-item-container {
-      @media (max-width: @screen-sm-max) {
-        padding-bottom: 0 !important;
-      }
-      .row {
-        margin-left: 0 !important;
-        margin-right: -13px !important;
-      }
-      [class^=col-] {
-        padding-left: 0 !important;
-        padding-right: 13px !important;
-      }
-      [class^=col-]:not(:last-child) {
-        margin-bottom: 13px;
-
-        @media (min-width: 992px ) {
-          margin-bottom: 0px;
-        }
-      }
-    }
-    .event-sign-form-setting {
-      border: 1px solid #ccc;
-      padding: 13px;
-      -webkit-border-radius: 3px;
-      -moz-border-radius: 3px;
-      border-radius: 3px;
-
-      .custom-form-item {
-        width: 100%;
-      }
-
-    }
-    .pre-show-and-submit {
-      margin-left: 0 !important;
-      margin-right: -13px !important;
-      [class^=col-] {
-        padding-left: 0 !important;
-        padding-right: 13px !important;
-      }
-      [class^=col-]:not(:last-child) {
-        margin-bottom: 13px;
-        @media (min-width: 992px ) {
-          margin-bottom: 0px;
-        }
-      }
-      button {
-        width: 100%;
-      }
-    }
-    .event-sign-form-input {
-      margin-left: 47px;
-      margin-right: 47px;
-      input {
-        width: 100%;
-      }
-    }
-    .row {
-      margin-left: -10px;
-      margin-right: -10px;
-    }
-    .gap-line {
-      margin: 0 auto;
-      width: 80%;
-      height: 17px;
-      border-bottom: 1px solid #cccccc;
-      display: none;
-      @media (min-width: 992px ) {
-        display: block;
-      }
-    }
-    .option-container {
-      .row {
-        margin-bottom: 7px;
-      }
-    }
-    .col-md-10 {
-      .new-added-form {
-        margin-bottom: 13px;
-      }
-      .previewSignForm {
-        margin-right: 0;
-        width: 100%;
         @media (min-width: @screen-md-min) {
-          width: initial;
-          margin-right: 13px;
           margin-bottom: 0;
         }
       }
-      #submitBaiscInfo {
-        width: 100%;
-        margin-bottom: 13px;
-        @media (min-width: @screen-md-min) {
-          width: initial;
-          margin-bottom: 0;
+      #event-city-select {
+        @media (max-width: @screen-sm-max) {
+          margin-bottom: 7px;
         }
       }
-      #custom-form-container {
-        .option-container {
-          .custom-form-options {
-            margin-bottom: 13px;
+      margin-bottom: 20px;
+      [class^=col-] {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+      .control-label {
+        .fa-asterisk {
+          margin-top: .4em;
+          font-size: 10px;
+          color: red;
+        }
+      }
+      .empty-from-item-container {
+        @media (max-width: @screen-sm-max) {
+          padding-bottom: 0 !important;
+        }
+        .row {
+          margin-left: 0 !important;
+          margin-right: -13px !important;
+        }
+        [class^=col-] {
+          padding-left: 0 !important;
+          padding-right: 13px !important;
+        }
+        [class^=col-]:not(:last-child) {
+          margin-bottom: 13px;
+
+          @media (min-width: 992px ) {
+            margin-bottom: 0px;
           }
         }
       }
-      .preview-submit-wrap {
-        padding-left: 13px;
-        padding-right: 13px;
-        & > .checkbox {
-          display: inline-block;
-          padding-top: 13px;
+      .event-sign-form-setting {
+        border: 1px solid #ccc;
+        padding: 13px;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+
+        .custom-form-item {
+          width: 100%;
+        }
+
+      }
+      .pre-show-and-submit {
+        margin-left: 0 !important;
+        margin-right: -13px !important;
+        [class^=col-] {
+          padding-left: 0 !important;
+          padding-right: 13px !important;
+        }
+        [class^=col-]:not(:last-child) {
+          margin-bottom: 13px;
+          @media (min-width: 992px ) {
+            margin-bottom: 0px;
+          }
+        }
+        button {
+          width: 100%;
         }
       }
-      .event-sign-form-setting {
-        .one-line-text, .multi-line-text, .radio-text, .checkbox-text {
-          width: 34px;
-          height: 34px;
-          background: url("icon_join.png") no-repeat;
-          background-position: 7px -145px;
+      .event-sign-form-input {
+        margin-left: 47px;
+        margin-right: 47px;
+        input {
+          width: 100%;
         }
-        .tip-info {
-          display: inline-block;
-          line-height: 34px;
-          width: 34px;
+      }
+      .row {
+        margin-left: -10px;
+        margin-right: -10px;
+      }
+      .gap-line {
+        margin: 0 auto;
+        width: 80%;
+        height: 17px;
+        border-bottom: 1px solid #cccccc;
+        display: none;
+        @media (min-width: 992px ) {
+          display: block;
         }
-        .multi-line-text {
-          background-position: 7px -244px;
+      }
+      .option-container {
+        .row {
+          margin-bottom: 7px;
         }
-        .radio-text {
-          background-position: 6px -394px;
+      }
+      .col-md-10 {
+        .new-added-form {
+          margin-bottom: 13px;
         }
-        .checkbox-text {
-          background-position: 6px -444px;
+        .temp() {
+          width: 60%;
+          margin-left: auto;
+          margin-right: auto;
+          float: none;
+          display: block;
         }
-        .input-added {
-          border-style: dashed;
-          cursor: pointer;
-          color: #ccc;
+        .preview-submit-buttons {
+          width: 100%;
+          @media (min-width: @screen-md-min) {
+            float: right !important;
+            width: initial;
+          }
+        }
+        .previewSignForm {
+          .temp();
+          margin-bottom: 13px;
+          @media (min-width: @screen-md-min) {
+            width: initial;
+            margin-right: 13px;
+            margin-bottom: 0;
+            float: none;
+            display: inline-block;
+          }
+        }
+        #submitBaiscInfo {
+          .temp();
+          @media (min-width: @screen-md-min) {
+            width: initial;
+            display: inline-block;
+            float: none;
+          }
+        }
+        #custom-form-container {
+          .option-container {
+            .custom-form-options {
+              margin-bottom: 13px;
+            }
+          }
+        }
+        .preview-submit-wrap {
+          padding-left: 13px;
+          padding-right: 13px;
+          & > .checkbox {
+            display: block;
+            padding-top: 13px;
+            text-align: center;
+            @media (min-width: @screen-md-min) {
+              text-align: left;
+              display: inline-block;
+            }
+          }
+        }
+        .event-sign-form-setting {
+          .one-line-text, .multi-line-text, .radio-text, .checkbox-text {
+            width: 34px;
+            height: 34px;
+            background: url("icon_join.png") no-repeat;
+            background-position: 7px -145px;
+          }
+          .tip-info {
+            display: inline-block;
+            line-height: 34px;
+            width: 34px;
+          }
+          .multi-line-text {
+            background-position: 7px -244px;
+          }
+          .radio-text {
+            background-position: 6px -394px;
+          }
+          .checkbox-text {
+            background-position: 6px -444px;
+          }
+          .input-added {
+            border-style: dashed;
+            cursor: pointer;
+            color: #ccc;
+          }
         }
       }
     }
   }
+
 }
