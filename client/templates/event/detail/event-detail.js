@@ -20,8 +20,6 @@
 }());
 
 Template.eventDetail.onRendered(function() {
-  //created by Chen Yuan. 2015, 09, 18, to bind scrollSpy properties to body tag.
-
   var self = this;
 
   $(document.body).scrollspy({
@@ -37,16 +35,8 @@ Template.eventDetail.onRendered(function() {
   self.autorun(function() {
     var eid = FlowRouter.getParam('eid');
     self.data.eid = eid;  // 存到template data 中
-
     // 订阅活动详情
-    self.subscribe('eventDetailById', eid, function (err) {
-      if (err) {return;}
-      // 插入html 字符串，暂时无法直接转换
-      var eventDetail = Events.findOne({'_id': self.data.eid});
-      if (eventDetail && eventDetail.desc) {
-        $('#information').append(eventDetail.desc);
-      }
-    });
+    self.subscribe('eventDetailById', new Mongo.ObjectID(eid));
   });
 });
 

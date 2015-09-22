@@ -38,23 +38,19 @@
               </div>
             </section>
 
-            <!-- 活动详情描述 -->
-            <section class="event-all-info event-post-padding" id="information">
-              <!-- 插入活动详情的 html string -->
+            {{#if eventDetailDesc}}
+              <!-- 活动详情描述 -->
+              <section class="event-all-info event-post-padding" id="information">
+                <!-- 插入活动详情的 html string -->
+                {{{eventDetailDesc}}}
+              </section>
+            {{else}}
+              <section class="event-poster" id="poster">
+                <!-- 活动基本信息 -->
+                正在加载信息……
+              </section>
+            {{/if}}
 
-              {{{eventDetailDesc}}}
-            </section>
-          {{else}}
-            <section class="event-poster" id="poster">
-              <!-- 活动基本信息 -->
-              正在加载信息……
-            </section>
-
-            <!-- 活动详情描述 -->
-            <section class="event-all-info event-post-padding" id="information">
-              <!-- 插入活动详情的 html string -->
-              正在加载信息……
-            </section>
           {{/with}}
 
           <section id="comment">
