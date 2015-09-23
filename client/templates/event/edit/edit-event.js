@@ -9,9 +9,15 @@ var previewForms = new ReactiveVar({});
 
 
 Template.editEvent.onRendered(function() {
+  var self = this;
   // 构造event Id
   if (!FlowRouter.getParam('eid')) {
     FlowRouter.setParams({'eid': new Mongo.ObjectID()._str});
+  } else {
+    self.autorun(function() {
+      var eid = FlowRouter.getParam('eid');
+      self.subscribe('eventDetailById', new Mongo.ObjectID(eid));
+    });
   }
   // 初始化地图
   function initialize() {
@@ -45,7 +51,20 @@ Template.editEvent.onRendered(function() {
   $('.datetimepicker-end').datepicker(datepickerOptions);
 });
 
+Template.registerHelper('isoYYYYMMDD', function(isoTime) {
+  return moment(isoTime).format('YYYY/MM/DD');
+});
+
+Template.registerHelper('isoHHmm', function(isoTime) {
+  return moment(isoTime).format('HH:mm');
+});
+
+
 Template.editEvent.helpers({
+  eventInfo: function() {
+    return Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
+  },
+
   tags: function(query, sync, callback) {
     Meteor.call('queryByName', query, {}, function(err, res) {
       if (err) {

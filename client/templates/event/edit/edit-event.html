@@ -16,7 +16,7 @@
           <label class="col-md-2 control-label">活动名称 <i class="fa fa-asterisk pull-right"></i></label>
 
           <div class="col-md-10">
-            <input type="text" class="form-control" id="event-name" placeholder="活动名称，不少于5个字">
+            <input type="text" class="form-control" id="event-name" placeholder="活动名称，不少于5个字" value="{{eventInfo.title}}">
           </div>
         </div>
         <!-- 活动时间 -->
@@ -25,10 +25,11 @@
 
           <div class="col-md-2 col-xs-8">  <!-- modified by chenyuan, 9-15 -->
             <input type="text" class="form-control datetimepicker-start" id="start-date" name="start-time"
-                   placeholder="开始时间"/>
+                   placeholder="开始时间" value="{{isoYYYYMMDD eventInfo.time.start}}"/>
           </div>
           <div class="col-md-2 col-xs-4">
             <select class="form-control" id="start-time">
+              <option value="{{isoHHmm eventInfo.time.start}}">{{isoHHmm eventInfo.time.start}}</option>
               <option value="00:00">00:00</option>
               <option value="00:30">00:30</option>
               <option value="01:00">01:00</option>
@@ -85,10 +86,12 @@
           </div>
 
           <div class="col-md-2 col-xs-8"> <!-- modified by chenyuan, 9-15 -->
-            <input type="text" class="form-control datetimepicker-end" id="end-date" name="end-time" placeholder="结束时间"/>
+            <input type="text" class="form-control datetimepicker-end" id="end-date" name="end-time"
+                   placeholder="结束时间" value="{{isoYYYYMMDD eventInfo.time.end}}"/>
           </div>
           <div class="col-md-2 col-xs-4">
             <select class="form-control" id="end-time">
+              <option value="{{isoHHmm eventInfo.time.end}}">{{isoHHmm eventInfo.time.end}}</option>
               <option value="00:00">00:00</option>
               <option value="00:30">00:30</option>
               <option value="01:00">01:00</option>
@@ -153,7 +156,7 @@
             </select>
           </div>
           <div class="col-md-6">
-            <input type="text" class="form-control" id="event-detail-address" placeholder="请输入详细地址"/>
+            <input type="text" class="form-control" id="event-detail-address" placeholder="请输入详细地址" value="{{eventInfo.location.address}}"/>
           </div>
           <div class="col-md-offset-2 col-md-10">
             <div class="event-map-container">
@@ -167,7 +170,7 @@
 
           <div class="col-md-2 checkbox" style="height: 34px;">
             <label>
-              <input type="checkbox" id="event-private" checked> 公开活动
+              <input type="checkbox" id="event-private" checked="{{#unless eventInfo.private}}checked{{/unless}}"> 公开活动
             </label>
           </div>
 
@@ -177,7 +180,7 @@
           <label class="col-md-2 control-label">活动人数&nbsp;</label>
 
           <div class="col-md-10">
-            <input type="number" class="form-control" id="event-member-limit" placeholder="活动人数限制，0 代表不限名额">
+            <input type="number" class="form-control" id="event-member-limit" placeholder="活动人数限制，0 代表不限名额" value="{{eventInfo.member}}">
           </div>
         </div>
         <!-- 活动主题 -->
@@ -303,7 +306,9 @@
                        style="opacity: 0; position: absolute; top: 0px; left: 0px; width: 37px; height: 30px;">
               </div>
             </div>
-            <div id="event-desc" placeholder="活动描述，不少于10个字"></div>
+            <div id="event-desc" placeholder="活动描述，不少于10个字">
+              {{{eventInfo.desc}}}
+            </div>
           </div>
         </div>
 
