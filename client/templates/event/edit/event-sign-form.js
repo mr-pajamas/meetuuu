@@ -276,14 +276,3 @@ Template['ESF_CUSTOM'].events({
     }
   }
 });
-
-
-Template.eventTag.events({
-  'click i.delete-event-tag': function(e) {
-    e.preventDefault();
-    var $spanTag = $(e.currentTarget).parent(),
-        id = $spanTag.attr('id');
-    GeventTag.delTag(id);
-    $spanTag.remove();
-  }
-});
