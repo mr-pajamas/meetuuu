@@ -38,11 +38,6 @@
               </div>
             </section>
 
-            <!-- 活动报名参加按钮在移动设备上的展示。 -->
-            <section class="hidden-md hidden-lg mobile-join-wrap text-center" id="mobile-join">
-              <button class="btn btn-lg btn-success mobile-join" data-toggle="modal" data-target="#joinEventFormModal">报名参加</button>
-            </section>
-
             {{#if eventDetailDesc}}
               <!-- 活动详情描述 -->
               <section class="event-all-info event-post-padding" id="information">
@@ -80,6 +75,7 @@
             <!-- 包含两个template，评论以及隐藏的回复评论 -->
             {{> eventComment}}
           </section>
+          <!-- 活动报名参加按钮在移动设备上的展示。 -->
           <section class="hidden-md hidden-lg mobile-join-wrap text-center">
             <button class="btn btn-lg btn-success mobile-join" data-toggle="modal" data-target="#joinEventFormModal">报名参加</button>
           </section>

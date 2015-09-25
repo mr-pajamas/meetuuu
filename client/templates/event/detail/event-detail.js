@@ -36,34 +36,28 @@ Template.eventDetail.onRendered(function() {
 
   // created by Chenyuan, 由于数据没有取下来，所以需要一定的延时进行html结构的渲染，然后才能绑定事件。
 
-  var timeId = setTimeout(function () {
-    //initial
-    var scrollTop = 0;
-    var $joinTarget = $("#mobile-join");
-    var joinTop = $joinTarget.offset().top;
-    var joinHeight = $joinTarget.outerHeight();
-    var winHeight = window.outerHeight;
-    if (winHeight < joinTop + joinHeight) {
-      scrollTop = joinTop + joinHeight - winHeight + 15;              //这里的15是border-bottom,在affix里面加上的，所以这里要加上。
-    }
+  function myAffix () {
+    //var scrollTop = 0;
+    var $joinTarget = $(".mobile-join-wrap");
+    //var joinTop = $joinTarget.offset().top;
+    //var joinHeight = $joinTarget.outerHeight();
+    //var winHeight = window.outerHeight;
+    //if (winHeight < joinTop + joinHeight) {
+    //scrollTop = joinTop + joinHeight - winHeight + 15;              //这里的15是border-bottom,在affix里面加上的，所以这里要加上。
+    //}
     $joinTarget.affix({
       offset: {
-        top: function () {
-          return scrollTop;
-        },
         bottom: function () {
-          return (this.bottom = $("footer").outerHeight(true) + 30);
+          return (this.bottom = $("footer").outerHeight(true));
         }
       }
-    }).on({
-      "affixed-bottom.bs.affix": function () {
-        $(this).css("visibility", "hidden");
-      },
-      "affix.bs.affix": function () {
-        $(this).css("visibility", 'visible');
-      }
     });
-  }, 500);
+  }
+  // above created by Chen yuan. 2015-09-25.
+
+  // register affix event.
+  var timeId = setTimeout(myAffix, 500);
+
 
   self.autorun(function() {
     var eid = FlowRouter.getParam('eid');
