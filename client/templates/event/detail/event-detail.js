@@ -21,16 +21,49 @@
 
 Template.eventDetail.onRendered(function() {
   var self = this;
+  var top = self.$(".event-home").offset().top;
 
   $(document.body).scrollspy({
     target: "#navbar-tobe-fixed",
     offset: function () {
-      return self.$(".event-home").offset().top;
+      //return self.$(".event-home").offset().top;    modified by Chen Yuan, on 2015-09-23
+      return window.outerHeight > 991 ? top : (top + $(".fixed-bar-wrap").outerHeight());
     }
   });
 
-  // affix event.
+  // affix events.
   $(".fixed-bar-wrap").affix();
+
+  // created by Chenyuan, 由于数据没有取下来，所以需要一定的延时进行html结构的渲染，然后才能绑定事件。
+
+  var timeId = setTimeout(function () {
+    //initial
+    var scrollTop = 0;
+    var $joinTarget = $("#mobile-join");
+    var joinTop = $joinTarget.offset().top;
+    var joinHeight = $joinTarget.outerHeight();
+    var winHeight = window.outerHeight;
+    if (winHeight < joinTop + joinHeight) {
+      scrollTop = joinTop + joinHeight - winHeight + 15;              //这里的15是border-bottom,在affix里面加上的，所以这里要加上。
+    }
+    $joinTarget.affix({
+      offset: {
+        top: function () {
+          return scrollTop;
+        },
+        bottom: function () {
+          return (this.bottom = $("footer").outerHeight(true) + 30);
+        }
+      }
+    }).on({
+      "affixed-bottom.bs.affix": function () {
+        $(this).css("visibility", "hidden");
+      },
+      "affix.bs.affix": function () {
+        $(this).css("visibility", 'visible');
+      }
+    });
+  }, 500);
 
   self.autorun(function() {
     var eid = FlowRouter.getParam('eid');
@@ -107,17 +140,25 @@ Template.eventDetail.events({
     });
   },
   // 左侧Tag跟随界面下滑滚动
+  // modified by Chen yuan. on 2015-09-23. to add click-scroll support for mobile devices.
   'click #fixed-sidebar li a': function (e) {
     var that = e.currentTarget;
     if (location.pathname.replace(/^\//, '') == that.pathname.replace(/^\//, '') && location.hostname == that.hostname) {
       var target = $(that.hash);
       target = target.length ? target : $('[name=' + that.hash.slice(1) + ']');
       if (target.length) {
-        $('body').animate({
-          scrollTop: target.offset().top - $('.navbar-fixed-top').outerHeight()
-        }, 300);
+        if (window.outerWidth < 992) {
+          $('body').animate({
+            scrollTop: target.offset().top - $('.navbar-fixed-top').outerHeight() - $(".fixed-bar-wrap").outerHeight()
+          }, 300);
+        } else {
+          $('body').animate({
+            scrollTop: target.offset().top - $('.navbar-fixed-top').outerHeight()
+          }, 300);
+        }
       }
     }
     return false;
   }
 });
+

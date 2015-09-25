@@ -3,11 +3,13 @@
 
 .event-detail-wrap {
 
+  @body-background: #efe7e0;
+
   @white-background: #fff;
 
   .event-home {
     .main-container {
-      position: relative;
+      /*position: relative;*/
       z-index: 10;
       margin-bottom: 15px;
       @media (min-width:@screen-md-min) {
@@ -84,7 +86,7 @@
     color: #fff;
     background-color: #449d44;
   }
-  #event-sidebar .content {
+  .event-sidebar .content {
     width: 100%;
     height: 100%;
   }
@@ -199,26 +201,135 @@
   .event-home #comment .reply {
     min-height: 51px;
   }
-  .event-home #comment .media-insert-text .reply-content {
-  }
-  .event-home {
+  .fixed-bar-wrap {
     .event-sidebar {
       z-index: 999;
-    }
-    #poster, #information, #comment {
-      .background-clip(padding-box);
-      border-top: 15px solid transparent;
-      @media (min-width: @screen-sm-min) {
-        border-top: 35px solid transparent;
+      padding-left: 0;
+      padding-right: 0;
+      @media (min-width: @screen-md-min) {
+        padding-left: 15px;
+        padding-right: 15px;
       }
     }
   }
+  #poster, #information, #comment {
+    .background-clip(padding-box);
+    border-top: 15px solid transparent;
+    @media (min-width: @screen-md-min) {
+      border-top: 35px solid transparent;
+    }
+  }
+  #poster {
+    border-top: 65px solid transparent;
+
+    @media (min-width: @screen-sm-min) {
+      border-top-width: 75px;
+    }
+
+    @media (min-width: @screen-md-min) {
+      border-top: 35px solid transparent;
+    }
+  }
   .fixed-bar-wrap {
+    left: initial;
+    right: initial;
+    width: 100%;
+    z-index: 11;
+    top: 51px;
+    @media (min-width: @screen-sm-min) {
+      top: 61px;
+    }
+    border-bottom: 1px solid @body-background;
+    @media (min-width: @screen-md-min) {
+      width: initial;
+      left: 0;
+      right: 0;
+      z-index: 9;
+      top: 96px;
+      border: 0;
+    }
+    position: fixed;
+  }
+
+  #fixed-sidebar {
+    & > li {
+      float: left;
+      text-align: center;
+      width: 33.33333%;
+      margin-top: 0;
+      @media (min-width: @screen-md-min) {
+        width: initial;
+        text-align: left;
+        margin-top: 2px;
+        float: none;
+      }
+      & > a {
+        margin-bottom: 0;
+        background-color: #ffffff;
+        padding: 14px 10px;
+        @media (min-width: @screen-sm-min) {
+          padding-top: 19px;
+          padding-bottom: 19px;
+        }
+        @media (min-width: @screen-md-min) {
+          margin-bottom: 15px;
+          background-color: #ffffff;
+          padding: 20px;
+        }
+      }
+    }
+  }
+
+  .mobile-join-wrap {
+    border-top: 15px solid @body-background;
+    background-color: @body-background;
+    .mobile-join {
+      width: 60%;
+      padding-top: 15px;
+      padding-bottom: 15px;
+      @media (min-width: @screen-sm-min) {
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+    }
+  }
+
+  .fixed-join-wrap {
+    position: fixed;
+    bottom: 0;
+    z-index: 9999;
+    padding-left: 15px;
+    padding-right: 15px;
     left: 0;
     right: 0;
-    z-index: 9;
-    top: 96px;
-    position: fixed;
+  }
+
+  .main-container {
+    .affix {
+      bottom: 0;
+      z-index: 909;
+      left: 0;
+      right: 0;
+      padding-left: 15px;
+      padding-right: 15px;
+      border-bottom: 15px solid @body-background;
+    }
+
+    .affix-top {
+      position: static;
+    }
+    .affix-bottom {
+      position: absolute;
+      z-index: 909;
+      left: 15px;
+      right: 15px;
+      border-top: 15px solid @body-background;
+    }
+  }
+
+  #empty-box {
+    height: 71px;
+    width: 100%;
   }
 
   @media (min-width: 768px) {

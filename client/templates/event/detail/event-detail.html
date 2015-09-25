@@ -8,7 +8,7 @@
     <div class="container event-home">
       <div class="row">
 
-        <div class="col-md-9 main-container">
+        <div class="col-md-9 col-xs-12 main-container">
 
           {{#with eventDetail}}
             <section class="event-poster" id="poster">
@@ -38,6 +38,11 @@
               </div>
             </section>
 
+            <!-- 活动报名参加按钮在移动设备上的展示。 -->
+            <section class="hidden-md hidden-lg mobile-join-wrap text-center" id="mobile-join">
+              <button class="btn btn-lg btn-success mobile-join" data-toggle="modal" data-target="#joinEventFormModal">报名参加</button>
+            </section>
+
             {{#if eventDetailDesc}}
               <!-- 活动详情描述 -->
               <section class="event-all-info event-post-padding" id="information">
@@ -50,7 +55,6 @@
                 正在加载信息……
               </section>
             {{/if}}
-
           {{/with}}
 
           <section id="comment">
@@ -75,6 +79,9 @@
             </div>
             <!-- 包含两个template，评论以及隐藏的回复评论 -->
             {{> eventComment}}
+          </section>
+          <section class="hidden-md hidden-lg mobile-join-wrap text-center">
+            <button class="btn btn-lg btn-success mobile-join" data-toggle="modal" data-target="#joinEventFormModal">报名参加</button>
           </section>
         </div>
 
@@ -105,13 +112,13 @@
     <div class="container fixed-bar-wrap affix">
       <!-- 活动详情导航Tab -->
       <div class="row">
-        <div class="event-sidebar col-md-3 col-md-offset-9 hidden-xs hidden-sm">
+        <div class="event-sidebar col-md-3 col-md-offset-9">
           <div class="content" id="navbar-tobe-fixed">
             <ul class="nav nav-stacked" id="fixed-sidebar">
-              <li id="nav-poster" role="presentation"><a href="#poster">主题海报</a></li>
-              <li id="nav-information" role="presentation"><a href="#information">活动详情</a></li>
-              <li id="nav-comment" role="presentation"><a href="#comment">留言</a></li>
-              <li id="nav-join"><a href="" data-toggle="modal" data-target="#joinEventFormModal">{{optionSignFormTips}}</a></li>
+              <li role="presentation"><a href="#poster">主题海报</a></li>
+              <li role="presentation"><a href="#information">活动详情</a></li>
+              <li role="presentation"><a href="#comment">留言</a></li>
+              <li id="nav-join" class="hidden-xs hidden-sm"><a href="" data-toggle="modal" data-target="#joinEventFormModal">{{optionSignFormTips}}</a></li>
             </ul>
           </div>
         </div>
