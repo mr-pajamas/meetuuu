@@ -1,26 +1,139 @@
-.event-manage-container {
-  margin-right: -15px;
-  margin-left: -15px;
-  background-color: #f1f2f3;
-}
+/*created by ChenYuan on 2015-09-25. */
 
-.event-manage-header-container {
-  height: 100px;
-  border-bottom: 1px solid #ccc;
-
-  .event-manage-header {
-    line-height: 100px;
-
-    #previewEvent, #editEvent {
-      width: 100%;
+.event-manage {
+  @content-pc-padding: 35px;
+  @event-info-item-margin-bottom: 30px;
+  header {
+    position: relative;
+    margin-top: @content-pc-padding;
+    margin-bottom: @content-pc-padding;
+    h1 {
+      margin-top: 0;
+      margin-bottom: 0;
+      p {
+        margin-bottom: -10px;
+      }
+      .label {
+        position: relative;
+        top: -8px;
+        font-size: 12px;
+        padding-top: 0.3em;
+      }
+      a {
+        font-size: 14px;
+        color: #777;
+      }
     }
-
-    .event-manage-title {
-      text-align: center;
+    .list-inline {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 0;
+      & > li:last-child {
+        padding-right: 0;
+      }
     }
   }
-}
-
-.event-manage-border-container {
-  height: 300px;
+  aside {
+    .nav {
+      & > li {
+        margin-top: 0;
+        &:not(:last-child) {
+          margin-bottom: 15px;
+        }
+        & > a {
+          background-color: #ffffff;
+          padding: 20px;
+          font-size: 16px;
+          border-radius: 0;
+          margin-right: 0;
+          border: 0;
+          &:hover, &:focus {
+            border: 0;
+          }
+        }
+      }
+      & > .active > a {
+        color: #fff;
+        background-color: #337ab7;
+      }
+    }
+  }
+  main {
+    .main-content {
+      padding: @content-pc-padding;
+      padding-bottom: 15px;
+      background-color: #ffffff;
+      margin-bottom: 40px;
+      #basic-information {
+        & > table {
+          margin-bottom: @event-info-item-margin-bottom;
+          & > tr > td {
+            display: table-cell;
+            width: 1%;
+            padding-top: 19px;
+            padding-bottom: 19px;
+            & > .table-cell {
+              border-right: 1px solid #dddddd;
+              .quantity {
+                font-size: 36px;
+              }
+              .item {
+                font-size: 16px;
+              }
+            }
+          }
+          & > tr > td:last-child {
+            & > .table-cell {
+              border: 0;
+            }
+          }
+        }
+        & > dl {
+          margin-bottom: 60px;
+          dt {
+            width: 61px;
+          }
+          dd {
+            margin-left: 100px;
+            margin-bottom: @event-info-item-margin-bottom;
+          }
+        }
+        hr {
+          margin-bottom: @event-info-item-margin-bottom / 2;
+        }
+        #event-cancel {
+          margin-left: 20px;
+          cursor: pointer;
+          color: #777777;
+          &:hover {
+            color: #333333;
+          }
+        }
+      }
+      #join-manage {
+        p {
+          #number-of-joined {
+            font-size: 28px;
+          }
+        }
+        ul#joined-persons {
+          li {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            background-color: #ebebeb;
+            line-height: 50px;
+            margin-bottom: 15px;
+            .personal-photo {
+              width: 50px;
+              height: 50px;
+            }
+            button {
+              background-color: #c4c4c4;
+            }
+          }
+        }
+      }
+    }
+  }
 }

@@ -2,51 +2,128 @@
   <header class="index-header">
     {{> header}}
   </header>
-  <div class="container-fluid event-manage-container">
-    <div class="event-manage-header-container">
-      <div class="row event-manage-header">
-        <div class="col-md-6">
-          <div class="event-manage-title">
-            {{eventInfo.title}}
-          </div>
-        </div>
-        <div class="col-md-1">
-          <a href="/event/detail/{{eventInfo._id}}" class="btn btn-default" id="previewEvent">预览</a>
-        </div>
-        <div class="col-md-1">
-          <a href="/event/edit/{{eventInfo._id}}" class="btn btn-primary" id="editEvent">编辑</a>
-        </div>
-      </div>
-    </div>
-    <div class="event-manage-border-container">
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs nav-justified" role="tablist">
-          <li role="presentation" class="active"><a href="#event-member" aria-controls="event-member" role="tab" data-toggle="tab">参与人员</a></li>
-          <li role="presentation"><a href="#event-material" aria-controls="event-material" role="tab" data-toggle="tab">活动材料</a></li>
-          <li role="presentation"><a href="#event-statistics" aria-controls="event-statistics" role="tab" data-toggle="tab">活动统计</a></li>
-          <li role="presentation"><a href="#event-spread" aria-controls="event-spread" role="tab" data-toggle="tab">活动推广</a></li>
-          <li role="presentation"><a href="#event-settings" aria-controls="event-settings" role="tab" data-toggle="tab">高级设置</a></li>
+  <div class="container event-manage">
+    <header class="clearfix">
+      <h1 class="pull-left">
+        <p>单身酒吧之夜 <span class="label label-info">审核中</span></p>
+        <a href="http://t.cn/Ry6ludE" class="event-manage-url">http://t.cn/Ry6ludE</a>
+      </h1>
+      <ul class="list-inline pull-right">
+        <li><button class="btn btn-default event-preview"><span class="fa fa-eye"></span> 查看</button></li>
+        <li>
+          <button class="btn btn-default event-edit"><span class="fa fa-pencil-square-o"> 编辑</span></button>
+        </li>
+      </ul>
+    </header>
+    <div class="row">
+      <aside class="col-md-3">
+        <ul class="nav nav-tabs nav-stacked" role="tablist">
+          <li role="presentation" class="active"><a href="#basic-information" aria-controls="basic-information" role="tab" data-toggle="tab">基本信息</a></li>
+          <li role="presentation"><a href="#join-manage" aria-controls="join-manage" role="tab" data-toggle="tab">报名管理</a></li>
+          <li role="presentation"><a href="#advanced-settings" aria-controls="advanced-settings" role="tab" data-toggle="tab">高级设置</a></li>
         </ul>
+      </aside>
+      <main class="col-md-9">
+        <!-- 活动基本信息 -->
+        <div class="main-content tab-content">
+          <section id="basic-information" class="tab-pane active" role="tabpanel">
+            <table class="table table-bordered text-center">
+              <tr>
+                <td>
+                  <div class="table-cell">
+                    <div class="quantity" id="join-quantity">0</div>
+                    <div class="item">报名</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="table-cell">
+                    <div class="quantity" id="scan-quantity">12</div>
+                    <div class="item">阅读</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="table-cell">
+                    <div class="quantity" id="share-quantity">1</div>
+                    <div class="item">分享</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="table-cell">
+                    <div class="quantity" id="comment-quantity">2</div>
+                    <div class="item">留言</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="table-cell">
+                    <div class="quantity" id="concern-quantity">0</div>
+                    <div class="item">关注</div>
+                  </div>
+                </td>
+              </tr>
+            </table>
+            <dl class="dl-horizontal">
+              <dt>活动时间:</dt>
+              <dd id="event-date-time">2015.09.23星期三 19:00 ~ 09.23星期四 16:00</dd>
+              <dt>活动地点:</dt>
+              <dd id="event-location">上海国定东路200号</dd>
+              <dt>活动人数:</dt>
+              <dd><span id="event-joined-persons">90</span> / <span id="event-persons-limit">200</span></dd>
+              <dt>标签:</dt>
+              <dd id="event-tags">
+                <span class="badge">吃货</span>
+                <span class="badge">月饼</span>
+                <span class="badge">中秋</span>
+              </dd>
+            </dl>
+            <hr/>
+            <button class="btn btn-primary" id="event-code">活动二维码</button>
+            <span id="event-cancel">取消活动</span>
+          </section>
+          <!-- 报名管理 -->
+          <section id="join-manage" class="tab-pane" role="tabpanel">
+            <p><span id="number-of-joined">199</span> 人报名</p>
+            <ul class="list-unstyled" id="joined-persons">
+              <li>
+                <div class="col-md-1"><img class="personal-photo" src="/714468542.jpg" alt="photo"/></div>
+                <div class="col-md-3"><span class="name">王翠花</span></div>
+                <div class="col-md-4"><span class="phone-number">137114855698</span></div>
+                <div class="col-md-3"><span class="join-time">2015-09-25 10:31:42</span></div>
+                <button class="btn">拒绝</button>
+              </li>
+              <li>
+                <div class="col-md-1"><img class="personal-photo" src="/714468542.jpg" alt="photo"/></div>
+                <div class="col-md-3"><span class="name">王翠花</span></div>
+                <div class="col-md-4"><span class="phone-number">137114855698</span></div>
+                <div class="col-md-3"><span class="join-time">2015-09-25 10:31:42</span></div>
+                <button class="btn">拒绝</button>
+              </li>
+              <li>
+                <div class="col-md-1"><img class="personal-photo" src="/714468542.jpg" alt="photo"/></div>
+                <div class="col-md-3"><span class="name">王翠花</span></div>
+                <div class="col-md-4"><span class="phone-number">137114855698</span></div>
+                <div class="col-md-3"><span class="join-time">2015-09-25 10:31:42</span></div>
+                <button class="btn">拒绝</button>
+              </li>
+            </ul>
+          </section>
+          <!-- 高级设置 -->
+          <section id="advanced-settings" class="tab-pane" role="tabpanel">
 
-
-        <!-- Tab panes -->
-        <div class="tab-content">
-          <div role="tabpanel" class="tab-pane active fade" id="event-member">
-            活动人员
-          </div>
-          <div role="tabpanel" class="tab-pane fade" id="event-material">
-            活动材料
-          </div>
-          <div role="tabpanel" class="tab-pane fade" id="event-statistics">
-            活动数据统计
-          </div>
-          <div role="tabpanel" class="tab-pane fade" id="event-spread">
-            活动推广
-          </div>
-          <div role="tabpanel" class="tab-pane fade" id="event-settings">
-            活动设置
-          </div>
+          </section>
         </div>
+      </main>
     </div>
   </div>
+
+  {{> footerCompact}}
+</template>
+
+<template name="newJoined">
+  <li class="row">
+    <div class="col-md-1"><img class="personal-photo" src="{{personalPhoto}}" alt="个人头像"/></div>
+    <div class="col-md-1"><span class="name">{{name}}</span></div>
+    <div class="col-md-1"><span class="phone-number">{{phoneNumber}}</span></div>
+    <div class="col-md-2"><span class="join-time">{{joinTime}}</span></div>
+    <button class="btn btn-danger">拒绝</button>
+  </li>
 </template>
