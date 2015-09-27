@@ -66,9 +66,10 @@
       background-color: #ffffff;
       margin-bottom: 40px;
       #basic-information {
-        & > table {
+        & > .table {
           margin-bottom: @event-info-item-margin-bottom;
-          & > tr > td {
+          border: 1px solid #dddddd;
+          & > .tr > .td {
             display: table-cell;
             width: 1%;
             padding-top: 19px;
@@ -83,7 +84,7 @@
               }
             }
           }
-          & > tr > td:last-child {
+          & > .tr > .td:last-child {
             & > .table-cell {
               border: 0;
             }
