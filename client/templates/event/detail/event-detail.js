@@ -34,7 +34,6 @@ Template.eventDetail.onRendered(function() {
 
   self.autorun(function() {
     var eid = FlowRouter.getParam('eid');
-    self.data.eid = eid;  // 存到template data 中
     // 订阅活动详情
     self.subscribe('eventDetailById', new Mongo.ObjectID(eid));
   });
@@ -59,6 +58,9 @@ Template.eventDetail.helpers({
   "eventDetailDesc": function () {
     return this.desc;
   },
+  'optionSignFormTips': function() {
+    return !!FlowRouter.getQueryParam('preview') ? '预览报名表单': '我要报名';
+  },
   'eventTime': function () {
     var eventTime   = {},
       time = this.time;  // 取了with 中的时间，用于改写格式，此 helper 优先级高于 with
@@ -76,28 +78,7 @@ Template.eventDetail.helpers({
       return;
     }
     var forms = eventDetail.signForm,
-      signForm = {};
-    _.forEach(forms, function(form) {
-      var type = String;
-      if (form.isArr) {
-        type = [String];
-        delete form.isArr;
-      }
-      form.type = type;
-      var opt = form.opts;
-      delete form.opts;
-      if (
-        form.autoform &&
-        Object.prototype.toString.call(opt) === '[object Array]' &&
-        opt.length !== 0
-      ) {
-        form.autoform.options = opt;
-      }
-      var id = form.id;
-      delete form.id;
-      signForm[id] = form;
-    });
-
+      signForm = EditEvent.eventSignForm.setPreviewForm(forms);
     return new SimpleSchema(signForm);
   }
 });
@@ -106,7 +87,7 @@ Template.eventDetail.events({
   // 提交留言
   'click #submitComment': function(e) {
     e.preventDefault();
-    var eid = Template.currentData().eid;
+    var eid = FlowRouter.getParam('eid');
     var commentContent = $('#commentContent').val();
     var comment = {
       commentType: 'event',
