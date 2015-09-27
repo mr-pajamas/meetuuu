@@ -39,7 +39,7 @@
             <div class="gap-line"></div>
           </div>
 
-          <div class="col-md-2 col-xs-8"> <!-- modified by chenyuan, 9-15 -->
+          <div class="col-md-2 col-xs-8">
             <input type="text" class="form-control datetimepicker-end" id="end-date" name="end-time"
                    placeholder="结束时间" value="{{endDate}}"/>
           </div>
@@ -217,12 +217,13 @@
           <label class="col-md-2 control-label">报名表单&nbsp;</label>
 
           <div class="col-md-10">
-            <!-- 代码 4 -->
             <div id="custom-form-container">
               <!-- container for evnet sign forms -->
+
               {{#each eventForms}}
                 {{> ESF_CUSTOM}}
               {{/each}}
+
             </div>
             <div class="empty-from-item-container event-sign-form-setting">
               <div class="row">
@@ -271,11 +272,13 @@
               <h4 class="modal-title" id="myModalLabel">表单预览</h4>
             </div>
             <div id="preform-container">
+
               {{#if signForm}}
                 <div class="modal-body">
                   {{> quickForm schema=signForm preserveForm='false' id="contactForm"}}
                 </div>
               {{/if}}
+
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>

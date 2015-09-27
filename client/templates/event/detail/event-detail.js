@@ -34,7 +34,6 @@ Template.eventDetail.onRendered(function() {
 
   self.autorun(function() {
     var eid = FlowRouter.getParam('eid');
-    self.data.eid = eid;  // 存到template data 中
     // 订阅活动详情
     self.subscribe('eventDetailById', new Mongo.ObjectID(eid));
   });
@@ -58,6 +57,9 @@ Template.eventDetail.helpers({
   },
   "eventDetailDesc": function () {
     return this.desc;
+  },
+  'optionSignFormTips': function() {
+    return !!FlowRouter.getQueryParam('preview') ? '预览报名表单': '我要报名';
   },
   'eventTime': function () {
     var eventTime   = {},
@@ -85,7 +87,7 @@ Template.eventDetail.events({
   // 提交留言
   'click #submitComment': function(e) {
     e.preventDefault();
-    var eid = Template.currentData().eid;
+    var eid = FlowRouter.getParam('eid');
     var commentContent = $('#commentContent').val();
     var comment = {
       commentType: 'event',

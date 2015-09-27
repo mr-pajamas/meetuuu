@@ -267,8 +267,10 @@ Template.editEvent.events({
     e.preventDefault();
     var type = $(e.currentTarget).attr('data-type');
     var id = EditEvent.eventSignForm.addForm(type);
-    // focus
-    $("#title-" + id).focus();
+    // focus wait 500ms for tempate #each operation
+    Meteor.setTimeout(function() {
+      $("#title-" + id).focus();
+    }, 500);
   },
   // 预览活动
   'click .previewEventInfo': function(e) {
@@ -277,6 +279,5 @@ Template.editEvent.events({
     // 提取表单,表单信息在 helper signForm
     EditEvent.eventSignForm.setPreviewForm();
     EditEvent.previewEvent();
-    //$('#preview-sign-form-modal').modal('toggle');
   }
 });

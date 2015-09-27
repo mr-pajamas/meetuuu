@@ -688,6 +688,25 @@ EditEvent = (function() {
       forms[formIndex].options = options;
       this.forms.set(forms);
     },
+    checkValidation: function() {
+      var forms = this.forms.get();
+      var errFlag = false;
+      _.each(forms, function(form) {
+        if (errFlag) return;
+        if (!form.label) {
+          errFlag = true;
+          return;
+        }
+        _.each(form.options, function(option) {
+          if (errFlag) return;
+          if (!option.label) {
+            errFlag = true;
+          }
+        });
+      });
+      return errFlag;
+
+    },
     getForms: function() {
       return this.forms.get();
     }
@@ -729,6 +748,8 @@ EditEvent = (function() {
     if(!eventInfo.desc) {
       errorInfo = '请填写活动详情';return errorInfo;
     }
+    errorInfo = eventSignForm.checkValidation() ? '请补全报名表单' : '';
+    return errorInfo;
   };
 
   /**

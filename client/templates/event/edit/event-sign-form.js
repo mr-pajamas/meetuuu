@@ -11,11 +11,15 @@ Template.ESF_CUSTOM.events({
     var formId = $(e.currentTarget).attr('data-id');
     var container =  $('.custom-form-options-container-' + formId)[0];
     EditEvent.eventSignForm.addFormOption(formId);
-    //created by Chen yuan. 2015, 09, 27.
-    var totalDeletes = $(container).find(".delete-form-option");
-    if ($(totalDeletes).size() > 2) {
-       $(totalDeletes).removeAttr("disabled");
-    }
+
+    // wait 500ms for tempalte #each operation
+    Meteor.setTimeout(function() {
+      var totalDeletes = $(container).find(".delete-form-option");
+      if ($(totalDeletes).size() > 2) {
+        $(totalDeletes).removeAttr("disabled");
+      }
+    }, 500);
+
   },
   // 表单可选项的删除
   'click .delete-form-option': function(e) {
@@ -25,11 +29,15 @@ Template.ESF_CUSTOM.events({
     var container =  $('.custom-form-options-container-' + formId);
     EditEvent.eventSignForm.deleteFormOption(formId, optionId);
 
-    var totalDeletes = $(container).find(".delete-form-option");
-    // 多选项保留至少两个输入框
-    if ($(totalDeletes).size() < 3) {
-      $(totalDeletes).attr("disabled", "disabled");
-    }
+    // wait 500ms for tempalte #each operation
+    Meteor.setTimeout(function() {
+      var totalDeletes = $(container).find(".delete-form-option");
+      // 多选项保留至少两个输入框
+      if ($(totalDeletes).size() < 3) {
+        $(totalDeletes).attr("disabled", "disabled");
+      }
+    }, 500);
+
   },
   // 表单 label
   'blur .sign-form-label': function(e) {

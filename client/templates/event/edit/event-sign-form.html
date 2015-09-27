@@ -3,8 +3,6 @@
     <!-- 用来插入输入框类型的图片. created by ChenYuan.-->
     <span class="pull-left {{generateTypeClass type}}"></span>
 
-    <!-- 代码 1 -->
-
     <button class="btn pull-right btn-danger delete-custom-form" disabled="{{disabled}}" data-formId="{{id}}"><i class="fa fa-trash-o"></i></button>
     <div class="event-sign-form-input{{#if isMultiForm type}} new-added-form{{/if}}">
       <input type="text" class="form-control required sign-form-label" disabled="{{disabled}}" data-formId="{{id}}" id="title-{{id}}" placeholder="{{placeholder}}" value="{{label}}">
@@ -12,8 +10,6 @@
     {{#if isMultiForm type}}
       <div class="option-container">
         <div class="custom-form-options-container-{{id}}">
-
-          <!-- 代码 4 -->
 
           <!-- option container -->
           {{#each options}}
@@ -31,6 +27,7 @@
         <div  class="form-control input-added" id="title-{{id}}">添加{{#if isCheckBox type}}多选选项{{else}}单选选项{{/if}}</div>
       </div>
     {{/if}}
+
   </div>
 </template>
 
@@ -40,7 +37,7 @@
 <template name="custom_form_options">
   <div class="custom-form-options">
     <i class="pull-left fa {{#if isCheckBox type}}fa-square-o{{else}}fa-circle-o{{/if}} text-center tip-info"></i>
-    <!-- 代码 3 -->
+
     <button class="btn pull-right btn-default delete-form-option" data-formId="{{formId}}" data-optionId="{{id}}" title="删除该选项"><i class="fa fa-trash-o"></i></button>
     <div class="event-sign-form-input">
       <input type="text" class="form-control options-{{formId}} multiFormOptions" data-formId="{{formId}}" data-optionId="{{id}}" placeholder="{{placeholder}}" value="{{label}}"/>
