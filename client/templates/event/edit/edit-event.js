@@ -270,12 +270,13 @@ Template.editEvent.events({
     // focus
     $("#title-" + id).focus();
   },
-  // 预览表单
-  'click .previewSignForm': function(e) {
+  // 预览活动
+  'click .previewEventInfo': function(e) {
     e.preventDefault();
     // TODO 判断是否弹出信息
     // 提取表单,表单信息在 helper signForm
     EditEvent.eventSignForm.setPreviewForm();
-    $('#preview-sign-form-modal').modal('toggle');
+    EditEvent.previewEvent();
+    //$('#preview-sign-form-modal').modal('toggle');
   }
 });

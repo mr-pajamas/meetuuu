@@ -697,14 +697,44 @@ EditEvent = (function() {
   /**
    * 验证信息
    */
-  var validEventInfo = function() {
-
+  var validEventInfo = function(eventInfo) {
+    var errorInfo = '';
+    if(!eventInfo.title) {
+      errorInfo = '请填写活动标题，不少于5个字';return errorInfo;
+    }
+    if (!eventInfo.time) {
+      errorInfo = '请填写活动时间';return errorInfo;
+    }
+    if(!eventInfo.time.start) {
+      errorInfo = '请填写活动开始时间';return errorInfo;
+    }
+    if(!eventInfo.time.end) {
+      errorInfo = '请填写活动结束时间';return errorInfo;
+    }
+    if(!eventInfo.location.city) {
+      errorInfo = '请选择活动举办城市';return errorInfo;
+    }
+    if(!eventInfo.location.address) {
+      errorInfo = '请输入活动详细地址';return errorInfo;
+    }
+    if(!eventInfo.private && eventInfo.member === '') {
+      errorInfo = '请填写活动人数限制';return errorInfo;
+    }
+    if(!eventInfo.theme) {
+      errorInfo = '请选择活动主题';return errorInfo;
+    }
+    if(!eventInfo.tags || eventInfo.tags.length === 0) {
+      errorInfo = '请输入活动标签';return errorInfo;
+    }
+    if(!eventInfo.desc) {
+      errorInfo = '请填写活动详情';return errorInfo;
+    }
   };
 
   /**
-   * 保存活动
+   * 保存活动，内部方法
    */
-  var saveEvent = function() {
+  var __saveEvent = function(successCallback) {
     var eventInfo = {
       _id: new Mongo.ObjectID(FlowRouter.getParam('eid')),
       title: eventTitle.getTitle(),
@@ -715,6 +745,7 @@ EditEvent = (function() {
       location: {
         city: eventLocation.getSelectCityName(),
         address: eventLocation.getDetailAddress(),
+        // TODO 活动地址 经纬度
         lat: 1.11,
         lng: 2.22
       },
@@ -724,15 +755,42 @@ EditEvent = (function() {
       theme: eventTheme.getSelectedTheme(),
       tags: eventTags.getTags(),
       private: eventPrivate.getPrivateStatus(),
-      desc: eventDesc.getContent(),
+      desc: $.trim(eventDesc.getContent()),
       signForm: eventSignForm.getForms()
     };
     console.log(eventInfo);
+    var errMessage = validEventInfo(eventInfo);
+    if (errMessage) {
+      alert(errMessage);
+      return;
+    }
     Meteor.call('event.save', eventInfo, function(err, res) {
       if (!err && 0 === res.code) {
-        alert('保存成功');
+        console.log('活动保存成功');
+        successCallback && successCallback();
       }
     });
+  };
+
+  /**
+   * 保存活动，外部方法，带 alert 提示
+   */
+  var saveEvent = function() {
+    var alertSuccess = function() {
+      alert('活动保存成功');
+    }
+    __saveEvent(alertSuccess);
+  };
+
+  /**
+   * 预览活动
+   */
+  var previewEvent = function() {
+    var goToDetailPage = function() {
+      var eid = FlowRouter.getParam('eid');
+      FlowRouter.go('/event/detail/' + eid + '?preview=true');
+    }
+    __saveEvent(goToDetailPage);
   };
 
   var pureInit = function() {
@@ -770,6 +828,7 @@ EditEvent = (function() {
     eventDesc         : eventDesc,
     eventSignForm     : eventSignForm,
     saveEvent         : saveEvent,
+    previewEvent      : previewEvent,
     pureInit          : pureInit,
     InitWithData      : InitWithData
   }
