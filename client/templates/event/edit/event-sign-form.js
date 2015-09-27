@@ -1,3 +1,7 @@
+Template.ESF_CUSTOM.onRendered(function() {
+  // TODO
+});
+
 Template.ESF_CUSTOM.events({
   // 删除表单
   'click .delete-custom-form': function (e) {
