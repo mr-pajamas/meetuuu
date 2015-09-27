@@ -4,8 +4,7 @@
 Session.set("selectedCity", "上海");
 // 百度地图
 var bdmap = null;
-// 预览表单
-var previewForms = new ReactiveVar({});
+
 
 
 Template.editEvent.onRendered(function() {
@@ -13,24 +12,22 @@ Template.editEvent.onRendered(function() {
   // 构造event Id
   if (!FlowRouter.getParam('eid')) {
     FlowRouter.setParams({'eid': new Mongo.ObjectID()._str});
+    EditEvent.pureInit();
   } else {
     self.autorun(function() {
       var eid = new Mongo.ObjectID(FlowRouter.getParam('eid'));
-      self.subscribe('eventDetailById', eid, function(err) {
+      self.subscribe('eventDetailById', eid, function() {
         var eventInfo = Events.findOne({_id: eid});
         // 各类初始化动作
-        EditEvent.eventTitle.init(eventInfo.title);
-        EditEvent.eventTime.init('start-date', 'end-date', eventInfo.time.start, eventInfo.time.end, 30);
-        EditEvent.eventLocation.init(eventInfo.location.city, eventInfo.location.address);
-        EditEvent.eventPrivate.init(eventInfo.private);
-        EditEvent.eventMemberLimit.init(eventInfo.private ? 0 : eventInfo.member);
-        EditEvent.eventTheme.init(eventInfo.theme);
-        EditEvent.eventTags.init(eventInfo.tags);
-        EditEvent.eventDesc.init('event-desc', eventInfo.desc);
-        EditEvent.eventSignForm.init([]);
+        if (!eventInfo) {
+          EditEvent.pureInit();
+          return;
+        }
+        EditEvent.InitWithData(eventInfo);
       });
     });
   }
+
   // 初始化地图
   function initialize() {
     new BMap.Map('bdmap');
@@ -43,15 +40,11 @@ Template.editEvent.onRendered(function() {
     '&v=1.0&callback=initialize';
   document.body.appendChild(script);
 
-  // 富文本编辑器
-  //$('#event-desc').wysiwyg();
-
   // 自动补全提示
   Meteor.typeahead.inject();
-
-  // 初始化表单控件
-  //GeventSignForm.setContainerId('custom-form-container');
 });
+
+
 
 Template.registerHelper('generateTypeClass', function(type) {
   var typeClass = '';
@@ -77,10 +70,8 @@ Template.registerHelper('isMultiForm', function(type) {
 });
 
 
+
 Template.editEvent.helpers({
-  //eventInfo: function() {
-  //  return Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
-  //},
   // 活动标题
   eventTitle: function() {
     return EditEvent.eventTitle.getTitle();
@@ -152,7 +143,6 @@ Template.editEvent.helpers({
   selected: function(event, selectedSuggestion) {
     function insertTag(tag) {
       EditEvent.eventTags.addTag(tag);
-      //Blaze.renderWithData(Template.eventTag, tag, $('#selected-tag')[0]);
     }
     if (selectedSuggestion.type === 'new') {
       Meteor.call('insertNewTag', selectedSuggestion.value, function (err, tagId) {
@@ -200,7 +190,7 @@ Template.editEvent.events({
   'focus #event-detail-address': function(e) {
     $('#bdmap').slideDown({
       start: function () {
-        $(".event-map-container").show();       // modified by Chen yuan. 2015-09-18
+        $(".event-map-container").show();
       }
     });
     if (!bdmap) {
@@ -219,7 +209,7 @@ Template.editEvent.events({
     if (e.pageX < left || e.pageX > left + width || e.pageY < top || e.pageY > top + height) {
       $('#bdmap').slideUp({
         done: function () {
-          $(".event-map-container").hide();   // modified by Chen yuan. 2015-09-18
+          $(".event-map-container").hide();
         }
       });
     }
@@ -258,24 +248,19 @@ Template.editEvent.events({
       EditEvent.eventPrivate.setPublic();
     }
   },
+  // 活动人数
+  'blur #event-member-limit': function(e) {
+    EditEvent.eventMemberLimit.setCount($(e.target).val());
+  },
   // 活动主题选择
   'change .event-theme': function(e) {
     EditEvent.eventTheme.setSelectedTheme($(e.target).val());
   },
-  // 活动详情输入框  $('#event-desc').html()
-  //'blur #event-desc': function(e) {
-  //  EditEvent.eventDesc.setContent();
-  //},
-  'click #submitBaiscInfo': function(e) {
+  // 提交表单
+  'click #publishEvent': function(e) {
     e.preventDefault();
     e.stopPropagation();
-    var eventInfo = saveEventBaiscInfo();
-    console.log(eventInfo);
-    Meteor.call('event.save', eventInfo, function(err, res) {
-      if (!err && 0 === res.code) {
-        alert('保存成功');
-      }
-    });
+    EditEvent.saveEvent();
   },
   // 自定义表单控件-创建
   'click .custom-form-item': function(e) {
@@ -288,70 +273,9 @@ Template.editEvent.events({
   // 预览表单
   'click .previewSignForm': function(e) {
     e.preventDefault();
-    //var formInfo = GeventSignForm.getFromContent(),
-    //    errFlag = formInfo.errFlag,
-    //    form = formInfo.formSchema;
-
-    //if (errFlag) {
-    //  alert('信息填写不完全，表单创建失败');
-    //  return;
-    //}
-
-    // 提取表单
+    // TODO 判断是否弹出信息
+    // 提取表单,表单信息在 helper signForm
     EditEvent.eventSignForm.setPreviewForm();
     $('#preview-sign-form-modal').modal('toggle');
-    //previewForms.set(form);
   }
 });
-
-
-
-function saveEventBaiscInfo() {
-  var title = $('#event-name').val(),
-      startTime = $('.datetimepicker-start').datepicker('getDate'),
-      endTime = $('.datetimepicker-end').datepicker('getDate'),
-      cityName = Session.get('selectedCity'),
-      address = $('#event-detail-address').val(),
-      lnglat = bdmap && bdmap.getCenter(),
-      // TODO 海报 url
-      posterUrl = 'http://www.huodongxing.com/Content/v2.0/img/poster/school.jpg',
-      eventTheme = $('.event-theme').val(),
-      tags = GeventTag.getAllTags(),
-      private = !$('#event-private').prop("checked"),
-      desc = $('#event-desc').html(),
-      signFormInfo = GeventSignForm.getFromContent(),
-      signForm = signFormInfo.formSchemaForDataBase,
-      errFlag = signFormInfo.errFlag,
-      endDayTime = timeTrans($('#end-time').val()),
-      startDayTime = timeTrans($('#start-time').val()),
-      eventMemberLimit = 0;
-  if (errFlag) {
-    alert('信息填写不完全，表单创建失败');
-    return;
-  }
-  if (!private) {
-    eventMemberLimit = $('#event-member-limit').val() || 0;
-  }
-  var eventInfo = {
-    _id: new Mongo.ObjectID(FlowRouter.getParam('eid')),
-    title: title,
-    time: {
-      start: new Date((startTime.getTime() / 1000 + startDayTime) * 1000),
-      end: new Date((endTime.getTime() / 1000 + endDayTime) * 1000)
-    },
-    location: {
-      city: cityName,
-      address: address,
-      lat: lnglat.lat,
-      lng: lnglat.lng
-    },
-    poster: posterUrl,
-    member: eventMemberLimit,
-    theme: eventTheme,
-    tags: tags,
-    private: private,
-    desc: desc,
-    signForm: signForm
-  };
-  return eventInfo;
-}

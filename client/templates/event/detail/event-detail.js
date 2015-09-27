@@ -76,28 +76,7 @@ Template.eventDetail.helpers({
       return;
     }
     var forms = eventDetail.signForm,
-      signForm = {};
-    _.forEach(forms, function(form) {
-      var type = String;
-      if (form.isArr) {
-        type = [String];
-        delete form.isArr;
-      }
-      form.type = type;
-      var opt = form.opts;
-      delete form.opts;
-      if (
-        form.autoform &&
-        Object.prototype.toString.call(opt) === '[object Array]' &&
-        opt.length !== 0
-      ) {
-        form.autoform.options = opt;
-      }
-      var id = form.id;
-      delete form.id;
-      signForm[id] = form;
-    });
-
+      signForm = EditEvent.eventSignForm.setPreviewForm(forms);
     return new SimpleSchema(signForm);
   }
 });

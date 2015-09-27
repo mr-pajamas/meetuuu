@@ -7,7 +7,7 @@
 
     <button class="btn pull-right btn-danger delete-custom-form" disabled="{{disabled}}" data-formId="{{id}}"><i class="fa fa-trash-o"></i></button>
     <div class="event-sign-form-input{{#if isMultiForm type}} new-added-form{{/if}}">
-      <input type="text" class="form-control required sign-form-label" disabled="{{disabled}}" data-formId="{{id}}" id="title-{{id}}" placeholder="{{placeholder}}">
+      <input type="text" class="form-control required sign-form-label" disabled="{{disabled}}" data-formId="{{id}}" id="title-{{id}}" placeholder="{{placeholder}}" value="{{label}}">
     </div>
     {{#if isMultiForm type}}
       <div class="option-container">
@@ -43,7 +43,7 @@
     <!-- 代码 3 -->
     <button class="btn pull-right btn-default delete-form-option" data-formId="{{formId}}" data-optionId="{{id}}" title="删除该选项"><i class="fa fa-trash-o"></i></button>
     <div class="event-sign-form-input">
-      <input type="text" class="form-control options-{{formId}} multiFormOptions" data-formId="{{formId}}" data-optionId="{{id}}" placeholder="{{placeholder}}"/>
+      <input type="text" class="form-control options-{{formId}} multiFormOptions" data-formId="{{formId}}" data-optionId="{{id}}" placeholder="{{placeholder}}" value="{{label}}"/>
     </div>
   </div>
 </template>

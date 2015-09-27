@@ -468,6 +468,7 @@ EditEvent = (function() {
       this.content.set(content);
       this.inited = true;
     },
+    // 使用该方法提取活动详情
     getContent: function() {
       return this.contentContainerDom.get().html();
     },
@@ -552,8 +553,8 @@ EditEvent = (function() {
       this.setPreviewForm();
       this.inited = true;
     },
-    setPreviewForm: function() {
-      var forms = this.forms.get();
+    setPreviewForm: function(forms) {
+      var forms = forms || this.forms.get();
 
       var previewForm = {};
       _.each(forms, function(form) {
@@ -600,6 +601,7 @@ EditEvent = (function() {
       });
 
       this.previewForm.set(previewForm);
+      return previewForm;
     },
     getPreviewForm: function() {
       return this.previewForm.get();
@@ -703,7 +705,58 @@ EditEvent = (function() {
    * 保存活动
    */
   var saveEvent = function() {
+    var eventInfo = {
+      _id: new Mongo.ObjectID(FlowRouter.getParam('eid')),
+      title: eventTitle.getTitle(),
+      time: {
+        start: eventTime.getStartDateInISO(),
+        end: eventTime.getEndDateInISO()
+      },
+      location: {
+        city: eventLocation.getSelectCityName(),
+        address: eventLocation.getDetailAddress(),
+        lat: 1.11,
+        lng: 2.22
+      },
+      // TODO 海报
+      poster: 'http://www.huodongxing.com/Content/v2.0/img/poster/school.jpg',
+      member: eventMemberLimit.getCount(),
+      theme: eventTheme.getSelectedTheme(),
+      tags: eventTags.getTags(),
+      private: eventPrivate.getPrivateStatus(),
+      desc: eventDesc.getContent(),
+      signForm: eventSignForm.getForms()
+    };
+    console.log(eventInfo);
+    Meteor.call('event.save', eventInfo, function(err, res) {
+      if (!err && 0 === res.code) {
+        alert('保存成功');
+      }
+    });
+  };
 
+  var pureInit = function() {
+    eventTitle.init('');
+    eventTime.init('start-date', 'end-date', new Date(), new Date(), 30);
+    eventLocation.init('上海', '');
+    eventPrivate.init(false);
+    eventMemberLimit.init(0);
+    eventTheme.init('创业');
+    eventTags.init([]);
+    eventDesc.init('event-desc', '');
+    eventSignForm.init([]);
+  };
+
+  var InitWithData = function(eventInfo) {
+    EditEvent.eventTitle.init(eventInfo.title);
+    EditEvent.eventTime.init('start-date', 'end-date', eventInfo.time.start, eventInfo.time.end, 30);
+    EditEvent.eventLocation.init(eventInfo.location.city, eventInfo.location.address);
+    EditEvent.eventPrivate.init(eventInfo.private);
+    EditEvent.eventMemberLimit.init(eventInfo.private ? 0 : eventInfo.member);
+    EditEvent.eventTheme.init(eventInfo.theme);
+    EditEvent.eventTags.init(eventInfo.tags);
+    EditEvent.eventDesc.init('event-desc', eventInfo.desc);
+    EditEvent.eventSignForm.init(eventInfo.signForm);
   };
 
   return {
@@ -716,6 +769,8 @@ EditEvent = (function() {
     eventTags         : eventTags,
     eventDesc         : eventDesc,
     eventSignForm     : eventSignForm,
-    saveEvent         : saveEvent
+    saveEvent         : saveEvent,
+    pureInit          : pureInit,
+    InitWithData      : InitWithData
   }
 }());
