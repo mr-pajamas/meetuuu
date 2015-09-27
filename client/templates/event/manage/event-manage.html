@@ -2,6 +2,7 @@
   <header class="index-header">
     {{> header}}
   </header>
+  <!-- created by Chen Yuan. on 2015-09-25 -->
   <div class="container event-manage">
     <header class="clearfix">
       <h1 class="pull-left">
@@ -118,12 +119,14 @@
   {{> footerCompact}}
 </template>
 
+<!-- add new joined template. -->
+
 <template name="newJoined">
-  <li class="row">
-    <div class="col-md-1"><img class="personal-photo" src="{{personalPhoto}}" alt="个人头像"/></div>
-    <div class="col-md-1"><span class="name">{{name}}</span></div>
-    <div class="col-md-1"><span class="phone-number">{{phoneNumber}}</span></div>
-    <div class="col-md-2"><span class="join-time">{{joinTime}}</span></div>
-    <button class="btn btn-danger">拒绝</button>
+  <li>
+    <div class="col-md-1"><img class="personal-photo" src="{{personalPhoto}}" alt="photo"/></div>
+    <div class="col-md-3"><span class="name">{{name}}</span></div>
+    <div class="col-md-4"><span class="phone-number">{{phoneNumber}}</span></div>
+    <div class="col-md-3"><span class="join-time">{{joinTime}}</span></div>
+    <button class="btn">拒绝</button>
   </li>
 </template>
