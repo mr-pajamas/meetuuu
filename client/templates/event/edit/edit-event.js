@@ -27,6 +27,7 @@ Template.editEvent.onRendered(function() {
         EditEvent.eventTheme.init(eventInfo.theme);
         EditEvent.eventTags.init(eventInfo.tags);
         EditEvent.eventDesc.init('event-desc', eventInfo.desc);
+        EditEvent.eventSignForm.init([]);
       });
     });
   }
@@ -49,7 +50,30 @@ Template.editEvent.onRendered(function() {
   Meteor.typeahead.inject();
 
   // 初始化表单控件
-  GeventSignForm.setContainerId('custom-form-container');
+  //GeventSignForm.setContainerId('custom-form-container');
+});
+
+Template.registerHelper('generateTypeClass', function(type) {
+  var typeClass = '';
+  switch (type) {
+    case 'ESF_SINGLE_TEXT': typeClass = 'one-line-text';break;
+    case 'ESF_MULTI_TEXT': typeClass = 'multi-line-text';break;
+    case 'ESF_SELECT_RADIO': typeClass = 'radio-text';break;
+    case 'ESF_SELECT_CHECKBOX': typeClass = 'checkbox-text';break;
+    default : Meteor.Error('表单格式匹配失败'); break;
+  }
+  return typeClass;
+});
+
+Template.registerHelper('isCheckBox', function(type) {
+  return type === 'ESF_SELECT_CHECKBOX' ? true: false;
+});
+
+Template.registerHelper('isMultiForm', function(type) {
+  if (type === 'ESF_SELECT_RADIO' || type === 'ESF_SELECT_CHECKBOX') {
+    return true;
+  }
+  return false;
 });
 
 
@@ -107,10 +131,10 @@ Template.editEvent.helpers({
   eventDesc: function() {
     return EditEvent.eventDesc.getInitContent();
   },
-
-
-
-
+  // 活动表单
+  eventForms: function() {
+    return EditEvent.eventSignForm.getForms();
+  },
   tags: function(query, sync, callback) {
     Meteor.call('queryByName', query, {}, function(err, res) {
       if (err) {
@@ -142,12 +166,12 @@ Template.editEvent.helpers({
       insertTag(selectedSuggestion);
     }
   },
-  form: function() {
-    var schema = previewForms.get();
-    if (!schema) {
+  signForm: function() {
+    var formSimpleSchema = EditEvent.eventSignForm.getPreviewForm();
+    if (!formSimpleSchema) {
       return ;
     }
-    return new SimpleSchema(schema);
+    return new SimpleSchema(formSimpleSchema);
   }
 });
 
@@ -257,25 +281,26 @@ Template.editEvent.events({
   'click .custom-form-item': function(e) {
     e.preventDefault();
     var type = $(e.currentTarget).attr('data-type');
-    var id = GeventSignForm.createForm(type);
-
-    //created by Chenyuan, to focus on newly created input box. on 2015-09-21
+    var id = EditEvent.eventSignForm.addForm(type);
+    // focus
     $("#title-" + id).focus();
   },
   // 预览表单
   'click .previewSignForm': function(e) {
     e.preventDefault();
-    var formInfo = GeventSignForm.getFromContent(),
-        errFlag = formInfo.errFlag,
-        form = formInfo.formSchema;
+    //var formInfo = GeventSignForm.getFromContent(),
+    //    errFlag = formInfo.errFlag,
+    //    form = formInfo.formSchema;
 
-    if (errFlag) {
-      alert('信息填写不完全，表单创建失败');
-      return;
-    }
+    //if (errFlag) {
+    //  alert('信息填写不完全，表单创建失败');
+    //  return;
+    //}
 
+    // 提取表单
+    EditEvent.eventSignForm.setPreviewForm();
     $('#preview-sign-form-modal').modal('toggle');
-    previewForms.set(form);
+    //previewForms.set(form);
   }
 });
 

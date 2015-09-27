@@ -217,25 +217,12 @@
           <label class="col-md-2 control-label">报名表单&nbsp;</label>
 
           <div class="col-md-10">
-            <div class="event-sign-form-setting" data-type="ESF_SINGLE_TEXT">
-              <span class="pull-left one-line-text"></span>
-              <button class="btn pull-right btn-danger" disabled>
-                <i class="fa fa-trash-o"></i>
-              </button>
-              <div class="event-sign-form-input"><input type="text" class="form-control required" title="姓名" readonly
-                                                        placeholder="姓名" name="姓名"></div>
-            </div>
-            <div class="event-sign-form-setting" data-type="ESF_SINGLE_TEXT">
-              <span class="one-line-text pull-left"></span>
-              <button class="btn pull-right btn-danger" disabled>
-                <i class="fa fa-trash-o"></i>
-              </button>
-              <div class="event-sign-form-input"><input type="text" class="form-control required" title="电话" readonly
-                                                        placeholder="电话" name="电话"></div>
-            </div>
-
+            <!-- 代码 4 -->
             <div id="custom-form-container">
               <!-- container for evnet sign forms -->
+              {{#each eventForms}}
+                {{> ESF_CUSTOM}}
+              {{/each}}
             </div>
             <div class="empty-from-item-container event-sign-form-setting">
               <div class="row">
@@ -284,9 +271,9 @@
               <h4 class="modal-title" id="myModalLabel">表单预览</h4>
             </div>
             <div id="preform-container">
-              {{#if form}}
+              {{#if signForm}}
                 <div class="modal-body">
-                  {{> quickForm schema=form preserveForm='false' id="contactForm"}}
+                  {{> quickForm schema=signForm preserveForm='false' id="contactForm"}}
                 </div>
               {{/if}}
             </div>

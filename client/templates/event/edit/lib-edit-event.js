@@ -479,8 +479,216 @@ EditEvent = (function() {
   /**
    * 活动表单
    */
-  var eventSignForm = {
 
+  /* data struction
+  [
+    {
+      id: String,
+      type: String,
+      label: String,
+      placeholder: String,
+      options: [
+        {
+          id: String,
+          formId: String,
+          label: String,
+          placeholder: String
+        },
+      ]
+    },
+  ]
+  */
+  var eventSignForm = {
+    formTypes: {
+      'ESF_SINGLE_TEXT': {
+        title: '单行文本框',
+        type: 'ESF_SINGLE_TEXT',
+        singleText: true
+      },
+      'ESF_MULTI_TEXT': {
+        title: '多行文本框',
+        type: 'ESF_MULTI_TEXT',
+        multiText: true
+      },
+      'ESF_SELECT_RADIO': {
+        title: '单选框',
+        option: '单选选项',
+        type: 'ESF_SELECT_RADIO',
+        multi: true,
+        radioText: true
+      },
+      'ESF_SELECT_CHECKBOX': {
+        title: '多选框',
+        option: '多选选项',
+        type: 'ESF_SELECT_CHECKBOX',
+        multi: true,
+        checkboxText: true
+      }
+    },
+    forms: new ReactiveVar([]),
+    previewForm: new ReactiveVar({}),
+    inited: false,
+    init: function(forms) {
+      forms = forms || [];
+      if (forms.length === 0) {
+        forms = [
+          {
+            type: 'ESF_SINGLE_TEXT',
+            id: Meteor.uuid(),
+            label: '姓名',
+            placeholder: '姓名',
+            disabled: true
+          },
+          {
+            type: 'ESF_SINGLE_TEXT',
+            id: Meteor.uuid(),
+            label: '电话',
+            placeholder: '电话',
+            disabled: true
+          }
+        ];
+      }
+      this.forms.set(forms);
+      this.setPreviewForm();
+      this.inited = true;
+    },
+    setPreviewForm: function() {
+      var forms = this.forms.get();
+
+      var previewForm = {};
+      _.each(forms, function(form) {
+        var tempForm = {
+          label: form.label,
+          type: String
+        };
+        var options = [],
+            idx = 0;
+        if (form.type === 'ESF_SELECT_RADIO' || form.type === 'ESF_SELECT_CHECKBOX') {
+          options = form.options.map(function(option) {
+            return {
+              label: option.label,
+              value: idx++
+            };
+          });
+        }
+        switch (form.type) {
+          case 'ESF_SINGLE_TEXT':
+            break;
+          case 'ESF_MULTI_TEXT':
+            tempForm.autoform = {
+              rows: 5
+            };
+            break;
+          case 'ESF_SELECT_RADIO':
+            tempForm.autoform = {
+                type: "select-radio",
+                options: function () {
+                  return options;
+                }
+              }
+            break;
+          case 'ESF_SELECT_CHECKBOX':
+            tempForm.autoform = {
+              type: "select-checkbox",
+              options: function () {
+                return options;
+              }
+            }
+            break;
+        }
+        previewForm[form.id] = tempForm;
+      });
+
+      this.previewForm.set(previewForm);
+    },
+    getPreviewForm: function() {
+      return this.previewForm.get();
+    },
+    addForm: function(type) {
+      var forms = this.forms.get();
+      var id = Meteor.uuid();
+      var form = {
+        type: type,
+        id: id,
+        label: '',
+        placeholder: this.getPlaceholder(type)
+      };
+      if ('ESF_SELECT_CHECKBOX' === type || 'ESF_SELECT_RADIO' === type) {
+        form.options = [
+          {
+            formId: id,
+            label: '',
+            placeholder: '添加' + this.formTypes[type].option,
+            id: Meteor.uuid()
+          },
+          {
+            formId: id,
+            label: '',
+            placeholder: '添加' + this.formTypes[type].option,
+            id: Meteor.uuid()
+          }
+        ];
+      }
+      forms.push(form);
+      this.forms.set(forms);
+      return id;
+    },
+    getPlaceholder: function(type) {
+      var placeholder = '';
+      switch (type) {
+        case 'ESF_SINGLE_TEXT': placeholder = '单行文本';break;
+        case 'ESF_MULTI_TEXT': placeholder = '多行文本';break;
+        case 'ESF_SELECT_RADIO': placeholder = '单选项';break;
+        case 'ESF_SELECT_CHECKBOX': placeholder = '多选项';break;
+        default : Meteor.Error('表单格式匹配失败'); break;
+      }
+      return placeholder;
+    },
+    deleteFormById: function(formId) {
+      var forms = this.forms.get();
+      var index = _.indexOf(forms, _.findWhere(forms, {id : formId}));
+      forms.splice(index, 1);
+      this.forms.set(forms);
+    },
+    addFormLabel: function(formId, label) {
+      var forms = this.forms.get();
+      var index = _.indexOf(forms, _.findWhere(forms, {id : formId}));
+      forms[index].label = label;
+      this.forms.set(forms);
+    },
+    addFormOption: function(formId) {
+      var forms = this.forms.get();
+      var id = Meteor.uuid();
+      var index = _.indexOf(forms, _.findWhere(forms, {id : formId}));
+      forms[index].options.push({
+        label: '',
+        id: id,
+        placeholder: '添加' + this.formTypes[forms[index].type].option,
+        formId: forms[index].id,
+      });
+      this.forms.set(forms);
+    },
+    deleteFormOption: function(formId, optionId) {
+      var forms = this.forms.get();
+      var formIndex = _.indexOf(forms, _.findWhere(forms, {id : formId}));
+      var options = forms[formIndex].options;
+      var optionIndex = _.indexOf(options, _.findWhere(options, {id : optionId}));
+      options.splice(optionIndex, 1);
+      forms[formIndex].options = options;
+      this.forms.set(forms);
+    },
+    addFormOptionLabel: function(formId, optionId, label) {
+      var forms = this.forms.get();
+      var formIndex = _.indexOf(forms, _.findWhere(forms, {id : formId}));
+      var options = forms[formIndex].options;
+      var optionIndex = _.indexOf(options, _.findWhere(options, {id : optionId}));
+      options[optionIndex].label = label;
+      forms[formIndex].options = options;
+      this.forms.set(forms);
+    },
+    getForms: function() {
+      return this.forms.get();
+    }
   };
 
 
