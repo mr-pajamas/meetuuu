@@ -8,7 +8,7 @@
     <div class="container event-home">
       <div class="row">
 
-        <div class="col-md-9" style="position: relative; z-index: 10;">
+        <div class="col-md-9 main-container">
 
           {{#with eventDetail}}
             <section class="event-poster" id="poster">
@@ -74,7 +74,7 @@
               </div>
             </div>
             <!-- 包含两个template，评论以及隐藏的回复评论 -->
-              {{> eventComment}}
+            {{> eventComment}}
           </section>
         </div>
 
@@ -117,5 +117,8 @@
         </div>
       </div>
     </div>
+
+    <!-- created by Chen Yuan, add footer for this page. on 2015-09-22 -->
+    {{> footerCompact}}
   </div>
 </template>
