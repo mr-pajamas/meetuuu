@@ -1,0 +1,48 @@
+<template name="footerCustom">
+  <footer class="footer-custom footer-secondary">
+    <!-- 手机版本 -->
+    <div class="visible-xs-block">
+      <div class="footer-affix">
+        {{> Template.contentBlock}}
+      </div>
+      <div class="container">
+        <p class="footer-copyright small text-center">上海赛氪网络科技有限公司 版权所有 沪ICP备15033928号</p>
+      </div>
+    </div>
+
+    <!-- 平板、电脑版本 -->
+    <div class="hidden-xs">
+      <div class="container">
+        <div class="footer-callcenter pull-right"><i class="fa fa-phone fa-2x pull-left"></i> 客服热线 <strong>4000 000 000</strong><br><small>周一至周五 9:00-18:00</small></div>
+        <ul class="list-inline footer-links">
+          <li><a href="#">关于蜜柚</a></li>
+          <li><a href="#">蜜柚APP</a></li>
+          <li><a href="#">联系蜜柚</a></li>
+          <li><a href="#">条款与隐私</a></li>
+        </ul>
+        <p class="footer-copyright small">上海赛氪网络科技有限公司 版权所有 沪ICP备15033928号</p>
+      </div>
+    </div>
+  </footer>
+</template>
+
+<template name="footerCompact">
+  {{#footerCustom}}
+    <div class="container">
+      <div class="footer-compact-bar">
+        <div class="media footer-callcenter pull-right">
+          <div class="media-left">
+            <i class="fa fa-phone fa-2x media-object"></i>
+          </div>
+          <div class="media-body">
+            <h4 class="media-heading">4000 000 000</h4>
+            <p class="small">周一至周五 9:00-18:00</p>
+          </div>
+        </div>
+        <div class="footer-app">
+          <a href="#" class="btn btn-success btn-lg btn-block">下载APP</a>
+        </div>
+      </div>
+    </div>
+  {{/footerCustom}}
+</template>

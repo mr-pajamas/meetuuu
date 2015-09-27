@@ -6,6 +6,7 @@
 
   background-color: @bg;
   border-color: @border;
+  color: @color;
 
   .footer-nav {
     color: @color;
@@ -31,9 +32,14 @@
     }
   }
 
+  .footer-affix {
+    background-color: @bg;
+  }
+
   .footer-callcenter {
     color: @heading-color;
-    strong {
+    strong,
+    .media-heading {
       color: @color;
     }
   }
