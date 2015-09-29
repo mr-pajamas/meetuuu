@@ -19,6 +19,15 @@
   });
 }());
 
+Template.eventDetail.onCreated(function () {
+  var template = this;
+  template.autorun(function() {
+    var eid = FlowRouter.getParam('eid');
+    // 订阅活动详情
+    template.subscribe('eventDetailById', new Mongo.ObjectID(eid));
+  });
+});
+
 Template.eventDetail.onRendered(function() {
   var self = this;
 
@@ -30,13 +39,7 @@ Template.eventDetail.onRendered(function() {
   });
 
   // affix event.
-  $(".fixed-bar-wrap").affix();
-
-  self.autorun(function() {
-    var eid = FlowRouter.getParam('eid');
-    // 订阅活动详情
-    self.subscribe('eventDetailById', new Mongo.ObjectID(eid));
-  });
+  $(".fixed-bar-wrap").affix(); // TODO: 要做bottom
 });
 
 //created by Chen Yuan.
