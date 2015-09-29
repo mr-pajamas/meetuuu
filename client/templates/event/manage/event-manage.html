@@ -77,7 +77,25 @@
               </dd>
             </dl>
             <hr/>
-            <button class="btn btn-primary" id="event-code">活动二维码</button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="eventQrcodeModal" tabindex="-1" role="dialog" aria-labelledby="eventQrcode">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">活动二维码</h4>
+                  </div>
+                  <div class="center-block">
+                    <div id="eventQrcode"></div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-primary" id="event-code" data-toggle="modal" data-target="#eventQrcodeModal">活动二维码</button>
             <span id="event-cancel">取消活动</span>
           </section>
           <!-- 报名管理 -->
