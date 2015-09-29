@@ -6,13 +6,13 @@
   <div class="container event-manage">
     <header class="clearfix">
       <h1 class="pull-left">
-        <p>单身酒吧之夜 <span class="label label-info">审核中</span></p>
-        <a href="http://t.cn/Ry6ludE" class="event-manage-url">http://t.cn/Ry6ludE</a>
+        <p>{{eventInfo.title}} <span class="label label-info">审核中</span></p>
+        <a href="{{eventShortUrl}}" class="event-manage-url">{{eventShortUrl}}</a>
       </h1>
       <ul class="list-inline pull-right">
-        <li><button class="btn btn-default event-preview"><span class="fa fa-eye"></span> 查看</button></li>
+        <li><a href="/event/detail/{{eventInfo._id._str}}" class="btn btn-default event-preview"><span class="fa fa-eye"></span> 查看</a></li>
         <li>
-          <button class="btn btn-default event-edit"><span class="fa fa-pencil-square-o"> 编辑</span></button>
+          <a href="/event/edit/{{eventInfo._id._str}}" class="btn btn-default event-edit"><span class="fa fa-pencil-square-o"> 编辑</span></a>
         </li>
       </ul>
     </header>
@@ -32,31 +32,31 @@
               <div class="tr">
                 <div class="td">
                   <div class="table-cell">
-                    <div class="quantity" id="join-quantity">0</div>
+                    <div class="quantity" id="join-quantity">{{eventSignFormCount}}</div>
                     <div class="item">报名</div>
                   </div>
                 </div>
                 <div class="td">
                   <div class="table-cell">
-                    <div class="quantity" id="scan-quantity">12</div>
+                    <div class="quantity" id="scan-quantity">{{eventInfo.readCount}}</div>
                     <div class="item">阅读</div>
                   </div>
                 </div>
                 <div class="td">
                   <div class="table-cell">
-                    <div class="quantity" id="share-quantity">1</div>
+                    <div class="quantity" id="share-quantity">{{eventInfo.shareCount}}</div>
                     <div class="item">分享</div>
                   </div>
                 </div>
                 <div class="td">
                   <div class="table-cell">
-                    <div class="quantity" id="comment-quantity">2</div>
+                    <div class="quantity" id="comment-quantity">{{eventCommentCount}}</div>
                     <div class="item">留言</div>
                   </div>
                 </div>
                 <div class="td">
                   <div class="table-cell">
-                    <div class="quantity" id="concern-quantity">0</div>
+                    <div class="quantity" id="concern-quantity">{{eventInfo.watchCount}}</div>
                     <div class="item">关注</div>
                   </div>
                 </div>
@@ -64,20 +64,38 @@
             </div>
             <dl class="dl-horizontal">
               <dt>活动时间:</dt>
-              <dd id="event-date-time">2015.09.23星期三 19:00 ~ 09.23星期四 16:00</dd>
+              <dd id="event-date-time">{{formatTime eventTime.start}} ~ {{formatTime eventTime.end}}</dd>
               <dt>活动地点:</dt>
-              <dd id="event-location">上海国定东路200号</dd>
+              <dd id="event-location">{{eventInfo.location.city}}&nbsp;{{eventInfo.location.address}}</dd>
               <dt>活动人数:</dt>
-              <dd><span id="event-joined-persons">90</span> / <span id="event-persons-limit">200</span></dd>
+              <dd><span id="event-joined-persons">{{eventSignFormCount}}</span> / <span id="event-persons-limit">{{eventInfo.member}}</span></dd>
               <dt>标签:</dt>
               <dd id="event-tags">
-                <span class="label label-default">吃货</span>
-                <span class="label label-default">月饼</span>
-                <span class="label label-default">中秋</span>
+                {{#each eventInfo.tags}}
+                    <span class="label label-default" id="{{_id}}">{{name}}</span>
+                {{/each}}
               </dd>
             </dl>
             <hr/>
-            <button class="btn btn-primary" id="event-code">活动二维码</button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="eventQrcodeModal" tabindex="-1" role="dialog" aria-labelledby="eventQrcode">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">活动二维码</h4>
+                  </div>
+                  <div class="center-block">
+                    <div id="eventQrcode"></div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-primary" id="event-code" data-toggle="modal" data-target="#eventQrcodeModal">活动二维码</button>
             <span id="event-cancel">取消活动</span>
           </section>
           <!-- 报名管理 -->
