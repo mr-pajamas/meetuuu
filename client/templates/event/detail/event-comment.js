@@ -46,6 +46,7 @@ Template.eventComment.events({
     $('#replyComment-' + cid).slideDown({
       done: function () {
         template.find('textarea').focus();
+        $(window).scroll();
       }
     });
   },
@@ -53,7 +54,11 @@ Template.eventComment.events({
   'click .cancelReply': function(e) {
     e.preventDefault();
     var cid = $(e.target).attr('data-id');
-    $('#replyComment-' + cid).slideUp();
+    $('#replyComment-' + cid).slideUp({
+      done: function () {
+        $(window).scroll();
+      }
+    });
     $('#replyContainer-' + cid).show();
   },
   // 提交对留言的评论

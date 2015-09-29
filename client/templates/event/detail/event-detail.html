@@ -5,9 +5,10 @@
     <div class="container event-home">
       {{#if Template.subscriptionsReady}}
 
+
         <div class="row">
 
-          <div class="col-md-9" style="position: relative; z-index: 10;">
+          <div class="col-sm-9 col-xs-12 main-container">
 
             {{#with eventDetail}}
               <section class="event-poster" id="poster">
@@ -101,17 +102,27 @@
     <div class="container fixed-bar-wrap affix">
       <!-- 活动详情导航Tab -->
       <div class="row">
-        <div class="event-sidebar col-md-3 col-md-offset-9 hidden-xs hidden-sm">
+        <div class="event-sidebar col-sm-3 col-sm-offset-9">
           <div class="content" id="navbar-tobe-fixed">
             <ul class="nav nav-stacked" id="fixed-sidebar">
-              <li id="nav-poster" role="presentation"><a href="#poster">主题海报</a></li>
-              <li id="nav-information" role="presentation"><a href="#information">活动详情</a></li>
-              <li id="nav-comment" role="presentation"><a href="#comment">留言</a></li>
-              <li id="nav-join"><a href="" data-toggle="modal" data-target="#joinEventFormModal">{{optionSignFormTips}}</a></li>
+              <li role="presentation"><a href="#poster">主题海报</a></li>
+              <li role="presentation"><a href="#information">活动详情</a></li>
+              <li role="presentation"><a href="#comment">留言</a></li>
+              <li id="nav-join" class="hidden-xs"><a href="" data-toggle="modal" data-target="#joinEventFormModal">{{optionSignFormTips}}</a></li>
             </ul>
           </div>
         </div>
       </div>
     </div>
   </div>
+</template>
+
+<template name="eventDetailAffixFooter">
+  {{#footerCustom affix=true}}
+    <div class="event-detail-footer">
+    	<section class="visible-xs-block mobile-join-wrap text-center">
+			<button class="btn btn-lg btn-success mobile-join" data-toggle="modal" data-target="#joinEventFormModal">报名参加</button>
+		</section>
+    </div>
+  {{/footerCustom}}
 </template>
