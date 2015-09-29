@@ -21,7 +21,6 @@
         <ul class="nav nav-tabs nav-stacked" role="tablist">
           <li role="presentation" class="active"><a href="#basic-information" aria-controls="basic-information" role="tab" data-toggle="tab">基本信息</a></li>
           <li role="presentation"><a href="#join-manage" aria-controls="join-manage" role="tab" data-toggle="tab">报名管理</a></li>
-          <li role="presentation"><a href="#advanced-settings" aria-controls="advanced-settings" role="tab" data-toggle="tab">高级设置</a></li>
         </ul>
       </aside>
       <main class="col-md-9">
@@ -75,6 +74,8 @@
                     <span class="label label-default" id="{{_id}}">{{name}}</span>
                 {{/each}}
               </dd>
+              <dt>可见性:</dt>
+              <dd id="visibility">公开活动</dd>
             </dl>
             <hr/>
 
@@ -124,10 +125,6 @@
                 <button class="btn">拒绝</button>
               </li>
             </ul>
-          </section>
-          <!-- 高级设置 -->
-          <section id="advanced-settings" class="tab-pane" role="tabpanel">
-
           </section>
         </div>
       </main>
