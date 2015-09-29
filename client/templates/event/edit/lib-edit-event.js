@@ -560,15 +560,16 @@ EditEvent = (function() {
       _.each(forms, function(form) {
         var tempForm = {
           label: form.label,
-          type: String
+          type: form.type === 'ESF_SELECT_CHECKBOX' ? [String] : String
         };
         var options = [],
-            idx = 0;
+            idx = -1;
         if (form.type === 'ESF_SELECT_RADIO' || form.type === 'ESF_SELECT_CHECKBOX') {
           options = form.options.map(function(option) {
+            idx += 1;
             return {
               label: option.label,
-              value: idx++
+              value: idx.toString()
             };
           });
         }
