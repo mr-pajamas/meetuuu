@@ -24,7 +24,12 @@ Template.eventDetail.onCreated(function () {
   template.autorun(function() {
     var eid = FlowRouter.getParam('eid');
     // 订阅活动详情
-    template.subscribe('eventDetailById', new Mongo.ObjectID(eid));
+    template.subscribe('eventDetailById', new Mongo.ObjectID(eid), function () {
+      Tracker.afterFlush(function () {
+        $(".event-sidebar").fadeTo("fast", 1);
+        $(".mobile-join-wrap").fadeTo("fast", 1);
+      });
+    });
   });
 });
 
@@ -117,7 +122,7 @@ Template.eventDetail.events({
       target = target.length ? target : $('[name=' + that.hash.slice(1) + ']');
       if (target.length) {
         $('body').animate({
-          scrollTop: target.offset().top - $('.navbar-fixed-top').outerHeight()
+          scrollTop: target.offset().top - $(".event-home").offset().top
         }, 300);
       }
     }
