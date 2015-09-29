@@ -9,6 +9,9 @@ Template.eventManage.onRendered(function() {
   getShortUrl(eventShortUrl, url, function(surl) {
     // 活动二维码
     $('#eventQrcode').qrcode({width: 200, height: 200, text: surl});
+    // 将 canvas 导入 a 标签，提供下载功能
+    var dataURL = $('#eventQrcode').find('canvas')[0].toDataURL();
+    $('#eventQrcodeDownLoad').attr('href', dataURL);
   });
 
   self.autorun(function () {
