@@ -1,7 +1,4 @@
 <template name="eventManage">
-  <header class="index-header">
-    {{> header}}
-  </header>
   <!-- created by Chen Yuan. on 2015-09-25 -->
   <div class="container event-manage">
     <header class="clearfix">
@@ -71,7 +68,7 @@
               <dt>标签:</dt>
               <dd id="event-tags">
                 {{#each eventInfo.tags}}
-                    <span class="label label-default" id="{{_id}}">{{name}}</span>
+                  <span class="label label-default" id="{{_id}}">{{name}}</span>
                 {{/each}}
               </dd>
               <dt>可见性:</dt>
@@ -102,42 +99,151 @@
           <!-- 报名管理 -->
           <section id="join-manage" class="tab-pane" role="tabpanel">
             <p><span id="number-of-joined">199</span> 人报名</p>
-            <ul class="list-unstyled" id="joined-persons">
-              <li>
-                <div class="col-md-1"><img class="personal-photo" src="/714468542.jpg" alt="photo"/></div>
-                <div class="col-md-3"><span class="name">王翠花</span></div>
-                <div class="col-md-4"><span class="phone-number">137114855698</span></div>
-                <div class="col-md-3"><span class="join-time">2015-09-25 10:31:42</span></div>
-                <button class="btn">拒绝</button>
+            <ul class="list-unstyled panel-group" id="joined-persons">
+              <li class="panel panel-default">
+                <!-- panel-heading需要预留data-target, 就是这种形式，最后的是列表的序号-->
+                <div class="panel-heading" data-target="#panel0">
+                  <div class="col-md-1"><img class="personal-photo" src="/714468542.jpg" alt="photo"/></div>
+                  <div class="col-md-3"><span class="name">王翠花</span></div>
+                  <div class="col-md-4"><span class="phone-number">137114855698</span></div>
+                  <div class="col-md-3"><span class="join-time">2015-09-25 10:31:42</span></div>
+                  <button class="btn btn-default refuse">拒绝</button>
+                </div>
+                <!-- panel-collapse 需要增加 data-target　想对应的id, 这里放置报名表单-->
+                <div class="panel-collapse collapse" id="panel0">
+                  <div class="panel-body">
+                    <ul class="list-unstyled">
+                      <li class="clearfix">
+                        <div class="col-sm-3 col-sm-offset-1">个人爱好</div>
+                        <div class="col-sm-8">足球、排球、跑步、篮球</div>
+                      </li>
+                      <li class="clearfix">
+                        <div class="col-sm-3 col-sm-offset-1">性别</div>
+                        <div class="col-sm-8">男</div>
+                      </li>
+                      <li class="clearfix">
+                        <div class="col-sm-3 col-sm-offset-1">特长</div>
+                        <div class="col-sm-8">钢琴、英语、计算机</div>
+                      </li>
+                      <li class="clearfix">
+                        <div class="col-sm-3 col-sm-offset-1">邮箱</div>
+                        <div class="col-sm-8">123456789@qq.com</div>
+                      </li>
+                      <li class="clearfix">
+                        <div class="col-sm-3 col-sm-offset-1">喜欢的歌手</div>
+                        <div class="col-sm-8">衬衣孙、周杰伦、me</div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </li>
-              <li>
-                <div class="col-md-1"><img class="personal-photo" src="/714468542.jpg" alt="photo"/></div>
-                <div class="col-md-3"><span class="name">王翠花</span></div>
-                <div class="col-md-4"><span class="phone-number">137114855698</span></div>
-                <div class="col-md-3"><span class="join-time">2015-09-25 10:31:42</span></div>
-                <button class="btn">拒绝</button>
+              <li class="panel panel-default">
+                <div class="panel-heading" data-target="#panel1">
+                  <div class="col-md-1"><img class="personal-photo" src="/714468542.jpg" alt="photo"/></div>
+                  <div class="col-md-3"><span class="name">王翠花</span></div>
+                  <div class="col-md-4"><span class="phone-number">137114855698</span></div>
+                  <div class="col-md-3"><span class="join-time">2015-09-25 10:31:42</span></div>
+                  <button class="btn btn-default refuse">拒绝</button>
+                </div>
+                <div class="panel-collapse collapse" id="panel1">
+                  <div class="panel-body">
+                    <ul class="list-unstyled">
+                      <li class="clearfix">
+                        <div class="col-sm-3 col-sm-offset-1">个人爱好</div>
+                        <div class="col-sm-8">足球、排球、跑步、篮球</div>
+                      </li>
+                      <li class="clearfix">
+                        <div class="col-sm-3 col-sm-offset-1">性别</div>
+                        <div class="col-sm-8">男</div>
+                      </li>
+                      <li class="clearfix">
+                        <div class="col-sm-3 col-sm-offset-1">特长</div>
+                        <div class="col-sm-8">钢琴、英语、计算机</div>
+                      </li>
+                      <li class="clearfix">
+                        <div class="col-sm-3 col-sm-offset-1">邮箱</div>
+                        <div class="col-sm-8">123456789@qq.com</div>
+                      </li>
+                      <li class="clearfix">
+                        <div class="col-sm-3 col-sm-offset-1">喜欢的歌手</div>
+                        <div class="col-sm-8">衬衣孙、周杰伦、me</div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </li>
-              <li>
-                <div class="col-md-1"><img class="personal-photo" src="/714468542.jpg" alt="photo"/></div>
-                <div class="col-md-3"><span class="name">王翠花</span></div>
-                <div class="col-md-4"><span class="phone-number">137114855698</span></div>
-                <div class="col-md-3"><span class="join-time">2015-09-25 10:31:42</span></div>
-                <button class="btn">拒绝</button>
+              <li class="panel panel-default">
+                <div class="panel-heading" data-target="#panel2">
+                  <div class="col-md-1"><img class="personal-photo" src="/714468542.jpg" alt="photo"/></div>
+                  <div class="col-md-3"><span class="name">王翠花</span></div>
+                  <div class="col-md-4"><span class="phone-number">137114855698</span></div>
+                  <div class="col-md-3"><span class="join-time">2015-09-25 10:31:42</span></div>
+                  <button class="btn btn-default refuse">拒绝</button>
+                </div>
+                <div class="panel-collapse collapse" id="panel2">
+                  <div class="panel-body">
+                    <ul class="list-unstyled">
+                      <li class="clearfix">
+                        <div class="col-sm-3 col-sm-offset-1">个人爱好</div>
+                        <div class="col-sm-8">足球、排球、跑步、篮球</div>
+                      </li>
+                      <li class="clearfix">
+                        <div class="col-sm-3 col-sm-offset-1">性别</div>
+                        <div class="col-sm-8">男</div>
+                      </li>
+                      <li class="clearfix">
+                        <div class="col-sm-3 col-sm-offset-1">特长</div>
+                        <div class="col-sm-8">钢琴、英语、计算机</div>
+                      </li>
+                      <li class="clearfix">
+                        <div class="col-sm-3 col-sm-offset-1">邮箱</div>
+                        <div class="col-sm-8">123456789@qq.com</div>
+                      </li>
+                      <li class="clearfix">
+                        <div class="col-sm-3 col-sm-offset-1">喜欢的歌手</div>
+                        <div class="col-sm-8">衬衣孙、周杰伦、me</div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </li>
             </ul>
+
+            <!-- Modal for refuse buttons -->
+            <div id="refuseModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="refuse">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    拒绝
+                  </div>
+                  <div class="modal-body">
+                    <p>拒绝理由:</p>
+                    <textarea name="refuse-reason" id="refuse-reason-form" rows="5"></textarea>
+                    <div class="checkbox text-danger">
+                      <label>
+                        <input id="refuse-forever" type="checkbox"/>
+                        永久拒绝
+                      </label>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-danger">拒绝</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </section>
         </div>
       </main>
     </div>
   </div>
-
-  {{> footerCompact}}
 </template>
 
 <!-- add new joined template. -->
 
 <template name="newJoined">
-  <li>
+  <li class="panel panel-default">
     <div class="col-md-1"><img class="personal-photo" src="{{personalPhoto}}" alt="photo"/></div>
     <div class="col-md-3"><span class="name">{{name}}</span></div>
     <div class="col-md-4"><span class="phone-number">{{phoneNumber}}</span></div>
