@@ -5,9 +5,10 @@
     joinEvent: {
       // 人工提交，便于添加 eventId 提交
       onSubmit: function(doc) {
-        doc.eventId = FlowRouter.getParam('eid');
-        var self = this;
-        Meteor.call('submitJoinForm', doc, function(err, res) {
+        var eventSignInfo = {};
+        eventSignInfo.eventId = FlowRouter.getParam('eid');
+        eventSignInfo.signForm = doc;
+        Meteor.call('submitJoinForm', eventSignInfo, function(err, res) {
           if (!err && res.code === 0) {
             alert('报名成功');
             $('#joinEventFormModal').modal('hide');

@@ -97,117 +97,15 @@
             <button class="btn btn-primary" id="event-code" data-toggle="modal" data-target="#eventQrcodeModal">活动二维码</button>
             <span id="event-cancel">取消活动</span>
           </section>
+
+
           <!-- 报名管理 -->
           <section id="join-manage" class="tab-pane" role="tabpanel">
-            <p><span id="number-of-joined">199</span> 人报名</p>
+            <p><span id="number-of-joined">{{eventSignFormCount}}</span> 人报名</p>
             <ul class="list-unstyled panel-group" id="joined-persons">
-              <li class="panel panel-default">
-                <!-- panel-heading需要预留data-target, 就是这种形式，最后的是列表的序号-->
-                <div class="panel-heading" data-target="#panel0">
-                  <div class="col-md-1"><img class="personal-photo" src="/714468542.jpg" alt="photo"/></div>
-                  <div class="col-md-3"><span class="name">王翠花</span></div>
-                  <div class="col-md-4"><span class="phone-number">137114855698</span></div>
-                  <div class="col-md-3"><span class="join-time">2015-09-25 10:31:42</span></div>
-                  <button class="btn btn-default refuse">拒绝</button>
-                </div>
-                <!-- panel-collapse 需要增加 data-target　想对应的id, 这里放置报名表单-->
-                <div class="panel-collapse collapse" id="panel0">
-                  <div class="panel-body">
-                    <ul class="list-unstyled">
-                      <li class="clearfix">
-                        <div class="col-sm-3 col-sm-offset-1">个人爱好</div>
-                        <div class="col-sm-8">足球、排球、跑步、篮球</div>
-                      </li>
-                      <li class="clearfix">
-                        <div class="col-sm-3 col-sm-offset-1">性别</div>
-                        <div class="col-sm-8">男</div>
-                      </li>
-                      <li class="clearfix">
-                        <div class="col-sm-3 col-sm-offset-1">特长</div>
-                        <div class="col-sm-8">钢琴、英语、计算机</div>
-                      </li>
-                      <li class="clearfix">
-                        <div class="col-sm-3 col-sm-offset-1">邮箱</div>
-                        <div class="col-sm-8">123456789@qq.com</div>
-                      </li>
-                      <li class="clearfix">
-                        <div class="col-sm-3 col-sm-offset-1">喜欢的歌手</div>
-                        <div class="col-sm-8">衬衣孙、周杰伦、me</div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-              <li class="panel panel-default">
-                <div class="panel-heading" data-target="#panel1">
-                  <div class="col-md-1"><img class="personal-photo" src="/714468542.jpg" alt="photo"/></div>
-                  <div class="col-md-3"><span class="name">王翠花</span></div>
-                  <div class="col-md-4"><span class="phone-number">137114855698</span></div>
-                  <div class="col-md-3"><span class="join-time">2015-09-25 10:31:42</span></div>
-                  <button class="btn btn-default refuse">拒绝</button>
-                </div>
-                <div class="panel-collapse collapse" id="panel1">
-                  <div class="panel-body">
-                    <ul class="list-unstyled">
-                      <li class="clearfix">
-                        <div class="col-sm-3 col-sm-offset-1">个人爱好</div>
-                        <div class="col-sm-8">足球、排球、跑步、篮球</div>
-                      </li>
-                      <li class="clearfix">
-                        <div class="col-sm-3 col-sm-offset-1">性别</div>
-                        <div class="col-sm-8">男</div>
-                      </li>
-                      <li class="clearfix">
-                        <div class="col-sm-3 col-sm-offset-1">特长</div>
-                        <div class="col-sm-8">钢琴、英语、计算机</div>
-                      </li>
-                      <li class="clearfix">
-                        <div class="col-sm-3 col-sm-offset-1">邮箱</div>
-                        <div class="col-sm-8">123456789@qq.com</div>
-                      </li>
-                      <li class="clearfix">
-                        <div class="col-sm-3 col-sm-offset-1">喜欢的歌手</div>
-                        <div class="col-sm-8">衬衣孙、周杰伦、me</div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-              <li class="panel panel-default">
-                <div class="panel-heading" data-target="#panel2">
-                  <div class="col-md-1"><img class="personal-photo" src="/714468542.jpg" alt="photo"/></div>
-                  <div class="col-md-3"><span class="name">王翠花</span></div>
-                  <div class="col-md-4"><span class="phone-number">137114855698</span></div>
-                  <div class="col-md-3"><span class="join-time">2015-09-25 10:31:42</span></div>
-                  <button class="btn btn-default refuse">拒绝</button>
-                </div>
-                <div class="panel-collapse collapse" id="panel2">
-                  <div class="panel-body">
-                    <ul class="list-unstyled">
-                      <li class="clearfix">
-                        <div class="col-sm-3 col-sm-offset-1">个人爱好</div>
-                        <div class="col-sm-8">足球、排球、跑步、篮球</div>
-                      </li>
-                      <li class="clearfix">
-                        <div class="col-sm-3 col-sm-offset-1">性别</div>
-                        <div class="col-sm-8">男</div>
-                      </li>
-                      <li class="clearfix">
-                        <div class="col-sm-3 col-sm-offset-1">特长</div>
-                        <div class="col-sm-8">钢琴、英语、计算机</div>
-                      </li>
-                      <li class="clearfix">
-                        <div class="col-sm-3 col-sm-offset-1">邮箱</div>
-                        <div class="col-sm-8">123456789@qq.com</div>
-                      </li>
-                      <li class="clearfix">
-                        <div class="col-sm-3 col-sm-offset-1">喜欢的歌手</div>
-                        <div class="col-sm-8">衬衣孙、周杰伦、me</div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
+              {{#each eventSignForms}}
+                {{> joinForm this}}
+              {{/each}}
             </ul>
 
             <!-- Modal for refuse buttons -->
@@ -229,11 +127,12 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-danger">拒绝</button>
+                    <button type="button" class="btn btn-danger" id="denySignRequest">拒绝</button>
                   </div>
                 </div>
               </div>
             </div>
+
           </section>
         </div>
       </main>
@@ -241,14 +140,27 @@
   </div>
 </template>
 
-<!-- add new joined template. -->
 
-<template name="newJoined">
+<template name="joinForm">
   <li class="panel panel-default">
-    <div class="col-md-1"><img class="personal-photo" src="{{personalPhoto}}" alt="photo"/></div>
-    <div class="col-md-3"><span class="name">{{name}}</span></div>
-    <div class="col-md-4"><span class="phone-number">{{phoneNumber}}</span></div>
-    <div class="col-md-3"><span class="join-time">{{joinTime}}</span></div>
-    <button class="btn">拒绝</button>
+    <div class="panel-heading" data-target="#pane{{_id}}">
+      <div class="col-md-1"><img class="personal-photo" src="/714468542.jpg" alt="photo"/></div>
+      <div class="col-md-3"><span class="name">{{cname}}</span></div>
+      <div class="col-md-4"><span class="phone-number">{{telephone}}</span></div>
+      <div class="col-md-3"><span class="join-time">2015-09-10</span></div>
+      <button class="btn btn-default refuse" data-id="{{_id}}">拒绝</button>
+    </div>
+    <div class="panel-collapse collapse" id="pane{{_id}}">
+      <div class="panel-body">
+        <ul class="list-unstyled">
+          {{#each signForm}}
+            <li class="clearfix">
+              <div class="col-sm-3 col-sm-offset-1">{{label}}</div>
+              <div class="col-sm-8">{{value}}</div>
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
   </li>
 </template>

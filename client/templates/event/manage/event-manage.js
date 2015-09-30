@@ -48,6 +48,9 @@ Template.eventManage.helpers({
   },
   'eventSignFormCount': function() {
     return JoinForm.find({'eventId': FlowRouter.getParam('eid')}).count();
+  },
+  'eventSignForms': function() {
+    return JoinForm.find({'eventId': FlowRouter.getParam('eid')});
   }
 });
 
@@ -64,9 +67,32 @@ Template.eventManage.events({
   },
   "click .refuse": function (e) {
     e.stopPropagation();
+    var id = $(e.target).attr('data-id');
+    $('#denySignRequest').attr('data-id', id);
     $("#refuseModal").modal()
-      .on("hidden.bs.modal", function (e) {
-        //data remove here.
+      .on('hidden.bs.modal', function() {
+        $("#refuse-reason-form").val('');
+        $('#refuse-forever').attr("checked", false);
       });
+  },
+  "click #denySignRequest": function() {
+    var id = $('#denySignRequest').attr('data-id');
+    var denyResult = $("#refuse-reason-form").val();
+    var refuseForever = $('#refuse-forever').prop("checked");
+    var denyInfo = {
+      id: id,
+      result: denyResult,
+      forever: refuseForever
+    };
+    Meteor.call('denySignRequest', denyInfo, function(err, res) {
+      if (!err && res.code === 0) {
+        console.log('已经拒绝报名');
+        $("#refuse-reason-form").val('');
+        $('#refuse-forever').attr("checked", false);
+        $("#refuseModal").modal('hide');
+      } else {
+        alert('拒绝时出错');
+      }
+    });
   }
 });
