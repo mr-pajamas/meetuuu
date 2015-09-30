@@ -257,7 +257,7 @@ Template.editEvent.events({
     EditEvent.eventTheme.setSelectedTheme($(e.target).val());
   },
   // 提交表单
-  'click #submitBaiscInfo': function(e) {
+  'click #publishEvent': function(e) {
     e.preventDefault();
     e.stopPropagation();
     EditEvent.saveEvent();
@@ -273,7 +273,7 @@ Template.editEvent.events({
     }, 500);
   },
   // 预览活动
-  'click .previewSignForm': function(e) {
+  'click .previewEventInfo': function(e) {
     e.preventDefault();
     // TODO 判断是否弹出信息
     // 提取表单,表单信息在 helper signForm
