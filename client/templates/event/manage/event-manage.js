@@ -56,3 +56,17 @@ Template.eventManage.events({
 
   }
 });
+
+Template.eventManage.events({
+  "click .panel-heading": function (e) {
+    var target = $(e.currentTarget).data().target;
+    $(target).collapse("toggle");
+  },
+  "click .refuse": function (e) {
+    e.stopPropagation();
+    $("#refuseModal").modal()
+      .on("hidden.bs.modal", function (e) {
+        //data remove here.
+      });
+  }
+});

@@ -1,8 +1,4 @@
 <template name="editEvent">
-  <header class="index-header">
-    {{> header}}
-  </header>
-
   <!-- event create starts. -->
   <div class="event-create-wrap">
     <div class="container create-event-container">
@@ -13,21 +9,21 @@
       <form action="#" class="form-horizontal">
         <!-- 活动名称 -->
         <div class="form-group">
-          <label class="col-md-2 control-label">活动名称 <i class="fa fa-asterisk pull-right"></i></label>
+          <label class="col-sm-2 control-label">活动名称 <i class="fa fa-asterisk pull-right"></i></label>
 
-          <div class="col-md-10">
+          <div class="col-sm-10">
             <input type="text" class="form-control" id="event-name" placeholder="活动名称，不少于5个字" value="{{eventTitle}}">
           </div>
         </div>
         <!-- 活动时间 -->
         <div class="form-group">
-          <label class="col-md-2 col-xs-12 control-label">活动时间&nbsp;</label>
+          <label class="col-sm-2 col-xs-12 control-label">活动时间&nbsp;</label>
 
-          <div class="col-md-2 col-xs-8">  <!-- modified by chenyuan, 9-15 -->
+          <div class="col-sm-2 col-xs-8">  <!-- modified by chenyuan, 9-15 -->
             <input type="text" class="form-control datetimepicker-start" id="start-date" name="start-time"
                    placeholder="开始时间" value="{{startDate}}"/>
           </div>
-          <div class="col-md-2 col-xs-4">
+          <div class="col-sm-2 col-xs-4">
             <select class="form-control" id="start-time">
               {{#each startTimeOptions}}
                 <option {{attr}}>{{content}}</option>
@@ -35,15 +31,15 @@
             </select>
           </div>
           <!-- modified by chenyuan, 9-15 -->
-          <div class="col-md-2">
+          <div class="col-sm-2">
             <div class="gap-line"></div>
           </div>
 
-          <div class="col-md-2 col-xs-8">
+          <div class="col-sm-2 col-xs-8">
             <input type="text" class="form-control datetimepicker-end" id="end-date" name="end-time"
                    placeholder="结束时间" value="{{endDate}}"/>
           </div>
-          <div class="col-md-2 col-xs-4">
+          <div class="col-sm-2 col-xs-4">
             <select class="form-control" id="end-time">
               {{#each endTimeOptions}}
                 <option {{attr}}>{{content}}</option>
@@ -53,19 +49,19 @@
         </div>
         <!-- 活动地点 -->
         <div class="form-group">
-          <label class="col-md-2 control-label">活动地点&nbsp;</label>
+          <label class="col-sm-2 control-label">活动地点&nbsp;</label>
 
-          <div class="col-md-4">
+          <div class="col-sm-4">
             <select class="form-control" id="event-city-select">
               {{#each cityOptions}}
                 <option {{attr}}>{{name}}</option>
               {{/each}}
             </select>
           </div>
-          <div class="col-md-6">
+          <div class="col-sm-6">
             <input type="text" class="form-control" id="event-detail-address" placeholder="请输入详细地址" value="{{detailAddress}}"/>
           </div>
-          <div class="col-md-offset-2 col-md-10">
+          <div class="col-sm-offset-2 col-sm-10">
             <div class="event-map-container">
               <div id="bdmap"></div>
             </div>
@@ -73,9 +69,9 @@
         </div>
         <!-- 私密活动 -->
         <div class="form-group">
-          <label class="col-md-2 control-label">私密设置&nbsp;</label>
+          <label class="col-sm-2 control-label">私密设置&nbsp;</label>
 
-          <div class="col-md-4 checkbox" style="height: 34px;">
+          <div class="col-sm-4 checkbox" style="height: 34px;">
             <label>
               <input type="checkbox" id="event-join-allowed" checked/> 开放报名
             </label>
@@ -87,17 +83,17 @@
         </div>
         <!-- 活动人数 -->
         <div class="form-group">
-          <label class="col-md-2 control-label">活动人数&nbsp;</label>
+          <label class="col-sm-2 control-label">活动人数&nbsp;</label>
 
-          <div class="col-md-10">
+          <div class="col-sm-10">
             <input type="number" class="form-control" disabled="{{#if private}}disabled{{/if}}" id="event-member-limit" placeholder="活动人数限制，0 代表不限名额" value="{{memberLimit}}">
           </div>
         </div>
         <!-- 活动主题 -->
         <div class="form-group">
-          <label class="col-md-2 control-label">活动主题&nbsp;</label>
+          <label class="col-sm-2 control-label">活动主题&nbsp;</label>
 
-          <div class="col-md-4">
+          <div class="col-sm-4">
             <select class="event-theme form-control">
               {{#each themeOptions}}
                 <option {{attr}} >{{name}}</option>
@@ -107,9 +103,9 @@
         </div>
         <!-- 活动标签 -->
         <div class="form-group">
-          <label class="col-md-2 control-label">活动标签&nbsp;</label>
+          <label class="col-sm-2 control-label">活动标签&nbsp;</label>
           <!-- TODO: 长度调整 -->
-          <div class="col-md-6">
+          <div class="col-sm-6">
             <input class="form-control typeahead"
                    type="text"
                    placeholder="输入标签名字"
@@ -122,7 +118,7 @@
         </div>
         <!-- 已选标签容器 -->
         <div class="form-group">
-          <div class="col-md-offset-2 col-md-10">
+          <div class="col-sm-offset-2 col-sm-10">
             <div id="selected-tag">
               <div class="tag-tips">已选标签</div>
               {{#each themeTags}}
@@ -133,9 +129,9 @@
         </div>
         <!-- 活动详情描述 -->
         <div class="form-group">
-          <label class="col-md-2 control-label">活动描述&nbsp;</label>
+          <label class="col-sm-2 control-label">活动描述&nbsp;</label>
 
-          <div class="col-md-10">
+          <div class="col-sm-10">
             <div class="btn-toolbar" data-role="editor-toolbar" data-target="#event-desc">
               <div class="btn-group">
                 <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="" data-original-title="Font"><i
@@ -217,9 +213,9 @@
         <!-- modified by chenyaun, 2015-09-15-->
         <!-- 由于页面中其他部分都没有添加container, 故删除以下模块中的container以及row 部分。-->
         <div class="form-group">
-          <label class="col-md-2 control-label">报名表单&nbsp;</label>
+          <label class="col-sm-2 control-label">报名表单&nbsp;</label>
 
-          <div class="col-md-10">
+          <div class="col-sm-10">
             <div id="custom-form-container">
               <!-- container for evnet sign forms -->
 
@@ -230,19 +226,19 @@
             </div>
             <div class="empty-from-item-container event-sign-form-setting">
               <div class="row">
-                <div class="col-md-3  col-xs-6">
+                <div class="col-sm-3  col-xs-6">
                   <div class=" btn btn-success custom-form-item" data-type="ESF_SINGLE_TEXT"><i
                       class="fa fa-plus-square-o"></i> 单行文本</div>
                 </div>
-                <div class="col-md-3  col-xs-6">
+                <div class="col-sm-3  col-xs-6">
                   <div class=" btn btn-success custom-form-item" data-type="ESF_MULTI_TEXT"> <i
                       class="fa fa-plus-square-o"></i> 多行文本</div>
                 </div>
-                <div class="col-md-3  col-xs-6">
+                <div class="col-sm-3  col-xs-6">
                   <div class=" btn btn-success custom-form-item" data-type="ESF_SELECT_RADIO"> <i
                       class="fa fa-plus-square-o"></i> 单选栏目</div>
                 </div>
-                <div class="col-md-3  col-xs-6">
+                <div class="col-sm-3  col-xs-6">
                   <div class=" btn btn-success custom-form-item" data-type="ESF_SELECT_CHECKBOX"> <i
                       class="fa fa-plus-square-o"></i> 多选栏目</div>
                 </div>
@@ -254,9 +250,10 @@
         <!-- 保存活动基本信息 -->
         <hr/>
         <div class="form-group">
-          <div class="col-md-10 col-md-offset-2">
+          <div class="col-sm-10 col-sm-offset-2">
             <div class="preview-submit-wrap clearfix">
               <div class="preview-submit-buttons">
+                <!-- created by Chen Yuan, -->
                 <button type="button" class="btn btn-default previewEventInfo btn-lg">预览</button>
                 <button type="button" class="btn btn-primary btn-lg" id="publishEvent">立即发布</button>
               </div>
