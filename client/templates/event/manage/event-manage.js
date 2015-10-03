@@ -31,9 +31,13 @@ getShortUrl = function(reactiveVar, url, callback) {
   })
 };
 
-Template.registerHelper('formatTime', function(time) {
+Template.registerHelper('formatTimeLLLL', function(time) {
   return moment(time).format('LLLL');
-})
+});
+
+Template.registerHelper('formatTimeMDHHmm', function(time) {
+  return moment(time).format('M-D  HH:mm');
+});
 
 
 Template.eventManage.helpers({

@@ -60,7 +60,7 @@
             </div>
             <dl class="dl-horizontal">
               <dt>活动时间:</dt>
-              <dd id="event-date-time">{{formatTime eventTime.start}} ~ {{formatTime eventTime.end}}</dd>
+              <dd id="event-date-time">{{formatTimeLLLL eventTime.start}} ~ {{formatTimeLLLL eventTime.end}}</dd>
               <dt>活动地点:</dt>
               <dd id="event-location">{{eventInfo.location.city}}&nbsp;{{eventInfo.location.address}}</dd>
               <dt>活动人数:</dt>
@@ -147,7 +147,7 @@
       <div class="col-md-1"><img class="personal-photo" src="/714468542.jpg" alt="photo"/></div>
       <div class="col-md-3"><span class="name">{{cname}}</span></div>
       <div class="col-md-4"><span class="phone-number">{{telephone}}</span></div>
-      <div class="col-md-3"><span class="join-time">2015-09-10</span></div>
+      <div class="col-md-3"><span class="join-time">{{formatTimeMDHHmm createTime}}</span></div>
       <button class="btn btn-default refuse" data-id="{{_id}}">拒绝</button>
     </div>
     <div class="panel-collapse collapse" id="pane{{_id}}">
