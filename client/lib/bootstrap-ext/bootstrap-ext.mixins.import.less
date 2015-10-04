@@ -4,3 +4,10 @@
   -webkit-background-clip: @clip-no-box;    // Safari 4? Chrome 6?
           background-clip: @clip;            // Firefox 4, Safari 5, Opera 10, IE 9
 }
+
+.calc(@prop; @val) {
+  @{prop}: -moz-calc(~'@{val}');
+  @{prop}: -webkit-calc(~'@{val}');
+  @{prop}: -o-calc(~'@{val}');
+  @{prop}: calc(~'@{val}');
+}

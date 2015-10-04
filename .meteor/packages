@@ -6,7 +6,6 @@
 
 meteor-platform
 sacha:spin
-accounts-password
 less
 nemo64:bootstrap
 meteorhacks:npm
@@ -25,3 +24,4 @@ reactive-var
 aldeed:autoform
 http
 steeve:jquery-qrcode
+accounts-base

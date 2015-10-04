@@ -11,7 +11,7 @@
             <span class="icon-bar"></span>
           </button>
 
-          <a class="navbar-brand" href="{{pathFor route='index'}}">
+          <a class="navbar-brand" href="{{pathFor 'index'}}">
             <img alt="蜜柚网" src="/images/logo-navbar.png">
           </a>
 
@@ -29,9 +29,9 @@
 
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="javascript:void(0)">发布活动</a></li>
-            <li><a href="{{pathFor route='group.create'}}">创建组织</a></li>
-            <li><a href="{{pathFor route='index'}}">登录 / 注册</a></li>
+            <li><a href="{{pathFor 'eventEdit'}}">发布活动</a></li>
+            <li><a href="{{pathFor 'groupCreate'}}">创建组织</a></li>
+            <li><a href="{{pathFor 'join'}}">登录 / 注册</a></li>
           </ul>
         </div>
       </div>
