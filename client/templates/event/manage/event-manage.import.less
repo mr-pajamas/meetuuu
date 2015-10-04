@@ -2,16 +2,25 @@
 
 .event-manage {
   @content-pc-padding: 35px;
+  @content-mobile-padding: 15px;
   @event-info-item-margin-bottom: 30px;
+  @event-info-item-mobile-margin-bottom: 15px;
+  @media (max-width: @screen-xs-max) {
+    padding-top: 35px;
+  }
   header {
     position: relative;
     margin-top: @content-pc-padding;
     margin-bottom: @content-pc-padding;
+    @media (max-width: @screen-xs-max) {
+      margin-top: 30px;
+      margin-bottom: 15px;
+    }
     h1 {
       margin-top: 0;
       margin-bottom: 0;
       p {
-        margin-bottom: -10px;
+        margin-bottom: 0;
       }
       .label {
         position: relative;
@@ -25,10 +34,6 @@
       }
     }
     .list-inline {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      right: 0;
       & > li:last-child {
         padding-right: 0;
       }
@@ -51,6 +56,18 @@
           &:hover, &:focus {
             border: 0;
           }
+          @media (max-width: @screen-xs-max) {
+            text-align: center;
+          }
+        }
+        @media (max-width: @screen-xs-max) {
+          display: table-cell;
+          width: 1%;
+          float: none;
+          margin-bottom: 0;
+          a {
+            padding: 14px;
+          }
         }
       }
       & > .active > a {
@@ -58,45 +75,112 @@
         background-color: #337ab7;
       }
     }
+    @media (max-width: @screen-xs-max) {
+      position: fixed;
+      top: 51px;
+      z-index: 10;
+      left: 0;
+      right: 0;
+      padding-left: 0;
+      padding-right: 0;
+    }
   }
   main {
     .main-content {
-      padding: @content-pc-padding;
+      padding: @content-mobile-padding;
+      margin-bottom: 15px;
+      @media (min-width: @screen-sm-min) {
+        padding: @content-pc-padding;
+        margin-bottom: 40px;
+      }
       padding-bottom: 15px;
       background-color: #ffffff;
-      margin-bottom: 40px;
       #basic-information {
         & > .table {
           margin-bottom: @event-info-item-margin-bottom;
           border: 1px solid #dddddd;
-          & > .tr > .td {
-            display: table-cell;
-            width: 1%;
-            padding-top: 19px;
-            padding-bottom: 19px;
-            & > .table-cell {
-              border-right: 1px solid #dddddd;
-              .quantity {
-                font-size: 36px;
-              }
-              .item {
-                font-size: 16px;
-              }
+          & > .tr {
+            .clearfix();
+            @media (max-width: @screen-xs-max) {
+              padding-top: 19px;
+              padding-bottom: 19px;
             }
-          }
-          & > .tr > .td:last-child {
-            & > .table-cell {
-              border: 0;
+            /* class td for pc */
+            .td {
+              display: table-cell;
+              width: 1%;
+              @media (max-width: @screen-xs-max) {
+                display: block;
+                width: 33%;
+                float: left;
+                padding:0;
+              }
+              padding-top: 19px;
+              padding-bottom: 19px;
+              & > .table-cell {
+                border-right: 1px solid #dddddd;
+                @media (max-width: @screen-xs-max) {
+                  .clearfix();
+                  border: 0;
+                }
+                .quantity {
+                  font-size: 36px;
+                  @media (max-width: @screen-xs-max) {
+                    &:not(#join-quantity) {
+                      font-size: 16px;
+                    }
+                  }
+                }
+                .item {
+                  font-size: 16px;
+                }
+              }
+              &:last-child {
+                .table-cell {
+                  border: 0;
+                }
+              }
+              &:first-child {
+                .table-cell {
+                  @media (max-width: @screen-xs-max) {
+                    border-right: 1px solid #dddddd;
+                  }
+                }
+              }
+              /* class td for mobile device, not include first te element. */
+              &:not(:first-child) {
+                @media (max-width: @screen-xs-max) {
+                  line-height: 36px;
+                  .table-cell {
+                    width: 60%;
+                    margin-left: auto;
+                    margin-right: auto;
+                    .quantity {
+                      float: right;
+                    }
+                    .item {
+                      float: left;
+                    }
+                  }
+                }
+              }
             }
           }
         }
         & > dl {
-          margin-bottom: 60px;
+          margin-bottom: 30px;
+          @media (min-width: @screen-sm-min) {
+            margin-bottom: 60px;
+          }
           dt {
             width: 61px;
           }
           dd {
             margin-left: 100px;
+            @media (max-width: @screen-xs-max) {
+              margin-left: 0;
+              margin-top: 10px;
+            }
             margin-bottom: @event-info-item-margin-bottom;
           }
         }
@@ -124,22 +208,77 @@
           }
         }
         ul#joined-persons {
+          @img-width: 60px;
+          @content-min-width: 500px;
+          margin-bottom: 0;
           li {
             cursor: pointer;
             background-color: #ebebeb;
-            line-height: 50px;
-            margin-bottom: 15px;
+            &:not(:last-child) {
+              margin-bottom: 15px;
+            }
             .personal-photo {
-              width: 50px;
-              height: 50px;
+              width: @img-width;
+              height: auto;
+            }
+            .panel-heading {
+              padding: @content-mobile-padding;
+              .clearfix();
+              .info-list {
+                margin-left: @content-mobile-padding;
+                .clearfix();
+                @media (max-width: @screen-xs-max) {
+                  .name {
+                    font-size: 16px;
+                  }
+                  .join-time {
+                    font-size: 12px;
+                  }
+                }
+                @media (min-width: @screen-sm-min) {
+                  line-height: @img-width;
+                  .name, .phone-number, .join-time {
+                    float: left;
+                  }
+                  .phone-number {
+                    margin-left: @content-mobile-padding * 2;
+                    @media (min-width: @screen-md-min) {
+                      margin-left: @content-pc-padding * 2;
+                    }
+                    @media (min-width: @screen-lg-min) {
+                      margin-left: @content-pc-padding * 4;
+                    }
+                  }
+                  .join-time {
+                    margin-left: @content-mobile-padding * 2;
+                    @media (min-width: @screen-md-min) {
+                      margin-left: @content-pc-padding * 2;
+                    }
+                    @media (min-width: @screen-lg-min) {
+                      margin-left: @content-pc-padding * 4;
+                    }
+                  }
+                }
+              }
+              button {
+                margin-top: 13px;
+              }
             }
             .panel-collapse {
               .panel-body {
                 background-color: #ffffff;
-                ul {
-                  li {
+                dl {
+                  margin-bottom: 0;
+                  dt, dd {
                     background-color: inherit;
                     line-height: 25px;
+                  }
+                  dt {
+                    text-align: left;
+                    padding-left: 75px;
+                  }
+                  dd:not(:last-child  ) {
+                    margin-bottom: 15px;
                   }
                 }
               }
@@ -148,7 +287,6 @@
         }
         #refuseModal {
           textarea {
-            width: 100%;
             resize: vertical;
           }
         }

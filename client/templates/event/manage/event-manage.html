@@ -3,10 +3,10 @@
   <div class="container event-manage">
     <header class="clearfix">
       <h1 class="pull-left">
-        <p>{{eventInfo.title}} <span class="label label-info">审核中</span></p>
-        <a href="{{eventShortUrl}}" class="event-manage-url">{{eventShortUrl}}</a>
+        <p>{{eventInfo.title}} <span class="label label-info hidden-xs">审核中</span></p>
+        <a href="{{eventShortUrl}}" class="event-manage-url hidden-xs">{{eventShortUrl}}</a>
       </h1>
-      <ul class="list-inline pull-right">
+      <ul class="list-inline pull-right hidden-xs">
         <li><a href="/event/detail/{{eventInfo._id._str}}" class="btn btn-default event-preview"><span class="fa fa-eye"></span> 查看</a></li>
         <li>
           <a href="/event/edit/{{eventInfo._id._str}}" class="btn btn-default event-edit"><span class="fa fa-pencil-square-o"> 编辑</span></a>
@@ -14,13 +14,13 @@
       </ul>
     </header>
     <div class="row">
-      <aside class="col-md-3">
+      <aside class="col-sm-3 col-xs-12">
         <ul class="nav nav-tabs nav-stacked" role="tablist">
           <li role="presentation" class="active"><a href="#basic-information" aria-controls="basic-information" role="tab" data-toggle="tab">基本信息</a></li>
           <li role="presentation"><a href="#join-manage" aria-controls="join-manage" role="tab" data-toggle="tab">报名管理</a></li>
         </ul>
       </aside>
-      <main class="col-md-9">
+      <main class="col-sm-9 col-xs-12">
         <!-- 活动基本信息 -->
         <div class="main-content tab-content">
           <section id="basic-information" class="tab-pane active" role="tabpanel">
@@ -94,10 +94,10 @@
                 </div>
               </div>
             </div>
-            <button class="btn btn-primary" id="event-code" data-toggle="modal" data-target="#eventQrcodeModal">活动二维码</button>
+            <button class="btn btn-primary hidden-xs" id="event-code" data-toggle="modal" data-target="#eventQrcodeModal">活动二维码</button>
+            <a href="/event/edit/{{eventInfo._id._str}}" class="btn btn-primary visible-xs-inline-block">编辑活动</a>
             <span id="event-cancel">取消活动</span>
           </section>
-
 
           <!-- 报名管理 -->
           <section id="join-manage" class="tab-pane" role="tabpanel">
@@ -107,7 +107,6 @@
                 {{> joinForm this}}
               {{/each}}
             </ul>
-
             <!-- Modal for refuse buttons -->
             <div id="refuseModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="refuse">
               <div class="modal-dialog" role="document">
@@ -117,7 +116,7 @@
                   </div>
                   <div class="modal-body">
                     <p>拒绝理由:</p>
-                    <textarea name="refuse-reason" id="refuse-reason-form" rows="5"></textarea>
+                    <textarea class="form-control" name="refuse-reason" id="refuse-reason-form" rows="5"></textarea>
                     <div class="checkbox text-danger">
                       <label>
                         <input id="refuse-forever" type="checkbox"/>
@@ -132,7 +131,7 @@
                 </div>
               </div>
             </div>
-
+            <!-- modal end. -->
           </section>
         </div>
       </main>
@@ -140,26 +139,25 @@
   </div>
 </template>
 
-
 <template name="joinForm">
   <li class="panel panel-default">
     <div class="panel-heading" data-target="#pane{{_id}}">
-      <div class="col-md-1"><img class="personal-photo" src="/714468542.jpg" alt="photo"/></div>
-      <div class="col-md-3"><span class="name">{{cname}}</span></div>
-      <div class="col-md-4"><span class="phone-number">{{telephone}}</span></div>
-      <div class="col-md-3"><span class="join-time">{{formatTimeMDHHmm createTime}}</span></div>
-      <button class="btn btn-default refuse" data-id="{{_id}}">拒绝</button>
+      <div class="personal-photo pull-left"><img class="img-responsive" src="/714468542.jpg" alt="photo"/></div>
+      <div class="info-list pull-left">
+        <div class="name">{{cname}}</div>
+        <div class="phone-number">{{telephone}}</div>
+        <div class="join-time text-muted">{{formatTimeMDHHmm createTime}}</div>
+      </div>
+      <button class="btn btn-default refuse pull-right" data-id="{{_id}}">拒绝</button>
     </div>
     <div class="panel-collapse collapse" id="pane{{_id}}">
       <div class="panel-body">
-        <ul class="list-unstyled">
+        <dl class="dl-horizontal">
           {{#each signForm}}
-            <li class="clearfix">
-              <div class="col-sm-3 col-sm-offset-1">{{label}}</div>
-              <div class="col-sm-8">{{value}}</div>
-            </li>
+            <dt class="text-muted">{{label}}</dt>
+            <dd>{{value}}</dd>
           {{/each}}
-        </ul>
+        </dl>
       </div>
     </div>
   </li>
