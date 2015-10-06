@@ -1,0 +1,24 @@
+用户：
+
+mobile
+profile: {
+  name
+  gender
+  avatar
+
+  traits
+}
+
+
+社群:
+
+path
+name
+memberCount
+eventCount
+founderId
+foundedDate
+organizerId
+homeCity
+traits
+logoUrl

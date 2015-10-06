@@ -25,3 +25,6 @@ aldeed:autoform
 http
 steeve:jquery-qrcode
 accounts-base
+alanning:roles
+jparker:crypto-md5
+jparker:crypto-sha1
