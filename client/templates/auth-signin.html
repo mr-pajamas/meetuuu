@@ -1,24 +1,23 @@
-<template name="authJoin">
-
-  <main class="auth-join-main">
+<template name="authSignin">
+  <main class="auth-signin-main">
     <div class="container">
       <div class="row">
         <form class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-
+          <!--
           <div class="form-group">
             <div class="input-group input-group-md">
               <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
               <input class="form-control" type="text" placeholder="姓名" name="name">
             </div>
           </div>
-
+          -->
           <div class="form-group">
             <div class="input-group input-group-md">
               <span class="input-group-addon"><i class="fa fa-mobile fa-lg fa-fw"></i></span>
               <input class="form-control" type="text" placeholder="手机号" name="mobile">
             </div>
           </div>
-
+          <!--
           <div class="form-group">
             <div class="input-group input-group-md">
               <span class="input-group-addon"><i class="fa fa-check-square-o fa-fw"></i></span>
@@ -28,21 +27,22 @@
               </div>
             </div>
           </div>
-
+          -->
           <div class="form-group">
             <div class="input-group input-group-md">
               <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
               <input class="form-control" type="password" placeholder="密码" name="password">
             </div>
           </div>
-
+          <!--
           <div class="form-group">
             <div class="input-group input-group-md">
               <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
               <input class="form-control" type="password" placeholder="再次输入密码" name="confirm">
             </div>
           </div>
-
+          -->
+          <!--
           <div class="form-group">
             <div class="checkbox">
               <label>
@@ -50,12 +50,12 @@
               </label>
             </div>
           </div>
-
+          -->
           <hr>
 
           <div class="form-group">
-            <button class="btn btn-lg btn-primary btn-center-block-lg" type="submit">注册</button>
-            <a class="btn btn-link btn-center-block-lg" href="{{pathFor 'signin'}}">已有帐号，直接登录</a>
+            <button class="btn btn-lg btn-primary btn-center-block-lg" type="submit">登录</button>
+            <a class="btn btn-link btn-center-block-lg" href="{{pathFor 'join'}}">还没有帐号，立即注册</a>
           </div>
         </form>
       </div>
