@@ -1,0 +1,26 @@
+<template name="testSubscribe">
+  {{#if Template.subscriptionsReady}}
+    {{#if hasData}}
+      {{#if hasMore}}
+        <button class="btn btn-default btn-block">更多</button>
+      {{/if}}
+
+      <ul class="list-group">
+        {{#each docsBefore}}
+          {{> docItem}}
+        {{/each}}
+        {{#each docsAfter}}
+          {{> docItem}}
+        {{/each}}
+      </ul>
+    {{else}}
+      <h3 class="text-muted text-center">没有数据</h3>
+    {{/if}}
+  {{else}}
+    {{> loading}}
+  {{/if}}
+</template>
+
+<template name="docItem">
+  <li class="list-group-item">{{content}}</li>
+</template>
