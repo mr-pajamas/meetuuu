@@ -1,0 +1,10 @@
+<template name="singleDiscussion">
+  <div class="container">
+    {{#with discussions}}
+      {{> discussionItem}}
+    {{else}}
+      <p>No data found!</p>
+    {{/with}}
+  </div>
+</template>
+

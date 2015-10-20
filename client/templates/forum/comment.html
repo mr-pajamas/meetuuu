@@ -1,0 +1,10 @@
+<template name="comment">
+    <form class="form" id="reply">
+        <div class="form-group">
+            <!--<label for="comment">回复：</label>-->
+            <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="请回复..."></textarea>
+            <span class="help-block">{{errorMessage 'comment'}}</span>
+            <button type="submit" class="btn btn-danger text-right">Submit</button>
+        </div>
+    </form>
+</template>

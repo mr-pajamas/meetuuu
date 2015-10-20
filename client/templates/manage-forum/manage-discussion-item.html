@@ -1,0 +1,30 @@
+<template name="manageDiscussionItem">
+  <tr>
+    <td>
+      <a href="#">{{subject}}</a>
+    </td>
+    <td>{{userName}}</td>
+    <td>{{ dateFormate createdAt }}</td>
+    <td>{{ dateFormate updatedAt }}</td>
+    <td>{{ dateFormate lastReplyAt}}</td>
+    <td>{{lastReplyUser}}</td>
+    <td>
+      <div class="btn-group">
+        <button  class="btn btn-xs btn-info viewBtn" style=" margin-left: 5px;">
+          <i class="glyphicon glyphicon-zoom-in ">浏览</i>
+        </button>
+        <button class="btn btn-xs btn-success editorBtn"  style=" margin-left: 5px;">
+          <i class="glyphicon glyphicon-edit">编辑</i>
+        </button>
+        <button class="btn btn-xs btn-danger deleteBtn"  style=" margin-left: 5px;">
+          <i class="glyphicon glyphicon-trash">删除</i>
+        </button>
+        {{#if maSetTop}}
+          <button class="btn btn-xs btn-warning cancelTopBtn"  style=" margin-left: 5px;"> <i class="glyphicon glyphicon-flag">取消</i> </button>
+        {{else}}
+          <button class="btn btn-xs btn-warning topBtn"  style=" margin-left: 5px;"> <i class="glyphicon glyphicon-flag">置顶</i> </button>
+        {{/if}}
+      </div>
+    </td>
+  </tr>
+</template>

@@ -1,0 +1,41 @@
+<template name="itemDiscussion">
+  <div class="" style="border: solid 1px #cccccc; margin-top: 10px ">
+    <div style=" border-bottom: dashed #cccccc 1px">
+      <p><img src="/images/luntan.jpg"/> <span
+          class="glyphicon glyphicon glyphicon-user">{{userId}}</span> <span
+          class="glyphicon glyphicon-time">{{dateFormate createdAt }}</span></p>
+    </div>
+    <div style="padding: 10px 20px; ">
+      <p>
+
+      <h3>
+        {{#if setTopCss}}
+          <span
+              style=" background:#5cb85c; color: #ffffff; text-underline: none">顶
+        </span>
+        {{/if}}
+        <a href="{{pathFor "singleDisc" discId=_id }}">{{subject}}</a></h3></p>
+      <p style=" ">{{contentFormate}}...
+        <a href="{{pathFor "singleDisc" discId=_id }}">《查看详情</a>
+      </p>
+
+      <p>
+        {{#each imgPath}}
+          <span style="padding: 5px 10px;"><img width="200px" height="200px"
+                                                src="{{this}}"></span>
+        {{/each}}
+      </p>
+      <hr>
+      <p style="text-align: right">
+
+      <span style="  border: 1px solid #A1A1A1;border-radius: 10px;padding: 10px 1px;margin: 10px 0px;">
+        <span class="glyphicon glyphicon-thumbs-up">赞</span>
+        <span class="badge">{{upVoteCount}}</span>
+        <span class="glyphicon glyphicon-comment"></span>
+        <span class="badge">{{commentCount}}</span>
+      </span>
+      </p>
+
+    </div>
+  </div>
+</template>

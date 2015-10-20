@@ -1,0 +1,39 @@
+<template name="listDiscussion">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="">
+          <div>
+            <h3 class="">上海苗圃创业俱乐部</h3>
+          </div>
+          <div>
+            <p>
+              <span><a href="{{ pathFor 'start'}}">
+                <span class="glyphicon glyphicon-pencil">发起讨论</span>
+              </a></span>
+              <span><a href="{{ pathFor 'manageDiscussion'}}">
+                <span class="glyphicon glyphicon-list">管理论坛</span>
+              </a></span>
+            </p>
+          </div>
+          <hr style="background: #777">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="table-responsive">
+      {{#each listDiscussions}}
+        {{> itemDiscussion}}
+      {{/each}}
+    </div>
+
+    <div style="margin: 5px 0;">
+      {{#if discussionCount}}
+        <a id="load-more" class="load-more">查看更多...</a>
+      {{else}}
+        <a class="loaded">数据加载完毕</a>
+      {{/if}}
+    </div>
+  </div>
+</template>
