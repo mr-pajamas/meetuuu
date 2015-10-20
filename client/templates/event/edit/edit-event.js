@@ -42,6 +42,53 @@ Template.editEvent.onRendered(function() {
 
   // 自动补全提示
   Meteor.typeahead.inject();
+
+
+
+  // Set options for cropper plugin
+  var $image = $(".image-crop > img");
+  $($image).cropper({
+    //aspectRatio: 16 / 9,
+    preview: ".img-preview",
+    strict: true,
+    autoCrop: true,
+    done: function(data) {
+      // 输出裁剪的参数信息
+    }
+  });
+
+  var $inputImage = $("#inputImage");
+  if (window.FileReader) {
+    $inputImage.change(function() {
+      var fileReader = new FileReader(),
+          files = this.files,
+          file;
+
+      if (!files.length) {
+        return;
+      }
+
+      file = files[0];
+
+      if (/^image\/\w+$/.test(file.type)) {
+        fileReader.readAsDataURL(file);
+        fileReader.onload = function () {
+          $inputImage.val("");
+          $image.cropper("reset", true)
+            .cropper("replace", this.result);
+        };
+      } else {
+        alert("请选择图片");
+      }
+    });
+  } else {
+    $inputImage.addClass("hide");
+  }
+
+  $("#setDrag").click(function() {
+    window.open($image.cropper("getDataURL"));
+    $image.cropper("setDragMode", "crop");
+  });
 });
 
 
