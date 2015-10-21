@@ -9,7 +9,7 @@
           </li>
           <div class="scrollspy-wrap hidden-xs">
             <ul id="event-menu" class="nav nav-stacked collapse in panel-collapse">
-              <li><a class="scroll-trigger" href="#event-doing-anchor">正在进行</a></li>
+              <li><a class="scroll-trigger" href="#event-doing-anchor">当前活动</a></li>
               <li><a class="scroll-trigger" href="#event-registered-anchor">已经报名</a></li>
               <li><a class="scroll-trigger" href="#event-focused-anchor">我的关注</a></li>
             </ul>
@@ -33,91 +33,20 @@
       <div class="col-sm-9 col-sm-offset-3 col-xs-12">
         <main class="tab-content">
           <section id="event" class="tab-pane active" role="tabpanel" aria-labelledby="events-tab">
-            <div id="event-doing">
-              <h3 id="event-doing-anchor">正在进行的活动</h3>
-              <img class="img-responsive" src="http://www.huodongxing.com/Content/v2.0/img/poster/school.jpg" alt="event-poster"/>
-              <div class="introduction event-post-padding">
-                <header class="poster-header">国庆节一起去太湖骑行郊游</header>
-                <ul class="list-inline event-intro-share">
-                  <li><a title="分享到微信" class="fa fa-weixin small-img" href="#"></a></li>
-                  <li><a title="分享到新浪微博" class="fa fa-weibo small-img" href="#"></a></li>
-                  <li><a title="分享到qq空间" class="fa fa-qq small-img" href="#"></a></li>
-                </ul>
-                <ul class="list-unstyled event-intro-list">
-                  <li class="clearfix"><i class="fa fa-calendar"></i><p>2015/09/12 ~ 2015/10/23</p></li>
-                  <li class="clearfix"><i class="fa fa-map-marker"></i><p>江苏，边上的太湖</p></li>
-                  <li class="clearfix"><i class="fa fa-group"></i><p>123 / 200</p></li>
-                  <li class="clearfix"><i class="fa fa-dot-circle-o"></i>
-                    上海市杨浦骑行爱好者俱乐部
-                  </li>
-                </ul>
-              </div>
-            </div>
+            {{#with eventNow}}
+              {{> doingEvent}}
+            {{/with}}
             <div id="event-registered">
               <h3 id="event-registered-anchor">我报名的活动</h3>
               <!-- TODO: 这里的显示样式需要根据日期的不同而进行定制化的修改，今天，明天，以后的日期要用日历的形式来展现，同时具体时间的展示位置也有变动，需要相应的模板来替换 -->
               <ul class="list-unstyled">
                 <!-- TODO: 下面的是今天，明天 -->
-                <li class="media">
-                  <div class="media-left">
-                    <div class="media-object">
-                      <div class="today-or-tomorrow small month">今天</div>
-                      <div class="time day">10:30</div>
-                    </div>
-                  </div>
-                  <div class="media-body"><a href="#" class="event-title">今天，大家一起骑车去滴水湖</a>
-                    <div class="clearfix fixed-box-bottom">
-                      <a href="#" class="event-organizer pull-left hidden-xs">上海杨浦骑行爱好者俱乐部</a>
-                      <span class="registered-persons pull-right">已经有<span>144</span>人报名</span>
-                    </div>
-                  </div>
-                </li>
-                <!-- TODO: 下面的是明天以后的日历形式的日期 -->
-                <li class="media">
-                  <div class="media-left">
-                    <div class="media-object">
-                      <div class="month small">明天</div>
-                      <div class="day time">09:20</div>
-                    </div>
-                  </div>
-                  <div class="media-body">
-                    <a href="#" class="event-title">10号这天，大家一起骑车去太湖，享受大自然</a>
-                    <div class="clearfix fixed-box-bottom">
-                      <a href="" class="event-organizer pull-left hidden-xs">上海市杨浦骑行爱好者俱乐部</a>
-                      <span class="registered-persons pull-right">已经有<span>123</span>人报名</span>
-                    </div>
-                  </div>
-                </li>
-                <li class="media">
-                  <div class="media-left">
-                    <div class="media-object">
-                      <div class="month small">十一 月</div><div class="day">10</div>
-                    </div>
-                  </div>
-                  <div class="media-body">
-                    <a href="#" class="event-title">10号这天，大家一起骑车去太湖，享受大自然</a>
-                    <div class="clearfix fixed-box-bottom">
-                      <a href="" class="event-organizer pull-left hidden-xs">上海市杨浦骑行爱好者俱乐部</a>
-                      <span class="registered-persons pull-right">已经有<span>123</span>人报名</span>
-                    </div>
-                  </div>
-                </li>
-                <li class="media">
-                  <div class="media-left">
-                    <div class="media-object">
-                      <div class="month small">十一 月</div><div class="day">10</div>
-                    </div>
-                  </div>
-                  <div class="media-body">
-                    <a href="#" class="event-title">10号这天，大家一起骑车去太湖，享受大自然</a>
-                    <div class="clearfix fixed-box-bottom">
-                      <a href="#" class="event-organizer pull-left hidden-xs">上海市杨浦骑行爱好者俱乐部</a>
-                      <span class="registered-persons pull-right">已经有<span>123</span>人报名</span>
-                    </div>
-                  </div>
-                </li>
+                {{#each events}}
+                  {{> Template.dynamic template=dTemplate}}
+                {{/each}}
               </ul>
             </div>
+
             <div id="event-focused">
               <h3 id="event-focused-anchor">我关注的活动</h3>
               <ul class="list-unstyled">
@@ -336,8 +265,65 @@
   </div>
 </template>
 
-<template name="newRegisteredEvent">
-  <!-- TODO 新增加的报名的活动模板 -->
+<template name="todayOrTomorrowEvent">
+  <li class="media">
+    <div class="media-left">
+      <div class="media-object">
+        <div class="month small {{#if eventTodayOrTomorrow.today}}today-or-tomorrow{{/if}}">{{eventTodayOrTomorrow.eventDiffTimes}}</div>
+        <div class="day time">{{eventTodayOrTomorrow.eventHour}}:{{eventTodayOrTomorrow.eventMinute}}</div>
+      </div>
+    </div>
+    <div class="media-body">
+      <a href="/event/detail/{{_id._str}}" class="event-title">{{title}}</a>
+      <div class="clearfix fixed-box-bottom">
+        <a href="" class="event-organizer pull-left hidden-xs">上海市杨浦骑行爱好者俱乐部</a>
+        <!-- Todo:  这里的报名人数暂时数据库里面没有这个字段, 也没有主办方。-->
+        <span class="registered-persons pull-right">已经有<span>123</span>人报名</span>
+      </div>
+    </div>
+  </li>
+</template>
+
+<template name="calendarEvent">
+  <li class="media {{#if eventTodayOrTomorrow.timeout}}hidden{{/if}}">
+    <div class="media-left">
+      <div class="media-object">
+        <div class="month small">{{eventCalendar.month}}</div>
+        <div class="day">{{eventCalendar.day}}</div>
+      </div>
+    </div>
+    <div class="media-body">
+      <a href="/event/detail/{{_id._str}}" class="event-title">{{title}}</a>
+      <div class="clearfix fixed-box-bottom">
+        <a href="" class="event-organizer pull-left hidden-xs">上海市杨浦骑行爱好者俱乐部</a>
+        <!-- Todo:  这里的报名人数暂时数据库里面没有这个字段, 也没有主办方。-->
+        <span class="registered-persons pull-right">已经有<span>123</span>人报名</span>
+      </div>
+    </div>
+  </li>
+</template>
+
+<template name="doingEvent">
+  <div id="event-doing">
+    <h3 id="event-doing-anchor">当前的活动</h3>
+    <img class="img-responsive" src="{{poster}}" alt="event-poster"/>
+    <div class="introduction event-post-padding">
+      <header class="poster-header">{{title}}</header>
+      <ul class="list-inline event-intro-share">
+        <li><a title="分享到微信" class="fa fa-weixin small-img" href="#"></a></li>
+        <li><a title="分享到新浪微博" class="fa fa-weibo small-img" href="#"></a></li>
+        <li><a title="分享到qq空间" class="fa fa-qq small-img" href="#"></a></li>
+      </ul>
+      <ul class="list-unstyled event-intro-list">
+        <li class="clearfix"><i class="fa fa-calendar"></i><p>{{eventTime.start}}&nbsp;--&nbsp;{{eventTime.end}}</p></li>
+        <li class="clearfix"><i class="fa fa-map-marker"></i><p>{{location.city}}{{location.address}}</p></li>
+        <li class="clearfix"><i class="fa fa-group"></i><p>0&nbsp;/&nbsp;{{member}}</p></li>
+        <li class="clearfix"><i class="fa fa-dot-circle-o"></i>
+          上海市杨浦骑行爱好者俱乐部
+        </li>
+      </ul>
+    </div>
+  </div>
 </template>
 
 <template name="newFocusedEvent">

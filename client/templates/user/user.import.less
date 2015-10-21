@@ -9,6 +9,10 @@
   }
 
   main {
+    @media (min-width: @screen-sm-min) {
+      position: relative;
+      z-index: 11;
+    }
     // card style.
     .card( @padding ) {
       padding: @padding;
@@ -82,6 +86,8 @@
       font-size: 16px;
       @media (min-width: @screen-sm-min) {
         margin-top: 0;
+        margin-bottom: 15px;
+        padding-top: 35px;
         font-size: 20px;
       }
     }
@@ -93,7 +99,7 @@
       #event-doing, #event-registered, #event-focused {
         margin-bottom: 15px;
         @media (min-width: @screen-sm-min) {
-          margin-bottom: 35px;
+          margin-bottom: 0;
         }
       }
       #event-doing {
@@ -105,7 +111,7 @@
           background-color: #ffffff;
         }
         @media (min-width: @screen-sm-min) {
-          padding-top: 35px;
+          padding-top: 0;
         }
         a:hover {
           text-decoration: none;
@@ -151,6 +157,9 @@
         @today-background-color: #e54248;
         @calendar-background-color: #337ab7;
         ul {
+          @media (min-width: @screen-sm-min) {
+            margin-bottom: 0;
+          }
           li.media {
             margin: 0;
             &:not(:last-child) {
@@ -201,6 +210,9 @@
         }
       }
       #event-focused {
+        @media (min-width: @screen-sm-min) {
+          margin-bottom: 35px;
+        }
         .card-block();
         a {
           color: #333333;
@@ -385,6 +397,7 @@
   @header-height: 50px;
   @media (min-width: @screen-sm-min) {
     position: fixed;
+    z-index: 10;
     left: 0;
     right: 0;
     top: 96px;
