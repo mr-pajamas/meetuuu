@@ -45,6 +45,7 @@ body {
     min-height: @navbar-lg-height;
 
     .navbar-header {
+
       .navbar-brand {
         height: @navbar-lg-height;
         padding-top: floor((@navbar-lg-height - @navbar-lg-brand-img-height) / 2);
@@ -55,6 +56,13 @@ body {
         }
       }
 
+      /*
+      .navbar-brand {
+        height: @navbar-lg-height;
+        padding-top: @navbar-lg-padding-vertical;
+        padding-bottom: @navbar-lg-padding-vertical;
+      }
+      */
       .navbar-btn {
         margin-top: floor((@navbar-lg-height - @input-height-base) / 2);
         margin-bottom: ceil((@navbar-lg-height - @input-height-base) / 2);
