@@ -4,7 +4,7 @@
 
 var singleEvent = new ReactiveVar(null);    //  初始化, 用来存储findOne得到的值。
 
-function setSingleEvent(event) {
+function setSingleEvent(event) {            // 在 reactive之前，先刷新 scroll-spy.
   Tracker.afterFlush(function () {
     $(document.body).scrollspy("refresh");
     $(document.body).scrollspy("process");
@@ -13,19 +13,13 @@ function setSingleEvent(event) {
 }
 
 Template.user.onCreated(function () {
-  // TODO: subscribe data from Mongo.
   var template = this;
   this.autorun(function () {
     var uid = FlowRouter.getParam('uid');
-    /* if ( uid === Meteor.userId() ) {
-     template.subscribe("userDetailById", uid);
-     template.subscribe("userEventIds", uid);
-     }*/
-    //template.subscribe("userDetailById");
-    template.subscribe("userDetailById");
+    if ( uid === Meteor.userId() ) {
+      template.subscribe("userDetailById", uid);
+    }
   });
-  //Session.setDefault("eventTodayTimeout", 0);
-  // 在使用的时候， 这个值必须取其他的值， 这个地方有待商榷，应该修改为使用 reactive var.
   this.autorun(function () {
     if (template.subscriptionsReady()) {        // 用来等待数据加载完毕。
       var eventIds = JoinForm.find({userId: "007"}).map(function (doc) {
@@ -90,6 +84,15 @@ Template.user.helpers({
         return "calendarEvent";
       }
     }
+  },
+  "groups": function () {
+    return // TODO: group data here.
+  },
+  "focusedGroups": function () {
+    return // TODO:  my focused group data here.
+  },
+  "basicInfo": function () {
+    return  userProfileSchema.findOne({_id: Meteor.userId()});
   }
 });
 
