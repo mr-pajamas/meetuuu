@@ -495,6 +495,7 @@ EditEvent = (function() {
       var self = this;
       var eventDesc = this.contentContainerDom.get().html();
       var originKey = self.initKey;
+
       Meteor.call('sendRichTextInBase64', originKey, eventDesc, function(err, res) {
         if (!err && res.code === 0) {
           self.key.set(res.key);
@@ -840,7 +841,7 @@ EditEvent = (function() {
       desc: eventDesc.getKey(),
       signForm: eventSignForm.getForms()
     };
-    console.log(eventInfo);
+
     var errMessage = validEventInfo(eventInfo);
     if (errMessage) {
       alert(errMessage);

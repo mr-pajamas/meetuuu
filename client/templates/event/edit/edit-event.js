@@ -132,8 +132,8 @@ Template.editEvent.helpers({
   },
   // 活动海报
   eventPosterUrl: function() {
-    var key = EditEvent.eventPoster.getKey() || '/event-create-poster-holder.png';
-    return 'http://7xjl8x.com1.z0.glb.clouddn.com/' + key;
+    var key = EditEvent.eventPoster.getKey();
+    return key ? 'http://7xjl8x.com1.z0.glb.clouddn.com/' + key : '/event-create-poster-holder.png';
   },
   // 活动开始日期
   startDate: function() {

@@ -20,27 +20,5 @@ Package.onUse(function(api) {
 
   api.addFiles('server/qiniu-node-sdk.js', 'server');
   api.export('QiniuNodeSDK', 'server');
-
-  api.addFiles([
-    'client/css/bootstrap-theme.css',
-    'client/css/img-upload.css',
-    'client/css/jquery.guillotine.css',
-    'client/css/question-items.css',
-    'client/lib/bootstrap.min.js',
-    'client/lib/jquery.guillotine.min.js',
-    'client/lib/img-upload.js'
-  ], 'client');
-
-  api.addFiles([
-    'client/avatar-upload.html',
-    'client/avatar-upload.js',
-    'client/avatar-upload.css'
-  ], 'client');
-
 });
 
-Package.onTest(function(api) {
-  api.use('tinytest');
-  api.use('avatar-uploader');
-  api.addFiles('avatar-uploader-tests.js');
-});

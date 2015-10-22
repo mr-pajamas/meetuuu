@@ -20,6 +20,7 @@
   });
 }());
 
+var eventDesc = new ReactiveVar('');
 Template.eventDetail.onCreated(function () {
   var template = this;
   template.autorun(function() {
@@ -65,7 +66,12 @@ Template.eventDetail.helpers({
     return eventDetail;
   },
   "eventDetailDesc": function () {
-    return this.desc;
+    HTTP.get('http://7xjl8x.com1.z0.glb.clouddn.com/' + this.desc, function(err, res) {
+      if(!err && res.statusCode === 200) {
+        eventDesc.set(res.content);
+      }
+    });
+    return eventDesc.get();
   },
   'optionSignFormTips': function() {
     return !!FlowRouter.getQueryParam('preview') ? '预览报名表单': '我要报名';
