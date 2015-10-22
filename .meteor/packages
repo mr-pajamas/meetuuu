@@ -30,3 +30,4 @@ jparker:crypto-md5
 jparker:crypto-sha1
 jparker:crypto-evpkdf
 peerlibrary:xml2js
+reywood:publish-composite
