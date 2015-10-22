@@ -1,0 +1,23 @@
+<template name="avatarUploader">
+    <div class="container">
+        <form>
+            <div id="avatar-upload" class="thumbnail img-upload">
+                <div class="loader"></div>
+                <img>
+                <div class="caption img-upload-controls-bar">
+                    <div class="btn-group btn-group-lg" role="group" aria-label="图片调整按钮">
+                        <label class="btn btn-default btn-file img-upload-chooser" title="选择图片"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+                            <input type="file" style="display: none;" accept="image/*"></label>
+                        <button type="button" class="btn btn-default img-upload-zoomin" title="放大"><span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span></button>
+                        <button type="button" class="btn btn-default img-upload-zoomout" title="缩小"><span class="glyphicon glyphicon-zoom-out" aria-hidden="true"></span></button>
+                        <button type="button" class="btn btn-default img-upload-rotate" title="旋转"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>
+                    </div>
+                </div>
+                <input type="hidden" name="avatar" class="img-upload-data">
+            </div>
+        </form>
+        <button id="cropBtn" class="btn btn-primary btn-lg center-block" type="button">CROP!</button>
+        <hr>
+        <p><img id="cropped" class="center-block img-responsive"></p>
+    </div>
+</template>

@@ -20,7 +20,7 @@ var getFormValue = function(targetForm, value) {
 Meteor.methods({
   'submitJoinForm': function(joinEvnetsInfo) {
     joinEvnetsInfo.status = 'request';
-    joinEvnetsInfo.userId = '007'; //Meteor.userId();
+    joinEvnetsInfo.userId = Meteor.userId();
     joinEvnetsInfo.createTime = new Date();
     var eventSignForm = Events.findOne({'_id': new Mongo.ObjectID(joinEvnetsInfo.eventId)}).signForm;
     var forms = joinEvnetsInfo.signForm;

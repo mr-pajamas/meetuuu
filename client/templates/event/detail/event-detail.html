@@ -13,7 +13,8 @@
             {{#with eventDetail}}
               <section class="event-poster" id="poster">
                 <!-- 活动基本信息 -->
-                <img src="{{poster}}" alt="rifare">
+                <!-- TODO @cy 此处的图片要限定下高度，暂时写在style，可以提取出去 -->
+                <img style="max-height: 300px" src="http://7xjl8x.com1.z0.glb.clouddn.com/{{poster}}" alt="rifare">
                 <div class="introduction event-post-padding">
                   <header class="poster-header">{{title}}</header>
                   <ul class="list-inline event-intro-share">
@@ -27,12 +28,10 @@
                     <li class="clearfix"><i class="fa fa-map-marker"></i><p>{{location.city}}{{location.address}}</p></li>
                     <li class="clearfix"><i class="fa fa-group"></i><p>0&nbsp;/&nbsp;{{member}}</p></li>
                     <li class="clearfix"><i class="fa fa-dot-circle-o"></i>
-                      {{#each tags}}
-                        <!-- TODO href 替换为tag 归类活动 -->
-                        <a href="#">
-                          <span class="badge" id="{{_id}}">{{name}}</span>
-                        </a>
-                      {{/each}}
+                      <!-- TODO 修改 href 可以链接到俱乐部 -->
+                      <a href="#">
+                        <span class="badge" id="{{author.club.id}}">{{author.club.name}}</span>
+                      </a>
                     </li>
                   </ul>
                 </div>
