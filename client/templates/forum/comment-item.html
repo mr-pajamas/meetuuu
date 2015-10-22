@@ -1,12 +1,23 @@
 <template name="commentItem">
-    <tr style=" ">
-      <th style="width: 100px;"> <img style=" padding: 10px;" class="img-circle" src="/images/luntan.jpg" /></th>
-      <th>
-        <div style="border: 1px solid #A1A1A1;border-radius: 10px;padding: 10px;margin: 10px 0px;
-        background: #F1E9E9 none repeat scroll 0% 0%;
-        font-size: 14px;
-        opacity: 0.5;">{{comment}}</div>
-        <span class="" style="color: #cccccc">{{ dateFormate createdAt}}</span>
-      </th>
-    </tr>
+
+  <div class="row">
+    {{#if myComment}}
+      <div class="col-md-1 col-xs-4"><span style="margin-right:10px"> <img style=" padding: 10px;"  src="/images/luntan.jpg" /></span></div>
+      <div class="col-md-9 col-xs-8 col-md-offset-1">
+        <div class="speech-bubble speech-bubble-left">
+          <span style=" padding: 10px; color: #222222">{{comment}}</span>
+        </div>
+        <span class="" style="color: #cccccc; margin-left: 20px; ">{{ dateFormate createdAt}}</span>
+      </div>
+    {{else}}
+      <div class="col-md-9 col-xs-8 col-md-offset-2">
+        <div class="speech-bubble speech-bubble-right">
+          <span style=" padding: 10px; color: #222222">{{comment}}</span>
+        </div>
+        <span class="" style="color: #cccccc; margin-left: 20px; ">{{ dateFormate createdAt}}</span>
+      </div>
+
+      <div class="col-md-1 col-xs-4"><span style="margin-right: -15px"> <img  style=" padding: 10px;" src="/images/luntan.jpg" /></span></div>
+    {{/if}}
+  </div>
 </template>

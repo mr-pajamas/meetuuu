@@ -41,7 +41,6 @@
         <a class="loaded">数据加载完毕</a>
       {{/if}}
     </div>
-    <table class="table" >
 
       {{#each commentItemsBefore}}
         {{> commentItem}}
@@ -50,7 +49,7 @@
       {{#each commentItemsAfter}}
         {{> commentItem}}
       {{/each}}
-    </table>
+
   {{else}}
     <a class="loaded">暂无评论</a>
   {{/if}}

@@ -77,3 +77,44 @@ div[data-role="editor-toolbar"] {
     background: rgba(0, 0, 0, 0.1);
   }
 }
+
+.speech-bubble {
+  position: relative;
+  background: #cccccc none repeat scroll 0% 0%;
+  width: auto;
+  min-height: 50px;
+  color: white;
+  text-align: left;
+  //border-radius: 10px;
+  font-family: sans-serif;
+  font-size: 14px;
+  opacity: 0.5;
+}
+
+.speech-bubble:after {
+  content: '';
+  position: absolute;
+
+  width: 0;
+  height: 0;
+
+  border: 15px solid;
+}
+
+.speech-bubble-left:after {
+  border-right-color: #cccccc;
+  top: 50%;
+  right: 100%;
+  margin-top: -15px;
+}
+
+.speech-bubble-right:after {
+  border-left-color: #cccccc;
+  left: 100%;
+  top: 50%;
+  margin-top: -15px;
+}
+
+.clear{
+  clear: both;
+}
