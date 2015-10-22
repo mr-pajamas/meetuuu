@@ -86,8 +86,15 @@ Template.editEvent.onRendered(function() {
   }
 
   $("#setDrag").click(function() {
-    window.open($image.cropper("getDataURL"));
-    $image.cropper("setDragMode", "crop");
+    //window.open($image.cropper("getDataURL"));
+    //$image.cropper("setDragMode", "crop");
+    console.log($image.cropper("getDataURL"));
+    Meteor.call('sendPosterInBase64', EditEvent.eventPoster.getKey(), $image.cropper("getDataURL"), function(err, res) {
+      if(!err && res.code === 0) {
+        EditEvent.eventPoster.setKey(res.key);
+        alert('海报上传成功');
+      }
+    });
   });
 });
 
@@ -122,6 +129,11 @@ Template.editEvent.helpers({
   // 活动标题
   eventTitle: function() {
     return EditEvent.eventTitle.getTitle();
+  },
+  // 活动海报
+  eventPosterUrl: function() {
+    var key = EditEvent.eventPoster.getKey() || '/event-create-poster-holder.png';
+    return 'http://7xjl8x.com1.z0.glb.clouddn.com/' + key;
   },
   // 活动开始日期
   startDate: function() {
@@ -167,7 +179,7 @@ Template.editEvent.helpers({
   },
   // 活动详情描述
   eventDesc: function() {
-    return EditEvent.eventDesc.getInitContent();
+    return EditEvent.eventDesc.getContent();
   },
   // 活动表单
   eventForms: function() {
@@ -322,7 +334,6 @@ Template.editEvent.events({
   // 预览活动
   'click .previewEventInfo': function(e) {
     e.preventDefault();
-    // TODO 判断是否弹出信息
     // 提取表单,表单信息在 helper signForm
     EditEvent.eventSignForm.setPreviewForm();
     EditEvent.previewEvent();

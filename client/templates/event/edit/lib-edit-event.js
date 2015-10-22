@@ -294,6 +294,25 @@ EditEvent = (function() {
 
 
   /**
+   * 活动海报信息
+   */
+  var eventPoster = {
+    key: new ReactiveVar(''),
+    inited: false,
+    init: function(key) {
+      key = key || '';
+      this.key.set(key);
+      this.inited = true;
+    },
+    setKey: function(key) {
+      this.key.set(key);
+    },
+    getKey: function() {
+      return this.key.get();
+    }
+  };
+
+  /**
    * 活动主题选择
    */
   var eventTheme = {
@@ -459,21 +478,48 @@ EditEvent = (function() {
    */
   var eventDesc = {
     content: new ReactiveVar(''),
+    key: new ReactiveVar(''),
+    initKey: '',
     contentContainerDom: new ReactiveVar(null),
     inited: false,
-    init: function(contentContainerId, content) {
+    init: function(contentContainerId, key) {
       this.contentContainerDom.set($('#' + contentContainerId));
       this.contentContainerDom.get().wysiwyg();
-      // TODO get content from qiniu
-      this.content.set(content);
+      this.initKey = key;
+      this.key.set(key);
+      this.getInitContent();
       this.inited = true;
     },
-    // 使用该方法提取活动详情
-    getContent: function() {
-      return this.contentContainerDom.get().html();
+    uploadToQiniu: function(eventId) {
+      console.log(this.getContent());
+      var self = this;
+      var eventDesc = this.contentContainerDom.get().html();
+      var originKey = self.initKey;
+      Meteor.call('sendRichTextInBase64', originKey, eventDesc, function(err, res) {
+        if (!err && res.code === 0) {
+          self.key.set(res.key);
+          Meteor.call('updateEventDesc', eventId, res.key);
+          console.log('活动详情上传成功');
+        }
+      });
     },
+    // 使用该方法提取活动详情
     getInitContent: function() {
+      if (!this.key.get()) {
+        return ;
+      }
+      var self = this;
+      HTTP.get('http://7xjl8x.com1.z0.glb.clouddn.com/' + this.key.get(), function(err, res) {
+        if(!err && res.statusCode === 200) {
+          self.content.set(res.content);
+        }
+      });
+    },
+    getContent: function() {
       return this.content.get();
+    },
+    getKey: function() {
+      return this.key.get()
     }
   };
 
@@ -743,6 +789,9 @@ EditEvent = (function() {
     if(!eventInfo.theme) {
       errorInfo = '请选择活动主题';return errorInfo;
     }
+    if(!eventInfo.poster) {
+      errorInfo = '请提供活动海报';return errorInfo;
+    }
     if(!eventInfo.tags || eventInfo.tags.length === 0) {
       errorInfo = '请输入活动标签';return errorInfo;
     }
@@ -757,8 +806,19 @@ EditEvent = (function() {
    * 保存活动，内部方法
    */
   var __saveEvent = function(successCallback) {
+    var author = {
+      name: Meteor.user().profile.name,
+      id: Meteor.userId(),
+      // TODO 改为具体俱乐部
+      club: {
+        name: '足球俱乐部',
+        id: '123456789'
+      }
+    };
+    var eid = FlowRouter.getParam('eid');
+    eventDesc.uploadToQiniu(eid);
     var eventInfo = {
-      _id: new Mongo.ObjectID(FlowRouter.getParam('eid')),
+      _id: new Mongo.ObjectID(eid),
       title: eventTitle.getTitle(),
       time: {
         start: eventTime.getStartDateInISO(),
@@ -771,13 +831,13 @@ EditEvent = (function() {
         lat: 1.11,
         lng: 2.22
       },
-      // TODO 海报
-      poster: 'http://www.huodongxing.com/Content/v2.0/img/poster/school.jpg',
+      poster: eventPoster.getKey(),
       member: eventMemberLimit.getCount(),
       theme: eventTheme.getSelectedTheme(),
       tags: eventTags.getTags(),
+      author: author,
       private: eventPrivate.getPrivateStatus(),
-      desc: $.trim(eventDesc.getContent()),
+      desc: eventDesc.getKey(),
       signForm: eventSignForm.getForms()
     };
     console.log(eventInfo);
@@ -789,6 +849,7 @@ EditEvent = (function() {
     Meteor.call('event.save', eventInfo, function(err, res) {
       if (!err && 0 === res.code) {
         console.log('活动保存成功');
+        eventDesc.uploadToQiniu(eid);
         successCallback && successCallback();
       }
     });
@@ -825,6 +886,7 @@ EditEvent = (function() {
     eventTags.init([]);
     eventDesc.init('event-desc', '');
     eventSignForm.init([]);
+    eventPoster.init();
   };
 
   var InitWithData = function(eventInfo) {
@@ -837,6 +899,7 @@ EditEvent = (function() {
     EditEvent.eventTags.init(eventInfo.tags);
     EditEvent.eventDesc.init('event-desc', eventInfo.desc);
     EditEvent.eventSignForm.init(eventInfo.signForm);
+    EditEvent.eventPoster.init(eventInfo.poster);
   };
 
   return {
@@ -846,6 +909,7 @@ EditEvent = (function() {
     eventPrivate      : eventPrivate,
     eventMemberLimit  : eventMemberLimit,
     eventTheme        : eventTheme,
+    eventPoster       : eventPoster,
     eventTags         : eventTags,
     eventDesc         : eventDesc,
     eventSignForm     : eventSignForm,

@@ -1,0 +1,16 @@
+.img-upload {
+  min-width: 215px !important;
+}
+
+.img-upload .img-upload-controls-bar {
+  text-align: center;
+  padding: 4px 0 0 0 !important;
+}
+
+.img-upload .img-upload-controls-bar .btn-group > .btn {
+  width: auto !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #777;
+}

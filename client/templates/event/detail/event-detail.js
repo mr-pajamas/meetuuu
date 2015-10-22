@@ -96,16 +96,19 @@ Template.eventDetail.events({
   // 提交留言
   'click #submitComment': function(e) {
     e.preventDefault();
+    if (!Meteor.user()) {
+      alert('请先登录');
+      return;
+    }
     var eid = FlowRouter.getParam('eid');
     var commentContent = $('#commentContent').val();
     var comment = {
       commentType: 'event',
       eventId: eid,
       content: commentContent,
-      // TODO 用户信息
       commentBy: {
-        username: 'ck',
-        uid: 'abckdefsfs'
+        username: Meteor.user().profile.name,
+        uid: Meteor.userId()
       }
     };
     Meteor.call('submitEventComment', comment, function(err, res) {

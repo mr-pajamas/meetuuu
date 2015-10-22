@@ -71,10 +71,9 @@ Template.eventComment.events({
       eventId: this.eventId,
       content: replyComment,
       commentId: cid,
-      // TODO 用户信息
       commentBy: {
-        username: 'ck',
-        uid: 'abckdefsfs'
+        username: Meteor.user().profile.name,
+        uid: Meteor.userId()
       }
     };
     Meteor.call('submitEventComment', comment, function(err, res) {
