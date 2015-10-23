@@ -1,7 +1,7 @@
 @import "../bootstrap/custom.bootstrap.import.less";
 @import "../bootstrap-ext/bootstrap-ext.import.less";
 
-@badge-size: 40px;
+@badge-size: 36px;
 @half-badge-size: @badge-size / 2;
 @badge-top: 16px;
 @pointer-size: 15px;
@@ -12,6 +12,8 @@
 @badge-size-sm: 20px;
 @half-badge-size-sm: @badge-size-sm / 2;
 @badge-sm-top: @badge-top + @half-badge-size - @half-badge-size-sm;
+
+@badge-scale: 1.1;
 
 .timeline {
 
@@ -59,6 +61,8 @@
       //-webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
       //box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
       background-color: white;
+      //min-height: @badge-sm-top + @half-badge-size * 1.2 + @half-badge-size-sm + 3 + @badge-size-sm + (@badge-sm-top + @half-badge-size-sm - (@half-badge-size * 1.2));
+      min-height: 2 * @badge-sm-top + 2 * @badge-size-sm + 3;
 
       &:before {
         position: absolute;
@@ -163,11 +167,11 @@
       > i.fa {
         position: absolute;
         display: block;
-        height: @badge-size * 1.2;
-        width: @badge-size * 1.2;
-        font-size: @badge-size * 1.2;
+        height: @badge-size * @badge-scale;
+        width: @badge-size * @badge-scale;
+        font-size: @badge-size * @badge-scale;
         line-height: 1;
-        top: -(@half-badge-size * 1.2 - @half-badge-size-sm);
+        top: -(@half-badge-size * @badge-scale - @half-badge-size-sm);
         left: @badge-size-sm + 20;
       }
 
@@ -175,32 +179,34 @@
         position: absolute;
         white-space: nowrap;
         width: @badge-size * 1.8;
-        top: @half-badge-size * 1.2 + @half-badge-size-sm + 3;
-        left: @badge-size-sm + 20 - (((@badge-size * 1.8) / 2) - (@half-badge-size * 1.2));
+        top: @half-badge-size * @badge-scale + @half-badge-size-sm + 3;
+        left: @badge-size-sm + 20 - (((@badge-size * 1.8) / 2) - (@half-badge-size * @badge-scale));
         color: rgba(0, 0, 0, .25);
+        text-align: center;
       }
 
       h3 {
         position: absolute;
-        left: @badge-size-sm + 20 + @badge-size * 1.2 + 15;
+        left: @badge-size-sm + 20 + @badge-size * @badge-scale + 15;
         white-space: nowrap;
         margin: 0;
-        top: -(@half-badge-size * 1.2 - @half-badge-size-sm);
-        line-height: @badge-size * 1.2;
+        top: -(@half-badge-size * @badge-scale - @half-badge-size-sm);
+        line-height: @badge-size * @badge-scale;
+        font-size: @badge-size * @badge-scale / 2;
       }
     }
 
     &.timeline-inverted > .timeline-badge {
       > i.fa {
-        left: -(@badge-size * 1.2 + 20);
+        left: -(@badge-size * @badge-scale + 20);
       }
 
       div.small {
-        left: -(20px - (((@badge-size * 1.8) / 2) - (@half-badge-size * 1.2)) + @badge-size * 1.8);
+        left: -(20px - (((@badge-size * @badge-scale * 1.5) / 2) - (@half-badge-size * @badge-scale)) + @badge-size * 1.8);
       }
 
       h3 {
-        right: @badge-size-sm + 20 + @badge-size * 1.2 + 15;
+        right: @badge-size-sm + 20 + @badge-size * @badge-scale + 15;
         left: auto;
       }
     }
@@ -208,7 +214,7 @@
 }
 
 @media (max-width: @screen-xs-max) {
-  @badge-left: 15px;
+  @badge-left: 0px;
 
   ul.timeline {
     &:before {
@@ -217,9 +223,10 @@
 
     > li {
       > .timeline-panel {
-        width: 80%;
+        width: 86%;
         .calc(width; "100% - @{badge-left} - @{badge-size} - @{pointer-gutter} - @{pointer-size}");
         float: right;
+        min-height: @badge-top * 2 + @badge-size;
 
         &:before {
           border-left-width: 0;
@@ -253,6 +260,14 @@
           display: inline-block;
           width: 1.28571429em;
           height: auto;
+        }
+
+        div.small {
+          .responsive-invisibility();
+        }
+
+        h3 {
+          .responsive-invisibility();
         }
       }
     }

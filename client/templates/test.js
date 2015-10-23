@@ -7,5 +7,8 @@ Template.test.onRendered(function () {
 Template.test.helpers({
   "testArray": function () {
     return Session.get("fuck");
+  },
+  "shitHelper": function () {
+    return Session.get("fuck");
   }
 });

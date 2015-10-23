@@ -60,14 +60,16 @@ Meteor.startup(function () {
         founderId: users[0]._id,
         foundedDate: new Date(),
         homeCity: CITIES[0],
-        memberCount: 2
+        memberCount: 2,
+        description: "欢迎大家加入！"
       },
       {
         path: "group2",
         name: "测试俱乐部2",
         founderId: users[1]._id,
         foundedDate: new Date(),
-        homeCity: CITIES[1]
+        homeCity: CITIES[1],
+        description: "想来便来想走便走"
       }
     ];
 

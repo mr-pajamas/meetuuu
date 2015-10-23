@@ -22,3 +22,16 @@ organizerId
 homeCity
 traits
 logoUrl
+
+
+创建俱乐部需要的数据：
+
+path
+名称
+城市
+特质
+简介
+
+俱乐部徽标
+
+成员称呼

@@ -1,31 +1,22 @@
 /**
  * Created by Michael on 2015/9/17.
  */
+var value = new ReactiveVar("");
+
+Template.styledSelect.onCreated(function () {
+
+  this.autorun(function () {
+    value.set(Template.currentData().selectValue);
+  });
+});
+
 Template.styledSelect.onRendered(function () {
 
-  var $select = this.$("select.form-control");
-  var $selectText = this.$(".select-face > .select-text");
+  var template = this;
 
-  $select.change(function () {
-    $selectText.text($select.find(":selected").text());
-  }).change();
-
-  $select[0]._uihooks = {
-    insertElement: function(node, next) {
-      $(node).insertBefore(next);
-      $select.change();
-    },
-    moveElement: function (node, next) {
-      $(node).insertBefore(next);
-      $select.change();
-    },
-    removeElement: function(node) {
-      if ($(node).remove().is(":selected")) {
-        $select.val("");
-      }
-      $select.change();
-    }
-  };
+  template.autorun(function () {
+    template.$("select.form-control").val(value.get());
+  });
 });
 
 /*
@@ -35,3 +26,19 @@ Template.registerHelper("toArray", function () {
   });
 });
 */
+
+Template.styledSelect.helpers({
+  idAttrs: function () {
+    if (this.id) return {id: this.id};
+    else return null;
+  },
+  value: function () {
+    return value.get();
+  }
+});
+
+Template.styledSelect.events({
+  "change select.form-control": function (event) {
+    value.set($(event.currentTarget).val());
+  }
+});

@@ -15,15 +15,16 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="inputGroupHometown" class="col-md-2 control-label">坐落在：</label>
+        <label for="inputGroupHomecity" class="col-md-2 control-label">坐落在：</label>
         <div class="col-md-8">
-          <select class="form-control" id="inputGroupHometown">
-            <option>上海</option>
-            <option>北京</option>
-            <option>广州</option>
-          </select>
+          {{#styledSelect id="inputGroupHomecity" selectValue=currentCity}}
+            {{#each cities}}
+              <option>{{this}}</option>
+            {{/each}}
+          {{/styledSelect}}
         </div>
       </div>
+
       <div class="form-group">
         <label for="inputMemberAlias" class="col-md-2 control-label">我们自称为：</label>
         <div class="col-md-8">
@@ -45,10 +46,12 @@
         </div>
       </div>
 
+      <hr>
+
       <div class="form-group">
-        <div class="col-md-offset-2 col-md-8">
-          <button type="submit" class="btn btn-primary">创建组织</button>
-          <button type="button" class="btn btn-link">取消</button>
+        <div class="col-md-offset-2 col-md-8 text-right">
+          <button type="button" class="btn btn-link btn-lg">取消</button>
+          <button type="submit" class="btn btn-primary btn-lg">创建组织</button>
         </div>
       </div>
     </form>

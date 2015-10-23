@@ -32,3 +32,4 @@ jparker:crypto-evpkdf
 peerlibrary:xml2js
 reywood:publish-composite
 qiniu-uploader
+u2622:persistent-session

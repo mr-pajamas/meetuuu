@@ -2,9 +2,9 @@
   <div class="select-div {{#if inline}}select-div-inline{{/if}}">
     <div class="select-face clearfix form-control {{extraClasses}}">
       <span class="fa fa-caret-down pull-right"></span>
-      <div class="select-text"></div>
+      <div class="select-text">{{value}}</div>
     </div>
-    <select class="form-control {{extraClasses}}">
+    <select {{idAttrs}} class="form-control {{extraClasses}}">
       {{> Template.contentBlock}}
     </select>
   </div>
