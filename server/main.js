@@ -18,7 +18,8 @@ Meteor.startup(function () {
         mobile: 18000000002,
         createdAt: new Date(),
         profile: {
-          name: "李四"
+          name: "李四",
+          gender: "男"
         },
         services: {
           common: {md5Password: CryptoJS.MD5("123qwe").toString()}
@@ -28,7 +29,19 @@ Meteor.startup(function () {
         mobile: 18000000003,
         createdAt: new Date(),
         profile: {
-          name: "王五"
+          name: "王五",
+          traits: [
+            {
+              name: "90后",
+              labeler: Random.id(),
+              labeledAt: new Date()
+            },
+            {
+              name: "暖男",
+              labeler: Random.id(),
+              labeledAt: new Date()
+            }
+          ]
         },
         services: {
           common: {md5Password: CryptoJS.MD5("123qwe").toString()}
@@ -97,6 +110,21 @@ Meteor.startup(function () {
 
     _.each(groupWatchings, function (groupWatching) {
       groupWatching._id = GroupWatchings.insert(groupWatching);
+    });
+
+    var traitUsages = [
+      {
+        trait: "90后",
+        userCount: 1
+      },
+      {
+        trait: "暖男",
+        userCount: 1
+      }
+    ];
+
+    _.each(traitUsages, function (traitUsage) {
+      traitUsage._id = TraitUsages.insert(traitUsage);
     });
   }
 });
