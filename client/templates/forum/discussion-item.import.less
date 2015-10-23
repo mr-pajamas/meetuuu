@@ -1,0 +1,56 @@
+.discussion-item{
+  .discussion-item-header{
+    border: #cccccc solid 1px;
+    margin-top: 20px;
+    .discussion-item-header-left{
+      float:left;
+      img{
+        padding: 10px;
+      };
+    };
+    .discussion-item-header-right{
+      margin-left: 20px;
+      padding: 10px;
+      float:left;
+    };
+  };
+//ÑùÊ½Ê§Ð§
+  .discussion-item-content{
+    background: #ffffff;
+    width: 100%;
+    margin-top: 20px;
+    .discussion-item-content-subject{
+      text-align: center;
+      color: #222222;
+      font-size: 18px;
+      a{
+        margin: 10px 10px;
+        text-underline: none;
+        &:hover{
+          text-underline: none;
+        }
+      }
+    };
+    .discussion-item-content-container{
+      width: auto;
+      p{
+        text-indent: 2em;
+        padding: 0 20px;
+        &:not(img){
+          text-indent: 0;
+        };
+        img{
+          max-width: 100%;
+        };
+      };
+
+    };
+  };
+  .discussion-item-reply{
+    border: #cccccc solid 1px;
+    margin-top: 20px;
+  };
+  .discussion-item-comment{
+    margin-top: 20px;
+  };
+}

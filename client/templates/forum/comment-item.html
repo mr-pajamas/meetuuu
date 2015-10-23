@@ -1,12 +1,43 @@
 <template name="commentItem">
-
-  <div class="row">
     {{#if myComment}}
-      <div class="col-md-1 col-xs-4"><span style="margin-right:10px"> <img style=" padding: 10px;"  src="/images/luntan.jpg" /></span></div>
+      <tr>
+        <td class="col1">
+          <img style=" padding: 10px;"  src="/images/luntan.jpg" />
+          <p><span class="glyphicon glyphicon glyphicon-user">{{userName}}</span></p>
+        </td>
+        <td class="col2">
+          <div class="speech-bubble speech-bubble-left" style="padding: 10px 10px;">
+            <span  style="font-size: 14px; color: #222222">{{comment}}</span>
+          </div>
+          <p>{{ dateFormate createdAt}}</p>
+        </td>
+        <td class="col3">
+
+        </td>
+      </tr>
+    {{else}}
+      <tr>
+        <td class="col1">
+
+        </td>
+        <td class="col2">
+          <div class="speech-bubble speech-bubble-right" style="padding: 10px 10px;">
+            <span style="font-size: 14px; color: #222222">{{comment}}</span>
+          </div>
+          <p>{{ dateFormate createdAt}}</p>
+        </td>
+        <td class="col3">
+          <img style=" padding: 10px;"  src="/images/luntan.jpg" />
+          <p><span class="glyphicon glyphicon glyphicon-user">{{userName}}</span></p>
+        </td>
+      </tr>
+    {{/if}}
+
+  <!--<div class="row">
+    {{#if myComment}}
+      <div class="col-md-1 col-xs-4"><span style="margin-right:10px"> </span></div>
       <div class="col-md-9 col-xs-8 col-md-offset-1">
-        <div class="speech-bubble speech-bubble-left">
-          <span style=" padding: 10px; color: #222222">{{comment}}</span>
-        </div>
+
         <span class="" style="color: #cccccc; margin-left: 20px; ">{{ dateFormate createdAt}}</span>
       </div>
     {{else}}
@@ -19,5 +50,5 @@
 
       <div class="col-md-1 col-xs-4"><span style="margin-right: -15px"> <img  style=" padding: 10px;" src="/images/luntan.jpg" /></span></div>
     {{/if}}
-  </div>
+  </div>-->
 </template>

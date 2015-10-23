@@ -1,63 +1,70 @@
 <template name="discussionItem">
-  <table class="table" >
-    <tr>
-      <th style=" width: 100px;" >
-        <img style=" padding: 10px" src="/images/luntan.jpg" />
-      </th>
-      <th class="">
-        <span style="font-size: 16px;">主题：{{subject}}</span>
-        <br>
-        <span>发帖时间:{{dateFormate createdAt }}</span><span><a href="#{{_id}}" id="{{_id}}">锚</a></span>
+  <div class="discussion-item">
+    <div class="discussion-item-header">
+      <div class="discussion-item-header-left">
+        <img src="/images/luntan.jpg" />
+      </div>
+      <div class="discussion-item-header-right">
+        <p>
+          <span class="glyphicon glyphicon glyphicon-user">{{userName}}</span>
+          <span class="glyphicon glyphicon-time">{{dateFormate createdAt }}</span>
+        </p>
+        <p>
+          <span><a href="#{{_id}}" id="{{_id}}">锚</a></span>
+          {{#if canModify}}
+            <span> <a href="{{pathFor "editDisc" discId=_id }}">编辑</a> </span>
+          {{/if}}
+          <span><a href="#reply" class="btn replyBtn">回复</a></span>
+          {{#if existUserData}}
+            <span class="glyphicon glyphicon-thumbs-up">已赞</span>
+          {{else}}
+            <span><a href="#" class="btn upVote"> <span class="glyphicon glyphicon-thumbs-up">赞</span></a></span>
+          {{/if}}
+        </p>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="discussion-item-content">
+      <div class="discussion-item-content-subject container">
+        <a data-toggle="collapse" data-target="#discussion-item-content-container">
+          <span class="panel-title"><h4>主题：{{subject}}</h4></span>
+        </a>
+      </div>
+      <div class="discussion-item-content-container" id="discussion-item-content-container">
+        <p>
+          {{{content}}}
+        </p>
+      </div>
+    </div>
+    <div class="discussion-item-reply">
+      {{#if existData}}
+        <div style="margin: 5px 0;">
+          {{#if discussionCount}}
+            <a id="load-more" class="load-more">查看更多...</a>
+              <!--{{else}}
+           <a class="loaded">数据加载完毕</a>-->
+          {{/if}}
+        </div>
+        <table>
+          {{#each commentItemsBefore}}
+            {{> commentItem}}
+          {{/each}}
 
-        {{#if canModify}}
-          <span> <a href="{{pathFor "editDisc" discId=_id }}">编辑</a> </span>
-        {{/if}}
-
-        <!--<span><a href="#" class="btn deleDisc">删除</a></span>-->
-        <span><a href="#reply" class="btn replyBtn">回复</a></span>
-        {{#if existUserData}}
-          <span class="glyphicon glyphicon-thumbs-up">已赞</span>
-        {{else}}
-          <span>
-        <a href="#" class="btn upVote"> <span class="glyphicon glyphicon-thumbs-up">赞</span></a>
-        </span>
-        {{/if}}
-        <span class=" btn-danger" style=" float: right; margin-right: 10px; width: 50px; text-align: center" data-toggle="collapse" data-target="#content"><i class="glyphicon glyphicon-triangle-bottom"></i></span>
-      </th>
-    </tr>
-    <tr id="content">
-      <td style="width: 100px; padding: 10px;" >发帖人</td>
-      <td>
-        <p  style=" height: auto ">{{{content}}}</p>
-      </td>
-    </tr>
-  </table>
-  <a ></a>
-  {{#if existData}}
-    <div style="margin: 5px 0;">
-      {{#if discussionCount}}
-        <a id="load-more" class="load-more">查看更多...</a>
+          {{#each commentItemsAfter}}
+            {{> commentItem}}
+          {{/each}}
+        </table>
       {{else}}
-        <a class="loaded">数据加载完毕</a>
+        <a class="loaded">暂无评论</a>
       {{/if}}
     </div>
-
-      {{#each commentItemsBefore}}
-        {{> commentItem}}
-      {{/each}}
-
-      {{#each commentItemsAfter}}
-        {{> commentItem}}
-      {{/each}}
-
-  {{else}}
-    <a class="loaded">暂无评论</a>
-  {{/if}}
-
-  {{#onlyIfLogin}}
-    {{> comment}}
-  {{else}}
-    <p>请先登录！</p>
-  {{/onlyIfLogin}}
+    <div class="discussion-item-comment">
+      {{#onlyIfLogin}}
+        {{> comment}}
+      {{else}}
+        <p>请先登录！</p>
+      {{/onlyIfLogin}}
+    </div>
+  </div>
 
 </template>
