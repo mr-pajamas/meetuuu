@@ -12,8 +12,5 @@ Template.groupCreate.onRendered(function () {
 });
 
 Template.groupCreate.helpers({
-  selectedCity: function () {
 
-    return Meteor.city() == this ? "selected" : null;
-  }
 });
