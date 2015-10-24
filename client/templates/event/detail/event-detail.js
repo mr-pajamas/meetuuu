@@ -28,6 +28,7 @@ Template.eventDetail.onCreated(function () {
     // 订阅当前用户是否收藏过活动
     if (Meteor.userId()) {
       template.subscribe('userSavedEvent', Meteor.userId(), new Mongo.ObjectID(eid));
+      template.subscribe('userJoinedEvent', eid, Meteor.userId());
     }
     // 订阅活动详情
     template.subscribe('eventDetailById', new Mongo.ObjectID(eid), function () {
@@ -110,11 +111,11 @@ Template.eventDetail.helpers({
   },
   // 判断当前用户是否收藏过该活动
   'isSaved': function() {
-    return UserSavedEvents.findOne()
+    return UserSavedEvents.findOne();
   },
   // 判断当前用户是否已经报名
   'isJoined': function() {
-
+    return JoinForm.findOne();
   }
 });
 

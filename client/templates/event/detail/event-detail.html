@@ -126,8 +126,13 @@
               <li role="presentation"><a href="#poster">主题海报</a></li>
               <li role="presentation"><a href="#information">活动详情</a></li>
               <li role="presentation"><a href="#comment">留言</a></li>
-              <li id="nav-join" class="hidden-xs"><a href="" data-toggle="modal" data-target="#joinEventFormModal">{{optionSignFormTips}}</a></li>
-              <li id="publish-event"><a href="#">发布活动</a></li>
+              <!-- 判断用户是否已经报名 -->
+              {{#if isJoined}}
+                <li id="nav-join" class="hidden-xs"><a href="">已报名</a></li>
+              {{else}}
+                <li id="nav-join" class="hidden-xs"><a href="" data-toggle="modal" data-target="#joinEventFormModal">{{optionSignFormTips}}</a></li>
+              {{/if}}
+              <li id="publish-event"><a href="">发布活动</a></li>
             </ul>
           </div>
         </div>
