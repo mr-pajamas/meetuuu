@@ -5,6 +5,10 @@
     joinEvent: {
       // 人工提交，便于添加 eventId 提交
       onSubmit: function(doc) {
+        if (!Meteor.userId()) {
+          alert('请登录！');
+          return;
+        }
         var eventSignInfo = {};
         eventSignInfo.eventId = FlowRouter.getParam('eid');
         eventSignInfo.signForm = doc;
@@ -143,7 +147,6 @@ Template.eventDetail.events({
     };
     Meteor.call('submitEventComment', comment, function(err, res) {
       if (!err && res.code === 0) {
-        alert('评论成功');
         $('#commentContent').val('');
       }
     });
