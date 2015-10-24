@@ -19,6 +19,7 @@ Template.eventManage.onRendered(function() {
     self.subscribe('eventDetailById', new Mongo.ObjectID(eid));
     self.subscribe('eventComments', eid);
     self.subscribe('eventSignInfos', eid);
+    self.subscribe('eventSavedCount', eid);
   });
 });
 
@@ -52,6 +53,9 @@ Template.eventManage.helpers({
   },
   'eventSignFormCount': function() {
     return JoinForm.find({'eventId': FlowRouter.getParam('eid')}).count();
+  },
+  'eventWatched': function() {
+    return UserSavedEvents.find().count();
   },
   'eventSignForms': function() {
     return JoinForm.find({'eventId': FlowRouter.getParam('eid')});

@@ -23,6 +23,9 @@
 var eventDesc = new ReactiveVar('');
 Template.eventDetail.onCreated(function () {
   var template = this;
+  //打开一次记录一次阅读记录
+  Meteor.call('eventReadInc', FlowRouter.getParam('eid'));
+
   template.autorun(function() {
     var eid = FlowRouter.getParam('eid');
     // 订阅当前用户是否收藏过活动
