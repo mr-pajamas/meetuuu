@@ -144,7 +144,9 @@
               </label>
             </div>
             <div class="btn-group">
-              <button class="btn btn-warning" id="setDrag" type="button">裁剪</button>
+              <button type="button" id="setDrag" data-loading-text="上传中..." class="btn btn-warning" autocomplete="off">
+                上传海报
+              </button>
             </div>
           </div>
         </div>
@@ -275,7 +277,9 @@
             <div class="preview-submit-wrap clearfix">
               <div class="preview-submit-buttons">
                 <!-- created by Chen Yuan, -->
-                <button type="button" class="btn btn-default previewEventInfo btn-lg">预览</button>
+                <button type="button" data-loading-text="保存中..." class="btn btn-default previewEventInfo btn-lg" autocomplete="off">
+                  预览
+                </button>
                 <button type="button" class="btn btn-primary btn-lg" id="publishEvent">立即发布</button>
               </div>
               <div class="checkbox"><label><input type="checkbox" checked/> 我同意 <a href="##">某某协议</a></label></div>

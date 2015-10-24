@@ -85,17 +85,25 @@ Template.editEvent.onRendered(function() {
     $inputImage.addClass("hide");
   }
 
-  $("#setDrag").click(function() {
-    //window.open($image.cropper("getDataURL"));
-    //$image.cropper("setDragMode", "crop");
+  $('#setDrag').on('click', function () {
     console.log($image.cropper("getDataURL"));
+    var $btn = $(this).button('loading');
+    // business logic...
     Meteor.call('sendPosterInBase64', EditEvent.eventPoster.getKey(), $image.cropper("getDataURL"), function(err, res) {
+      console.log(err);
       if(!err && res.code === 0) {
         EditEvent.eventPoster.setKey(res.key);
-        alert('海报上传成功');
+        $btn.button('reset');
       }
     });
   });
+
+  //$("#setDrag").click(function() {
+  //  //$image.cropper("setDragMode", "crop");
+  //
+  //  $("#setDrag").addClass('disable');
+  //
+  //});
 });
 
 
@@ -334,6 +342,7 @@ Template.editEvent.events({
   // 预览活动
   'click .previewEventInfo': function(e) {
     e.preventDefault();
+    $('.previewEventInfo').button('loading');
     // 提取表单,表单信息在 helper signForm
     EditEvent.eventSignForm.setPreviewForm();
     EditEvent.previewEvent();
