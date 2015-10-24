@@ -16,7 +16,15 @@
                 <!-- TODO @cy 此处的图片要限定下高度，暂时写在style，可以提取出去 -->
                 <img style="max-height: 300px" src="http://7xjl8x.com1.z0.glb.clouddn.com/{{poster}}" alt="rifare">
                 <div class="introduction event-post-padding">
-                  <header class="poster-header">{{title}}</header>
+                  <header class="poster-header">
+                    {{title}}
+                    {{#if isSaved}}
+                      <span id="saveEvent" class="pull-right glyphicon glyphicon-star" title="已收藏" aria-hidden="true"></span>
+                    {{else}}
+                      <span id="saveEvent" class="pull-right glyphicon glyphicon-star-empty" title="未收藏" aria-hidden="true"></span>
+                    {{/if}}
+
+                  </header>
                   <ul class="list-inline event-intro-share">
                     <li><a title="分享到微信" class="fa fa-weixin small-img" href="#"></a></li>
                     <li><a title="分享到新浪微博" class="fa fa-weibo small-img" href="#"></a></li>
@@ -26,7 +34,16 @@
                   <ul class="list-unstyled event-intro-list">
                     <li class="clearfix"><i class="fa fa-calendar"></i><p>{{eventTime.start}}&nbsp;--&nbsp;{{eventTime.end}}</p></li>
                     <li class="clearfix"><i class="fa fa-map-marker"></i><p>{{location.city}}{{location.address}}</p></li>
-                    <li class="clearfix"><i class="fa fa-group"></i><p>0&nbsp;/&nbsp;{{member}}</p></li>
+                    <li class="clearfix"><i class="fa fa-group"></i>
+                      <p>
+                      {{#if joinedCount}}
+                        {{joinedCount}}
+                      {{else}}
+                        0
+                      {{/if}}
+                      &nbsp;/&nbsp;{{member}}
+                      </p>
+                    </li>
                     <li class="clearfix"><i class="fa fa-dot-circle-o"></i>
                       <!-- TODO 修改 href 可以链接到俱乐部 -->
                       <a href="#">
@@ -54,8 +71,10 @@
                   </div>
                   <!-- todo 替换为用户的数据 -->
                   <div class="media-info col-sm-10 col-xs-9">
-                    <h4 class="media-heading">陈元</h4>
-                    <div class="media-date">2015, 09, 05</div>
+                    <h4 class="media-heading">{{currentUser.profile.name}}</h4>
+                    <!--
+                      <div class="media-date">2015, 09, 05</div>
+                     -->
                   </div>
                   <div class="col-sm-10 col-xs-12 media-text">
                     <form class="new-comment-form">
@@ -80,7 +99,7 @@
                 </div>
                 {{#if signForm}}
                   <div class="modal-body">
-                    {{> quickForm schema=signForm id="joinEvent" type='normal' template="bootstrap3-horizontal" label-class="col-sm-3" input-col-class="col-sm-9"}}
+                    {{> quickForm buttonContent="报名" schema=signForm id="joinEvent" type='normal' template="bootstrap3-horizontal" label-class="col-sm-3" input-col-class="col-sm-9"}}
                   </div>
                 {{/if}}
                 <div class="modal-footer">
@@ -107,7 +126,13 @@
               <li role="presentation"><a href="#poster">主题海报</a></li>
               <li role="presentation"><a href="#information">活动详情</a></li>
               <li role="presentation"><a href="#comment">留言</a></li>
-              <li id="nav-join" class="hidden-xs"><a href="" data-toggle="modal" data-target="#joinEventFormModal">{{optionSignFormTips}}</a></li>
+              <!-- 判断用户是否已经报名 -->
+              {{#if isJoined}}
+                <li id="nav-join" class="hidden-xs"><a href="">已报名</a></li>
+              {{else}}
+                <li id="nav-join" class="hidden-xs"><a href="" data-toggle="modal" data-target="#joinEventFormModal">{{optionSignFormTips}}</a></li>
+              {{/if}}
+              <li id="publish-event"><a href="">发布活动</a></li>
             </ul>
           </div>
         </div>

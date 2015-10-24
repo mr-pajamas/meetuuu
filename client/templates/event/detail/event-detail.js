@@ -5,6 +5,10 @@
     joinEvent: {
       // 人工提交，便于添加 eventId 提交
       onSubmit: function(doc) {
+        if (!Meteor.userId()) {
+          alert('请登录！');
+          return;
+        }
         var eventSignInfo = {};
         eventSignInfo.eventId = FlowRouter.getParam('eid');
         eventSignInfo.signForm = doc;
@@ -23,8 +27,16 @@
 var eventDesc = new ReactiveVar('');
 Template.eventDetail.onCreated(function () {
   var template = this;
+  //打开一次记录一次阅读记录
+  Meteor.call('eventReadInc', FlowRouter.getParam('eid'));
+
   template.autorun(function() {
     var eid = FlowRouter.getParam('eid');
+    // 订阅当前用户是否收藏过活动
+    if (Meteor.userId()) {
+      template.subscribe('userSavedEvent', Meteor.userId(), new Mongo.ObjectID(eid));
+      template.subscribe('userJoinedEvent', eid, Meteor.userId());
+    }
     // 订阅活动详情
     template.subscribe('eventDetailById', new Mongo.ObjectID(eid), function () {
       Tracker.afterFlush(function () {
@@ -81,8 +93,8 @@ Template.eventDetail.helpers({
       time = this.time;  // 取了with 中的时间，用于改写格式，此 helper 优先级高于 with
     if (time) {
       // 更改时间格式 ISO -> 2015年9月15日星期二下午5点37分
-      eventTime.start = moment(time.start).format('LLLL');
-      eventTime.end = moment(time.end).format('LLLL');
+      eventTime.start = moment(time.start).format('M月D日H点:m分');
+      eventTime.end = moment(time.end).format('M月D日H点:m分');
     }
     return eventTime;
   },
@@ -94,7 +106,23 @@ Template.eventDetail.helpers({
     }
     var forms = eventDetail.signForm,
       signForm = EditEvent.eventSignForm.setPreviewForm(forms);
+    for (var key in signForm) {
+      if (signForm[key].label === '电话') {
+        signForm[key].defaultValue = Meteor.user().mobile;
+      }
+      if (signForm[key].label === '姓名') {
+        signForm[key].defaultValue = Meteor.user().profile.name;
+      }
+    }
     return new SimpleSchema(signForm);
+  },
+  // 判断当前用户是否收藏过该活动
+  'isSaved': function() {
+    return UserSavedEvents.findOne();
+  },
+  // 判断当前用户是否已经报名
+  'isJoined': function() {
+    return JoinForm.findOne();
   }
 });
 
@@ -119,7 +147,6 @@ Template.eventDetail.events({
     };
     Meteor.call('submitEventComment', comment, function(err, res) {
       if (!err && res.code === 0) {
-        alert('评论成功');
         $('#commentContent').val('');
       }
     });
@@ -137,5 +164,16 @@ Template.eventDetail.events({
       }
     }
     return false;
+  },
+  'click #saveEvent': function() {
+    if (!Meteor.userId()) {
+      alert('请先登录！');
+      return;
+    }
+    var event = {
+      name: this.title,
+      id: this._id
+    };
+    Meteor.call('toggleSaveEvent', event);
   }
 });

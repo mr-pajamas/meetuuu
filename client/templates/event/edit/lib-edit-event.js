@@ -796,9 +796,9 @@ EditEvent = (function() {
     if(!eventInfo.tags || eventInfo.tags.length === 0) {
       errorInfo = '请输入活动标签';return errorInfo;
     }
-    if(!eventInfo.desc) {
-      errorInfo = '请填写活动详情';return errorInfo;
-    }
+    //if(!eventInfo.desc) {
+    //  errorInfo = '请填写活动详情';return errorInfo;
+    //}
     errorInfo = eventSignForm.checkValidation() ? '请补全报名表单' : '';
     return errorInfo;
   };
@@ -817,7 +817,7 @@ EditEvent = (function() {
       }
     };
     var eid = FlowRouter.getParam('eid');
-    eventDesc.uploadToQiniu(eid);
+    //eventDesc.uploadToQiniu(eid);
     var eventInfo = {
       _id: new Mongo.ObjectID(eid),
       title: eventTitle.getTitle(),

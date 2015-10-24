@@ -64,6 +64,10 @@ Template.eventComment.events({
   // 提交对留言的评论
   'click .submitCommentReply': function(e, template) {
     e.preventDefault();
+    if (!Meteor.userId()) {
+      alert('请登录！');
+      return;
+    }
     var cid = this._id;
     var replyComment = template.$('textarea').val();
     var comment = {
