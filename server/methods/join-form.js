@@ -39,9 +39,11 @@ Meteor.methods({
       }
     });
     joinEvnetsInfo.signForm = newForms;
-    console.log(joinEvnetsInfo);
     var cnt = JoinForm.update({'userId': joinEvnetsInfo.userId, 'eventId': joinEvnetsInfo.eventId},
       {$set: joinEvnetsInfo}, {upsert: true});
+    if (cnt === 1) {
+      cnt = Events.update(new Mongo.ObjectID(joinEvnetsInfo.eventId), {$inc: {joinedCount: 1}});
+    }
     return {'code': cnt ? 0 : -1};
   },
   'denySignRequest': function(denyInfo) {
