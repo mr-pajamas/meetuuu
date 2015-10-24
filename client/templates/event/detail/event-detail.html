@@ -99,7 +99,7 @@
                 </div>
                 {{#if signForm}}
                   <div class="modal-body">
-                    {{> quickForm schema=signForm id="joinEvent" type='normal' template="bootstrap3-horizontal" label-class="col-sm-3" input-col-class="col-sm-9"}}
+                    {{> quickForm buttonContent="报名" schema=signForm id="joinEvent" type='normal' template="bootstrap3-horizontal" label-class="col-sm-3" input-col-class="col-sm-9"}}
                   </div>
                 {{/if}}
                 <div class="modal-footer">
@@ -126,8 +126,8 @@
               <li role="presentation"><a href="#poster">主题海报</a></li>
               <li role="presentation"><a href="#information">活动详情</a></li>
               <li role="presentation"><a href="#comment">留言</a></li>
-              <!-- 判断用户是否已经报名 -->
-              {{#if isJoined}}
+              <!-- isJoined 判断用户是否已经报名 -->
+              {{#if false}}
                 <li id="nav-join" class="hidden-xs"><a href="">已报名</a></li>
               {{else}}
                 <li id="nav-join" class="hidden-xs"><a href="" data-toggle="modal" data-target="#joinEventFormModal">{{optionSignFormTips}}</a></li>
