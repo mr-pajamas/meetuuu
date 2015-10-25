@@ -1,25 +1,13 @@
-<template name="itemDiscussion">
+<template name="forumItemDiscussion">
   <div class="item-discussion">
     <div class="item-discussion-wrap">
       <div class="item-discussion-header">
-        <!--&lt;!&ndash;<div class="row">
-          <div class="col-md-1 col-xs-6">
-            <img class="" src="/images/luntan.jpg"/>
-          </div>
-          <div>
-            <div class="col-md-10 col-xs-6">
-
-              <p><span class="glyphicon glyphicon glyphicon-user">{{userName}}</span></p>
-                        <p><span class="glyphicon glyphicon-time">{{dateFormate createdAt }}</span></p>
-            </div>
-          </div>
-        </div>&ndash;&gt;-->
         <div class="item-discussion-header-left">
           <img class="" src="/images/luntan.jpg"/>
         </div>
         <div class="item-discussion-header-right">
           <p><span class="glyphicon glyphicon glyphicon-user">{{userName}}</span></p>
-          <p><span class="glyphicon glyphicon-time">{{dateFormate createdAt }}</span></p>
+          <p><span class="glyphicon glyphicon-time">{{ showTime }}</span></p>
         </div>
         <div class="clear"></div>
       </div>
@@ -41,18 +29,29 @@
         <div class="content-img">
           <div class="row">
             {{#each imgPath}}
-            <div class="col-md-3 col-sm-6 col-xs-12">
-              <img class="img-thumbnail item-img" src="{{this}}">
-            </div>
+              <div class="col-md-3 col-sm-6 col-xs-12">
+                <img class="img-thumbnail item-img" src="{{this}}">
+              </div>
             {{/each}}
           </div>
         </div>
         <div class="content-footer">
           <p>
              <span class="p-right">
-               <span class="glyphicon glyphicon-thumbs-up">赞</span>
+               {{#if alreadyVote}}
+                 <span>
+                   <span class="glyphicon glyphicon-thumbs-up">已赞</span>
+                 </span>
+               {{else}}
+                 <a href="#" class="upVote">
+                   <span class="glyphicon glyphicon-thumbs-up">赞</span>
+                 </a>
+               {{/if}}
                <span class="badge">{{upVoteCount}}</span>
-               <span class="glyphicon glyphicon-comment"></span>
+               <!-- {{pathFor '/singlediscussion/:discId' discId=_id query='flag=1'}}-->
+               <a  href="{{pathFor '/singlediscussion/:discId' discId=_id query='flag=1'}}" class="reply">
+                 <span class="glyphicon glyphicon-comment"></span>
+               </a>
                <span class="badge">{{commentCount}}</span>
              </span>
           </p>

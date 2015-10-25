@@ -4,7 +4,7 @@
 var PAGE_SIZE = 10;
 var limit;
 var setPageTime;
-Template.discussionItem.onCreated( function () {
+Template.forumDiscussionItem.onCreated( function () {
   setPageTime = new Date();
   limit = new ReactiveVar(PAGE_SIZE);
   var template = this;
@@ -13,20 +13,34 @@ Template.discussionItem.onCreated( function () {
   });
   template.subscribe('commentItemAfter', FlowRouter.getParam("discId") , setPageTime);
 });
-Template.discussionItem.helpers({
+Template.forumDiscussionItem.helpers({
+  flagStatus: function () {
+    return (FlowRouter.getQueryParam("flag") === "1" && FlowRouter.getQueryParam("flag")!=null);
+  },
+  contentFormate: function () {
+    if(this.content.indexOf('<img')>=0)
+    {
+      return  (this.content.substring(0, this.content.indexOf('<img'))).replace(/<[^>]+>/g,"").substring(0,150) ;
+    }
+    else
+    {
+      return this.content.replace(/<[^>]+>/g,"").substring(0,150) ;
+    }
+  },
+
   existUserData: function () {
     var updateId = FlowRouter.getParam("discId");
     var disc = Discussion.findOne({_id: updateId});
     console.log("csd:"+disc.upVote);
     if (_.include(disc.upVote, Meteor.user()._id)) {
-           return true;
-         } else {
+      return true;
+    } else {
       return false;
     }
   },
   existData: function () {
     if(Comments.find().count()>0)
-    return true;
+      return true;
     else return false;
   },
   commentItemsBefore: function () {
@@ -45,8 +59,17 @@ Template.discussionItem.helpers({
   }
 });
 
-Template.discussionItem.events({
-  "click .upVote": function (e, params) {
+Template.forumDiscussionItem.events({
+  "click a.collapseBtn": function (e, template) {
+    e.preventDefault();
+    if (FlowRouter.getQueryParam("flag") == 1) {
+      FlowRouter.setQueryParams({flag: 0});
+      console.log(FlowRouter.getQueryParam("flag"));
+    } else {
+      FlowRouter.setQueryParams({flag: 1});
+    }
+  },
+  "click .upVote":function (e, params) {
     e.preventDefault();
     if (confirm("UpVote  this Discussion?")) {
       var updateId = params.data._id;

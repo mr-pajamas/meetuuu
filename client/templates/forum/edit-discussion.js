@@ -2,11 +2,11 @@
  * Created by jym on 2015/9/29.
  */
 
-Template.editDiscussion.onRendered(function () {
+Template.forumEditDiscussion.onRendered(function () {
   $('#content').wysiwyg();
 });
 
-Template.editDiscussion.helpers({
+Template.forumEditDiscussion.helpers({
   errorMessage: function (field) {
     myContext = Discussion.simpleSchema().namedContext("update");
     return myContext.keyErrorMessage(field);
@@ -16,7 +16,7 @@ Template.editDiscussion.helpers({
   },
 });
 
-Template.editDiscussion.events({
+Template.forumEditDiscussion.events({
   "submit form": function (e, template) {
     e.preventDefault();
     var subject = $(e.target).find('[name=subject]').val();
@@ -32,8 +32,7 @@ Template.editDiscussion.events({
     var updateId = this._id;
     Discussion.update(updateId, {$set: post}, function (error, result) {
       if (result) {
-        console.log(result);
-        FlowRouter.go("discussion", {limitNum: 5});
+        FlowRouter.go("singleDisc", {discId:updateId});
       }
     });
   },

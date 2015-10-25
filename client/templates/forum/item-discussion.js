@@ -1,10 +1,32 @@
 /**
  * Created by jym on 2015/10/8.
  */
-Template.itemDiscussion.onRendered( function () {
+Template.forumItemDiscussion.onRendered( function () {
 
 })
-Template.itemDiscussion.helpers({
+Template.forumItemDiscussion.helpers({
+  alreadyVote: function () {
+    var updateId = this._id;
+    var disc = Discussion.findOne({_id: updateId});
+    return _.include(disc.upVote, Meteor.user()._id);
+  },
+  showTime: function () {
+    var nowTime = moment();
+    var createAt = this.createdAt;
+    var diff = moment.duration(nowTime.diff(createAt)).asSeconds();
+    var diffh = moment.duration(nowTime.diff(createAt)).asHours();
+    if(parseInt(diff)<60){
+      return "刚刚";
+    }
+    if (parseInt(diffh)<12)
+    {
+      return moment(createAt).fromNow().toString();
+    }
+    else{
+      return moment(createAt).format("YYYY-MM-DD HH:mm:ss");
+    }
+
+  },
   setTopCss: function () {
     if (this.setTop==1) {
       console.log(this.imgPath);
@@ -23,4 +45,33 @@ Template.itemDiscussion.helpers({
        return this.content.replace(/<[^>]+>/g,"").substring(0,150) ;
      }
   }
+});
+
+Template.forumItemDiscussion.events({
+  "click a.upVote": function(e, template) {
+    e.preventDefault();
+    if (Meteor.user() != null) {
+      if (confirm("UpVote  this Discussion?")) {
+        var updateId = this._id;
+        var disc = Discussion.findOne({_id: updateId});
+        if (!disc) {
+          throw new Meteor.Error('invalid', 'Discussion not found');
+        }
+        if (_.include(disc.upVote, Meteor.user()._id)) {
+          throw new Meteor.Error('invalid', 'User is exist');
+        }
+        else {
+          Discussion.update(disc._id, {
+            $addToSet: {upVote: Meteor.user()._id},
+            $inc: {upVoteCount: 1}
+          }, function (error, result) {
+          });
+        }
+      }
+
+    } else {
+      alert("请先登录");
+      FlowRouter.go("join");
+    }
+  },
 });

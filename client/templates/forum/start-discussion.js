@@ -1,20 +1,23 @@
 /**
  * Created by jym on 2015/9/29.
  */
+Template.forumStartDiscussion.onCreated( function () {
+  this.subscribe("singleGroupByPath", FlowRouter.getParam("groupPath"));
+});
 
-Template.startDiscussion.onRendered( function () {
+Template.forumStartDiscussion.onRendered( function () {
   $('#content').wysiwyg();
 });
 
 //$('#content').wysiwyg();
-Template.startDiscussion.helpers({
+Template.forumStartDiscussion.helpers({
   errorMessage:function(field){
     var myContext = Discussion.simpleSchema().namedContext("insert");
     return myContext.keyErrorMessage(field);
   }
 });
 
-Template.startDiscussion.events({
+Template.forumStartDiscussion.events({
   "submit form": function (e, template) {
     e.preventDefault();
     var subject = $(e.target).find('[name=subject]').val();
@@ -27,8 +30,9 @@ Template.startDiscussion.events({
     {
       str = str.slice(0,4);
     }
-   // console.log(str);
-    var post ={subject:subject, content: content, imgPath:str};
+    var groupId = Groups.findOne({path: FlowRouter.getParam("groupPath")});
+    console.log(groupId._id);
+    var post ={subject:subject, content: content, imgPath:str, groupId:groupId._id};
     post= _.extend(post,{
           userId:Meteor.user()._id,
           userName: Meteor.user().profile.name,
@@ -37,10 +41,8 @@ Template.startDiscussion.events({
         });
     Discussion.insert(post,{ validationContext: "insert"}, function(error, result) {
       var myContext1 = Discussion.simpleSchema().namedContext("insert");
-      console.log(myContext1.getErrorObject());
-      console.log(result);
       if(result) {
-        FlowRouter.go("discussion");
+        FlowRouter.go("singleDisc", {discId:result});
       }
     });
   }

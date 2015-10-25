@@ -1,4 +1,4 @@
-<template name="discussionItem">
+<template name="forumDiscussionItem">
   <div class="discussion-item">
     <div class="discussion-item-header">
       <div class="discussion-item-header-left">
@@ -24,34 +24,51 @@
       </div>
       <div class="clear"></div>
     </div>
-    <div class="discussion-item-content">
+    <div class="discussion-item-content ">
       <div class="discussion-item-content-subject container">
-        <a data-toggle="collapse" data-target="#discussion-item-content-container">
+        <a class="collapseBtn" href="#">
           <span class="panel-title"><h4>主题：{{subject}}</h4></span>
         </a>
       </div>
-      <div class="discussion-item-content-container" id="discussion-item-content-container">
-        <p>
-          {{{content}}}
-        </p>
-      </div>
+      {{#if flagStatus}}
+        <div class="discussion-item-content-container animate">
+          <div class="content">
+            <p>{{contentFormate}}...
+            </p>
+          </div>
+          <div class="content-img">
+            <div class="row">
+              {{#each imgPath}}
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                  <img class="img-thumbnail item-img" src="{{this}}">
+                </div>
+              {{/each}}
+            </div>
+          </div>
+        </div>
+      {{else}}
+        <div class="discussion-item-content-container animate" id="discussion-item-content-container">
+          <p>
+            {{{content}}}
+          </p>
+        </div>
+
+      {{/if}}
     </div>
     <div class="discussion-item-reply">
       {{#if existData}}
-        <div style="margin: 5px 0;">
+        <div class="load">
           {{#if discussionCount}}
-            <a id="load-more" class="load-more">查看更多...</a>
-              <!--{{else}}
-           <a class="loaded">数据加载完毕</a>-->
+            <a id="load-more" class="load-more">浏览历史...</a>
           {{/if}}
         </div>
-        <table>
+        <table class="comment-item">
           {{#each commentItemsBefore}}
-            {{> commentItem}}
+            {{> forumCommentItem}}
           {{/each}}
 
           {{#each commentItemsAfter}}
-            {{> commentItem}}
+            {{> forumCommentItem}}
           {{/each}}
         </table>
       {{else}}
@@ -60,7 +77,7 @@
     </div>
     <div class="discussion-item-comment">
       {{#onlyIfLogin}}
-        {{> comment}}
+        {{> forumComment}}
       {{else}}
         <p>请先登录！</p>
       {{/onlyIfLogin}}

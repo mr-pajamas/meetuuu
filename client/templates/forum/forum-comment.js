@@ -2,14 +2,14 @@
  * Created by jianyanmin on 15/10/4.
  */
 
-Template.comment.helpers({
+Template.forumComment.helpers({
     errorMessage:function(field){
         var myContext = Comments.simpleSchema().namedContext("insertComment");
         return myContext.keyErrorMessage(field);
     }
 });
 
-Template.comment.events({
+Template.forumComment.events({
     "submit form" :function (e, params) {
         e.preventDefault();
         var comment = $(e.target).find('[name=comment]').val();

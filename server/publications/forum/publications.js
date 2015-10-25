@@ -2,9 +2,27 @@
  * Created by jym on 2015/9/9.
  */
 //社群论坛
-Meteor.publish('listDiscussion', function (limitNum) {
-  return Discussion.find({},{sort: {setTop: -1, createdAt: -1}, limit: limitNum});
-});
+Meteor.publishComposite("listDiscussion", function (limitNum, sortType, groupPath) {return {
+  find: function () {
+    return Groups.find({path:groupPath});
+  },
+  children: [
+    {
+      find: function (group) {
+        var sort = {};
+        sort.setTop = -1;
+        sort[sortType] = -1;
+        return Discussion.find({groupId: group._id},{sort: sort, limit: limitNum});
+      }
+    }
+  ]
+}});
+/*Meteor.publish('listDiscussion', function (limitNum, sortType) {
+ var sort = {};
+ sort.setTop = -1;
+ sort[sortType] = -1;
+ return Discussion.find({},{sort: sort, limit: limitNum});
+ });*/
 
 Meteor.publish('singleDiscussion', function (discId) {
   return Discussion.find({_id: discId});

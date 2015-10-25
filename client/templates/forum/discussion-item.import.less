@@ -1,3 +1,5 @@
+
+
 .discussion-item{
   .discussion-item-header{
     border: #cccccc solid 1px;
@@ -13,8 +15,11 @@
       padding: 10px;
       float:left;
     };
+    .clear{
+      clear: both;
+    }
   };
-//��ʽʧЧ
+  //��ʽʧЧ
   .discussion-item-content{
     background: #ffffff;
     width: 100%;
@@ -45,10 +50,52 @@
       };
 
     };
+    @keyframes fade-in {
+      0% {opacity: 0;}/*初始状态 透明度为0*/
+      40% {opacity: 0;}/*过渡状态 透明度为0*/
+      100% {opacity: 1;}/*结束状态 透明度为1*/
+    }
+    @-webkit-keyframes fade-in {/*针对webkit内核*/
+      0% {opacity: 0;}
+      40% {opacity: 0;}
+      100% {opacity: 1;}
+    }
+    .animate {
+      animation: fade-in;/*动画名称*/
+      animation-duration: 1s;/*动画持续时间*/
+      -webkit-animation:fade-in 1s;/*针对webkit内核*/
+    }
+
   };
   .discussion-item-reply{
     border: #cccccc solid 1px;
     margin-top: 20px;
+    a.load-more {
+      display: block;
+      border-radius: 3px;
+      background: rgba(0, 0, 0, 0.05);
+      text-align: center;
+      height: 60px;
+      line-height: 60px;
+      margin-bottom: 10px;
+      &:hover {
+        text-decoration: none;
+        background: rgba(0, 0, 0, 0.1);
+      };
+    };
+    a.loaded {
+      display: block;
+      border-radius: 3px;
+      background: rgba(0, 0, 0, 0.05);
+      text-align: center;
+      height: 60px;
+      line-height: 60px;
+      margin-bottom: 10px;
+      &:hover {
+        text-decoration: none;
+        background: rgba(0, 0, 0, 0.1);
+      };
+    };
   };
   .discussion-item-comment{
     margin-top: 20px;
