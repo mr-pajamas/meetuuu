@@ -10,5 +10,8 @@ Template.test.helpers({
   },
   "shitHelper": function () {
     return Session.get("fuck");
+  },
+  arr: function () {
+    return [1, 2, 3];
   }
 });

@@ -5,15 +5,15 @@
       <div class="col-xs-9" style="background-color: red; height: 100px"></div>
       <div class="clearfix visible-sm-block visible-xs-block"></div>
       <div class="col-md-9" style="background-color: blue; height: 500px">
-{{!--
-        {{#styledSelect inline=true}}
-          <option value="" disabled selected class="hidden">请选择</option>
-          {{#each testArray}}
-            <option>{{this}}</option>
-          {{/each}}
-        {{/styledSelect}}
+        {{!--
+                {{#styledSelect inline=true}}
+                  <option value="" disabled selected class="hidden">请选择</option>
+                  {{#each testArray}}
+                    <option>{{this}}</option>
+                  {{/each}}
+                {{/styledSelect}}
 
-        --}}
+                --}}
 
         {{#styledSelect extraClasses="text-muted"}}
           <option>上海</option>
@@ -34,4 +34,8 @@
     </div>
     -->
   </div>
+
+  {{#each arr}}
+    {{> testItem}}
+  {{/each}}
 </template>

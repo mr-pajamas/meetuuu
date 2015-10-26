@@ -1,6 +1,26 @@
 <template name="index">
   {{> header}}
 
+  <div class="modal fade index-modal" tabindex="-1" role="dialog" aria-labelledby="indexModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
+          <h4 class="modal-title" id="indexModalLabel">请设置您的头像</h4>
+        </div>
+        <div class="modal-body">
+          {{> imgUpload width=400 height=400 defaultSrc="/images/default-badge.png"}}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">以后再说</button>
+          <button type="button" class="btn btn-primary">确定</button>
+        </div>
+
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>
+
   <div class="jumbotron index-jumbotron" style="background-image: url('/images/201921-12062315434980.jpg');">
     <div class="index-jumbotron-mask"></div>
     <div class="container">
