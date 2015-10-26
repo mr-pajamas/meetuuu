@@ -1,6 +1,6 @@
 Meteor.publish('eventSignInfos', function(eid) {
   check(eid, String);
-  return JoinForm.find({'eventId': eid, 'status': { $in: ['request', 'accept']}});
+  return JoinForm.find({'eventId': eid});
 });
 
 Meteor.publish('userJoinedEvent', function(eid, uid) {

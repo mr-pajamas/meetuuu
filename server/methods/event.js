@@ -18,5 +18,11 @@ Meteor.methods({
   'eventReadInc': function(eid) {
     check(eid, String);
     Events.update({_id: new Mongo.ObjectID(eid)}, {'$inc': {'readCount': 1}});
+  },
+  'setEventStatus': function(eid, status) {
+    check(eid, Mongo.ObjectID);
+    check(status, String);
+    var cnt = Events.update(eid, {$set: {status: status}});
+    return {code: cnt === 1 ? 0 : 1};
   }
 });

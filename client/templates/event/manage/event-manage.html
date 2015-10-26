@@ -1,9 +1,13 @@
 <template name="eventManage">
   <!-- created by Chen Yuan. on 2015-09-25 -->
   <div class="container event-manage">
+    {{#if hasNoViewRight}}
+      <div class="alert-danger text-center">您没有权限查看此页面</div>
+    {{else}}
+
     <header class="clearfix">
       <h1 class="pull-left">
-        <p>{{eventInfo.title}} <span class="label label-info hidden-xs">审核中</span></p>
+        <p>{{eventInfo.title}} <span class="label label-info hidden-xs">{{eventInfo.status}}</span></p>
         <a href="{{eventShortUrl}}" class="event-manage-url hidden-xs">{{eventShortUrl}}</a>
       </h1>
       <ul class="list-inline pull-right hidden-xs">
@@ -75,28 +79,16 @@
               <dd id="visibility">公开活动</dd>
             </dl>
             <hr/>
+            <!-- 二维码区域 -->
+            {{> qrcodeTpl}}
 
-            <!-- Modal -->
-            <div class="modal fade" id="eventQrcodeModal" tabindex="-1" role="dialog" aria-labelledby="eventQrcode">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">活动二维码</h4>
-                  </div>
-                  <div class="center-block">
-                    <div id="eventQrcode"></div>
-                  </div>
-                  <div class="modal-footer">
-                    <a type="button" class="btn btn-primary" id="eventQrcodeDownLoad" download="{{eventInfo.title}}.png">下载二维码</a>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                  </div>
-                </div>
-              </div>
-            </div>
             <button class="btn btn-primary hidden-xs" id="event-code" data-toggle="modal" data-target="#eventQrcodeModal">活动二维码</button>
             <a href="/event/edit/{{eventInfo._id._str}}" class="btn btn-primary visible-xs-inline-block">编辑活动</a>
-            <span id="event-cancel">取消活动</span>
+            {{#if disableCancel}}
+                <button id="event-publish" class="btn bg-warning">发布活动</button>
+            {{else}}
+              <span id="event-cancel" >取消活动</span>
+            {{/if}}
           </section>
 
           <!-- 报名管理 -->
@@ -136,19 +128,24 @@
         </div>
       </main>
     </div>
+  {{/if}}
   </div>
 </template>
 
 <template name="joinForm">
   <li class="panel panel-default">
     <div class="panel-heading" data-target="#pane{{_id}}">
+      <!-- TODO: 替换用户头像 -->
       <div class="personal-photo pull-left"><img class="img-responsive" src="/714468542.jpg" alt="photo"/></div>
       <div class="info-list pull-left">
         <div class="name">{{cname}}</div>
         <div class="phone-number">{{telephone}}</div>
         <div class="join-time text-muted">{{formatTimeMDHHmm createTime}}</div>
+        <!-- TODO @cy 修改下这个样式，显示的内容是报名状态 -->
+        <div class="label label-info">{{status}}</div>
       </div>
       <button class="btn btn-default refuse pull-right" data-id="{{_id}}">拒绝</button>
+      <button class="btn btn-default accept pull-right" data-id="{{_id}}">通过</button>
     </div>
     <div class="panel-collapse collapse" id="pane{{_id}}">
       <div class="panel-body">
@@ -161,4 +158,25 @@
       </div>
     </div>
   </li>
+</template>
+
+<template name="qrcodeTpl">
+  <!-- Modal -->
+  <div class="modal fade" id="eventQrcodeModal" tabindex="-1" role="dialog" aria-labelledby="eventQrcode">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">活动二维码</h4>
+        </div>
+        <div class="center-block">
+          <div id="eventQrcode"></div>
+        </div>
+        <div class="modal-footer">
+          <a type="button" class="btn btn-primary" id="eventQrcodeDownLoad" download="{{eventInfo.title}}.png">下载二维码</a>
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>

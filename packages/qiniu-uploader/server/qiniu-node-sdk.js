@@ -83,12 +83,17 @@ Meteor.methods({
       }
     }
     // TODO 判别权限
-    console.log(posterBuf);
-    console.log(oldKey);
     var res = uploadImgBuf(new Buffer(posterBuf.replace(/^data:image\/\w+;base64,/, ""), 'base64'));
     if (res.key) {
       if (oldKey) {
-        wrappedQiniuClient.remove(bucketname, oldKey);
+        console.log('旧:' + oldKey);
+        console.log('新:' + res.key);
+        try {
+          wrappedQiniuClient.remove(bucketname, oldKey);
+        }
+        catch(err) {
+          throw(err);
+        }
       }
       return {
         code: 0,
@@ -113,7 +118,7 @@ Meteor.methods({
     var res = uploadHtmlBuf(htmlBuf);
     if (res.key) {
       if (oldKey) {
-        wrappedQiniuClient.remove(bucketname, oldKey);
+        //wrappedQiniuClient.remove(bucketname, oldKey);
       }
       return {
         code: 0,

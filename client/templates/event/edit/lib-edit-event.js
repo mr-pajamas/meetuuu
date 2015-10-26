@@ -193,6 +193,73 @@ EditEvent = (function() {
 
 
   /**
+   * 活动俱乐部信息
+   */
+  var eventGroups = {
+    groupOptions: new ReactiveVar([]),
+    selectedGroup: new ReactiveVar(),
+    inited: false,
+    // 俱乐部Id
+    init: function(gid) {
+      if (!gid) {
+        gid = FlowRouter.getQueryParam('gid');
+      }
+      var self = this;
+      Tracker.autorun(function() {
+        var groups = [];
+        MyGroups.find().map(function(group) {
+          if (Roles.userIsInRole(Meteor.userId(), ['create-event', 'create-open-event'], group.path)) {
+            var temp = {
+              attr: {
+                'data-gid': group._id,
+                'data-path': group.path,
+                value: group._id
+              },
+              name: group.name
+            };
+            if (group._id == gid) {
+              temp.attr.selected = true;
+              self.selectedGroup.set({
+                name: group.name,
+                id: group._id,
+                path: group.path
+              });
+            }
+            groups.push(temp);
+          }
+        });
+        if (!self.selectedGroup.get()) {
+          self.selectedGroup.set({
+            name: groups[0] && groups[0].name,
+            id: groups[0] && groups[0].attr['data-gid'],
+            path: group[0] && groups[0].path
+          })
+        }
+        self.groupOptions.set(groups);
+      });
+      this.inited = true;
+    },
+    getGroups: function() {
+      return this.groupOptions.get();
+    },
+    getSelectdGroup: function() {
+      return this.selectedGroup.get();
+    },
+    changeSelectedGroup: function(gid) {
+      var newSelectedGroup;
+      this.groupOptions.get().forEach(function(group) {
+        if (group.attr['data-gid'] === gid) {
+          newSelectedGroup = {
+            name: group.name,
+            id: gid
+          }
+        }
+      });
+      this.selectedGroup.set(newSelectedGroup);
+    },
+  };
+
+  /**
    * 活动城市及地址选择
    */
   var eventLocation = {
@@ -303,6 +370,19 @@ EditEvent = (function() {
       key = key || '';
       this.key.set(key);
       this.inited = true;
+      // Set options for cropper plugin
+      var $image = $(".image-crop > img");
+      // 设置图片
+      $image.attr('src', key ? 'http://7xjl8x.com1.z0.glb.clouddn.com/' + key : '/event-create-poster-holder.png');
+      $($image).cropper({
+        //aspectRatio: 16 / 9,
+        preview: ".img-preview",
+        strict: true,
+        autoCrop: true,
+        done: function(data) {
+          // 输出裁剪的参数信息
+        }
+      });
     },
     setKey: function(key) {
       this.key.set(key);
@@ -810,11 +890,7 @@ EditEvent = (function() {
     var author = {
       name: Meteor.user().profile.name,
       id: Meteor.userId(),
-      // TODO 改为具体俱乐部
-      club: {
-        name: '足球俱乐部',
-        id: '123456789'
-      }
+      club: eventGroups.getSelectdGroup()
     };
     var eid = FlowRouter.getParam('eid');
     //eventDesc.uploadToQiniu(eid);
@@ -832,6 +908,7 @@ EditEvent = (function() {
         lat: 1.11,
         lng: 2.22
       },
+      status: '已发布',
       poster: eventPoster.getKey(),
       member: eventMemberLimit.getCount(),
       theme: eventTheme.getSelectedTheme(),
@@ -845,6 +922,7 @@ EditEvent = (function() {
     var errMessage = validEventInfo(eventInfo);
     if (errMessage) {
       alert(errMessage);
+      $('.previewEventInfo').button('reset');
       return;
     }
     Meteor.call('event.save', eventInfo, function(err, res) {
@@ -861,7 +939,9 @@ EditEvent = (function() {
    */
   var saveEvent = function() {
     var alertSuccess = function() {
-      alert('活动保存成功');
+      alert('活动发布成功');
+      var eid = FlowRouter.getParam('eid');
+      window.open('/event/manage/' + eid);
     }
     __saveEvent(alertSuccess);
   };
@@ -872,14 +952,15 @@ EditEvent = (function() {
   var previewEvent = function() {
     var goToDetailPage = function() {
       var eid = FlowRouter.getParam('eid');
-      FlowRouter.go('/event/detail/' + eid + '?preview=true');
-    }
+      window.open('/event/detail/' + eid + '?preview=true');
+      $('.previewEventInfo').button('reset');
+    };
     __saveEvent(goToDetailPage);
   };
 
   var pureInit = function() {
     eventTitle.init('');
-    eventTime.init('start-date', 'end-date', new Date(), new Date(), 30);
+    eventTime.init('start-date', 'end-date', new Date(FlowRouter.getQueryParam('time')), new Date(FlowRouter.getQueryParam('time')), 30);
     eventLocation.init('上海', '');
     eventPrivate.init(false);
     eventMemberLimit.init(0);
@@ -888,6 +969,7 @@ EditEvent = (function() {
     eventDesc.init('event-desc', '');
     eventSignForm.init([]);
     eventPoster.init();
+    eventGroups.init();
   };
 
   var InitWithData = function(eventInfo) {
@@ -901,6 +983,7 @@ EditEvent = (function() {
     EditEvent.eventDesc.init('event-desc', eventInfo.desc);
     EditEvent.eventSignForm.init(eventInfo.signForm);
     EditEvent.eventPoster.init(eventInfo.poster);
+    EditEvent.eventGroups.init(eventInfo.author.club.id);
   };
 
   return {
@@ -914,6 +997,7 @@ EditEvent = (function() {
     eventTags         : eventTags,
     eventDesc         : eventDesc,
     eventSignForm     : eventSignForm,
+    eventGroups       : eventGroups,
     saveEvent         : saveEvent,
     previewEvent      : previewEvent,
     pureInit          : pureInit,

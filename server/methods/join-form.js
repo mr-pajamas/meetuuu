@@ -19,7 +19,7 @@ var getFormValue = function(targetForm, value) {
 
 Meteor.methods({
   'submitJoinForm': function(joinEvnetsInfo) {
-    joinEvnetsInfo.status = 'request';
+    joinEvnetsInfo.status = '审核中';
     joinEvnetsInfo.userId = Meteor.userId();
     joinEvnetsInfo.createTime = new Date();
     var eventSignForm = Events.findOne({'_id': new Mongo.ObjectID(joinEvnetsInfo.eventId)}).signForm;
@@ -50,11 +50,14 @@ Meteor.methods({
     console.log(denyInfo);
     var status = '';
     if (denyInfo.forever === true) {
-      status = 'banned';
+      status = '禁止报名';
     } else {
-      status = 'refuse';
+      status = '拒绝报名';
     }
     var cnt = JoinForm.update({'_id': denyInfo.id}, {$set: {'denyResult': denyInfo.result, 'status': status}});
     return {code: cnt ? 0 : -1};
+  },
+  'acceptSignForm': function(id) {
+    JoinForm.update({'_id': id}, {$set: {'status': '报名成功'}});
   }
-})
+});

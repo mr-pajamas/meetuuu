@@ -5,7 +5,9 @@ Session.set("selectedCity", "上海");
 // 百度地图
 var bdmap = null;
 
-
+Template.editEvent.onDestroyed(function() {
+  $(".image-crop > img").cropper('destroy');
+});
 
 Template.editEvent.onRendered(function() {
   var self = this;
@@ -44,19 +46,8 @@ Template.editEvent.onRendered(function() {
   Meteor.typeahead.inject();
 
 
-
-  // Set options for cropper plugin
+  // === 上传海报 Begin===
   var $image = $(".image-crop > img");
-  $($image).cropper({
-    //aspectRatio: 16 / 9,
-    preview: ".img-preview",
-    strict: true,
-    autoCrop: true,
-    done: function(data) {
-      // 输出裁剪的参数信息
-    }
-  });
-
   var $inputImage = $("#inputImage");
   if (window.FileReader) {
     $inputImage.change(function() {
@@ -94,16 +85,11 @@ Template.editEvent.onRendered(function() {
       if(!err && res.code === 0) {
         EditEvent.eventPoster.setKey(res.key);
         $btn.button('reset');
+        alert('海报上传成功');
       }
     });
   });
-
-  //$("#setDrag").click(function() {
-  //  //$image.cropper("setDragMode", "crop");
-  //
-  //  $("#setDrag").addClass('disable');
-  //
-  //});
+  // === 上传海报 End===
 });
 
 
@@ -138,10 +124,22 @@ Template.editEvent.helpers({
   eventTitle: function() {
     return EditEvent.eventTitle.getTitle();
   },
-  // 活动海报
-  eventPosterUrl: function() {
-    var key = EditEvent.eventPoster.getKey();
-    return key ? 'http://7xjl8x.com1.z0.glb.clouddn.com/' + key : '/event-create-poster-holder.png';
+  // 加入的俱乐部，且具有创建活动的权利
+  groupsWithRight: function() {
+    //var groups = [];
+    //if (!Meteor.userId()) {
+    //  return groups;
+    //}
+    //MyGroups.find().map(function(group) {
+    //  if (Roles.userIsInRole(Meteor.userId(), ['create-event', 'create-open-event'], group.path)) {
+    //    groups.push({
+    //      gid: group._id,
+    //      name: group.name,
+    //      path: group.path
+    //    })
+    //  }
+    //});
+    return EditEvent.eventGroups.getGroups();
   },
   // 活动开始日期
   startDate: function() {
@@ -304,6 +302,13 @@ Template.editEvent.events({
     bdmap = null;
     Session.set('selectedCity', cityName);
   },
+  // 活动俱乐部选择
+  'change #event-group-select': function(e) {
+    var gid = $(e.target).val();
+    console.log(gid);
+    EditEvent.eventGroups.changeSelectedGroup(gid);
+  },
+  //
   // 活动公开或内部
   'change #event-private': function(e) {
     var isPublic = $(e.target).prop("checked");

@@ -85,6 +85,9 @@ Template.eventDetail.helpers({
     });
     return eventDesc.get();
   },
+  'hiddenPubBtn': function() {
+    return this.status === '未发布' ? '': 'hidden';
+  },
   'optionSignFormTips': function() {
     return !!FlowRouter.getQueryParam('preview') ? '预览报名表单': '我要报名';
   },
@@ -165,6 +168,7 @@ Template.eventDetail.events({
     }
     return false;
   },
+  // 收藏活动
   'click #saveEvent': function() {
     if (!Meteor.userId()) {
       alert('请先登录！');
@@ -175,5 +179,18 @@ Template.eventDetail.events({
       id: this._id
     };
     Meteor.call('toggleSaveEvent', event);
-  }
+  },
+
+  'click #publish-event': function() {
+    if (!Meteor.userId()) {
+      alert('请先登录！');
+      return;
+    }
+    var eid = FlowRouter.getParam('eid');
+    Meteor.call('setEventStatus', new Mongo.ObjectID(eid), '已发布', function(err, res) {
+      if (!err && res.code === 0) {
+        FlowRouter.go('eventManage', {'eid': eid});
+      }
+    });
+  },
 });
