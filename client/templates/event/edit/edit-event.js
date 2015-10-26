@@ -208,6 +208,7 @@ Template.editEvent.helpers({
   selected: function(event, selectedSuggestion) {
     function insertTag(tag) {
       EditEvent.eventTags.addTag(tag);
+      $('.typeahead').val('');
     }
     if (selectedSuggestion.type === 'new') {
       Meteor.call('insertNewTag', selectedSuggestion.value, function (err, tagId) {
