@@ -208,7 +208,7 @@ EditEvent = (function() {
       Tracker.autorun(function() {
         var groups = [];
         MyGroups.find().map(function(group) {
-          if (Roles.userIsInRole(Meteor.userId(), ['create-event', 'create-open-event'], group.path)) {
+          if (Roles.userIsInRole(Meteor.userId(), ['create-event', 'create-open-event'], 'g'+ group.id)) {
             var temp = {
               attr: {
                 'data-gid': group._id,

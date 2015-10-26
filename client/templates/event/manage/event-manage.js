@@ -52,7 +52,7 @@ Template.eventManage.helpers({
       return true;
     }
     var event = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
-    var path = event && event.author.club.path;
+    var path = event && 'g' + event.author.club.id;
     if (Roles.userIsInRole(Meteor.userId(), ['create-event', 'create-open-event'], path)) {
       return false;
     }
@@ -95,7 +95,7 @@ Template.eventManage.events({
   },
   "click .refuse": function (e) {
     var event = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
-    var path = event && event.author.club.path;
+    var path = event && 'g' + event.author.club.id;
     if (!Roles.userIsInRole(Meteor.userId(), ['deny-entry'], path)) {
       alert('您无权拒绝报名');
       return false;
@@ -111,7 +111,7 @@ Template.eventManage.events({
   },
   "click .accept": function (e) {
     var event = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
-    var path = event && event.author.club.path;
+    var path = event && 'g' + event.author.club.id;
     if (!Roles.userIsInRole(Meteor.userId(), ['deny-entry'], path)) {
       alert('您无权限通过报名');
       return false;
@@ -126,7 +126,7 @@ Template.eventManage.events({
       return;
     }
     var event = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
-    var path = event && event.author.club.path;
+    var path = event && 'g' + event.author.club.id;
     if (!Roles.userIsInRole(Meteor.userId(), ['cancel-event'], path)) {
       alert('您无权限取消活动');
       return false;
@@ -148,7 +148,7 @@ Template.eventManage.events({
     var denyResult = $("#refuse-reason-form").val();
     var refuseForever = $('#refuse-forever').prop("checked");
     var event = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
-    var path = event && event.author.club.path;
+    var path = event && 'g' + event.author.club.id;
     if (refuseForever) {
       if (!Roles.userIsInRole(Meteor.userId(), ['block-entry'], path)) {
         alert('您无权限封禁保密');
