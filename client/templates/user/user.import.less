@@ -110,6 +110,10 @@
           }
           background-color: #ffffff;
         }
+        img.img-responsive {
+          width: 100%;
+          height: auto;
+        }
         @media (min-width: @screen-sm-min) {
           padding-top: 0;
         }
@@ -283,9 +287,6 @@
         }
       }
       #my-club {
-        @media (min-width: @screen-sm-min) {
-          padding-top: 35px;
-        }
         .card-block();
         ul {
           .media {
@@ -304,9 +305,6 @@
         }
       }
       #my-focused-club {
-        @media (min-width: @screen-sm-min) {
-          padding-top: 35px;
-        }
         .group-card-list {
           .group-card-list();
         }
@@ -317,6 +315,7 @@
       @media (min-width: @screen-sm-min) {
         .clearfix();
         padding-top: @pc-padding;
+        padding-bottom: @pc-padding;
         hr {
           border-top-color: #cccccc;
         }

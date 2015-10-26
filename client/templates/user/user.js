@@ -3,8 +3,9 @@
  */
 
 var singleEvent = new ReactiveVar(null);    //  初始化, 用来存储findOne得到的值。
+var hasEvents = new ReactiveVar(false);
 
-function setSingleEvent(event) {
+function setSingleEvent(event) {            // 在 reactive之前，先刷新 scroll-spy.
   Tracker.afterFlush(function () {
     $(document.body).scrollspy("refresh");
     $(document.body).scrollspy("process");
@@ -13,41 +14,42 @@ function setSingleEvent(event) {
 }
 
 Template.user.onCreated(function () {
-  // TODO: subscribe data from Mongo.
   var template = this;
   this.autorun(function () {
     var uid = FlowRouter.getParam('uid');
-    /* if ( uid === Meteor.userId() ) {
-     template.subscribe("userDetailById", uid);
-     template.subscribe("userEventIds", uid);
-     }*/
-    //template.subscribe("userDetailById");
-    template.subscribe("userDetailById");
+    template.subscribe("userDetail", uid);
+    template.subscribe("userDetailById", uid);
+    template.subscribe("userWatchingEvents", uid);
+    if (uid === Meteor.userId()) {
+      console.log("watchingGroups has been subscribed");
+      template.subscribe("watchingGroups");
+    }
   });
-  //Session.setDefault("eventTodayTimeout", 0);
-  // 在使用的时候， 这个值必须取其他的值， 这个地方有待商榷，应该修改为使用 reactive var.
   this.autorun(function () {
     if (template.subscriptionsReady()) {        // 用来等待数据加载完毕。
-      var eventIds = JoinForm.find({userId: "007"}).map(function (doc) {
+      var eventIds = JoinForm.find({userId: FlowRouter.getParam('uid')}).map(function (doc) {
         return new Mongo.ObjectID(doc.eventId);
       });
       var event = Events.findOne({_id: {$in: eventIds}, "time.end": {$gt: new Date()}}, {sort: {"time.start": 1}});
-      var startTime = moment(event.time.start);
-      var endTime = moment(event.time.end);
-      var now = moment();
-      var startTimeDiff = startTime.diff(now);
-      if (startTimeDiff <= 24 * 3600 * 1000) {
-        if (startTimeDiff <= 3600 * 1000) {
-          var tId = Meteor.setTimeout(function () {
-            setSingleEvent(null);
-            Meteor.clearTimeout(tId);
-          }, endTime.diff(now));
-          setSingleEvent(event);
-        } else {
-          var timeoutId = Meteor.setTimeout(function () {
+      if (event) {      // 这里返回的是一个字符串，所以需要检测它的长度。 如果要在helper里面用到属性，就需要做判断有无数据。
+        hasEvents.set(true);
+        var startTime = moment(event.time.start);
+        var endTime = moment(event.time.end);
+        var now = moment();
+        var startTimeDiff = startTime.diff(now);
+        if (startTimeDiff <= 24 * 3600 * 1000) {
+          if (startTimeDiff <= 3600 * 1000) {
+            var tId = Meteor.setTimeout(function () {
+              setSingleEvent(null);
+              Meteor.clearTimeout(tId);
+            }, endTime.diff(now));
             setSingleEvent(event);
-            Meteor.clearTimeout(timeoutId);
-          }, startTimeDiff - 3600 * 1000);
+          } else {
+            var timeoutId = Meteor.setTimeout(function () {
+              setSingleEvent(event);
+              Meteor.clearTimeout(timeoutId);
+            }, startTimeDiff - 3600 * 1000);
+          }
         }
       }
     }
@@ -59,12 +61,27 @@ Template.user.onRendered(function () {
     target: ".scrollspy-wrap",
     offset: 96
   });
+  // 使用一个session 变量在两个页面之间进行通信。
+  if (Session.get("userInfoSet")) {
+    $("#basic-info-tab").tab("show");
+    Session.set("userInfoSet", false);
+  } else {
+    $("#event-menu").addClass("in");
+  }
 });
 
 Template.user.helpers({
+  "meOrOther": function () {
+    return (Meteor.userId() === FlowRouter.getParam("uid")) ? "我" : "Ta";
+  },
+  "userJudge": function () {
+    return Meteor.userId() === FlowRouter.getParam("uid");
+  },
+  "hasEvents": function () {
+    return hasEvents.get();
+  },
   "events": function () {
-
-    var eventIds = JoinForm.find({userId: "007"}).map(function (doc) {
+    var eventIds = JoinForm.find({userId: FlowRouter.getParam("uid")}).map(function (doc) {
       return new Mongo.ObjectID(doc.eventId);
     });
     return Events.find({_id: {$in: eventIds}},{sort: {"time.start": 1}});
@@ -90,6 +107,53 @@ Template.user.helpers({
         return "calendarEvent";
       }
     }
+  },
+  "watchingEvents": function () {
+    return UserSavedEvents.find({"user.id": FlowRouter.getParam("uid")});
+  },
+  "singleWatchEvent": function () {
+    return Events.findOne({_id: this.event.id});
+  },
+  "eventTime": function () {
+    console.log(this);
+    var eventTime = {},
+      time = this.time;
+    if (time) {
+      eventTime.start = moment(time.start).format("MMMM DD");
+      eventTime.end = moment(time.end).format("MMMM DD");
+    }
+    return eventTime;
+  },
+  "eventGroup": function () {
+    return Groups.findOne({_id: singleEvent.author.club.id});
+  },
+  "groups": function () {
+    return MyGroups.find();
+  },
+  "watchingGroupIds": function () {
+    return GroupWatchings.find({"userId": Meteor.userId()});
+  },
+  "watchingGroups": function () {
+    console.log(this.groupId);
+    return MyWatchingGroups.findOne({_id: this.groupId});
+  },
+  "watchingGroupsMemberCount": function () {
+    return this.memberCount ? this.memberCount : 0;
+  },
+  "watchingGroupsEventCount": function () {
+    return this.eventCount ? this.eventCount : 0;
+  },
+  "basicInfo": function () {
+    return  Meteor.users.findOne({_id: FlowRouter.getParam("uid")});
+  },
+  "personalAvatar": function () {
+    return this.avatar ? this.avatar : "/images/default-avatar.jpg";
+  },
+  "hasGender": function () {
+    return this.profile.gender ? true : false;
+  },
+  "userGender": function () {
+    return this.profile.gender === "男" ? "fa-mars" : "fa-venus";
   }
 });
 

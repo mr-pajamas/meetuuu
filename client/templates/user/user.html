@@ -8,10 +8,10 @@
             <a class="user-tab" id="events-tab" role="tab" href="#event" aria-controls="events" data-toggle="dropdown" data-accordion="#event-menu">活动</a>
           </li>
           <div class="scrollspy-wrap hidden-xs">
-            <ul id="event-menu" class="nav nav-stacked collapse in panel-collapse">
+            <ul id="event-menu" class="nav nav-stacked collapse panel-collapse">
               <li><a class="scroll-trigger" href="#event-doing-anchor">当前活动</a></li>
               <li><a class="scroll-trigger" href="#event-registered-anchor">已经报名</a></li>
-              <li><a class="scroll-trigger" href="#event-focused-anchor">我的关注</a></li>
+              <li><a class="scroll-trigger" href="#event-focused-anchor">{{meOrOther}}的关注</a></li>
             </ul>
           </div>
           <li role="presentation">
@@ -19,8 +19,8 @@
           </li>
           <div class="scrollspy-wrap hidden-xs">
             <ul id="club-menu" class="nav nav-stacked hidden-xs collapse panel-collapse">
-              <li class="active"><a class="scroll-trigger" href="#club-anchor">我的俱乐部</a></li>
-              <li><a class="scroll-trigger" href="#focused-club-anchor">我的关注</a></li>
+              <li class="active"><a class="scroll-trigger" href="#club-anchor">{{meOrOther}}的俱乐部</a></li>
+              <li><a class="scroll-trigger" href="#focused-club-anchor">{{meOrOther}}的关注</a></li>
             </ul>
           </div>
           <li role="presentation"><a class="user-tab" id="basic-info-tab" href="#basic-info" aria-controls="basic-info" role="tab">基本信息</a></li>
@@ -32,233 +32,103 @@
     <div class="row">
       <div class="col-sm-9 col-sm-offset-3 col-xs-12">
         <main class="tab-content">
-          <section id="event" class="tab-pane active" role="tabpanel" aria-labelledby="events-tab">
-            {{#with eventNow}}
-              {{> doingEvent}}
-            {{/with}}
-            <div id="event-registered">
-              <h3 id="event-registered-anchor">我报名的活动</h3>
-              <!-- TODO: 这里的显示样式需要根据日期的不同而进行定制化的修改，今天，明天，以后的日期要用日历的形式来展现，同时具体时间的展示位置也有变动，需要相应的模板来替换 -->
-              <ul class="list-unstyled">
-                <!-- TODO: 下面的是今天，明天 -->
-                {{#each events}}
-                  {{> Template.dynamic template=dTemplate}}
-                {{/each}}
-              </ul>
-            </div>
-
-            <div id="event-focused">
-              <h3 id="event-focused-anchor">我关注的活动</h3>
-              <ul class="list-unstyled">
-                <li class="media">
-                  <div class="media-left">
-                    <a href="#"><img class="media-object" src="http://www.huodongxing.com/Content/v2.0/img/poster/school.jpg" alt="event-poster"/>
-                    </a>
-                  </div>
-                  <div class="media-body">
-                    <a href="#" class="event-title"><h4 class="media-heading">10日，大家一起去江湾体育场踢球</h4></a>
-                    <div class="date-plus-total fixed-box-bottom hidden-xs"><span class="date pull-left">9月21日 - 10月23日</span></div>
-                    <div class="clearfix fixed-box-bottom"><a href="#" class="event-organizer pull-left">上海市杨浦骑行爱好者俱乐部</a><span class="total pull-right"><span>192</span> / <span>300</span></span></div>
-                  </div>
-                </li>
-                <li class="media">
-                  <div class="media-left">
-                    <a href="#"><img class="media-object" src="http://www.huodongxing.com/Content/v2.0/img/poster/school.jpg" alt="event-poster"/>
-                    </a>
-                  </div>
-                  <div class="media-body">
-                    <a href="#" class="event-title"><h4 class="media-heading">10日，大家一起去江湾体育场踢球</h4></a>
-                    <div class="date-plus-total fixed-box-bottom hidden-xs"><span class="date pull-left">9月21日 - 10月23日</span></div>
-                    <div class="clearfix fixed-box-bottom"><a href="#" class="event-organizer pull-left">上海市杨浦骑行爱好者俱乐部</a><span class="total pull-right"><span>192</span> / <span>300</span></span></div>
-                  </div>
-                </li>
-                <li class="media">
-                  <div class="media-left">
-                    <a href="#"><img class="media-object" src="http://www.huodongxing.com/Content/v2.0/img/poster/school.jpg" alt="event-poster"/>
-                    </a>
-                  </div>
-                  <div class="media-body">
-                    <a href="#" class="event-title"><h4 class="media-heading">10日，大家一起去江湾体育场踢球</h4></a>
-                    <div class="date-plus-total fixed-box-bottom hidden-xs"><span class="date pull-left">9月21日 - 10月23日</span></div>
-                    <div class="clearfix fixed-box-bottom"><a href="#" class="event-organizer pull-left">上海市杨浦骑行爱好者俱乐部</a><span class="total pull-right"><span>192</span> / <span>300</span></span></div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </section>
-          <section id="clubs" class="tab-pane" role="tabpanel" aria-labelledby="clubs-tab">
-            <div id="my-club">
-              <h3 id="club-anchor">我的俱乐部</h3>
-              <ul class="list-unstyled">
-                <li class="media">
-                  <div class="media-left">
-                    <a href="#">
-                      <img src="http://www.huodongxing.com/Content/v2.0/img/poster/school.jpg" alt="event-poster"/>
-                    </a>
-                  </div>
-                  <div class="media-body">
-                    <a href="#"><h4 class="media-heading">上海杨浦户外骑行爱好者俱乐部</h4></a>
-                    <div class="fixed-box-bottom">
-                      <!-- TODO: 俱乐部人数 -->
-                      <span class="group-members"><i class="fa fa-group"></i>220</span>
-                      <!-- TODO: 俱乐部活动 -->
-                      <span class="group-events"><i class="fa fa-calendar-o"></i>23</span>
-                    </div>
-                  </div>
-                </li>
-                <li class="media">
-                  <div class="media-left">
-                    <a href="#">
-                      <img src="http://www.huodongxing.com/Content/v2.0/img/poster/school.jpg" alt="event-poster"/>
-                    </a>
-                  </div>
-                  <div class="media-body">
-                    <a href="#"><h4 class="media-heading">上海杨浦户外骑行爱好者俱乐部</h4></a>
-                    <div class="fixed-box-bottom">
-                      <!-- TODO: 俱乐部人数 -->
-                      <span class="group-members"><i class="fa fa-group"></i>220</span>
-                      <!-- TODO: 俱乐部活动 -->
-                      <span class="group-events"><i class="fa fa-calendar-o"></i>23</span>
-                    </div>
-                  </div>
-                </li>
-                <li class="media">
-                  <div class="media-left">
-                    <a href="#">
-                      <img src="http://www.huodongxing.com/Content/v2.0/img/poster/school.jpg" alt="event-poster"/>
-                    </a>
-                  </div>
-                  <div class="media-body">
-                    <a href="#"><h4 class="media-heading">上海杨浦户外骑行爱好者俱乐部</h4></a>
-                    <div class="fixed-box-bottom">
-                      <!-- TODO: 俱乐部人数 -->
-                      <span class="group-members"><i class="fa fa-group"></i>220</span>
-                      <!-- TODO: 俱乐部活动 -->
-                      <span class="group-events"><i class="fa fa-calendar-o"></i>23</span>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div id="my-focused-club">
-              <h3 id="focused-club-anchor">我关注的俱乐部</h3>
-              <ul class="list-unstyled row group-card-list">
-                <li class="col-md-4 col-sm-6 group-card">
-                  <a href="javascript:void(0)" style="background-image: url('bros.jpg');">
-                    <div class="group-card-mask"></div>
-                    <div class="group-card-caption">
-                      <h3>狼窝</h3>
-                      <p>223 名成员，32 次活动</p>
-                    </div>
-                  </a>
-                </li>
-                <li class="col-md-4 col-sm-6 group-card">
-                  <a href="javascript:void(0)" style="background-image: url(http://photos3.meetupstatic.com/photo_api/event/rx308x180/cpt/cr308x180/ql90/sgb54c13bc46/439966373.jpeg);">
-                    <div class="group-card-mask"></div>
-                    <div class="group-card-caption">
-                      <h3>测试群组1</h3>
-                      <p>223 名成员，32 次活动</p>
-                    </div>
-                  </a>
-                </li>
-                <li class="col-md-4 col-sm-6 group-card">
-                  <a href="javascript:void(0)" style="background-image: url(http://photos4.meetupstatic.com/photo_api/event/rx308x180/cpt/cr308x180/ql90/sgb54c13bc46/438182650.jpeg);">
-                    <div class="group-card-mask"></div>
-                    <div class="group-card-caption">
-                      <h3>上海足球爱好者</h3>
-                      <p>223 名成员，32 次活动</p>
-                    </div>
-                  </a>
-                </li>
-                <li class="col-md-4 col-sm-6 group-card">
-                  <a href="javascript:void(0)" style="background-image: url(http://photos3.meetupstatic.com/photo_api/event/rx308x180/cpt/cr308x180/ql90/sgb54c13bc46/439303338.jpeg);">
-                    <div class="group-card-mask"></div>
-                    <div class="group-card-caption">
-                      <h3>测试群组3</h3>
-                      <p>223 名成员，32 次活动</p>
-                    </div>
-                  </a>
-                </li>
-                <li class="col-md-4 col-sm-6 group-card">
-                  <a href="javascript:void(0)" style="background-image: url(http://photos4.meetupstatic.com/photo_api/event/rx308x180/cpt/cr308x180/ql90/sgb54c13bc46/427321222.jpeg);">
-                    <div class="group-card-mask"></div>
-                    <div class="group-card-caption">
-                      <h3>测试群组4</h3>
-                      <p>223 名成员，32 次活动</p>
-                    </div>
-                  </a>
-                </li>
-                <li class="col-md-4 col-sm-6 group-card">
-                  <a href="javascript:void(0)" style="background-image: url('bros.jpg');">
-                    <div class="group-card-mask"></div>
-                    <div class="group-card-caption">
-                      <h3>狼窝</h3>
-                      <p>223 名成员，32 次活动</p>
-                    </div>
-                  </a>
-                </li>
-                <li class="col-md-4 col-sm-6 group-card">
-                  <a href="javascript:void(0)" style="background-image: url(http://photos3.meetupstatic.com/photo_api/event/rx308x180/cpt/cr308x180/ql90/sgb54c13bc46/439966373.jpeg);">
-                    <div class="group-card-mask"></div>
-                    <div class="group-card-caption">
-                      <h3>测试群组1</h3>
-                      <p>223 名成员，32 次活动</p>
-                    </div>
-                  </a>
-                </li>
-                <li class="col-md-4 col-sm-6 group-card">
-                  <a href="javascript:void(0)" style="background-image: url(http://photos4.meetupstatic.com/photo_api/event/rx308x180/cpt/cr308x180/ql90/sgb54c13bc46/438182650.jpeg);">
-                    <div class="group-card-mask"></div>
-                    <div class="group-card-caption">
-                      <h3>上海足球爱好者</h3>
-                      <p>223 名成员，32 次活动</p>
-                    </div>
-                  </a>
-                </li>
-                <li class="col-md-4 col-sm-6 group-card">
-                  <a href="javascript:void(0)" style="background-image: url(http://photos3.meetupstatic.com/photo_api/event/rx308x180/cpt/cr308x180/ql90/sgb54c13bc46/439303338.jpeg);">
-                    <div class="group-card-mask"></div>
-                    <div class="group-card-caption">
-                      <h3>测试群组3</h3>
-                      <p>223 名成员，32 次活动</p>
-                    </div>
-                  </a>
-                </li>
-                <li class="col-md-4 col-sm-6 group-card">
-                  <a href="javascript:void(0)" style="background-image: url(http://photos4.meetupstatic.com/photo_api/event/rx308x180/cpt/cr308x180/ql90/sgb54c13bc46/427321222.jpeg);">
-                    <div class="group-card-mask"></div>
-                    <div class="group-card-caption">
-                      <h3>测试群组4</h3>
-                      <p>223 名成员，32 次活动</p>
-                    </div>
-                  </a>
-                </li>
-
-              </ul>
-            </div>
-          </section>
-          <section id="basic-info" class="tab-pane" role="tabpanel" aria-labelledby="basic-info-tab">
-            <div class="user-info">
-              <div class="portrait"><img class="img-responsive img-circle" src="/714468542.jpg" alt="avatar"/>
+            <section id="event" class="tab-pane active" role="tabpanel" aria-labelledby="events-tab">
+              {{#with eventNow}}
+                {{> doingEvent}}
+              {{/with}}
+              <div id="event-registered">
+                {{#if hasEvents}}
+                  <h3 id="event-registered-anchor">{{meOrOther}}报名的活动</h3>
+                {{else}}
+                  <h3>{{meOrOther}}目前没有参加活动</h3>
+                {{/if}}
+                <ul class="list-unstyled">
+                  {{#each events}}
+                    {{> Template.dynamic template=dTemplate}}
+                  {{/each}}
+                </ul>
               </div>
-              <div class="info-list">
-                <p><span class="name">陈元</span><span class="label label-default"><i class="fa fa-venus"></i></span></p>
-                <div class="phone-number">15221455061</div>
+              <div id="event-focused">
+                <h3 id="event-focused-anchor">{{meOrOther}}关注的活动</h3>
+                <ul class="list-unstyled">
+                  {{#each watchingEvents}}
+                    <li class="media">
+                      <div class="media-left">
+                        <a href="/event/detail/{{singleWatchEvent._id._str}}"><img class="media-object" src="http://7xjl8x.com1.z0.glb.clouddn.com/{{singleWatchEvent.poster}}" alt="活动海报"/>
+                        </a>
+                      </div>
+                      <div class="media-body">
+                        <a href="/event/detail/{{singleWatchEvent._id._str}}" class="event-title"><h4 class="media-heading">{{singleWatchEvent.title}}</h4></a>
+                        <div class="date-plus-total fixed-box-bottom hidden-xs"><span class="date pull-left">{{#with singleWatchEvent}}{{eventTime.start}} - {{eventTime.end}}{{/with}}</span></div>
+                        <div class="clearfix fixed-box-bottom">{{#with eventGroup}}<a href="{{pathFor 'groupHome' groupPath=eventGroup.path}}" class="event-organizer pull-left">{{eventGroup.name}}</a>{{/with}}<span class="total pull-right"><span>{{#if singleWatchEvent.joinedCount}}{{singleWatchEvent.joinedCount}}{{else}}0{{/if}}</span> / <span>{{singleWatchEvent.member}}</span></span></div>
+                      </div>
+                    </li>
+                  {{/each}}
+                </ul>
               </div>
-              <div class="qr-code hidden-xs"><i class="fa fa-qrcode fa-3x" title="我的二维码名片"></i></div>
-            </div>
-            <ul class="list-inline tag-list">
-              <li class="tag"><span class="label label-default">足球</span></li>
-              <li class="tag"><span class="label label-default">排球</span></li>
-              <li class="tag"><span class="label label-default">篮球</span></li>
-              <li class="tag"><span class="label label-default">跑步</span></li>
-              <li class="tag"><span class="label label-default">爬山</span></li>
-            </ul>
-            <hr class="hidden-xs"/>
-            <button class="btn btn-lg btn-block btn-default btn-edit">编辑</button>
-            <button class="btn btn-lg btn-block btn-default visible-xs-block">二维码名片</button>
-            <!-- TODO: 二维码名片应该是弹出来一个Modal用来展示名片的图片 -->
-          </section>
+            </section>
+            <section id="clubs" class="tab-pane" role="tabpanel" aria-labelledby="clubs-tab">
+              <div id="my-club">
+                <h3 id="club-anchor">{{meOrOther}}的俱乐部</h3>
+                <ul class="list-unstyled">
+                  {{#each groups}}
+                    <li class="media">
+                      <div class="media-left">
+                        <a href="{{pathFor 'groupHome' groupPath=path}}">
+                          <img src="{{logoUrl}}" alt="group logo"/>
+                        </a>
+                      </div>
+                      <div class="media-body">
+                        <a href="{{pathFor 'groupHome' groupPath=path}}"><h4 class="media-heading">{{name}}</h4></a>
+                        <div class="fixed-box-bottom">
+                          <span class="group-members"><i class="fa fa-group"></i>{{memberCount}}</span>
+                          <span class="group-events"><i class="fa fa-calendar-o"></i>{{eventCount}}</span>
+                        </div>
+                      </div>
+                    </li>
+                  {{/each}}
+                </ul>
+              </div>
+              <div id="my-focused-club">
+                <h3 id="focused-club-anchor">{{meOrOther}}关注的俱乐部</h3>
+                <ul class="list-unstyled row group-card-list">
+                  {{#each watchingGroupIds}}
+                    {{#with watchingGroups}}
+                      <li class="col-md-4 col-sm-6 group-card">
+                        <a href="{{pathFor 'groupHome' groupPath=path}}" style="background-image: url({{logoUrl}});">
+                          <div class="group-card-mask"></div>
+                          <div class="group-card-caption">
+                            <h3>{{name}}</h3>
+                            <p>{{watchingGroupsMemberCount}} 名成员，{{watchingGroupsEventCount}} 次活动</p>
+                          </div>
+                        </a>
+                      </li>
+                    {{/with}}
+                  {{/each}}
+                </ul>
+              </div>
+            </section>
+            <section id="basic-info" class="tab-pane" role="tabpanel" aria-labelledby="basic-info-tab">
+              {{#with basicInfo}}
+                <div class="user-info">
+                  <div class="portrait"><img class="img-responsive img-circle" src="{{personalAvatar}}" alt="avatar"/>
+                  </div>
+                  <div class="info-list">
+                    <p><span class="name">{{profile.name}}</span>{{#if hasGender}}<span class="label label-default"><i class="fa {{userGender}}"></i></span>{{/if}}</p>
+                    {{#if userJudge}}<div class="phone-number">{{mobile}}</div>{{/if}}
+                  </div>
+                </div>
+                <ul class="list-inline tag-list">
+                  {{#each profile.traits}}
+                    <li class="tag"><span class="label label-default">{{this.name}}</span></li>
+                  {{/each}}
+                </ul>
+                <hr class="hidden-xs"/>
+                {{#if userJudge}}
+                  <a href="/user/edit/{{_id}}" class="btn btn-lg btn-block btn-default btn-edit">编辑</a>
+                {{/if}}
+              {{/with}}
+            </section>
         </main>
       </div>
     </div>
@@ -276,9 +146,9 @@
     <div class="media-body">
       <a href="/event/detail/{{_id._str}}" class="event-title">{{title}}</a>
       <div class="clearfix fixed-box-bottom">
-        <a href="" class="event-organizer pull-left hidden-xs">上海市杨浦骑行爱好者俱乐部</a>
+        <a href="" class="event-organizer pull-left hidden-xs">{{author.club.name}}</a>
         <!-- Todo:  这里的报名人数暂时数据库里面没有这个字段, 也没有主办方。-->
-        <span class="registered-persons pull-right">已经有<span>123</span>人报名</span>
+        <span class="registered-persons pull-right">已经有<span>{{#if joinedCount}}{{joinedCount}}{{else}}0{{/if}}&nbsp;</span>人报名</span>
       </div>
     </div>
   </li>
@@ -295,9 +165,8 @@
     <div class="media-body">
       <a href="/event/detail/{{_id._str}}" class="event-title">{{title}}</a>
       <div class="clearfix fixed-box-bottom">
-        <a href="" class="event-organizer pull-left hidden-xs">上海市杨浦骑行爱好者俱乐部</a>
-        <!-- Todo:  这里的报名人数暂时数据库里面没有这个字段, 也没有主办方。-->
-        <span class="registered-persons pull-right">已经有<span>123</span>人报名</span>
+        <a href="" class="event-organizer pull-left hidden-xs">{{author.club.name}}</a>
+        <span class="registered-persons pull-right">已经有<span>{{#if joinedCount}}{{joinedCount}}{{else}}0{{/if}}&nbsp;</span>人报名</span>
       </div>
     </div>
   </li>
@@ -306,7 +175,7 @@
 <template name="doingEvent">
   <div id="event-doing">
     <h3 id="event-doing-anchor">当前的活动</h3>
-    <img class="img-responsive" src="{{poster}}" alt="event-poster"/>
+    <img class="img-responsive" src="http://7xjl8x.com1.z0.glb.clouddn.com/{{poster}}" alt="event-poster"/>
     <div class="introduction event-post-padding">
       <header class="poster-header">{{title}}</header>
       <ul class="list-inline event-intro-share">
@@ -317,19 +186,12 @@
       <ul class="list-unstyled event-intro-list">
         <li class="clearfix"><i class="fa fa-calendar"></i><p>{{eventTime.start}}&nbsp;--&nbsp;{{eventTime.end}}</p></li>
         <li class="clearfix"><i class="fa fa-map-marker"></i><p>{{location.city}}{{location.address}}</p></li>
-        <li class="clearfix"><i class="fa fa-group"></i><p>0&nbsp;/&nbsp;{{member}}</p></li>
+        <li class="clearfix"><i class="fa fa-group"></i><p>{{#if joinedCount}}{{joinedCount}}{{else}}0{{/if}}&nbsp;/&nbsp;{{member}}</p></li>
         <li class="clearfix"><i class="fa fa-dot-circle-o"></i>
-          上海市杨浦骑行爱好者俱乐部
+          {{author.club.name}}
         </li>
       </ul>
     </div>
   </div>
 </template>
 
-<template name="newFocusedEvent">
-  <!-- TODO 新增加的关注的活动模板 -->
-</template>
-
-<template name="newClub">
-  <!-- TODO 新增加的俱乐部 -->
-</template>
