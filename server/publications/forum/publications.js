@@ -17,12 +17,9 @@ Meteor.publishComposite("listDiscussion", function (limitNum, sortType, groupPat
     }
   ]
 }});
-/*Meteor.publish('listDiscussion', function (limitNum, sortType) {
- var sort = {};
- sort.setTop = -1;
- sort[sortType] = -1;
- return Discussion.find({},{sort: sort, limit: limitNum});
- });*/
+Meteor.publish('manageListDiscussion', function () {
+ return Discussion.find();
+ });
 
 Meteor.publish('singleDiscussion', function (discId) {
   return Discussion.find({_id: discId});

@@ -49,7 +49,7 @@
                {{/if}}
                <span class="badge">{{upVoteCount}}</span>
                <!-- {{pathFor '/singlediscussion/:discId' discId=_id query='flag=1'}}-->
-               <a  href="{{pathFor '/singlediscussion/:discId' discId=_id query='flag=1'}}" class="reply">
+               <a  href="{{pathFor "singleDisc" discId=_id  query='flag=1'}}" class="reply">
                  <span class="glyphicon glyphicon-comment"></span>
                </a>
                <span class="badge">{{commentCount}}</span>

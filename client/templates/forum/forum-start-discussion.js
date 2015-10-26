@@ -11,6 +11,13 @@ Template.forumStartDiscussion.onRendered( function () {
 
 //$('#content').wysiwyg();
 Template.forumStartDiscussion.helpers({
+  existGroup: function() {
+    var groupId = Groups.findOne({path: FlowRouter.getParam("groupPath")});
+    console.log(groupId);
+    if(groupId!=null && groupId!="") {
+      return true;
+    } else return false;
+  },
   errorMessage:function(field){
     var myContext = Discussion.simpleSchema().namedContext("insert");
     return myContext.keyErrorMessage(field);
@@ -31,7 +38,7 @@ Template.forumStartDiscussion.events({
       str = str.slice(0,4);
     }
     var groupId = Groups.findOne({path: FlowRouter.getParam("groupPath")});
-    console.log(groupId._id);
+   // console.log(groupId);
     var post ={subject:subject, content: content, imgPath:str, groupId:groupId._id};
     post= _.extend(post,{
           userId:Meteor.user()._id,

@@ -7,6 +7,7 @@ Template.manageDiscussionList.onRendered( function () {
 });
 
 Template.manageDiscussionList.onCreated( function(){
+  this.subscribe("manageListDiscussion");
   Session.set('editDisc',{});
 });
 
