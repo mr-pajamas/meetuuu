@@ -145,7 +145,8 @@ Template.eventDetail.events({
       content: commentContent,
       commentBy: {
         username: Meteor.user().profile.name,
-        uid: Meteor.userId()
+        uid: Meteor.userId(),
+        avatar: Meteor.user().profile.avatar
       }
     };
     Meteor.call('submitEventComment', comment, function(err, res) {

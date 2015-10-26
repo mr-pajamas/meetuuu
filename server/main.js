@@ -134,9 +134,9 @@ Meteor.startup(function () {
       traitUsage._id = TraitUsages.insert(traitUsage);
     });
 
-    Roles.addUsersToRoles(users[0]._id, ['create-event'], 'group1');
+    Roles.addUsersToRoles(users[0]._id, ['create-event'], 'g' + groups[0]._id);
     //Roles.setUserRoles(users[0]._id, [], 'group1');
-    Roles.addUsersToRoles(users[0]._id, ['create-event', 'create-open-event'], 'group2');
+    Roles.addUsersToRoles(users[0]._id, ['create-event', 'create-open-event'], 'g' + groups[1]._id);
   }
 });
 

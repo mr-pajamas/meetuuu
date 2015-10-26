@@ -6,7 +6,11 @@
         <div class="row">
           <div class="media-left col-sm-2 col-xs-3">
             <!-- TODO 替换用户头像 -->
-            <a href="#"> <img src="/714468542.jpg" alt="xxx"/></a>
+            {{#if commentBy.avatar}}
+              <a href="#"> <img src="{{commentBy.avatar}}" alt="/images/avatar.png"/></a>
+              {{else}}
+              <a href="#"> <img src="/images/avatar.png"/></a>
+            {{/if}}
           </div>
           <div class="media-info col-sm-10 col-xs-9">
             <h4 class="media-heading">{{commentBy.username}}</h4>
@@ -46,7 +50,7 @@
       </div>
       <div class='media-insert-text'>
         <form method='post' class='new-comment-form'>
-          <textarea name='comment' class='new-comment-area' rows='6' placeholder='感兴趣吗？评论一下吧！'></textarea>
+          <textarea id="reply-{{_id}}" name='comment' class='new-comment-area' rows='6' placeholder='感兴趣吗？评论一下吧！'></textarea>
           <input type='submit' class='btn pull-right btn-primary submitCommentReply' name='submit' value='提交'/>
           <a class='pull-right cancel-reply cancelReply' data-id="{{_id}}">取消</a>
         </form>

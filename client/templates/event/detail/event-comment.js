@@ -25,6 +25,7 @@ Template.eventComment.helpers({
       }
       return reply;
     });
+    console.log(fc);
     return fc;
   }
 });
@@ -69,7 +70,7 @@ Template.eventComment.events({
       return;
     }
     var cid = this._id;
-    var replyComment = template.$('textarea').val();
+    var replyComment = $('#reply-' + cid).val();
     var comment = {
       commentType: 'comment',
       eventId: this.eventId,
@@ -77,7 +78,8 @@ Template.eventComment.events({
       commentId: cid,
       commentBy: {
         username: Meteor.user().profile.name,
-        uid: Meteor.userId()
+        uid: Meteor.userId(),
+        avatar: Meteor.user().profile.avatar
       }
     };
     Meteor.call('submitEventComment', comment, function(err, res) {
