@@ -1,0 +1,14 @@
+<template name="imgUpload">
+  <div class="thumbnail img-upload">
+    <img class="{{#unless imgLoaded}}hidden{{/unless}}" src="{{imgSrc}}">
+    <div class="loader text-muted {{#if imgLoaded}}hidden{{/if}}"><div class="loader-stretchy"><i class="fa fa-refresh fa-2x fa-spin"></i></div></div>
+    <div class="caption img-upload-controls-bar">
+      <div class="btn-group btn-group-lg" role="group" aria-label="图片调整按钮">
+        <label class="btn btn-default btn-file img-upload-chooser" title="选择图片"><i class="fa fa-folder-open"></i><input type="file" style="display: none;" accept="image/*" {{changeDisabled}}></label>
+        <button type="button" class="btn btn-default img-upload-zoomin" title="放大" {{editDisabled}}><i class="fa fa-search-plus"></i></button>
+        <button type="button" class="btn btn-default img-upload-zoomout" title="缩小" {{editDisabled}}><i class="fa fa-search-minus"></i></button>
+        <button type="button" class="btn btn-default img-upload-rotate" title="旋转" {{editDisabled}}><i class="fa fa-repeat"></i></button>
+      </div>
+    </div>
+  </div>
+</template>

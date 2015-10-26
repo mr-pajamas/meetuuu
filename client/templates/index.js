@@ -52,6 +52,10 @@ Template.index.onRendered(function () {
     "scroll": fixSearchBar,
     "resize": fixSearchBar
   });
+
+  if (Meteor.user() && !Meteor.user().profile.avatar && !Session.get("hasSkippedSettingAvatar")) {
+    this.$(".modal").modal();
+  }
 });
 
 Template.index.onDestroyed(function () {
@@ -63,4 +67,31 @@ Template.index.onDestroyed(function () {
   $(window).off({
     "resize": expandJumbotron
   });
+});
+
+Template.index.events({
+  "click .modal button[data-dismiss=modal]": function () {
+    if (Meteor.user()) Session.setAuth("hasSkippedSettingAvatar", true);
+  },
+  "click .modal .modal-footer > button.btn-primary": function (event, template) {
+    if (Meteor.user()) {
+      Session.setAuth("hasSkippedSettingAvatar", true);
+      var croppedImg = template.$(".modal .modal-body").find(".img-upload").imgUpload("crop");
+
+      if (croppedImg) {
+        Meteor.call("uploadAvatar", croppedImg, function (error) {
+          if (error) {
+            alert(error.reason);
+          } else {
+            alert("头像上传成功");
+            template.$(".modal").modal("hide");
+          }
+        });
+      } else {
+        alert("请选择图片");
+      }
+    } else {
+      template.$(".modal").modal("hide");
+    }
+  }
 });

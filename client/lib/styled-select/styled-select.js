@@ -1,12 +1,16 @@
 /**
  * Created by Michael on 2015/9/17.
  */
-var value = new ReactiveVar("");
+//var value = new ReactiveVar("");
 
 Template.styledSelect.onCreated(function () {
 
-  this.autorun(function () {
-    value.set(Template.currentData().selectValue);
+  var template = this;
+
+  template.value = new ReactiveVar("");
+
+  template.autorun(function () {
+    template.value.set(Template.currentData().selectValue);
   });
 });
 
@@ -15,7 +19,7 @@ Template.styledSelect.onRendered(function () {
   var template = this;
 
   template.autorun(function () {
-    template.$("select.form-control").val(value.get());
+    template.$("select.form-control").val(template.value.get());
   });
 });
 
@@ -33,12 +37,12 @@ Template.styledSelect.helpers({
     else return null;
   },
   value: function () {
-    return value.get();
+    return Template.instance().value.get();
   }
 });
 
 Template.styledSelect.events({
-  "change select.form-control": function (event) {
-    value.set($(event.currentTarget).val());
+  "change select.form-control": function (event, template) {
+    template.value.set($(event.currentTarget).val());
   }
 });

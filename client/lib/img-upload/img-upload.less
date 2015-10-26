@@ -1,0 +1,38 @@
+@import "../bootstrap-ext/bootstrap-ext.mixins.import.less";
+
+.img-upload {
+  min-width: 200px !important;
+  padding: 0;
+  border: none;
+
+  .guillotine-window {
+    float: left;
+  }
+
+  .loader {
+    text-align: center;
+    position: relative;
+
+    .loader-stretchy {
+      position: absolute;
+      top: 45%;
+      .calc(top; "50% - 19px");
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+  }
+
+  .img-upload-controls-bar {
+    text-align: center;
+    padding: 0;
+
+    .btn-group > .btn {
+      width: auto !important;
+      border: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      color: #777;
+    }
+  }
+}

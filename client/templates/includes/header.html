@@ -21,7 +21,7 @@
           --}}
 
           <div class="dropdown navbar-left">
-            <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{currentCity}} <span class="caret"></span>
+            <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{currentCity}} &nbsp;<span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
               {{#each cities}}
@@ -33,10 +33,27 @@
         </div>
 
         <div id="navbar" class="collapse navbar-collapse">
+          {{#with currentUser}}
+            <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  <img src="{{avatarOrDefault profile.avatar}}" class="img-rounded">
+                  <div><span>{{profile.name}}</span> &nbsp;<span class="caret"></span></div>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">我的活动</a></li>
+                  <li><a href="#">我的组织</a></li>
+                  <li><a href="#">个人中心</a></li>
+                  <li role="separator" class="divider hidden-xs"></li>
+                  <li><a href="#">注销</a></li>
+                </ul>
+              </li>
+            </ul>
+          {{/with}}
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="{{pathFor 'eventEdit'}}">发布活动</a></li>
-            <li><a href="{{pathFor 'createGroup'}}">创建组织</a></li>
-            <li><a href="{{pathFor 'signin'}}">登录 / 注册</a></li>
+            <li><a href="{{pathFor 'eventEdit'}}"><i class="fa fa-calendar-plus-o fa-fw"></i> 发布活动</a></li>
+            <li><a href="{{pathFor 'createGroup'}}"><i class="fa fa-users fa-fw"></i> 创建组织</a></li>
+            {{#unless currentUser}}<li><a href="{{pathFor 'signin'}}"><i class="fa fa-sign-in fa-fw"></i> 登录 / 注册</a></li>{{/unless}}
           </ul>
         </div>
       </div>
