@@ -215,7 +215,8 @@ EditEvent = (function() {
                 'data-path': group.path,
                 value: group._id
               },
-              name: group.name
+              name: group.name,
+              path: group.path
             };
             if (group._id == gid) {
               temp.attr.selected = true;
@@ -232,7 +233,7 @@ EditEvent = (function() {
           self.selectedGroup.set({
             name: groups[0] && groups[0].name,
             id: groups[0] && groups[0].attr['data-gid'],
-            path: group[0] && groups[0].path
+            path: groups[0] && groups[0].path
           })
         }
         self.groupOptions.set(groups);
@@ -879,6 +880,10 @@ EditEvent = (function() {
     //if(!eventInfo.desc) {
     //  errorInfo = '请填写活动详情';return errorInfo;
     //}
+    if (eventTime.getStartDateInISO() > eventTime.getEndDateInISO()) {
+      errorInfo = '活动开始时间应该先于活动结束时间';
+      return errorInfo;
+    }
     errorInfo = eventSignForm.checkValidation() ? '请补全报名表单' : '';
     return errorInfo;
   };
@@ -886,12 +891,14 @@ EditEvent = (function() {
   /**
    * 保存活动，内部方法
    */
-  var __saveEvent = function(successCallback) {
+  var __saveEvent = function(successCallback, eventStatus) {
     var author = {
       name: Meteor.user().profile.name,
       id: Meteor.userId(),
       club: eventGroups.getSelectdGroup()
     };
+    console.log(eventGroups.getSelectdGroup());
+
     var eid = FlowRouter.getParam('eid');
     //eventDesc.uploadToQiniu(eid);
     var eventInfo = {
@@ -908,7 +915,7 @@ EditEvent = (function() {
         lat: 1.11,
         lng: 2.22
       },
-      status: '已发布',
+      status: eventStatus || '未发布',
       poster: eventPoster.getKey(),
       member: eventMemberLimit.getCount(),
       theme: eventTheme.getSelectedTheme(),
@@ -943,7 +950,7 @@ EditEvent = (function() {
       var eid = FlowRouter.getParam('eid');
       window.open('/event/manage/' + eid);
     }
-    __saveEvent(alertSuccess);
+    __saveEvent(alertSuccess, '已发布');
   };
 
   /**
@@ -960,7 +967,8 @@ EditEvent = (function() {
 
   var pureInit = function() {
     eventTitle.init('');
-    eventTime.init('start-date', 'end-date', new Date(FlowRouter.getQueryParam('time')), new Date(FlowRouter.getQueryParam('time')), 30);
+    var d = FlowRouter.getQueryParam('time') ? new Date(FlowRouter.getQueryParam('time')) : new Date();
+    eventTime.init('start-date', 'end-date', d, d, 30);
     eventLocation.init('上海', '');
     eventPrivate.init(false);
     eventMemberLimit.init(0);
