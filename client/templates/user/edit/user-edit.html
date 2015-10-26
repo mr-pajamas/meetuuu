@@ -1,3 +1,83 @@
 <template name="userEdit">
+  <!-- sidebar nav. -->
+  <div class="container user-nav-wrap">
+    <div class="row">
+      <div class="col-sm-3 col-xs-12">
+        <ul class="nav main-nav" role="tablist">
+          <li role="presentation">
+            <a class="user-tab" id="events-tab" role="tab" href="javascript:void(0);" aria-controls="events" data-toggle="dropdown" data-accordion="#event-menu">活动</a>
+          </li>
+          <div class="scrollspy-wrap hidden-xs">
+            <ul id="event-menu" class="nav nav-stacked collapse panel-collapse">
+              <li><a class="scroll-trigger" href="javascript:void(0);">当前活动</a></li>
+              <li><a class="scroll-trigger" href="javascript:void(0);">已经报名</a></li>
+              <li><a class="scroll-trigger" href="javascript:void(0);">我的的关注</a></li>
+            </ul>
+          </div>
+          <li role="presentation">
+            <a class="user-tab" id="clubs-tab" href="javascript:void(0);" role="tab" aria-controls="clubs" data-toggle="dropdown" data-accordion="#club-menu">俱乐部</a>
+          </li>
+          <div class="scrollspy-wrap hidden-xs">
+            <ul id="club-menu" class="nav nav-stacked hidden-xs collapse panel-collapse">
+              <li class="active"><a class="scroll-trigger" href="javascript:void(0);">我的俱乐部</a></li>
+              <li><a class="scroll-trigger" href="javascript:void(0);">我的关注</a></li>
+            </ul>
+          </div>
+          <li role="presentation" class="active"><a class="user-tab" id="basic-info-tab" href="javascript:void(0);" aria-controls="basic-info" role="tab">基本信息</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
+  <div class="container user-edit-wrap">
+    <div class="row">
+      {{#with userBasicInfo}}
+        <div class="col-sm-9 col-sm-offset-3 col-xs-12">
+          <form action="#" class="form-horizontal">
+            <div class="form-group">
+              <label class="col-sm-2 control-label">姓名</label>
+              <div class="col-sm-7">
+                <input id="user-name" type="text" class="form-control" name="userName" value="{{profile.name}}"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <!-- TODO: 头像这块需要另外考虑一下, 上传之后需要放在这个地方显示，头像上传应该是有一套现有的流程。 -->
+              <label class="col-sm-2 control-label">我的头像</label>
+              <div class="col-sm-7 clearfix">
+                <div class="img-container pull-left"><img class="img-responsive" src="{{personalAvatar}}" alt="avatar"/></div>
+                <a href="#" class="pull-left btn btn-default avatar-upload-btn">
+                  <label for="upload-form">上传新头像<input type="file" id="upload-form" accept="image/*" name="img-file"/></label>
+                </a>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="" class="col-sm-2 control-label">性别</label>
+              <div class="col-sm-7">
+                <div class="radio-inline">
+                  <label for="gender-male">
+                    <input id="gender-male" type="radio" name="gender" value="男" checked="checked"/> 男
+                  </label>
+                </div>
+                <div class="radio-inline">
+                  <label for="gender-female">
+                    <input id="gender-female" type="radio" name="gender" value="女"/> 女
+                  </label>
+                </div>
+                <!--<input id="user-gender" type="text" class="form-control" name="gender" value=""/>-->
+              </div>
+            </div>
+            <!-- TODO: 这里需要添加 标签编辑 的功能。 -->
+            <div class="row">
+              <hr class="col-sm-7 col-sm-offset-2"/>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-7 col-sm-offset-2 clearfix">
+                <button id="saveInfo" type="button" class="btn btn-success pull-right">保存</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      {{/with}}
+    </div>
+  </div>
 </template>

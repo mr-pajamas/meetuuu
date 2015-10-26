@@ -13,19 +13,17 @@
             {{#with eventDetail}}
               <section class="event-poster" id="poster">
                 <!-- 活动基本信息 -->
-                <!-- TODO @cy 此处的图片要限定下高度，暂时写在style，可以提取出去 -->
-                <img style="max-height: 300px" src="http://7xjl8x.com1.z0.glb.clouddn.com/{{poster}}" alt="rifare">
+                <img class="img-responsive" src="http://7xjl8x.com1.z0.glb.clouddn.com/{{poster}}" alt="活动海报">
                 <div class="introduction event-post-padding">
                   <header class="poster-header">
                     {{title}}
-                    {{#if isSaved}}
-                      <span id="saveEvent" class="pull-right glyphicon glyphicon-star" title="已收藏" aria-hidden="true"></span>
-                    {{else}}
-                      <span id="saveEvent" class="pull-right glyphicon glyphicon-star-empty" title="未收藏" aria-hidden="true"></span>
-                    {{/if}}
-
                   </header>
                   <ul class="list-inline event-intro-share">
+                    {{#if isSaved}}
+                      <button id="saveEvent" class="btn btn-default" disabled>已收藏</button>
+                    {{else}}
+                      <button id="saveEvent" class="btn btn-default">收藏</button>
+                    {{/if}}
                     <li><a title="分享到微信" class="fa fa-weixin small-img" href="#"></a></li>
                     <li><a title="分享到新浪微博" class="fa fa-weibo small-img" href="#"></a></li>
                     <li><a title="分享到qq空间" class="fa fa-qq small-img" href="#"></a></li>
@@ -36,12 +34,12 @@
                     <li class="clearfix"><i class="fa fa-map-marker"></i><p>{{location.city}}{{location.address}}</p></li>
                     <li class="clearfix"><i class="fa fa-group"></i>
                       <p>
-                      {{#if joinedCount}}
-                        {{joinedCount}}
-                      {{else}}
-                        0
-                      {{/if}}
-                      &nbsp;/&nbsp;{{member}}
+                        {{#if joinedCount}}
+                          {{joinedCount}}
+                        {{else}}
+                          0
+                        {{/if}}
+                        &nbsp;/&nbsp;{{member}}
                       </p>
                     </li>
                     <li class="clearfix"><i class="fa fa-dot-circle-o"></i>
@@ -104,13 +102,12 @@
                   </div>
                 {{/if}}
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                  <button id="apply-event" type="button" class="btn btn-primary">我要报名</button>
                 </div>
               </div>
             </div>
           </div>
-
-
         </div>
 
       {{else}}
@@ -124,9 +121,9 @@
         <div class="event-sidebar col-sm-3 col-sm-offset-9">
           <div class="content" id="navbar-tobe-fixed">
             <ul class="nav nav-stacked" id="fixed-sidebar">
-              <li role="presentation"><a href="#poster">主题海报</a></li>
-              <li role="presentation"><a href="#information">活动详情</a></li>
-              <li role="presentation"><a href="#comment">留言</a></li>
+              <li role="presentation"><a class="event-sidebar-scroll" href="#poster">主题海报</a></li>
+              <li role="presentation"><a class="event-sidebar-scroll" href="#information">活动详情</a></li>
+              <li role="presentation"><a class="event-sidebar-scroll" href="#comment">留言</a></li>
               <!-- 判断用户是否已经报名 -->
               {{#if isJoined}}
                 <li id="nav-join" class="hidden-xs"><a href="">已报名</a></li>

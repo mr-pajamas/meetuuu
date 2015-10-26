@@ -5,31 +5,54 @@
 Meteor.publishComposite("userDetailById", function (uid) {
   return {
     find: function() {
-      if (uid === this.userId) {
-        return userProfileSchema.find({_id: uid});
-      } else {
-        this.ready();
-      }
+      return JoinForm.find({"userId": uid});
     },
     children: [
       {
-        find: function(users) {
-          return JoinForm.find({"userId": users._id});
-          //return JoinForm.find({_id: new Mongo.ObjectID(joinForm.eventId), "time.end": {$gt: new Date()}});
-        },
-        children: [
-          {
-            find: function (joinForm, users) {
-              return Events.find({_id: new Mongo.ObjectID(joinForm.eventId), "time.end": {$gt: new Date()}});
-            }
-          }
-        ]
-      }, {
-        find: function (users) {
-          return    //查找俱乐部消息。
+        find: function(joinForm) {
+          return Events.find({_id: new Mongo.ObjectID(joinForm.eventId), "time.end": {$gt: new Date()}});
         }
       }
     ]
   }
 });
+Meteor.publish("userDetail", function (uid) {
+  return Meteor.users.find({_id: uid});
+});
+Meteor.publishComposite("userWatchingEvents", function (uid) {
+  return {
+    find: function () {
+      return UserSavedEvents.find({"user.id": uid});
+    },
+    children: [
+      {
+        find: function (userSavedEvents) {
+          return Events.find({_id: userSavedEvents.event.id});
+        },
+        children: [
+          {
+            find: function (event, userSavedEvents) {
+              return Groups.find({_id: event.author.club.id});
+            }
+          }
+        ]
+      }
+    ]
+  }
+});
 
+
+// allow rule for user edit his own information.
+
+Meteor.users.allow({
+  insert: function (userId, doc) {
+    return (userId && doc._id === userId);
+  },
+  update: function (userId, doc, fields, modifier) {
+    return doc._id === userId;
+  },
+  remove: function (userId, doc) {
+    return doc._id === userId;
+  },
+  fetch: ["_id"]
+});

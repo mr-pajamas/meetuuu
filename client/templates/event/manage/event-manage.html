@@ -7,7 +7,11 @@
 
     <header class="clearfix">
       <h1 class="pull-left">
+<<<<<<< HEAD
         <p>{{eventInfo.title}} <span class="label label-info hidden-xs">{{eventInfo.status}}</span></p>
+=======
+        <p>{{eventInfo.title}}</p>
+>>>>>>> user page back-end logic done !
         <a href="{{eventShortUrl}}" class="event-manage-url hidden-xs">{{eventShortUrl}}</a>
       </h1>
       <ul class="list-inline pull-right hidden-xs">
@@ -32,25 +36,25 @@
               <div class="tr">
                 <div class="td">
                   <div class="table-cell">
-                    <div class="quantity" id="join-quantity">{{eventSignFormCount}}</div>
+                    <div class="quantity" id="join-quantity">{{#if eventSignFormCount}}{{eventSignFormCount}}{{else}}0{{/if}}</div>
                     <div class="item">报名</div>
                   </div>
                 </div>
                 <div class="td">
                   <div class="table-cell">
-                    <div class="quantity" id="scan-quantity">{{eventInfo.readCount}}</div>
+                    <div class="quantity" id="scan-quantity">{{#if eventInfo.readCount}}{{eventInfo.readCount}}{{else}}0{{/if}}</div>
                     <div class="item">阅读</div>
                   </div>
                 </div>
                 <div class="td">
                   <div class="table-cell">
-                    <div class="quantity" id="share-quantity">{{eventInfo.shareCount}}</div>
+                    <div class="quantity" id="share-quantity">{{#if eventInfo.shareCount}}{{eventInfo.shareCount}}{{else}}0{{/if}}</div>
                     <div class="item">分享</div>
                   </div>
                 </div>
                 <div class="td">
                   <div class="table-cell">
-                    <div class="quantity" id="comment-quantity">{{eventCommentCount}}</div>
+                    <div class="quantity" id="comment-quantity">{{#if eventCommentCount}}{{eventCommentCount}}{{else}}0{{/if}}</div>
                     <div class="item">留言</div>
                   </div>
                 </div>
@@ -76,7 +80,7 @@
                 {{/each}}
               </dd>
               <dt>可见性:</dt>
-              <dd id="visibility">公开活动</dd>
+              <dd id="visibility">{{#if eventInfo.private}}内部活动{{else}}公开活动{{/if}}</dd>
             </dl>
             <hr/>
             <!-- 二维码区域 -->
@@ -136,7 +140,7 @@
   <li class="panel panel-default">
     <div class="panel-heading" data-target="#pane{{_id}}">
       <!-- TODO: 替换用户头像 -->
-      <div class="personal-photo pull-left"><img class="img-responsive" src="/714468542.jpg" alt="photo"/></div>
+      <div class="personal-photo pull-left"><img class="img-responsive" src="/images/default-avatar.jpg" alt="个人头像"/></div>
       <div class="info-list pull-left">
         <div class="name">{{cname}}</div>
         <div class="phone-number">{{telephone}}</div>

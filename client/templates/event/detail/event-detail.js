@@ -42,6 +42,8 @@ Template.eventDetail.onCreated(function () {
       Tracker.afterFlush(function () {
         $(".event-sidebar").fadeTo("fast", 1);
         $(".mobile-join-wrap").fadeTo("fast", 1);
+        //  将报名modal 里面的 Submit 修改为 报名
+        template.$("#joinEvent button[type=submit]").hide();
       });
     });
   });
@@ -58,7 +60,8 @@ Template.eventDetail.onRendered(function() {
   });
 
   // affix event.
-  $(".fixed-bar-wrap").affix(); // TODO: 要做bottom
+  $(".fixed-bar-wrap").affix();
+
 });
 
 //created by Chen Yuan.
@@ -156,7 +159,7 @@ Template.eventDetail.events({
     });
   },
   // 左侧Tag跟随界面下滑滚动
-  'click #fixed-sidebar li a': function (e) {
+  'click .event-sidebar-scroll': function (e) {
     var that = e.currentTarget;
     if (location.pathname.replace(/^\//, '') == that.pathname.replace(/^\//, '') && location.hostname == that.hostname) {
       var target = $(that.hash);
@@ -194,4 +197,8 @@ Template.eventDetail.events({
       }
     });
   },
+  // 提交报名表单
+  "click #apply-event": function (e, template) {
+    template.$("#joinEvent").submit();
+  }
 });
