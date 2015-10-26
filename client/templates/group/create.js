@@ -21,7 +21,10 @@ Template.groupCreate.events({
     if (!Meteor.user()) {
       template.$(".auth-modal").modal();
     } else {
-      alert("hello, " + Meteor.user().profile.name);
+      alert("你好，" + Meteor.user().profile.name);
     }
+  },
+  "login.muuu .auth-modal": function (event, template) {
+
   }
 });

@@ -8,7 +8,7 @@
         </div>
         <div class="modal-body">
           {{#if signinOrJoin}}
-            <form class="form-horizontal authModalSigninForm">
+            <form class="form-horizontal auth-modal-signin-form">
 
               <div class="form-group">
                 <label for="inputMobile" class="col-md-3 control-label">手机号</label>
@@ -25,7 +25,14 @@
               </div>
             </form>
           {{else}}
-            <form class="form-horizontal authModalJoinForm">
+            <form class="form-horizontal auth-modal-join-form">
+
+              <div class="form-group">
+                <label for="inputName" class="col-md-3 control-label">姓名</label>
+                <div class="col-md-9">
+                  <input type="text" name="name" class="form-control" id="inputName">
+                </div>
+              </div>
 
               <div class="form-group">
                 <label for="inputMobile" class="col-md-3 control-label">手机号</label>
@@ -35,9 +42,28 @@
               </div>
 
               <div class="form-group">
+                <label for="inputCode" class="col-md-3 control-label">短信验证码</label>
+                <div class="col-md-9">
+                  <div class="input-group">
+                    <input type="text" name="code" class="form-control" id="inputCode">
+                    <div class="input-group-btn">
+                      <button class="btn btn-default" type="button">获取验证码</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
                 <label for="inputPassword" class="col-md-3 control-label">密码</label>
                 <div class="col-md-9">
                   <input type="password" name="password" class="form-control" id="inputPassword">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="inputConfirm" class="col-md-3 control-label">确认密码</label>
+                <div class="col-md-9">
+                  <input type="password" name="confirm" class="form-control" id="inputConfirm">
                 </div>
               </div>
             </form>

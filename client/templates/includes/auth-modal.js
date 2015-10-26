@@ -8,14 +8,23 @@ Template.authModal.onCreated(function () {
 Template.authModal.helpers({
   "signinOrJoin": function () {
     return Template.instance().signinOrJoin.get();
+  },
+  verifyDisabled: function () {
+    return (!!Meteor.verificationAvailCountdown() && "disabled") || null;
+  },
+  countingDown: function () {
+    return Meteor.verificationAvailCountdown();
   }
 });
 
 Template.authModal.events({
   "click .modal-footer > button:nth-child(2)": function (event, template) {
+    Tracker.afterFlush(function () {
+      template.$(".auth-modal").modal("handleUpdate");
+    });
     template.signinOrJoin.set(!template.signinOrJoin.get());
   },
   "click .modal-footer > button.btn-primary": function (event, template) {
-    template.$(".auth-modal").trigger("signin.muuu");
+    template.$(".auth-modal").trigger("login.muuu");
   }
 });
