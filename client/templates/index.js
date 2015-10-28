@@ -53,9 +53,9 @@ Template.index.onRendered(function () {
     "resize": fixSearchBar
   });
 
-  if (Meteor.user() && !Meteor.user().profile.avatar && !Session.get("hasSkippedSettingAvatar")) {
+  //if (Meteor.user() && !Meteor.user().profile.avatar && !Session.get("hasSkippedSettingAvatar")) {
     this.$(".modal").modal();
-  }
+  //}
 });
 
 Template.index.onDestroyed(function () {
@@ -79,7 +79,9 @@ Template.index.events({
       var croppedImg = template.$(".modal .modal-body").find(".img-upload").imgUpload("crop");
 
       if (croppedImg) {
+        $(event.currentTarget).text("上传中...").prop("disabled", true).prev().prop("disabled", true);
         Meteor.call("uploadAvatar", croppedImg, function (error) {
+          $(event.currentTarget).text("确定").prop("disabled", false).prev().prop("disabled", false);
           if (error) {
             alert(error.reason);
           } else {

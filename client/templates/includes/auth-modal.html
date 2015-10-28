@@ -23,6 +23,8 @@
                   <input type="password" name="password" class="form-control" id="inputPassword">
                 </div>
               </div>
+
+              <button class="hidden" type="submit">登录</button>
             </form>
           {{else}}
             <form class="form-horizontal auth-modal-join-form">
@@ -47,7 +49,7 @@
                   <div class="input-group">
                     <input type="text" name="code" class="form-control" id="inputCode">
                     <div class="input-group-btn">
-                      <button class="btn btn-default" type="button">获取验证码</button>
+                      <button class="btn btn-default" type="button" {{verifyDisabled}}>{{#with countingDown}}重新获取 {{this}}{{else}}获取验证码{{/with}}</button>
                     </div>
                   </div>
                 </div>
@@ -66,6 +68,8 @@
                   <input type="password" name="confirm" class="form-control" id="inputConfirm">
                 </div>
               </div>
+
+              <button class="hidden" type="submit">注册</button>
             </form>
           {{/if}}
         </div>

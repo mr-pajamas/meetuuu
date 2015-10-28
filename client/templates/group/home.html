@@ -3,48 +3,54 @@
     <div class="row">
       <aside class="col-md-3">
         <section class="thumbnail group-info">
-          <a href="javascript:void(0)"><img src="/bros.jpg"></a>
+          <a href="#"><img src="{{badgeOrDefault}}"></a>
           <div class="caption">
-            <h2 class="visible-xs-block visible-sm-block">杨浦创业俱乐部</h2>
-            <h2 class="small text-muted">创建于 2015年10月12日</h2>
+            <h2 class="visible-xs-block visible-sm-block">{{name}}</h2>
+            <h2 class="small text-muted">创建于 {{foundedDate}}</h2>
 
             <ul class="group-stats">
               <li>
-                <p class="lead">20</p>
+                <p class="lead">{{memberCount}}</p>
                 <h4 class="text-muted"><i class="fa fa-users fa-fw visible-md-inline-block visible-lg-inline-block"></i>成员</h4>
               </li>
               <li>
-                <p class="lead">20</p>
+                <p class="lead">{{eventCount}}</p>
                 <h4 class="text-muted"><i class="fa fa-calendar-o fa-fw visible-md-inline-block visible-lg-inline-block"></i>活动</h4>
               </li>
               <li>
-                <p class="lead">20</p>
+                <p class="lead">{{topicCount}}</p>
                 <h4 class="text-muted"><i class="fa fa-comments-o fa-fw visible-md-inline-block visible-lg-inline-block"></i>讨论</h4>
               </li>
             </ul>
           </div>
         </section>
 
-        <section class="thumbnail group-organizer hidden-sm hidden-xs">
-          <img src="/images/default-avatar.jpg" class="img-circle">
-          <div class="caption">
-            <p class="lead text-center">张泉凯</p>
-            <h4 class="text-muted text-center">校长</h4>
-            <p class="clearfix text-muted"><i class="fa fa-quote-left fa-2x fa-pull-left fa-border"></i>在非洲，每一分钟，都有60秒过去。</p>
-          </div>
-        </section>
+        {{#with owner}}
+          <section class="thumbnail group-organizer hidden-sm hidden-xs">
+            {{#with ownerUser}}
+              <img src="{{avatarOrDefault}}" class="img-circle">
+            {{/with}}
+            <div class="caption">
+              <p class="lead text-center">{{nickname}}</p>
+              <h4 class="text-muted text-center">{{roleName}}</h4>
+              {{#with bio}}
+                <p class="clearfix text-muted"><i class="fa fa-quote-left fa-2x fa-pull-left fa-border"></i>{{this}}</p>
+              {{/with}}
+            </div>
+          </section>
+        {{/with}}
       </aside>
 
       <main class="col-md-9">
         <section class="group-description">
           <div class="page-header hidden-xs hidden-sm">
-            <h1>杨浦创业俱乐部</h1>
+            <h1>{{name}}</h1>
           </div>
-          <p class="text-muted">欢迎在上海的互联网公司的产品经理们加入，我们需要多多交流，不定期举办线下活动，每次讨论一个产品（一般是群组某个成员的产品）</p>
+          <p class="text-muted">{{description}}</p>
           <hr>
           <div class="text-right">
-            <a class="btn btn-lg btn-success" href="javascript:void(0)" role="button">赶快加入</a>
-            <a class="btn btn-lg btn-default" href="javascript:void(0)" role="button">关注</a>
+            <a class="btn btn-lg btn-success" href="#" role="button">赶快加入</a>
+            <a class="btn btn-lg btn-default" href="#" role="button">关注</a>
           </div>
         </section>
 

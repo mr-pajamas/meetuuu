@@ -6,9 +6,12 @@ var qiniu = Meteor.npmRequire("qiniu");
 qiniu.conf.ACCESS_KEY = "ArTWIe1q_1iDUdMm2notK3vjhARjbcNa_8S1zrZ5";
 qiniu.conf.SECRET_KEY = "N9fwW3xXTNvUCdBKQqtcYZsUmaDquwSK1xh9anFv";
 var BUCKET_NAME = "meetuuu";
-var BUCKET_ENDPOINT = "http://7xns4u.com1.z0.glb.clouddn.com/";
+var BUCKET_DOMAIN = "7xns4u.com1.z0.glb.clouddn.com";
+
+var client = new qiniu.rs.Client();
 
 var wrappedQiniuIo = Async.wrap(qiniu.io, ["put"]);
+var wrappedQiniuRsClient = Async.wrap(client, ["remove"]);
 
 function uptoken(key) {
   var putPolicy = new qiniu.rs.PutPolicy(BUCKET_NAME + (key && ":" + key));
@@ -33,12 +36,17 @@ function uploadBuf(key, body, mimeType) {
 }
 
 function getUrl(key) {
-  return BUCKET_ENDPOINT + key;
+  return qiniu.rs.makeBaseUrl(BUCKET_DOMAIN, key);
+}
+
+function remove(key) {
+  return wrappedQiniuRsClient.remove(BUCKET_NAME, key);
 }
 
 ObjectStore = function () {
   return {
     put: uploadBuf,
+    /*
     putDataUri: function (key, dataUri) {
       var str = dataUri.replace(/^data:/, "");
       var mimeType = str.match(/^[^;]+/)[0];
@@ -47,6 +55,8 @@ ObjectStore = function () {
 
       return uploadBuf(key, new Buffer(str, "base64"), mimeType);
     },
-    getUrl: getUrl
+    */
+    getUrl: getUrl,
+    remove: remove
   }
 }();

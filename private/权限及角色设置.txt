@@ -55,3 +55,22 @@
 论坛版主
 档案管理员（维护相册，群文件等）
 社群经理
+
+
+group:
+
+{
+  defaultRole: "11111",
+
+  roles: {
+    "owner": {
+      name: "the king",
+    },
+    "11111": {
+      name: "knight",
+      permissions: [
+        "create-group"
+      ]
+    }
+  }
+}

@@ -32,9 +32,8 @@ Template.registerHelper("toArray", function () {
 */
 
 Template.styledSelect.helpers({
-  idAttrs: function () {
-    if (this.id) return {id: this.id};
-    else return null;
+  attrs: function () {
+    return _.omit(this, "inline", "extraClasses", "selectValue");
   },
   value: function () {
     return Template.instance().value.get();

@@ -61,7 +61,12 @@ Meteor.startup(function () {
         foundedDate: new Date(),
         homeCity: CITIES[0],
         memberCount: 2,
-        description: "欢迎大家加入！"
+        description: "欢迎大家加入！",
+        defaultRole: "2g42gkbMGivsFBfKn",
+        roles: {
+          owner: {name: "校长"},
+          "2g42gkbMGivsFBfKn": {name: "学生", permissions: ["create-topic"]}
+        }
       },
       {
         path: "group2",
@@ -69,7 +74,13 @@ Meteor.startup(function () {
         founderId: users[1]._id,
         foundedDate: new Date(),
         homeCity: CITIES[1],
-        description: "想来便来想走便走"
+        memberCount: 2,
+        description: "想来便来想走便走",
+        defaultRole: "hZKu3ssFiPWpF5k7i",
+        roles: {
+          owner: {name: "组长"},
+          "hZKu3ssFiPWpF5k7i": {name: "成员", permissions: ["create-topic", "modify-own-topic"]}
+        }
       }
     ];
 
@@ -81,21 +92,27 @@ Meteor.startup(function () {
       {
         groupId: groups[0]._id,
         userId: users[0]._id,
-        joinDate: new Date()
+        nickname: "张三0",
+        joinDate: new Date(),
+        role: "owner"
       },
       {
         groupId: groups[1]._id,
         userId: users[0]._id,
+        nickname: "张三1",
         joinDate: new Date()
       },
       {
         groupId: groups[1]._id,
         userId: users[1]._id,
-        joinDate: new Date()
+        nickname: "李四1",
+        joinDate: new Date(),
+        role: "owner"
       },
       {
         groupId: groups[0]._id,
         userId: users[2]._id,
+        nickname: "王五0",
         joinDate: new Date()
       }
     ];

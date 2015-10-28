@@ -37,7 +37,7 @@
             <ul class="nav navbar-nav navbar-right">
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                  <img src="{{avatarOrDefault profile.avatar}}" class="img-rounded">
+                  <img src="{{avatarOrDefault}}" class="img-rounded">
                   <div><span>{{profile.name}}</span> &nbsp;<span class="caret"></span></div>
                 </a>
                 <ul class="dropdown-menu">
@@ -51,9 +51,9 @@
             </ul>
           {{/with}}
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="{{pathFor 'eventEdit'}}"><i class="fa fa-calendar-plus-o fa-fw"></i> 发布活动</a></li>
-            <li><a href="{{pathFor 'createGroup'}}"><i class="fa fa-users fa-fw"></i> 创建组织</a></li>
-            {{#unless currentUser}}<li><a href="{{pathFor 'signin'}}"><i class="fa fa-sign-in fa-fw"></i> 登录 / 注册</a></li>{{/unless}}
+            <li class="{{isActiveRoute name='eventEdit'}}"><a href="{{pathFor 'eventEdit'}}"><i class="fa fa-calendar-plus-o fa-fw"></i> 发布活动</a></li>
+            <li class="{{isActiveRoute name='createGroup'}}"><a href="{{pathFor 'createGroup'}}"><i class="fa fa-users fa-fw"></i> 创建组织</a></li>
+            {{#unless currentUser}}<li class="{{isActiveRoute regex='^signin|join$'}}"><a href="{{#if isActiveRoute 'signin'}}{{pathFor 'join'}}{{else}}{{pathFor 'signin'}}{{/if}}"><i class="fa fa-sign-in fa-fw"></i> 登录 / 注册</a></li>{{/unless}}
           </ul>
         </div>
       </div>

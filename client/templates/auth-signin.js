@@ -5,7 +5,7 @@ Template.authSignin.events({
   "submit": function (event, template) {
     event.preventDefault();
 
-    Meteor.logout();
+    if (Meteor.user()) Meteor.logout();
 
     var mobile = template.$("[name=mobile]").val();
     var password = template.$("[name=password]").val();

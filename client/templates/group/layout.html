@@ -1,37 +1,17 @@
 <template name="groupLayout">
-  {{> groupHeader}}
-
-  <!--<main>
-    <div class="container">
-      <div class="group-header">
-        
-      </div>
-
-      <div class="panel panel-default">
-        <div class="panel-body panel-body-condensed">
-          <ul class="nav nav-pills pull-left">
-            <li role="presentation" class="active"><a href="javascript:void(0)">主页</a></li>
-            <li role="presentation"><a href="javascript:void(0)">成员</a></li>
-            <li role="presentation"><a href="javascript:void(0)">活动</a></li>
-          </ul>
-          <ul class="nav nav-pills pull-right">
-            <li role="presentation"><a href="javascript:void(0)">组织管理</a></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-
-        </div>
-
-        <div class="col-sm-9 col-md-10 main">
-        </div>
-      </div>
-    </div>
-  </main>-->
-
-  {{> Template.dynamic template=main}}
-
-  {{> footerCompact}}
+  {{#unless groupReady}}
+    {{> header}}
+    {{> loading}}
+    {{> footerCompact}}
+  {{else}}
+    {{#with group}}
+      {{> groupHeader}}
+      {{> Template.dynamic template=../main}}
+      {{> footerCompact}}
+    {{else}}
+      {{> header}}
+      {{> notFound}}
+      {{> footer}}
+    {{/with}}
+  {{/unless}}
 </template>

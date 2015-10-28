@@ -1,8 +1,8 @@
 / - 主页
 /join - 注册帐号
 /signin - 登录
-/group/{path} - 俱乐部首页
-/group/{path}/member
+/groups/{path} - 俱乐部首页
+/groups/{path}/members/{}
 
 /groups - 主页查询俱乐部（暂时不做）
 /events - 主页查询活动（暂时不做）
@@ -12,3 +12,5 @@
 
 /create-group - 创建俱乐部
 /groups/{}
+
+/users/{uid}/edit

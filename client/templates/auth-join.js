@@ -32,7 +32,7 @@ Template.authJoin.events({
   "submit": function (event, template) {
     event.preventDefault();
 
-    Meteor.logout();
+    if (Meteor.user()) Meteor.logout();
 
     var name = template.$("[name=name]").val();
     var mobile = template.$("[name=mobile]").val();
