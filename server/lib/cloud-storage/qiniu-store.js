@@ -2,6 +2,7 @@
  * Created by Michael on 2015/10/25.
  */
 var qiniu = Meteor.npmRequire("qiniu");
+var mime = Meteor.npmRequire("mime");
 
 qiniu.conf.ACCESS_KEY = "ArTWIe1q_1iDUdMm2notK3vjhARjbcNa_8S1zrZ5";
 qiniu.conf.SECRET_KEY = "N9fwW3xXTNvUCdBKQqtcYZsUmaDquwSK1xh9anFv";
@@ -32,11 +33,19 @@ function uploadBuf(key, body, mimeType) {
   //extra.crc32 = crc32;
   //extra.checkCrc = checkCrc;
 
-  return getUrl(wrappedQiniuIo.put(uptoken(key), key, body, extra).key);
+  return wrappedQiniuIo.put(uptoken(key), key, body, extra).key;
 }
 
 function getUrl(key) {
   return qiniu.rs.makeBaseUrl(BUCKET_DOMAIN, key);
+}
+
+function parseUrl(url) {
+
+  //var dotIndex = key.lastIndexOf(".");
+  //if (dotIndex >= 0) key = key.substring(0, dotIndex);
+
+  return url.substring(url.lastIndexOf("/") + 1);
 }
 
 function remove(key) {
@@ -45,7 +54,7 @@ function remove(key) {
 
 ObjectStore = function () {
   return {
-    put: uploadBuf,
+    _put: uploadBuf,
     /*
     putDataUri: function (key, dataUri) {
       var str = dataUri.replace(/^data:/, "");
@@ -56,7 +65,21 @@ ObjectStore = function () {
       return uploadBuf(key, new Buffer(str, "base64"), mimeType);
     },
     */
-    getUrl: getUrl,
-    remove: remove
+    _getUrl: getUrl,
+    _remove: remove,
+
+    putDataUri: function (dataUri) {
+      var str = dataUri.replace(/^data:/, "");
+      var mimeType = str.match(/^[^;]+/)[0];
+      str = str.substring(mimeType.length);
+      str = str.replace(/^.*?;base64,/, "");
+
+      var key = Random.id(24) + "." + mime.extension(mimeType);
+
+      return getUrl(uploadBuf(key, new Buffer(str, "base64"), mimeType));
+    },
+    removeByUrl: function (url) {
+      return remove(parseUrl(url));
+    }
   }
 }();
