@@ -5,7 +5,7 @@
 var singleEvent = new ReactiveVar(null);    //  初始化, 用来存储findOne得到的值。
 var hasEvents = new ReactiveVar(false);
 
-function setSingleEvent(event) {            // 在 reactive之前，先刷新 scroll-spy.
+function setSingleEvent(event) {            // 在 reactive data set之前，先刷新 scroll-spy.
   Tracker.afterFlush(function () {
     $(document.body).scrollspy("refresh");
     $(document.body).scrollspy("process");
@@ -16,18 +16,17 @@ function setSingleEvent(event) {            // 在 reactive之前，先刷新 sc
 Template.user.onCreated(function () {
   var template = this;
   this.autorun(function () {
-    var uid = FlowRouter.getParam('uid');
-    template.subscribe("userDetail", uid);
-    template.subscribe("userDetailById", uid);
-    template.subscribe("userWatchingEvents", uid);
-    if (uid === Meteor.userId()) {
-      console.log("watchingGroups has been subscribed");
+    var userId = FlowRouter.getParam('userId');
+    template.subscribe("userDetail", userId);
+    template.subscribe("userDetailById", userId);
+    template.subscribe("userWatchingEvents", userId);
+    if (userId === Meteor.userId()) {
       template.subscribe("watchingGroups");
     }
   });
   this.autorun(function () {
     if (template.subscriptionsReady()) {        // 用来等待数据加载完毕。
-      var eventIds = JoinForm.find({userId: FlowRouter.getParam('uid')}).map(function (doc) {
+      var eventIds = JoinForm.find({userId: FlowRouter.getParam('userId')}).map(function (doc) {
         return new Mongo.ObjectID(doc.eventId);
       });
       var event = Events.findOne({_id: {$in: eventIds}, "time.end": {$gt: new Date()}}, {sort: {"time.start": 1}});
@@ -61,27 +60,38 @@ Template.user.onRendered(function () {
     target: ".scrollspy-wrap",
     offset: 96
   });
+
   // 使用一个session 变量在两个页面之间进行通信。
-  if (Session.get("userInfoSet")) {
-    $("#basic-info-tab").tab("show");
-    Session.set("userInfoSet", false);
-  } else {
-    $("#event-menu").addClass("in");
-  }
+
+  this.autorun(function () {
+    console.log(FlowRouter.getParam("tab"));
+    switch (FlowRouter.getParam("tab")) {
+      case undefined :
+        FlowRouter.setParams({tab: $(".user-tab")[0].hash});
+        $("#event-menu").addClass("in");
+        break;
+      case "#clubs":
+        $("#club-menu").addClass("in");
+        $("#clubs").tab("show");
+        break;
+      case "#basic-info-tab":
+        $("#basic-info").tab("show");
+    }
+  });
 });
 
 Template.user.helpers({
   "meOrOther": function () {
-    return (Meteor.userId() === FlowRouter.getParam("uid")) ? "我" : "Ta";
+    return (Meteor.userId() === FlowRouter.getParam("userId")) ? "我" : "Ta";
   },
   "userJudge": function () {
-    return Meteor.userId() === FlowRouter.getParam("uid");
+    return Meteor.userId() === FlowRouter.getParam("userId");
   },
   "hasEvents": function () {
     return hasEvents.get();
   },
   "events": function () {
-    var eventIds = JoinForm.find({userId: FlowRouter.getParam("uid")}).map(function (doc) {
+    var eventIds = JoinForm.find({userId: FlowRouter.getParam("userId")}).map(function (doc) {
       return new Mongo.ObjectID(doc.eventId);
     });
     return Events.find({_id: {$in: eventIds}},{sort: {"time.start": 1}});
@@ -109,7 +119,7 @@ Template.user.helpers({
     }
   },
   "watchingEvents": function () {
-    return UserSavedEvents.find({"user.id": FlowRouter.getParam("uid")});
+    return UserSavedEvents.find({"user.id": FlowRouter.getParam("userId")});
   },
   "singleWatchEvent": function () {
     return Events.findOne({_id: this.event.id});
@@ -144,10 +154,7 @@ Template.user.helpers({
     return this.eventCount ? this.eventCount : 0;
   },
   "basicInfo": function () {
-    return  Meteor.users.findOne({_id: FlowRouter.getParam("uid")});
-  },
-  "personalAvatar": function () {
-    return this.avatar ? this.avatar : "/images/default-avatar.jpg";
+    return  Meteor.users.findOne({_id: FlowRouter.getParam("userId")});
   },
   "hasGender": function () {
     return this.profile.gender ? true : false;
@@ -164,6 +171,7 @@ Template.user.onDestroyed(function () {
 Template.user.events({
   "click .user-tab": function (e) {
     e.preventDefault();
+    FlowRouter.setParams({tab: $(e.currentTarget)[0].hash});
     var target = $(e.currentTarget).data().accordion;
     $(".collapse").not($(target)).collapse("hide");
     $(target).collapse("toggle");

@@ -80,6 +80,12 @@ Template.eventDetail.helpers({
     });
     return eventDetail;
   },
+  "isPreview": function () {
+    return Session.get("eventPosterData") ? true : false;
+  },
+  "previewPoster": function () {
+    return Session.get("eventPosterData");
+  },
   "eventDetailDesc": function () {
     HTTP.get('http://7xjl8x.com1.z0.glb.clouddn.com/' + this.desc, function(err, res) {
       if(!err && res.statusCode === 200) {
@@ -185,15 +191,40 @@ Template.eventDetail.events({
     Meteor.call('toggleSaveEvent', event);
   },
 
-  'click #publish-event': function() {
+  'click #publish-event': function(e) {
     if (!Meteor.userId()) {
       alert('请先登录！');
       return;
     }
+
+    var target = e.currentTarget;
+
+    $(target).attr("disabled", true).text("活动发布中...");
+
+    var croppedImg = Session.get("eventPosterData");
+
+    if (croppedImg) {
+      Meteor.call("uploadEventPoster", croppedImg, FlowRouter.getParam("eid"), function (err, url) {
+        if (!err && url) {
+          console.log(url);
+          Session.set("eventPosterdata", 0);
+          EditEvent.eventPoster.setKey(url);
+          EditEvent.saveEvent();
+        } else {
+          console.error("海报上传失败: " + err.reason);
+        }
+        $(target).attr("disabled", false).text("立即发布");
+      });
+    } else {
+      alert("请选择活动海报");
+    }
+
     var eid = FlowRouter.getParam('eid');
     Meteor.call('setEventStatus', new Mongo.ObjectID(eid), '已发布', function(err, res) {
       if (!err && res.code === 0) {
-        FlowRouter.go('eventManage', {'eid': eid});
+        // TODO:  这个地方需要修改，因为本来就在详情页面，没必要再go, 这个是暂时的方案，需要@ChenKai 协助修改。
+        FlowRouter.go("/event/detail/" + eid);
+        //FlowRouter.go('eventManage', {'eid': eid});
       }
     });
   },

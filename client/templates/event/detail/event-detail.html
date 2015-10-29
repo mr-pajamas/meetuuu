@@ -13,7 +13,7 @@
             {{#with eventDetail}}
               <section class="event-poster" id="poster">
                 <!-- 活动基本信息 -->
-                <img class="img-responsive" src="http://7xjl8x.com1.z0.glb.clouddn.com/{{poster}}" alt="活动海报">
+                <img class="img-responsive" src="{{#if isPreview}}{{previewPoster}}{{else}}{{eventPoster poster}}{{/if}}" alt="活动海报">
                 <div class="introduction event-post-padding">
                   <header class="poster-header">
                     {{title}}
@@ -63,26 +63,28 @@
 
             <section id="comment">
               <!-- 新建评论输入框 -->
-              <div class="media new-comment">
-                <div class="row">
-                  <div class="media-left col-sm-2 col-xs-3">
-                    <a href="#"><img src="{{currentUser.profile.avatar}}" alt="xxx"/></a>
-                  </div>
-                  <!-- todo 替换为用户的数据 -->
-                  <div class="media-info col-sm-10 col-xs-9">
-                    <h4 class="media-heading">{{currentUser.profile.name}}</h4>
-                    <!--
-                      <div class="media-date">2015, 09, 05</div>
-                     -->
-                  </div>
-                  <div class="col-sm-10 col-xs-12 media-text">
-                    <form class="new-comment-form">
-                      <textarea name="comment" id="commentContent" class="new-comment-area" rows="6" placeholder="感兴趣吗？评论一下吧！"></textarea>
-                      <input type="button" id="submitComment" class="btn pull-right btn-primary" name="评论" value="评论"/>
-                    </form>
+              {{#with currentUser}}
+                <div class="media new-comment">
+                  <div class="row">
+                    <div class="media-left col-sm-2 col-xs-3">
+                      <a href="#"><img src="{{avatarOrDefault}}" alt="我的头像"/></a>
+                    </div>
+                    <!-- todo 替换为用户的数据 -->
+                    <div class="media-info col-sm-10 col-xs-9">
+                      <h4 class="media-heading">{{profile.name}}</h4>
+                      <!--
+                        <div class="media-date">2015, 09, 05</div>
+                       -->
+                    </div>
+                    <div class="col-sm-10 col-xs-12 media-text">
+                      <form class="new-comment-form">
+                        <textarea name="comment" id="commentContent" class="new-comment-area" rows="6" placeholder="感兴趣吗？评论一下吧！"></textarea>
+                        <input type="button" id="submitComment" class="btn pull-right btn-primary" name="评论" value="评论"/>
+                      </form>
+                    </div>
                   </div>
                 </div>
-              </div>
+              {{/with}}
               <!-- 包含两个template，评论以及隐藏的回复评论 -->
               {{> eventComment}}
             </section>

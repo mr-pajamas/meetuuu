@@ -46,49 +46,49 @@ Template.editEvent.onRendered(function() {
   Meteor.typeahead.inject();
 
 
-  // === 上传海报 Begin===
-  var $image = $(".image-crop > img");
-  var $inputImage = $("#inputImage");
-  if (window.FileReader) {
-    $inputImage.change(function() {
-      var fileReader = new FileReader(),
-          files = this.files,
-          file;
+  // === 上传海报 Begin  可以删除===
+  /* var $image = $(".image-crop > img");
+   var $inputImage = $("#inputImage");
+   if (window.FileReader) {
+   $inputImage.change(function() {
+   var fileReader = new FileReader(),
+   files = this.files,
+   file;
 
-      if (!files.length) {
-        return;
-      }
+   if (!files.length) {
+   return;
+   }
 
-      file = files[0];
+   file = files[0];
 
-      if (/^image\/\w+$/.test(file.type)) {
-        fileReader.readAsDataURL(file);
-        fileReader.onload = function () {
-          $inputImage.val("");
-          $image.cropper("reset", true)
-            .cropper("replace", this.result);
-        };
-      } else {
-        alert("请选择图片");
-      }
-    });
-  } else {
-    $inputImage.addClass("hide");
-  }
+   if (/^image\/\w+$/.test(file.type)) {
+   fileReader.readAsDataURL(file);
+   fileReader.onload = function () {
+   $inputImage.val("");
+   $image.cropper("reset", true)
+   .cropper("replace", this.result);
+   };
+   } else {
+   alert("请选择图片");
+   }
+   });
+   } else {
+   $inputImage.addClass("hide");
+   }
 
-  $('#setDrag').on('click', function () {
-    console.log($image.cropper("getDataURL"));
-    var $btn = $(this).button('loading');
-    // business logic...
-    Meteor.call('sendPosterInBase64', EditEvent.eventPoster.getKey(), $image.cropper("getDataURL"), function(err, res) {
-      console.log(err);
-      if(!err && res.code === 0) {
-        EditEvent.eventPoster.setKey(res.key);
-        $btn.button('reset');
-        alert('海报上传成功');
-      }
-    });
-  });
+   $('#setDrag').on('click', function () {
+   console.log($image.cropper("getDataURL"));
+   var $btn = $(this).button('loading');
+   // business logic...
+   Meteor.call('sendPosterInBase64', EditEvent.eventPoster.getKey(), $image.cropper("getDataURL"), function(err, res) {
+   console.log(err);
+   if(!err && res.code === 0) {
+   EditEvent.eventPoster.setKey(res.key);
+   $btn.button('reset');
+   alert('海报上传成功');
+   }
+   });
+   });*/
   // === 上传海报 End===
 });
 
@@ -123,6 +123,9 @@ Template.editEvent.helpers({
   // 活动标题
   eventTitle: function() {
     return EditEvent.eventTitle.getTitle();
+  },
+  poster: function () {
+    return Session.get("eventPosterData") ? Session.get("eventPosterData") : this.poster;
   },
   // 加入的俱乐部，且具有创建活动的权利
   groupsWithRight: function() {
@@ -267,11 +270,11 @@ Template.editEvent.events({
   },
   'click ': function(e) {
     var $bdmap = $('#bdmap')
-        offset = $bdmap.offset(),
-        top = offset.top,
-        left = offset.left,
-        width = $bdmap.width(),
-        height = $bdmap.height();
+    offset = $bdmap.offset(),
+      top = offset.top,
+      left = offset.left,
+      width = $bdmap.width(),
+      height = $bdmap.height();
     if (e.pageX < left || e.pageX > left + width || e.pageY < top || e.pageY > top + height) {
       $('#bdmap').slideUp({
         done: function () {
@@ -333,7 +336,28 @@ Template.editEvent.events({
   'click #publishEvent': function(e) {
     e.preventDefault();
     e.stopPropagation();
-    EditEvent.saveEvent();
+
+    var target = e.currentTarget;
+
+    $(target).attr("disabled", true).text("活动发布中...");
+
+    var croppedImg = $(".event-poster").find(".img-upload").imgUpload("crop");
+
+    if (croppedImg) {
+      Meteor.call("uploadEventPoster", croppedImg, FlowRouter.getParam("eid"), function (err, url) {
+        if (!err && url) {
+          console.log(url);
+          Session.set("eventPosterdata", 0);
+          EditEvent.eventPoster.setKey(url);
+          EditEvent.saveEvent();
+        } else {
+          console.error("海报上传失败: " + err.reason);
+        }
+        $(target).attr("disabled", false).text("立即发布");
+      });
+    } else {
+      alert("请选择活动海报");
+    }
   },
   // 自定义表单控件-创建
   'click .custom-form-item': function(e) {
@@ -351,6 +375,12 @@ Template.editEvent.events({
     $('.previewEventInfo').button('loading');
     // 提取表单,表单信息在 helper signForm
     EditEvent.eventSignForm.setPreviewForm();
-    EditEvent.previewEvent();
+
+    var croppedImg = $(".event-poster").find(".img-upload").imgUpload("crop");
+
+    if (croppedImg) {
+      Session.setDefault("eventPosterData", croppedImg);
+      EditEvent.previewEvent();
+    }
   }
-});
+  });

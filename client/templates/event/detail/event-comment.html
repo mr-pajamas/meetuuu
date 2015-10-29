@@ -5,12 +5,7 @@
       <div class="media">
         <div class="row">
           <div class="media-left col-sm-2 col-xs-3">
-            <!-- TODO 替换用户头像 -->
-            {{#if commentBy.avatar}}
-              <a href="#"> <img src="{{commentBy.avatar}}" alt="/images/avatar.png"/></a>
-            {{else}}
-              <a href="#"> <img src="/images/avatar.png"/></a>
-            {{/if}}
+            <a href="#"><img src="{{avatarOrDefault profile.avatar}}" alt="个人头像"/></a>
           </div>
           <div class="media-info col-sm-10 col-xs-9">
             <h4 class="media-heading">{{commentBy.username}}</h4>

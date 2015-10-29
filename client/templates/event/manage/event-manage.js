@@ -16,7 +16,7 @@ Template.qrcodeTpl.onRendered(function() {
   });
 });
 
-Template.eventManage.onRendered(function() {
+Template.eventManage.onCreated(function() {
   var self = this;
   self.autorun(function () {
     var eid = FlowRouter.getParam('eid');
@@ -171,5 +171,13 @@ Template.eventManage.events({
         alert('拒绝时出错');
       }
     });
+  }
+});
+
+//  返回参加用户的头像.
+
+Template.joinForm.helpers({
+  "joinedUserAvatar": function () {
+    return Meteor.users.findOne({_id: this.userId});
   }
 });

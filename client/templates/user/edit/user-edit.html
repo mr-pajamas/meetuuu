@@ -29,6 +29,7 @@
     </div>
   </div>
 
+
   <div class="container user-edit-wrap">
     <div class="row">
       {{#with userBasicInfo}}
@@ -41,13 +42,9 @@
               </div>
             </div>
             <div class="form-group">
-              <!-- TODO: 头像这块需要另外考虑一下, 上传之后需要放在这个地方显示，头像上传应该是有一套现有的流程。 -->
               <label class="col-sm-2 control-label">我的头像</label>
-              <div class="col-sm-7 clearfix">
-                <div class="img-container pull-left"><img class="img-responsive" src="{{personalAvatar}}" alt="avatar"/></div>
-                <a href="#" class="pull-left btn btn-default avatar-upload-btn">
-                  <label for="upload-form">上传新头像<input type="file" id="upload-form" accept="image/*" name="img-file"/></label>
-                </a>
+              <div class="col-sm-4 clearfix" id="upload-avatar">
+                {{> imgUpload width=400 height=400 defaultSrc="/images/default-badge.png" src=profile.avatar}}
               </div>
             </div>
             <div class="form-group">

@@ -44,7 +44,7 @@ Meteor.publishComposite("userWatchingEvents", function (uid) {
 
 // allow rule for user edit his own information.
 
-Meteor.users.allow({
+/*Meteor.users.allow({
   insert: function (userId, doc) {
     return (userId && doc._id === userId);
   },
@@ -55,4 +55,4 @@ Meteor.users.allow({
     return doc._id === userId;
   },
   fetch: ["_id"]
-});
+});*/

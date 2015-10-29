@@ -188,7 +188,7 @@ EditEvent = (function() {
         return false;
       }
       return true;
-    },
+    }
   };
 
 
@@ -364,11 +364,14 @@ EditEvent = (function() {
   /**
    * 活动海报信息
    */
+  /*
+  *  modified by Chen Yuan.
+  * */
   var eventPoster = {
     key: new ReactiveVar(''),
     inited: false,
     init: function(key) {
-      key = key || '';
+      /*key = key || '';
       this.key.set(key);
       this.inited = true;
       // Set options for cropper plugin
@@ -383,7 +386,8 @@ EditEvent = (function() {
         done: function(data) {
           // 输出裁剪的参数信息
         }
-      });
+      });*/
+      console.log("poster init has been done !");
     },
     setKey: function(key) {
       this.key.set(key);
@@ -871,9 +875,6 @@ EditEvent = (function() {
     if(!eventInfo.theme) {
       errorInfo = '请选择活动主题';return errorInfo;
     }
-    if(!eventInfo.poster) {
-      errorInfo = '请提供活动海报';return errorInfo;
-    }
     if(!eventInfo.tags || eventInfo.tags.length === 0) {
       errorInfo = '请输入活动标签';return errorInfo;
     }
@@ -900,6 +901,7 @@ EditEvent = (function() {
     console.log(eventGroups.getSelectdGroup());
 
     var eid = FlowRouter.getParam('eid');
+
     //eventDesc.uploadToQiniu(eid);
     var eventInfo = {
       _id: new Mongo.ObjectID(eid),
@@ -934,7 +936,6 @@ EditEvent = (function() {
     }
     Meteor.call('event.save', eventInfo, function(err, res) {
       if (!err && 0 === res.code) {
-        console.log('活动保存成功');
         eventDesc.uploadToQiniu(eid);
         successCallback && successCallback();
       }
@@ -946,10 +947,10 @@ EditEvent = (function() {
    */
   var saveEvent = function() {
     var alertSuccess = function() {
-      alert('活动发布成功');
       var eid = FlowRouter.getParam('eid');
-      window.open('/event/manage/' + eid);
-    }
+      //created by Chen Yuan, 打开活动详情页面到当前页面，用FlowRouter.go()
+      FlowRouter.go("/event/detail/" + eid);
+    };
     __saveEvent(alertSuccess, '已发布');
   };
 
@@ -959,7 +960,8 @@ EditEvent = (function() {
   var previewEvent = function() {
     var goToDetailPage = function() {
       var eid = FlowRouter.getParam('eid');
-      window.open('/event/detail/' + eid + '?preview=true');
+      FlowRouter.go("/event/detail/" + eid + "?preview=true");
+      //window.open('/event/detail/' + eid + '?preview=true');
       $('.previewEventInfo').button('reset');
     };
     __saveEvent(goToDetailPage);
@@ -976,7 +978,6 @@ EditEvent = (function() {
     eventTags.init([]);
     eventDesc.init('event-desc', '');
     eventSignForm.init([]);
-    eventPoster.init();
     eventGroups.init();
   };
 
