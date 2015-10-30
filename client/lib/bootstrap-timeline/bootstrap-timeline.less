@@ -104,7 +104,8 @@
       }
     }
 
-    &.timeline-inverted > .timeline-panel {
+    &.timeline-inverted > .timeline-panel,
+    &:nth-child(even) > .timeline-panel {
       float: right;
 
       &:before {
@@ -196,7 +197,8 @@
       }
     }
 
-    &.timeline-inverted > .timeline-badge {
+    &.timeline-inverted > .timeline-badge,
+    &:nth-child(even) > .timeline-badge {
       > i.fa {
         left: -(@badge-size * @badge-scale + 20);
       }

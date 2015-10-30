@@ -53,9 +53,9 @@ Template.index.onRendered(function () {
     "resize": fixSearchBar
   });
 
-  //if (Meteor.user() && !Meteor.user().profile.avatar && !Session.get("hasSkippedSettingAvatar")) {
+  if (Meteor.user() && !Meteor.user().profile.avatar && !Session.get("hasSkippedSettingAvatar")) {
     this.$(".modal").modal();
-  //}
+  }
 });
 
 Template.index.onDestroyed(function () {

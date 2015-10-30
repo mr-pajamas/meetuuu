@@ -45,6 +45,7 @@ reywood:publish-composite
 qiniu-uploader
 u2622:persistent-session
 zimme:active-route
+raix:eventemitter
 
 
 npm-container
