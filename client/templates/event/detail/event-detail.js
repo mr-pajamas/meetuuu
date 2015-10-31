@@ -80,6 +80,9 @@ Template.eventDetail.helpers({
     });
     return eventDetail;
   },
+  "poster": function () {
+    return this.poster;
+  },
   "isPreview": function () {
     return Session.get("eventPosterData") ? true : false;
   },
@@ -200,24 +203,8 @@ Template.eventDetail.events({
     var target = e.currentTarget;
 
     $(target).attr("disabled", true).text("活动发布中...");
-
-    var croppedImg = Session.get("eventPosterData");
-
-    if (croppedImg) {
-      Meteor.call("uploadEventPoster", croppedImg, FlowRouter.getParam("eid"), function (err, url) {
-        if (!err && url) {
-          console.log(url);
-          Session.set("eventPosterdata", 0);
-          EditEvent.eventPoster.setKey(url);
-          EditEvent.saveEvent();
-        } else {
-          console.error("海报上传失败: " + err.reason);
-        }
-        $(target).attr("disabled", false).text("立即发布");
-      });
-    } else {
-      alert("请选择活动海报");
-    }
+    EditEvent.eventPoster.setKey(Session.get("eventPosterData"));
+    EditEvent.saveEvent();
 
     var eid = FlowRouter.getParam('eid');
     Meteor.call('setEventStatus', new Mongo.ObjectID(eid), '已发布', function(err, res) {

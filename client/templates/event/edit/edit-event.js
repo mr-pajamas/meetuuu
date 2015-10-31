@@ -1,17 +1,22 @@
 /* created by ck 2015-09-02 */
 
 // 城市选择
-Session.set("selectedCity", "上海");
+Session.setDefault("selectedCity", 0);
+Session.setDefault("eventGroupId", 0);
+
+Session.setDefault("validateEventInfo", true);   // 暂时的前端用来验证事件的session变量。 这个会做修改的。
+
+var isInitFinished = new ReactiveVar(false);
 // 百度地图
 var bdmap = null;
 
 Template.editEvent.onDestroyed(function() {
-  $(".image-crop > img").cropper('destroy');
+  // nothing.
 });
 
-Template.editEvent.onRendered(function() {
+Template.editEvent.onCreated(function () {
   var self = this;
-  // 构造event Id
+  // 在路径名字后面添加 event Id
   if (!FlowRouter.getParam('eid')) {
     FlowRouter.setParams({'eid': new Mongo.ObjectID()._str});
     EditEvent.pureInit();
@@ -19,16 +24,22 @@ Template.editEvent.onRendered(function() {
     self.autorun(function() {
       var eid = new Mongo.ObjectID(FlowRouter.getParam('eid'));
       self.subscribe('eventDetailById', eid, function() {
-        var eventInfo = Events.findOne({_id: eid});
-        // 各类初始化动作
-        if (!eventInfo) {
-          EditEvent.pureInit();
-          return;
-        }
-        EditEvent.InitWithData(eventInfo);
+        Tracker.afterFlush(function () {
+          var eventInfo = Events.findOne({_id: eid});
+          // 各类初始化动作
+          if (!eventInfo) {
+            EditEvent.pureInit();
+          } else {
+            EditEvent.InitWithData(eventInfo);
+          }
+          isInitFinished.set(true);
+        });
       });
     });
   }
+});
+
+Template.editEvent.onRendered(function() {
 
   // 初始化地图
   function initialize() {
@@ -43,8 +54,11 @@ Template.editEvent.onRendered(function() {
   document.body.appendChild(script);
 
   // 自动补全提示
-  Meteor.typeahead.inject();
-
+  this.autorun(function () {
+    if(isInitFinished.get()) {
+      Meteor.typeahead.inject();
+    }
+  });
 
   // === 上传海报 Begin  可以删除===
   /* var $image = $(".image-crop > img");
@@ -125,7 +139,7 @@ Template.editEvent.helpers({
     return EditEvent.eventTitle.getTitle();
   },
   poster: function () {
-    return Session.get("eventPosterData") ? Session.get("eventPosterData") : this.poster;
+    return isInitFinished.get() ? EditEvent.eventPoster.getKey() : false;
   },
   // 加入的俱乐部，且具有创建活动的权利
   groupsWithRight: function() {
@@ -162,9 +176,25 @@ Template.editEvent.helpers({
   endTimeOptions: function() {
     return EditEvent.eventTime.getEndOptions();
   },
+  hasSelectedGroup: function () {
+    var gid = FlowRouter.getQueryParam("gid");
+    if (gid) {
+      return MyGroups.findOne({_id: gid}).name;
+    } else {
+      return false;
+    }
+  },
   // 活动城市
   cityOptions: function() {
-    return EditEvent.eventLocation.getCityOptions();
+    if (!Session.get("eventGroupId")) {
+      var defaultCity;
+      var gid = FlowRouter.getQueryParam("gid");
+      defaultCity = gid ? MyGroups.findOne({_id: gid}).homeCity : MyGroups.findOne().homeCity;
+      Session.set("selectedCity", defaultCity);
+      return defaultCity;
+    } else {
+      return MyGroups.findOne({_id: Session.get("eventGroupId")}).homeCity;
+    }
   },
   // 活动具体地址
   detailAddress: function() {
@@ -234,49 +264,143 @@ Template.editEvent.helpers({
   }
 });
 
+var getFormValues = function () {
+  // 保存标题
+  var eventName = $("#event-name").val();
+  if (eventName.length < 5) {
+    alert("请填写一个不少于5个字的活动标题");
+    Session.set("validateEventInfo", false);
+    return;
+  } else {
+    Session.set("validateEventInfo", true);
+    EditEvent.eventTitle.setTitle(eventName);
+  }
+
+  //  俱乐部选择
+  var eventGroup = $(".event-group-select").val();
+  if (!eventGroup) {
+    alert("请选择一个俱乐部");
+    Session.set("validateEventInfo", false);
+    return;
+  } else {
+    Session.set("validateEventInfo", true);
+    if (!FlowRouter.getQueryParam("gid")) {
+      EditEvent.eventGroups.changeSelectedGroup(eventGroup);
+    }
+  }
+
+  // 开始时间
+  var startTime = $("#start-time").val();
+  var now = moment();
+  var fStartTime = moment(startTime);
+  if (!startTime || fStartTime < now) {
+    alert("请选择一个现在之后的开始时间。");
+    Session.set("validateEventInfo", false);
+    return;
+  } else {
+    EditEvent.eventTime.setStartTime(startTime);
+    Session.set("validateEventInfo", true);
+  }
+
+  //  结束时间
+  var endTime = $("#end-time").val();
+  var fEndTime = moment(endTime);
+  if (!endTime || fEndTime <= fStartTime) {
+    alert("请选择一个开始时间之后的结束时间");
+    Session.set("validateEventInfo", false);
+    return ;
+  } else {
+    EditEvent.eventTime.setEndTime(endTime);
+    Session.set("validateEventInfo", true);
+  }
+
+  //活动城市
+  var selectedCity = $("#event-city-select").val();
+  if (!selectedCity) {
+    alert("请去俱乐部编辑页面填写俱乐部所在城市");
+    Session.set("validateEventInfo", false);
+    return;
+  } else {
+    EditEvent.eventLocation.setSelectCity(selectedCity);
+    Session.set("validateEventInfo", true);
+  }
+
+  //活动详细地址输入
+  var detailAddress = $("#event-detail-address").val();
+  if (!detailAddress) {
+    alert("请填写活动详细地址");
+    Session.set("validateEventInfo", false);
+    return;
+  } else {
+    EditEvent.eventLocation.setDetailAddress(detailAddress);
+    Session.set("validateEventInfo", true);
+  }
+
+  //活动公开　或者内部
+  var isPublic = $("#event-private").prop("checked");
+  if (!isPublic) {
+    EditEvent.eventPrivate.setPrivate();
+  } else {
+    EditEvent.eventPrivate.setPublic();
+  }
+
+  //活动人数
+  var memberLimit = $("#event-member-limit").val();
+  if (isPublic && memberLimit <= 0) {
+    alert("这是一个公开活动，请填写活动的限制人数");
+    Session.set("validateEventInfo", false);
+    return;
+  } else {
+    EditEvent.eventMemberLimit.setCount(memberLimit);
+    Session.set("validateEventInfo", true);
+  }
+
+  //活动主题选择
+  var eventTheme = $(".event-theme").val();
+  if (!eventTheme) {
+    alert("请选择活动主题");
+    Session.set("validateEventInfo", false);
+    return;
+  } else {
+    EditEvent.eventTheme.setSelectedTheme(eventTheme);
+    Session.set("validateEventInfo", true);
+  }
+
+};
+
 
 // events
 Template.editEvent.events({
-  // 保存标题
-  'keyup #event-name': function(e) {
-    EditEvent.eventTitle.setTitle($(e.target).val());
+  //  俱乐部选择
+  "change .event-group-select": function (e) {
+    Session.set("eventGroupId", $(e.currentTarget).val());
+    Session.set("selectedCity", MyGroups.findOne({_id: Session.get("eventGroupId")}).homeCity);
   },
-  // 活动开始时间
-  'change #start-time': function(e) {
-    var time_str = $(e.target).val();
-    EditEvent.eventTime.setStartTime(time_str);
-  },
-  // 活动开始时间
-  'change #end-time': function(e) {
-    var time_str = $(e.target).val();
-    EditEvent.eventTime.setEndTime(time_str);
-  },
-  // 活动城市
-  'keydown input[name="eventsTag"]': function(e) {
-    console.log(e.which);
-  },
+
   // 活动详情输入框 focus
-  'focus #event-detail-address': function(e) {
+  'focus #event-detail-address': function(e, template) {
     $('#bdmap').slideDown({
       start: function () {
         $(".event-map-container").show();
       }
     });
     if (!bdmap) {
-      bdmap = new BMap.Map('bdmap');
-      bdmap.centerAndZoom(Session.get('selectedCity'), 11);
-      bdmap.addControl(new BMap.ZoomControl());
+      template.autorun(function () {
+        bdmap = new BMap.Map('bdmap');
+        bdmap.centerAndZoom(Session.get('selectedCity'), 11);
+        bdmap.addControl(new BMap.ZoomControl());
+      });
     }
   },
   'click ': function(e) {
-    var $bdmap = $('#bdmap')
+    var $bdmap = $('#bdmap');
     offset = $bdmap.offset(),
       top = offset.top,
       left = offset.left,
       width = $bdmap.width(),
       height = $bdmap.height();
     if (e.pageX < left || e.pageX > left + width || e.pageY < top || e.pageY > top + height) {
-      $('#bdmap').slideUp({
+      $bdmap.slideUp({
         done: function () {
           $(".event-map-container").hide();
         }
@@ -306,12 +430,6 @@ Template.editEvent.events({
     bdmap = null;
     Session.set('selectedCity', cityName);
   },
-  // 活动俱乐部选择
-  'change #event-group-select': function(e) {
-    var gid = $(e.target).val();
-    console.log(gid);
-    EditEvent.eventGroups.changeSelectedGroup(gid);
-  },
   //
   // 活动公开或内部
   'change #event-private': function(e) {
@@ -324,10 +442,6 @@ Template.editEvent.events({
       EditEvent.eventPrivate.setPublic();
     }
   },
-  // 活动人数
-  'blur #event-member-limit': function(e) {
-    EditEvent.eventMemberLimit.setCount($(e.target).val());
-  },
   // 活动主题选择
   'change .event-theme': function(e) {
     EditEvent.eventTheme.setSelectedTheme($(e.target).val());
@@ -337,26 +451,14 @@ Template.editEvent.events({
     e.preventDefault();
     e.stopPropagation();
 
-    var target = e.currentTarget;
+    //  用来获取所有的form 控件的值。
+    getFormValues();
 
-    $(target).attr("disabled", true).text("活动发布中...");
-
-    var croppedImg = $(".event-poster").find(".img-upload").imgUpload("crop");
-
-    if (croppedImg) {
-      Meteor.call("uploadEventPoster", croppedImg, FlowRouter.getParam("eid"), function (err, url) {
-        if (!err && url) {
-          console.log(url);
-          Session.set("eventPosterdata", 0);
-          EditEvent.eventPoster.setKey(url);
-          EditEvent.saveEvent();
-        } else {
-          console.error("海报上传失败: " + err.reason);
-        }
-        $(target).attr("disabled", false).text("立即发布");
-      });
-    } else {
-      alert("请选择活动海报");
+    if (Session.get("validateEventInfo")) {
+      $(e.currentTarget).attr("disabled", true).text("活动发布中...");
+      var croppedImg = $(".event-poster").find(".img-upload").imgUpload("crop");
+      EditEvent.eventPoster.setKey(croppedImg);
+      EditEvent.saveEvent();
     }
   },
   // 自定义表单控件-创建
@@ -367,20 +469,22 @@ Template.editEvent.events({
     // focus wait 500ms for tempate #each operation
     Meteor.setTimeout(function() {
       $("#title-" + id).focus();
-    }, 500);
+    }, 100);
   },
   // 预览活动
   'click .previewEventInfo': function(e) {
     e.preventDefault();
-    $('.previewEventInfo').button('loading');
-    // 提取表单,表单信息在 helper signForm
-    EditEvent.eventSignForm.setPreviewForm();
+    //  用来获取所有的form 控件的值。
+    getFormValues();
 
-    var croppedImg = $(".event-poster").find(".img-upload").imgUpload("crop");
+    if (Session.get("validateEventInfo")) {
+      $('.previewEventInfo').attr("disabled", true).text("预览中...");
+      // 提取表单,表单信息在 helper signForm
+      EditEvent.eventSignForm.setPreviewForm();
 
-    if (croppedImg) {
+      var croppedImg = $(".event-poster").find(".img-upload").imgUpload("crop");
       Session.setDefault("eventPosterData", croppedImg);
       EditEvent.previewEvent();
     }
   }
-  });
+});

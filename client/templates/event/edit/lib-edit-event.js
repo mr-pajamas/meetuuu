@@ -68,8 +68,8 @@ EditEvent = (function() {
         todayHighlight: true
       };
       var self = this,
-          $startDatePickerDom = $('#' + startDomId),
-          $endDatePickerDom = $('#' + endDomId);
+        $startDatePickerDom = $('#' + startDomId),
+        $endDatePickerDom = $('#' + endDomId);
       $startDatePickerDom.datepicker(datepickerOptions)
         .on('changeDate', function(e) {
           var startDate = $startDatePickerDom.datepicker('getDate');
@@ -86,22 +86,22 @@ EditEvent = (function() {
     setOptions: function(startISOTime, endISOTime, stepByMinute) {
       var loopCount = this.minuteInOneDay / stepByMinute;
       var index,
-          startOptions = [],
-          endOptions = [];
+        startOptions = [],
+        endOptions = [];
       var start_ms = moment(startISOTime).get('hour') * 60 + moment(startISOTime).get('minute'),
-          end_ms = moment(endISOTime).get('hour') * 60 + moment(endISOTime).get('minute');
+        end_ms = moment(endISOTime).get('hour') * 60 + moment(endISOTime).get('minute');
       for (index = 0; index < loopCount; index++) {
         var currentMinutes = stepByMinute * (index + 1),
-            hourNum = Math.floor(currentMinutes / 60),
-            hourStr = hourNum < 10 ? '0' + hourNum : hourNum.toString(),
-            minuteNum = currentMinutes - hourNum * 60,
-            minuteStr = minuteNum < 10 ? '0' + minuteNum.toString() : minuteNum.toString(),
-            content = hourStr + ':' + minuteStr,
-            startAttr = {index: index},
-            endAttr = {index: index};
+          hourNum = Math.floor(currentMinutes / 60),
+          hourStr = hourNum < 10 ? '0' + hourNum : hourNum.toString(),
+          minuteNum = currentMinutes - hourNum * 60,
+          minuteStr = minuteNum < 10 ? '0' + minuteNum.toString() : minuteNum.toString(),
+          content = hourStr + ':' + minuteStr,
+          startAttr = {index: index},
+          endAttr = {index: index};
 
         start_ms === currentMinutes ? startAttr.selected = true : false,
-        end_ms === currentMinutes ? endAttr.selected = true : false;
+          end_ms === currentMinutes ? endAttr.selected = true : false;
 
         startOptions.push({
           attr: startAttr,
@@ -126,10 +126,10 @@ EditEvent = (function() {
     // input: '17:30', return second
     timeTrans: function timeTrans(tstr) {
       var tt = tstr.split(':'),
-          h = Number(tt[0]),
-          m = Number(tt[1]),
-          totalMinute = h * 60 + m,
-          totalSecond = totalMinute * 60;
+        h = Number(tt[0]),
+        m = Number(tt[1]),
+        totalMinute = h * 60 + m,
+        totalSecond = totalMinute * 60;
       return totalSecond;
     },
     setStartTime: function(time_str) {
@@ -252,12 +252,13 @@ EditEvent = (function() {
         if (group.attr['data-gid'] === gid) {
           newSelectedGroup = {
             name: group.name,
-            id: gid
+            id: gid,
+            path: group.path
           }
         }
       });
       this.selectedGroup.set(newSelectedGroup);
-    },
+    }
   };
 
   /**
@@ -365,29 +366,34 @@ EditEvent = (function() {
    * 活动海报信息
    */
   /*
-  *  modified by Chen Yuan.
-  * */
+   *  modified by Chen Yuan.
+   * */
   var eventPoster = {
     key: new ReactiveVar(''),
     inited: false,
     init: function(key) {
       /*key = key || '';
+       this.key.set(key);
+       this.inited = true;
+       // Set options for cropper plugin
+       var $image = $(".image-crop > img");
+       // 设置图片
+       $image.attr('src', key ? 'http://7xjl8x.com1.z0.glb.clouddn.com/' + key : '/event-create-poster-holder.png');
+       $($image).cropper({
+       //aspectRatio: 16 / 9,
+       preview: ".img-preview",
+       strict: true,
+       autoCrop: true,
+       done: function(data) {
+       // 输出裁剪的参数信息
+       }
+       });*/
+
+
+      key = Session.get("eventPosterData") ? Session.get("eventPosterData") : key;
+
       this.key.set(key);
-      this.inited = true;
-      // Set options for cropper plugin
-      var $image = $(".image-crop > img");
-      // 设置图片
-      $image.attr('src', key ? 'http://7xjl8x.com1.z0.glb.clouddn.com/' + key : '/event-create-poster-holder.png');
-      $($image).cropper({
-        //aspectRatio: 16 / 9,
-        preview: ".img-preview",
-        strict: true,
-        autoCrop: true,
-        done: function(data) {
-          // 输出裁剪的参数信息
-        }
-      });*/
-      console.log("poster init has been done !");
+
     },
     setKey: function(key) {
       this.key.set(key);
@@ -606,6 +612,9 @@ EditEvent = (function() {
     },
     getKey: function() {
       return this.key.get()
+    },
+    getEventStr: function () {
+      return this.contentContainerDom.get().html();
     }
   };
 
@@ -614,23 +623,23 @@ EditEvent = (function() {
    */
 
   /* data struction
-  [
-    {
-      id: String,
-      type: String,
-      label: String,
-      placeholder: String,
-      options: [
-        {
-          id: String,
-          formId: String,
-          label: String,
-          placeholder: String
-        },
-      ]
-    },
-  ]
-  */
+   [
+   {
+   id: String,
+   type: String,
+   label: String,
+   placeholder: String,
+   options: [
+   {
+   id: String,
+   formId: String,
+   label: String,
+   placeholder: String
+   },
+   ]
+   },
+   ]
+   */
   var eventSignForm = {
     formTypes: {
       'ESF_SINGLE_TEXT': {
@@ -695,7 +704,7 @@ EditEvent = (function() {
           type: form.type === 'ESF_SELECT_CHECKBOX' ? [String] : String
         };
         var options = [],
-            idx = -1;
+          idx = -1;
         if (form.type === 'ESF_SELECT_RADIO' || form.type === 'ESF_SELECT_CHECKBOX') {
           options = form.options.map(function(option) {
             idx += 1;
@@ -715,11 +724,11 @@ EditEvent = (function() {
             break;
           case 'ESF_SELECT_RADIO':
             tempForm.autoform = {
-                type: "select-radio",
-                options: function () {
-                  return options;
-                }
+              type: "select-radio",
+              options: function () {
+                return options;
               }
+            }
             break;
           case 'ESF_SELECT_CHECKBOX':
             tempForm.autoform = {
@@ -875,12 +884,12 @@ EditEvent = (function() {
     if(!eventInfo.theme) {
       errorInfo = '请选择活动主题';return errorInfo;
     }
-    if(!eventInfo.tags || eventInfo.tags.length === 0) {
-      errorInfo = '请输入活动标签';return errorInfo;
+    if(!eventGroups.getSelectdGroup) {
+      errorInfo = "请选择俱乐部"; return errorInfo;
     }
-    //if(!eventInfo.desc) {
-    //  errorInfo = '请填写活动详情';return errorInfo;
-    //}
+    if(!eventInfo.desc) {
+      errorInfo = '请填写活动详情';return errorInfo;
+    }
     if (eventTime.getStartDateInISO() > eventTime.getEndDateInISO()) {
       errorInfo = '活动开始时间应该先于活动结束时间';
       return errorInfo;
@@ -898,9 +907,8 @@ EditEvent = (function() {
       id: Meteor.userId(),
       club: eventGroups.getSelectdGroup()
     };
-    console.log(eventGroups.getSelectdGroup());
-
     var eid = FlowRouter.getParam('eid');
+
 
     //eventDesc.uploadToQiniu(eid);
     var eventInfo = {
@@ -924,19 +932,29 @@ EditEvent = (function() {
       tags: eventTags.getTags(),
       author: author,
       private: eventPrivate.getPrivateStatus(),
-      desc: eventDesc.getKey(),
+      desc: eventDesc.getContent(),
       signForm: eventSignForm.getForms()
     };
 
-    var errMessage = validEventInfo(eventInfo);
+    eventDesc.uploadToQiniu(eid);
+
+    var errMessage;
+    Meteor.defer(function () {
+      errMessage = validEventInfo(eventInfo);
+    });
+
     if (errMessage) {
       alert(errMessage);
-      $('.previewEventInfo').button('reset');
+      $('.previewEventInfo').attr("disabled", false).text("预览");
       return;
     }
     Meteor.call('event.save', eventInfo, function(err, res) {
       if (!err && 0 === res.code) {
-        eventDesc.uploadToQiniu(eid);
+        if ($("#publishEvent")) {
+          $("#publishEvent").attr("disabled", false).text("立即发布");
+        } else if ($("#publish-event")) {
+          $("#publish-event").attr("disabled", false).text("立即发布");
+        }
         successCallback && successCallback();
       }
     });
@@ -971,14 +989,15 @@ EditEvent = (function() {
     eventTitle.init('');
     var d = FlowRouter.getQueryParam('time') ? new Date(FlowRouter.getQueryParam('time')) : new Date();
     eventTime.init('start-date', 'end-date', d, d, 30);
-    eventLocation.init('上海', '');
-    eventPrivate.init(false);
+    eventLocation.init('', '');
+    eventPrivate.init(true);      // 默认是内部活动。
     eventMemberLimit.init(0);
     eventTheme.init('创业');
     eventTags.init([]);
     eventDesc.init('event-desc', '');
     eventSignForm.init([]);
     eventGroups.init();
+    eventPoster.init("/event-create-poster-holder.png");
   };
 
   var InitWithData = function(eventInfo) {

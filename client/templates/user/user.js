@@ -5,6 +5,9 @@
 var singleEvent = new ReactiveVar(null);    //  初始化, 用来存储findOne得到的值。
 var hasEvents = new ReactiveVar(false);
 
+var viewTimeoutId,
+  destoryTimeoutId;
+
 function setSingleEvent(event) {            // 在 reactive data set之前，先刷新 scroll-spy.
   Tracker.afterFlush(function () {
     $(document.body).scrollspy("refresh");
@@ -38,21 +41,27 @@ Template.user.onCreated(function () {
         var startTimeDiff = startTime.diff(now);
         if (startTimeDiff <= 24 * 3600 * 1000) {
           if (startTimeDiff <= 3600 * 1000) {
-            var tId = Meteor.setTimeout(function () {
+            destoryTimeoutId = Meteor.setTimeout(function () {
               setSingleEvent(null);
-              Meteor.clearTimeout(tId);
+              Meteor.clearTimeout(destoryTimeoutId);
             }, endTime.diff(now));
             setSingleEvent(event);
           } else {
-            var timeoutId = Meteor.setTimeout(function () {
+            viewTimeoutId = Meteor.setTimeout(function () {
               setSingleEvent(event);
-              Meteor.clearTimeout(timeoutId);
+              Meteor.clearTimeout(viewTimeoutId);
             }, startTimeDiff - 3600 * 1000);
           }
         }
       }
     }
   });
+});
+
+Template.user.onDestroyed(function () {
+  // 销毁全局的东西。
+  Meteor.clearTimeout(destoryTimeoutId);
+  Meteor.clearTimeout(viewTimeoutId);
 });
 
 Template.user.onRendered(function () {
