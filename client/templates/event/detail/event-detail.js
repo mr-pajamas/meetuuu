@@ -87,7 +87,12 @@ Template.eventDetail.helpers({
     return Session.get("eventPosterData") ? true : false;
   },
   "previewPoster": function () {
-    return Session.get("eventPosterData");
+    var poster = Session.get("eventPosterData");
+    if (poster === 1) {
+      return this.poster ? this.poster : "/event-create-poster-holder.png";
+    } else {
+      return poster;
+    }
   },
   "eventDetailDesc": function () {
     HTTP.get('http://7xjl8x.com1.z0.glb.clouddn.com/' + this.desc, function(err, res) {
@@ -203,13 +208,23 @@ Template.eventDetail.events({
     var target = e.currentTarget;
 
     $(target).attr("disabled", true).text("活动发布中...");
-    EditEvent.eventPoster.setKey(Session.get("eventPosterData"));
-    EditEvent.saveEvent();
 
-    var eid = FlowRouter.getParam('eid');
+    EditEvent.eventPoster.setKey(Session.get("eventPosterData"));
+
+    var eid = FlowRouter.getParam("eid");
+
+    //  只是上传海报。
+    Meteor.defer(function () {
+      Meteor.call("updatePoster", new Mongo.ObjectID(eid), Session.get("eventPosterData"), function (err) {
+        if (err) {
+          console.log("upload poster faield in event detail page.");
+        }
+      });
+    });
+
     Meteor.call('setEventStatus', new Mongo.ObjectID(eid), '已发布', function(err, res) {
       if (!err && res.code === 0) {
-        // TODO:  这个地方需要修改，因为本来就在详情页面，没必要再go, 这个是暂时的方案，需要@ChenKai 协助修改。
+        // TODO:  这个地方需要修改，因为本来就在详情页面，没必要再go, 这个是暂时的方案。
         FlowRouter.go("/event/detail/" + eid);
         //FlowRouter.go('eventManage', {'eid': eid});
       }

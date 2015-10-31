@@ -18,8 +18,9 @@ Template.editEvent.onCreated(function () {
   var self = this;
   // 在路径名字后面添加 event Id
   if (!FlowRouter.getParam('eid')) {
-    FlowRouter.setParams({'eid': new Mongo.ObjectID()._str});
+    //FlowRouter.setParams({'eid': new Mongo.ObjectID()._str});
     EditEvent.pureInit();
+    isInitFinished.set(true);
   } else {
     self.autorun(function() {
       var eid = new Mongo.ObjectID(FlowRouter.getParam('eid'));
@@ -57,6 +58,7 @@ Template.editEvent.onRendered(function() {
   this.autorun(function () {
     if(isInitFinished.get()) {
       Meteor.typeahead.inject();
+      $("#event-desc").wysiwyg();
     }
   });
 
@@ -138,8 +140,12 @@ Template.editEvent.helpers({
   eventTitle: function() {
     return EditEvent.eventTitle.getTitle();
   },
+  hasPoster: function () {
+    return isInitFinished.get() ? true : false;
+  },
   poster: function () {
-    return isInitFinished.get() ? EditEvent.eventPoster.getKey() : false;
+    var posterUrl = EditEvent.eventPoster.getKey();
+    return posterUrl ? posterUrl : "/event-create-poster-holder.png";
   },
   // 加入的俱乐部，且具有创建活动的权利
   groupsWithRight: function() {
@@ -156,7 +162,9 @@ Template.editEvent.helpers({
     //    })
     //  }
     //});
-    return EditEvent.eventGroups.getGroups();
+    if (isInitFinished.get()) {
+      return EditEvent.eventGroups.getGroups();
+    }
   },
   // 活动开始日期
   startDate: function() {
@@ -189,7 +197,15 @@ Template.editEvent.helpers({
     if (!Session.get("eventGroupId")) {
       var defaultCity;
       var gid = FlowRouter.getQueryParam("gid");
-      defaultCity = gid ? MyGroups.findOne({_id: gid}).homeCity : MyGroups.findOne().homeCity;
+      var eid = FlowRouter.getParam("eid");
+      if (!eid && gid) {
+        defaultCity = MyGroups.findOne({_id: gid}).homeCity;
+      } else if (eid) {
+        var tempGid = Events.findOne({_id: new Mongo.ObjectID(eid)}).author.club.id;
+        defaultCity = MyGroups.findOne({_id: tempGid}).homeCity;
+      } else {
+        defaultCity =  MyGroups.findOne().homeCity;
+      }
       Session.set("selectedCity", defaultCity);
       return defaultCity;
     } else {
@@ -284,8 +300,11 @@ var getFormValues = function () {
     return;
   } else {
     Session.set("validateEventInfo", true);
-    if (!FlowRouter.getQueryParam("gid")) {
+    var gid = FlowRouter.getQueryParam("gid");
+    if (!gid) {
       EditEvent.eventGroups.changeSelectedGroup(eventGroup);
+    } else {
+      EditEvent.eventGroups.changeSelectedGroup(gid);
     }
   }
 
@@ -366,6 +385,16 @@ var getFormValues = function () {
     Session.set("validateEventInfo", true);
   }
 
+  //  活动描述是必填的
+  var eventDesc = $("#event-desc").text().trim();
+  if (!eventDesc.length) {
+    alert("请填写活动详细信息。");
+    Session.set("validateEventInfo", false);
+    return;
+  } else {
+    EditEvent.eventDesc.setContent("event-desc");
+    Session.set("validateEventInfo", true);
+  }
 };
 
 
@@ -373,6 +402,7 @@ var getFormValues = function () {
 Template.editEvent.events({
   //  俱乐部选择
   "change .event-group-select": function (e) {
+    console.log("change event from group select");
     Session.set("eventGroupId", $(e.currentTarget).val());
     Session.set("selectedCity", MyGroups.findOne({_id: Session.get("eventGroupId")}).homeCity);
   },
@@ -483,7 +513,11 @@ Template.editEvent.events({
       EditEvent.eventSignForm.setPreviewForm();
 
       var croppedImg = $(".event-poster").find(".img-upload").imgUpload("crop");
-      Session.setDefault("eventPosterData", croppedImg);
+      if (croppedImg) {
+        Session.setDefault("eventPosterData", croppedImg);
+      } else {
+        Session.set("eventPosterData", 1);
+      }
       EditEvent.previewEvent();
     }
   }

@@ -1,4 +1,18 @@
 EditEvent = (function() {
+
+  var initEventId = {
+    eid: 0,
+    setEventId: function () {
+      if (FlowRouter.getParam("eid")) {
+        this.eid = new Mongo.ObjectID(FlowRouter.getParam("eid"));
+      } else {
+        this.eid = new Mongo.ObjectID();
+      }
+    },
+    getEventId: function () {
+      return this.eid;
+    }
+  };
   /**
    * event title
    */
@@ -208,6 +222,7 @@ EditEvent = (function() {
       Tracker.autorun(function() {
         var groups = [];
         MyGroups.find().map(function(group) {
+          console.log("event group information");
           if (Roles.userIsInRole(Meteor.userId(), ['create-event', 'create-open-event'], 'g'+ group._id)) {
             var temp = {
               attr: {
@@ -248,16 +263,23 @@ EditEvent = (function() {
     },
     changeSelectedGroup: function(gid) {
       var newSelectedGroup;
-      this.groupOptions.get().forEach(function(group) {
-        if (group.attr['data-gid'] === gid) {
-          newSelectedGroup = {
-            name: group.name,
-            id: gid,
-            path: group.path
-          }
-        }
-      });
+      var group = MyGroups.findOne({_id: gid});
+      newSelectedGroup = {
+        name: group.name,
+        id: gid,
+        path: group.path
+      };
       this.selectedGroup.set(newSelectedGroup);
+      /*this.groupOptions.get().forEach(function(group) {
+       if (group.attr['data-gid'] === gid) {
+       newSelectedGroup = {
+       name: group.name,
+       id: gid,
+       path: group.path
+       }
+       }
+       });
+       this.selectedGroup.set(newSelectedGroup);*/
     }
   };
 
@@ -575,14 +597,16 @@ EditEvent = (function() {
     inited: false,
     init: function(contentContainerId, key) {
       this.contentContainerDom.set($('#' + contentContainerId));
-      this.contentContainerDom.get().wysiwyg();
+      this.contentContainerDom.get();
       this.initKey = key;
       this.key.set(key);
       this.getInitContent();
       this.inited = true;
     },
+    setContent: function (contentContainerId) {
+      this.contentContainerDom.set($('#' + contentContainerId));
+    },
     uploadToQiniu: function(eventId) {
-      console.log(this.getContent());
       var self = this;
       var eventDesc = this.contentContainerDom.get().html();
       var originKey = self.initKey;
@@ -590,8 +614,12 @@ EditEvent = (function() {
       Meteor.call('sendRichTextInBase64', originKey, eventDesc, function(err, res) {
         if (!err && res.code === 0) {
           self.key.set(res.key);
+          console.log("response key: " + res.key);
+          console.log("eventId " + eventId);
           Meteor.call('updateEventDesc', eventId, res.key);
           console.log('活动详情上传成功');
+        } else {
+          console.log("error  " + err);
         }
       });
     },
@@ -612,9 +640,6 @@ EditEvent = (function() {
     },
     getKey: function() {
       return this.key.get()
-    },
-    getEventStr: function () {
-      return this.contentContainerDom.get().html();
     }
   };
 
@@ -856,7 +881,7 @@ EditEvent = (function() {
 
 
   /**
-   * 验证信息
+   * 验证信息   目前这个验证我没有用到，放在了edit-event.js　里面。
    */
   var validEventInfo = function(eventInfo) {
     var errorInfo = '';
@@ -887,9 +912,6 @@ EditEvent = (function() {
     if(!eventGroups.getSelectdGroup) {
       errorInfo = "请选择俱乐部"; return errorInfo;
     }
-    if(!eventInfo.desc) {
-      errorInfo = '请填写活动详情';return errorInfo;
-    }
     if (eventTime.getStartDateInISO() > eventTime.getEndDateInISO()) {
       errorInfo = '活动开始时间应该先于活动结束时间';
       return errorInfo;
@@ -907,12 +929,12 @@ EditEvent = (function() {
       id: Meteor.userId(),
       club: eventGroups.getSelectdGroup()
     };
-    var eid = FlowRouter.getParam('eid');
 
+    var eid = initEventId.getEventId();
 
     //eventDesc.uploadToQiniu(eid);
     var eventInfo = {
-      _id: new Mongo.ObjectID(eid),
+      _id: eid,
       title: eventTitle.getTitle(),
       time: {
         start: eventTime.getStartDateInISO(),
@@ -926,7 +948,6 @@ EditEvent = (function() {
         lng: 2.22
       },
       status: eventStatus || '未发布',
-      poster: eventPoster.getKey(),
       member: eventMemberLimit.getCount(),
       theme: eventTheme.getSelectedTheme(),
       tags: eventTags.getTags(),
@@ -936,25 +957,23 @@ EditEvent = (function() {
       signForm: eventSignForm.getForms()
     };
 
-    eventDesc.uploadToQiniu(eid);
+    var posterKey = eventPoster.getKey();
 
-    var errMessage;
-    Meteor.defer(function () {
-      errMessage = validEventInfo(eventInfo);
-    });
-
-    if (errMessage) {
-      alert(errMessage);
-      $('.previewEventInfo').attr("disabled", false).text("预览");
-      return;
+    if(posterKey) {
+      // 必须是data url 或者是占位符图片才能够存储。
+      if (posterKey.startsWith("data:")) {
+        eventInfo.poster = eventPoster.getKey();
+      }
     }
+
+    console.log("eventId from lib-edit.js  " + eid);
+    console.log("eventId str " + eid._str);
+    eventDesc.uploadToQiniu(eid._str);
+
     Meteor.call('event.save', eventInfo, function(err, res) {
       if (!err && 0 === res.code) {
-        if ($("#publishEvent")) {
-          $("#publishEvent").attr("disabled", false).text("立即发布");
-        } else if ($("#publish-event")) {
-          $("#publish-event").attr("disabled", false).text("立即发布");
-        }
+        $('.previewEventInfo').attr("disabled", false).text("预览");
+        $("#publishEvent").attr("disabled", false).text("立即发布");
         successCallback && successCallback();
       }
     });
@@ -965,7 +984,7 @@ EditEvent = (function() {
    */
   var saveEvent = function() {
     var alertSuccess = function() {
-      var eid = FlowRouter.getParam('eid');
+      var eid = initEventId.getEventId();
       //created by Chen Yuan, 打开活动详情页面到当前页面，用FlowRouter.go()
       FlowRouter.go("/event/detail/" + eid);
     };
@@ -977,15 +996,15 @@ EditEvent = (function() {
    */
   var previewEvent = function() {
     var goToDetailPage = function() {
-      var eid = FlowRouter.getParam('eid');
+      var eid = initEventId.getEventId();
       FlowRouter.go("/event/detail/" + eid + "?preview=true");
       //window.open('/event/detail/' + eid + '?preview=true');
-      $('.previewEventInfo').button('reset');
     };
     __saveEvent(goToDetailPage);
   };
 
   var pureInit = function() {
+    initEventId.setEventId();
     eventTitle.init('');
     var d = FlowRouter.getQueryParam('time') ? new Date(FlowRouter.getQueryParam('time')) : new Date();
     eventTime.init('start-date', 'end-date', d, d, 30);
@@ -1001,6 +1020,7 @@ EditEvent = (function() {
   };
 
   var InitWithData = function(eventInfo) {
+    initEventId.setEventId();
     EditEvent.eventTitle.init(eventInfo.title);
     EditEvent.eventTime.init('start-date', 'end-date', eventInfo.time.start, eventInfo.time.end, 30);
     EditEvent.eventLocation.init(eventInfo.location.city, eventInfo.location.address);
@@ -1015,6 +1035,7 @@ EditEvent = (function() {
   };
 
   return {
+    initEventId       : initEventId,
     eventTitle        : eventTitle,
     eventTime         : eventTime,
     eventLocation     : eventLocation,
