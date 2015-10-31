@@ -2,7 +2,7 @@
   <div class="timeline-body timeline-body-media-layout">
     <div class="media">
       <div class="media-left">
-        <a href="#"><img src="/images/default-avatar.png" class="img-responsive"></a>
+        <a href="{{pathFor 'user' userId=user._id}}"><img src="{{avatarOrDefault user.profile.avatar}}" class="img-responsive"></a>
       </div>
       <div class="media-body">
         {{> Template.contentBlock}}

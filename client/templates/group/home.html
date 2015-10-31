@@ -27,9 +27,7 @@
 
         {{#with owner}}
           <section class="thumbnail group-organizer hidden-sm hidden-xs">
-            {{#with ownerUser}}
-              <img src="{{avatarOrDefault}}" class="img-circle">
-            {{/with}}
+            <img src="{{avatarOrDefault ownerUser.profile.avatar}}" class="img-circle">
             <div class="caption">
               <p class="lead text-center">{{nickname}}</p>
               <h4 class="text-muted text-center">{{roleName}}</h4>
