@@ -143,6 +143,18 @@ Template.eventDetail.helpers({
   // 判断当前用户是否已经报名
   'isJoined': function() {
     return JoinForm.findOne();
+  },
+  'joinStatus':function() {
+    if(JoinForm.findOne()) {
+      if(JoinForm.findOne().status === "禁止报名") {
+        return "禁止报名";
+      } else {
+        return "已报名";
+      }
+
+    } else {
+      return "我要报名";
+    }
   }
 });
 

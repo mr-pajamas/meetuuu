@@ -17,5 +17,5 @@ Meteor.publishComposite("eventSignInfos", function (eid) {
 Meteor.publish('userJoinedEvent', function(eid, uid) {
   check(eid, String);
   check(uid, String);
-  return JoinForm.find({'eventId': eid, 'userId': uid}, {fields: {'_id': 1}});
+  return JoinForm.find({'eventId': eid, 'userId': uid}, {fields: {'_id': 1, status: 1}});
 });

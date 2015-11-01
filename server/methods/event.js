@@ -37,11 +37,33 @@ Meteor.methods({
     check(eid, String);
     Events.update({_id: new Mongo.ObjectID(eid)}, {'$inc': {'readCount': 1}});
   },
-  'setEventStatus': function(eid, status) {
+  'setEventStatus': function(eid, status, groupId, privateStatus) {
     check(eid, Mongo.ObjectID);
     check(status, String);
-    var cnt = Events.update(eid, {$set: {status: status}});
-    return {code: cnt === 1 ? 0 : 1};
+    check(groupId, String);
+    check(privateStatus, Boolean);
+    //console.log(groupId);
+    var cnt;
+    if(!Meteor.userId()) return ;
+    var myGroup = Memberships.findOne({userId: Meteor.userId(), groupId: groupId, status: "joined"});
+    //如果在该分组中
+    if(myGroup) {
+      if(myGroup.role === "owner") {
+        console.log(Meteor.userId());
+        cnt = Events.update(eid, {$set: {status: status}});
+        return {code: cnt === 1 ? 0 : 1};
+      } else if(Roles.userIsInRole(Meteor.userId(), ['cancel-event'], groupId)) {
+        //如果不具有公开活动的权限而是操作公开活动
+        if(!Roles.userIsInRole(Meteor.userId(), ['create-open-event'], 'g'+ groupId) && !privateStatus) {
+          return ;
+        } else {
+          cnt = Events.update(eid, {$set: {status: status}});
+          return {code: cnt === 1 ? 0 : 1};
+      }
+      }
+    } else {
+      return ;
+    }
   },
   "updatePoster": function (eid, datauri) {
     if (datauri && datauri.startsWith("data:")) {

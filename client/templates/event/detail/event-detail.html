@@ -89,7 +89,6 @@
               {{> eventComment}}
             </section>
           </div>
-
           <!-- Modal -->
           <div class="modal fade" id="joinEventFormModal" tabindex="-1" role="dialog" aria-labelledby="joinEventForm">
             <div class="modal-dialog" role="document">
@@ -128,10 +127,10 @@
               <li role="presentation"><a class="event-sidebar-scroll" href="#comment">留言</a></li>
               <!-- 判断用户是否已经报名 -->
               {{#if isJoined}}
-                <li id="nav-join" class="hidden-xs"><a href="">已报名</a></li>
-              {{else}}
-                <li id="nav-join" class="hidden-xs"><a href="" data-toggle="modal" data-target="#joinEventFormModal">{{optionSignFormTips}}</a></li>
-              {{/if}}
+                <li id="nav-join" class="hidden-xs"><a href="" >{{joinStatus}}</a></li>
+                {{else}}
+              <li id="nav-join" class="hidden-xs"><a href=""   data-toggle="modal"  data-target="#joinEventFormModal">{{joinStatus}}</a></li>
+                {{/if}}
             </ul>
           </div>
         </div>

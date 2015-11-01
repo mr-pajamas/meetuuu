@@ -46,17 +46,61 @@ Template.registerHelper('formatTimeMDHHmm', function(time) {
 
 
 Template.eventManage.helpers({
-  // 判断当前用户是否有权限查看俱乐部管理页面
-  'hasNoViewRight': function() {
-    if (!Meteor.userId()) {
-      return true;
+  authEdit: function() {
+    var findEID = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
+    var groupId = findEID.author.club.id;
+    var membership = Memberships.findOne({userId: Meteor.userId(), groupId: groupId});
+    if(membership.role === "owner") {
+      return {};
+    } else if (Roles.userIsInRole(Meteor.userId(), ['modify-event'], 'g'+ groupId)) {
+      console.log(Roles.userIsInRole(Meteor.userId(), ['modify-event'], 'g'+ groupId));
+      return {};
+    } else {
+      return "disabled";
     }
-    var event = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
-    var path = event && 'g' + event.author.club.id;
-    if (Roles.userIsInRole(Meteor.userId(), ['create-event', 'create-open-event'], path)) {
+  },
+  authLogin: function() {
+    if(Meteor.userId()) {
+      return true;
+    } else {
       return false;
     }
-    return true;
+  },
+  // 判断当前用户是否有权限查看俱乐部管理页面
+  'hasViewRight': function() {
+    var findEID = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
+    var myGroup =MyGroups.find().fetch();
+    var groupId = findEID.author.club.id;
+    console.log(groupId);
+    var privateStatus = findEID.private;
+    if(myGroup) {
+      //如果有聚乐部
+      var getMyGroupId = MyGroups.findOne({_id: groupId});
+      console.log(getMyGroupId);
+      //如果我在该分组
+      if(getMyGroupId) {
+        var membership = Memberships.findOne({userId: Meteor.userId(), groupId: groupId});
+        if(membership.role === "owner") {
+          return true;
+          //是不是具有发帖权限
+        } else if(Roles.userIsInRole(Meteor.userId(), ['create-event'], 'g'+ groupId)) {
+          //console.log("权限"+Roles.userIsInRole(Meteor.userId(), ['create-open-event'], 'g'+ groupId)+"活动状态"+privateStatus);
+          if(!Roles.userIsInRole(Meteor.userId(), ['create-open-event'], 'g'+ groupId) && !privateStatus) {
+            return false;
+          } else {
+            return true;
+          }
+        } else {
+          return false;
+        }
+      } else {
+        alert("you are not in this group");
+        return false;
+      }
+    } else {
+      alert("no group find");
+      return false;
+    }
   },
   'eventInfo': function() {
     return Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
@@ -72,7 +116,7 @@ Template.eventManage.helpers({
     return EventComments.find({'eventId': FlowRouter.getParam('eid')}).count();
   },
   'eventSignFormCount': function() {
-    return JoinForm.find({'eventId': FlowRouter.getParam('eid')}).count();
+    return JoinForm.find({eventId: FlowRouter.getParam('eid'), status:{$ne:"禁止报名"}}).count()
   },
   'eventWatched': function() {
     return UserSavedEvents.find().count();
@@ -96,7 +140,8 @@ Template.eventManage.events({
   "click .refuse": function (e) {
     var event = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
     var path = event && 'g' + event.author.club.id;
-    if (!Roles.userIsInRole(Meteor.userId(), ['deny-entry'], path)) {
+    var membership = Memberships.findOne({userId: Meteor.userId(), groupId: event.author.club.id});
+    if (!Roles.userIsInRole(Meteor.userId(), ['deny-entry'], path) && !(membership.role === "owner")) {
       alert('您无权拒绝报名');
       return false;
     }
@@ -127,12 +172,14 @@ Template.eventManage.events({
     }
     var event = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
     var path = event && 'g' + event.author.club.id;
-    if (!Roles.userIsInRole(Meteor.userId(), ['cancel-event'], path)) {
+    var membership = Memberships.findOne({userId: Meteor.userId(), groupId: event.author.club.id});
+    if (!Roles.userIsInRole(Meteor.userId(), ['cancel-event'], path) && !(membership.role === "owner")) {
       alert('您无权限取消活动');
       return false;
     }
     var eid = FlowRouter.getParam('eid');
-    Meteor.call('setEventStatus', new Mongo.ObjectID(eid), '未发布');
+    console.log(event);
+    Meteor.call('setEventStatus', new Mongo.ObjectID(eid), '未发布', event.author.club.id, event.private);
   },
   'click #event-publish': function() {
     if (!Meteor.userId()) {
@@ -140,7 +187,18 @@ Template.eventManage.events({
       return;
     }
     var eid = FlowRouter.getParam('eid');
-    Meteor.call('setEventStatus', new Mongo.ObjectID(eid), '已发布');
+    var event = Events.findOne({_id: new Mongo.ObjectID(eid)});
+    //console.log(event);
+    Meteor.call('setEventStatus', new Mongo.ObjectID(eid), '已发布',event.author.club.id, event.private);
+  },
+  'change #refuse-forever': function() {
+    var event = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
+        var path = event && 'g' + event.author.club.id;
+        var membership = Memberships.findOne({userId: Meteor.userId(), groupId: event.author.club.id});
+    console.log(Roles.userIsInRole(Meteor.userId(), ['block-entry'], path));
+        if (!Roles.userIsInRole(Meteor.userId(), ['block-entry'], path) && !(membership.role === "owner")) {
+          alert('您无权永久拒绝该报名');
+        }
   },
 
   "click #denySignRequest": function() {
@@ -149,27 +207,35 @@ Template.eventManage.events({
     var refuseForever = $('#refuse-forever').prop("checked");
     var event = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
     var path = event && 'g' + event.author.club.id;
+    var groupId = event.author.club.id;
+    var private = event.private;
+    var membership = Memberships.findOne({userId: Meteor.userId(), groupId: event.author.club.id});
+    var eid = new Mongo.ObjectID(FlowRouter.getParam('eid'))
     if (refuseForever) {
-      if (!Roles.userIsInRole(Meteor.userId(), ['block-entry'], path)) {
+      if (!Roles.userIsInRole(Meteor.userId(), ['block-entry'], path) && !(membership.role === "owner")) {
         alert('您无权限封禁保密');
-        return;
+        return false;
       }
     }
 
     var denyInfo = {
       id: id,
       result: denyResult,
-      forever: refuseForever
+      forever: refuseForever,
+      eid: eid,
+      groupId: groupId,
+      private: private
     };
     Meteor.call('denySignRequest', denyInfo, function(err, res) {
+      console.log(res.code);
       if (!err && res.code === 0) {
-        console.log('已经拒绝报名');
-        $("#refuse-reason-form").val('');
-        $('#refuse-forever').attr("checked", false);
-        $("#refuseModal").modal('hide');
+        alert('拒绝成功');
       } else {
         alert('拒绝时出错');
       }
+      $("#refuse-reason-form").val('');
+      $('#refuse-forever').attr("checked", false);
+      $("#refuseModal").modal('hide');
     });
   }
 });
@@ -177,7 +243,26 @@ Template.eventManage.events({
 //  返回参加用户的头像.
 
 Template.joinForm.helpers({
+  authRefuse: function() {
+    var findEID = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
+    var groupId = findEID.author.club.id;
+    var membership = Memberships.findOne({userId: Meteor.userId(), groupId: groupId});
+    if(membership.role === "owner") {
+      return {};
+    } else if (Roles.userIsInRole(Meteor.userId(), ['deny-entry'], 'g'+ groupId)) {
+      return {};
+    } else {
+      return "disabled";
+    }
+  },
   "joinedUserAvatar": function () {
     return Meteor.users.findOne({_id: this.userId});
+  },
+  isRefuse: function() {
+    if(this.status === "禁止报名") {
+      return true;
+    } else {
+      return false;
+    }
   }
 });

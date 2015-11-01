@@ -82,8 +82,8 @@ EditEvent = (function() {
         todayHighlight: true
       };
       var self = this,
-        $startDatePickerDom = $('#' + startDomId),
-        $endDatePickerDom = $('#' + endDomId);
+          $startDatePickerDom = $('#' + startDomId),
+          $endDatePickerDom = $('#' + endDomId);
       $startDatePickerDom.datepicker(datepickerOptions)
         .on('changeDate', function(e) {
           var startDate = $startDatePickerDom.datepicker('getDate');
@@ -100,22 +100,22 @@ EditEvent = (function() {
     setOptions: function(startISOTime, endISOTime, stepByMinute) {
       var loopCount = this.minuteInOneDay / stepByMinute;
       var index,
-        startOptions = [],
-        endOptions = [];
+          startOptions = [],
+          endOptions = [];
       var start_ms = moment(startISOTime).get('hour') * 60 + moment(startISOTime).get('minute'),
-        end_ms = moment(endISOTime).get('hour') * 60 + moment(endISOTime).get('minute');
+          end_ms = moment(endISOTime).get('hour') * 60 + moment(endISOTime).get('minute');
       for (index = 0; index < loopCount; index++) {
         var currentMinutes = stepByMinute * (index + 1),
-          hourNum = Math.floor(currentMinutes / 60),
-          hourStr = hourNum < 10 ? '0' + hourNum : hourNum.toString(),
-          minuteNum = currentMinutes - hourNum * 60,
-          minuteStr = minuteNum < 10 ? '0' + minuteNum.toString() : minuteNum.toString(),
-          content = hourStr + ':' + minuteStr,
-          startAttr = {index: index},
-          endAttr = {index: index};
+            hourNum = Math.floor(currentMinutes / 60),
+            hourStr = hourNum < 10 ? '0' + hourNum : hourNum.toString(),
+            minuteNum = currentMinutes - hourNum * 60,
+            minuteStr = minuteNum < 10 ? '0' + minuteNum.toString() : minuteNum.toString(),
+            content = hourStr + ':' + minuteStr,
+            startAttr = {index: index},
+            endAttr = {index: index};
 
         start_ms === currentMinutes ? startAttr.selected = true : false,
-          end_ms === currentMinutes ? endAttr.selected = true : false;
+        end_ms === currentMinutes ? endAttr.selected = true : false;
 
         startOptions.push({
           attr: startAttr,
@@ -140,10 +140,10 @@ EditEvent = (function() {
     // input: '17:30', return second
     timeTrans: function timeTrans(tstr) {
       var tt = tstr.split(':'),
-        h = Number(tt[0]),
-        m = Number(tt[1]),
-        totalMinute = h * 60 + m,
-        totalSecond = totalMinute * 60;
+          h = Number(tt[0]),
+          m = Number(tt[1]),
+          totalMinute = h * 60 + m,
+          totalSecond = totalMinute * 60;
       return totalSecond;
     },
     setStartTime: function(time_str) {
@@ -222,8 +222,8 @@ EditEvent = (function() {
       Tracker.autorun(function() {
         var groups = [];
         MyGroups.find().map(function(group) {
-          console.log("event group information");
-          if (Roles.userIsInRole(Meteor.userId(), ['create-event', 'create-open-event'], 'g'+ group._id)) {
+          var membership = Memberships.findOne({userId: Meteor.userId(), groupId: group._id});
+          if (Roles.userIsInRole(Meteor.userId(), ['create-event'], 'g'+ group._id) || membership.role === "owner") {
             var temp = {
               attr: {
                 'data-gid': group._id,
@@ -245,6 +245,7 @@ EditEvent = (function() {
           }
         });
         if (!self.selectedGroup.get()) {
+          console.log(groups);
           self.selectedGroup.set({
             name: groups[0] && groups[0].name,
             id: groups[0] && groups[0].attr['data-gid'],
@@ -271,14 +272,14 @@ EditEvent = (function() {
       };
       this.selectedGroup.set(newSelectedGroup);
       /*this.groupOptions.get().forEach(function(group) {
-       if (group.attr['data-gid'] === gid) {
-       newSelectedGroup = {
-       name: group.name,
+        if (group.attr['data-gid'] === gid) {
+          newSelectedGroup = {
+            name: group.name,
        id: gid,
        path: group.path
-       }
-       }
-       });
+          }
+        }
+      });
        this.selectedGroup.set(newSelectedGroup);*/
     }
   };
@@ -388,28 +389,28 @@ EditEvent = (function() {
    * 活动海报信息
    */
   /*
-   *  modified by Chen Yuan.
-   * */
+  *  modified by Chen Yuan.
+  * */
   var eventPoster = {
     key: new ReactiveVar(''),
     inited: false,
     init: function(key) {
       /*key = key || '';
-       this.key.set(key);
-       this.inited = true;
-       // Set options for cropper plugin
-       var $image = $(".image-crop > img");
-       // 设置图片
-       $image.attr('src', key ? 'http://7xjl8x.com1.z0.glb.clouddn.com/' + key : '/event-create-poster-holder.png');
-       $($image).cropper({
-       //aspectRatio: 16 / 9,
-       preview: ".img-preview",
-       strict: true,
-       autoCrop: true,
-       done: function(data) {
-       // 输出裁剪的参数信息
-       }
-       });*/
+      this.key.set(key);
+      this.inited = true;
+      // Set options for cropper plugin
+      var $image = $(".image-crop > img");
+      // 设置图片
+      $image.attr('src', key ? 'http://7xjl8x.com1.z0.glb.clouddn.com/' + key : '/event-create-poster-holder.png');
+      $($image).cropper({
+        //aspectRatio: 16 / 9,
+        preview: ".img-preview",
+        strict: true,
+        autoCrop: true,
+        done: function(data) {
+          // 输出裁剪的参数信息
+        }
+      });*/
 
 
       key = Session.get("eventPosterData") ? Session.get("eventPosterData") : key;
@@ -648,23 +649,23 @@ EditEvent = (function() {
    */
 
   /* data struction
-   [
-   {
-   id: String,
-   type: String,
-   label: String,
-   placeholder: String,
-   options: [
-   {
-   id: String,
-   formId: String,
-   label: String,
-   placeholder: String
-   },
-   ]
-   },
-   ]
-   */
+  [
+    {
+      id: String,
+      type: String,
+      label: String,
+      placeholder: String,
+      options: [
+        {
+          id: String,
+          formId: String,
+          label: String,
+          placeholder: String
+        },
+      ]
+    },
+  ]
+  */
   var eventSignForm = {
     formTypes: {
       'ESF_SINGLE_TEXT': {
@@ -729,7 +730,7 @@ EditEvent = (function() {
           type: form.type === 'ESF_SELECT_CHECKBOX' ? [String] : String
         };
         var options = [],
-          idx = -1;
+            idx = -1;
         if (form.type === 'ESF_SELECT_RADIO' || form.type === 'ESF_SELECT_CHECKBOX') {
           options = form.options.map(function(option) {
             idx += 1;
@@ -749,11 +750,11 @@ EditEvent = (function() {
             break;
           case 'ESF_SELECT_RADIO':
             tempForm.autoform = {
-              type: "select-radio",
-              options: function () {
-                return options;
+                type: "select-radio",
+                options: function () {
+                  return options;
+                }
               }
-            }
             break;
           case 'ESF_SELECT_CHECKBOX':
             tempForm.autoform = {

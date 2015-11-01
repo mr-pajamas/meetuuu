@@ -1,10 +1,8 @@
 <template name="eventManage">
   <!-- created by Chen Yuan. on 2015-09-25 -->
   <div class="container event-manage">
-    {{#if hasNoViewRight}}
-      <div class="alert-danger text-center">您没有权限查看此页面</div>
-    {{else}}
-
+    {{#if authLogin}}
+    {{#if hasViewRight}}
       <header class="clearfix">
         <h1 class="pull-left">
           <p>{{eventInfo.title}} <span class="label label-info hidden-xs">{{eventInfo.status}}</span></p>
@@ -13,7 +11,7 @@
         <ul class="list-inline pull-right hidden-xs">
           <li><a href="/event/detail/{{eventInfo._id._str}}" class="btn btn-default event-preview"><span class="fa fa-eye"></span> 查看</a></li>
           <li>
-            <a href="/event/edit/{{eventInfo._id._str}}" class="btn btn-default event-edit"><span class="fa fa-pencil-square-o"> 编辑</span></a>
+            <a href="/event/edit/{{eventInfo._id._str}}" class="btn btn-default event-edit {{authEdit}}"><span class="fa fa-pencil-square-o"> 编辑</span></a>
           </li>
         </ul>
       </header>
@@ -128,6 +126,11 @@
           </div>
         </main>
       </div>
+    {{else}}
+      <div class="alert-danger text-center">您没有权限查看此页面</div>
+    {{/if}}
+      {{else}}
+      <div class="alert-danger text-center">您还没有登陆</div>
     {{/if}}
   </div>
 </template>
@@ -143,10 +146,14 @@
         <div class="phone-number">{{telephone}}</div>
         <div class="join-time text-muted">{{formatTimeMDHHmm createTime}}</div>
         <!-- TODO @cy 修改下这个样式，显示的内容是报名状态 -->
-        <div class="label label-info">{{status}}</div>
+        <!--<div class="label label-info">{{status}}</div>-->
       </div>
-      <button class="btn btn-default refuse pull-right" data-id="{{_id}}">拒绝</button>
-      <button class="btn btn-default accept pull-right" data-id="{{_id}}">通过</button>
+      {{#if isRefuse}}
+        <button disabled class="btn btn-danger pull-right">已拒绝</button>
+        {{else}}
+        <button class="btn btn-default refuse pull-right" {{authRefuse}} data-id="{{_id}}">拒绝</button>
+      {{/if}}
+      <!--<button class="btn btn-default accept pull-right" data-id="{{_id}}">通过</button>-->
     </div>
     <div class="panel-collapse collapse" id="pane{{_id}}">
       <div class="panel-body">

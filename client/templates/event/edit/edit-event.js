@@ -9,7 +9,6 @@ Session.setDefault("validateEventInfo", true);   // 暂时的前端用来验证�
 var isInitFinished = new ReactiveVar(false);
 // 百度地图
 var bdmap = null;
-
 Template.editEvent.onDestroyed(function() {
   // nothing.
 });
@@ -55,12 +54,17 @@ Template.editEvent.onRendered(function() {
   document.body.appendChild(script);
 
   // 自动补全提示
-  this.autorun(function () {
-    if(isInitFinished.get()) {
-      Meteor.typeahead.inject();
-      $("#event-desc").wysiwyg();
-    }
-  });
+  //this.autorun(function () {
+  //  if(isInitFinished.get()) {
+  //Meteor.typeahead.inject();
+  //    console.log($("#event-desc"));
+  //    $("#event-desc").wysiwyg();
+  //  }
+  //});
+  var timeoutId = setTimeout(function () {
+    $("#event-desc").wysiwyg();
+    Meteor.typeahead.inject();
+  }, 100);
 
   // === 上传海报 Begin  可以删除===
   /* var $image = $(".image-crop > img");
@@ -136,6 +140,145 @@ Template.registerHelper('isMultiForm', function(type) {
 
 
 Template.editEvent.helpers({
+  //验证是否登陆
+  postAuthLogin: function() {
+    if(Meteor.userId()) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+  //验证是否具有权限
+  postAuthRole: function() {
+    //选择的聚乐部
+    //console.log(EditEvent.eventGroups.selectedGroup.get());
+    //var membership = Memberships.findOne({userId: Meteor.userId()});
+    var myGroup =MyGroups.find().fetch();
+    var groupId = FlowRouter.getQueryParam("eid");
+    //获取事件ID
+    var eid = new Mongo.ObjectID(FlowRouter.getParam('eid'));
+    var findEID = Events.findOne({_id: eid});
+    //如果获取到聚乐部ID进入编辑权限页面
+    if(findEID) {
+      var groupId = findEID.author.club.id;
+      var privateStatus = findEID.private;
+      //console.log(privateStatus);
+      if(myGroup) {
+        //console.log("ID is"+findEID.author.club.id);
+        //如果有聚乐部
+        var getMyGroupId = MyGroups.findOne({_id: groupId});
+        /*console.log(Meteor.userId());
+         console.log("g"+groupId);
+         console.log(Roles.userIsInRole(Meteor.userId(), ['modify-event'], 'g'+ groupId));*/
+        //如果我在该分组
+        if(getMyGroupId) {
+          var membership = Memberships.findOne({userId: Meteor.userId(), groupId: groupId});
+          if(membership.role === "owner") {
+            return true;
+            //是不是具有发帖权限Meteor.userId(), ['create-event'], 'g'+ groupId) &&
+          } else if(Roles.userIsInRole(Meteor.userId(), ['modify-event'], 'g'+ groupId)) {
+            console.log("权限"+Roles.userIsInRole(Meteor.userId(), ['create-open-event'], 'g'+ groupId)+"活动状态"+privateStatus+"修改权限"+Roles.userIsInRole(Meteor.userId(), ['modify-event'], 'g'+ groupId));
+            if(!Roles.userIsInRole(Meteor.userId(), ['create-open-event'], 'g'+ groupId) && !privateStatus) {
+              return false;
+            } else {
+              return true;
+            }
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      } else {
+        alert("no group find");
+        return false;
+      }
+
+      return true;
+    }
+    else {
+      //如果获取聚乐部ID
+      if(groupId) {
+        //是否有聚乐部
+        if(myGroup) {
+          //如果有聚乐部
+          var getMyGroupId = MyGroups.findOne({_id: groupId});
+          //如果我在该分组
+          if(getMyGroupId) {
+            var membership = Memberships.findOne({userId: Meteor.userId(), groupId: groupId});
+            if(membership && membership.role === "owner") {
+                return true;
+                //是不是具有发帖权限
+              } else if(Roles.userIsInRole(Meteor.userId(), ['create-event'], 'g'+ groupId)) {
+              return true;
+            } else {
+              return false;
+            }
+          } else {
+            alert("you are not in this group");
+            return false;
+          }
+
+        } else {
+          alert("no group find");
+          return false;
+        }
+        //未获取固定聚乐部ID
+      }
+      else {
+        //如果我有聚乐部
+        if(myGroup) {
+          for(var i=0; i<myGroup.length; i++) {
+            var membership = Memberships.findOne({userId: Meteor.userId(), groupId: myGroup[i]._id });
+            if(membership && membership.role === "owner") {
+              return true;
+            } else if(Roles.userIsInRole(Meteor.userId(), ['create-event'], 'g'+ myGroup[i]._id)){
+             // console.log(Roles.userIsInRole(Meteor.userId(), ['create-open-event'], 'g'+ myGroup[i]._id));
+              return true;
+            } else {
+              return false;
+            }
+          }
+        }
+        else {
+          alert("no find group");
+          return false;
+             }
+           }
+         }
+    /* var role1=Roles.userIsInRole(Meteor.userId(), ['create-open-event'],'g'+groupId);
+     var role2=Roles.userIsInRole(Meteor.userId(), ['create-event'],'g'+groupId);
+     console.log(role1+"he"+role2);
+
+     //console.log(membership.role);
+     if(membership.role === "owner" && membership.joinDate) {
+     return true;
+     } else if(Roles.userIsInRole(Meteor.userId(), ['create-open-event'], 'g'+ groupId)) {
+     return true;
+     } else if(Roles.userIsInRole(Meteor.userId(), ['create-event'], 'g'+ groupId)) {
+     return true;
+     } else {
+     return false;
+     }*/
+  },
+  //验证是否可以发布公开消息
+  openEvent: function() {
+    var selectGroup = EditEvent.eventGroups.selectedGroup.get();
+    console.log(selectGroup);
+    //console.log(EditEvent.eventGroups.selectedGroup.get());
+    //已经通过权限认证
+    var membership = Memberships.findOne({userId: Meteor.userId(), groupId: selectGroup.id});
+    //如果是群主
+    if(membership && membership.role === "owner") {
+      return {};
+      ////如果不具备发布公开活动的权限
+    } else if(Roles.userIsInRole(Meteor.userId(), ['create-open-event'], 'g'+ selectGroup.id)) {
+      return {};
+    } else {
+      return "disabled";
+    }
+
+  },
   // 活动标题
   eventTitle: function() {
     return EditEvent.eventTitle.getTitle();
@@ -166,6 +309,30 @@ Template.editEvent.helpers({
       return EditEvent.eventGroups.getGroups();
     }
   },
+  //分组不可修改
+  modifyGroup: function() {
+    var eid = new Mongo.ObjectID(FlowRouter.getParam('eid'));
+    var findEID = Events.findOne({_id: eid});
+    if(findEID) {
+      return "disabled";
+    } else {
+      return {};
+    }
+  },
+  //公有活动的不能变私有的
+  modifyPrivate: function() {
+     var eid = new Mongo.ObjectID(FlowRouter.getParam('eid'));
+     var findEID = Events.findOne({_id: eid});
+     if(findEID) {
+     if(!findEID.private) {
+       return "disabled";
+     } else {
+       return {};
+     }
+     } else {
+       return {};
+     }
+   },
   // 活动开始日期
   startDate: function() {
     var startTime = EditEvent.eventTime.getStartDateInUnix();
@@ -218,7 +385,8 @@ Template.editEvent.helpers({
   },
   // 活动是否公开
   private: function() {
-    return EditEvent.eventPrivate.getPrivateStatus();
+    //console.log(EditEvent.eventPrivate.getPrivateStatus());
+    return (EditEvent.eventPrivate.getPrivateStatus() && {}) || "checked";
   },
   // 活动人数
   memberLimit: function() {
@@ -465,10 +633,8 @@ Template.editEvent.events({
   'change #event-private': function(e) {
     var isPublic = $(e.target).prop("checked");
     if (!isPublic) {
-      $('#event-member-limit').attr('disabled', true);
       EditEvent.eventPrivate.setPrivate();
     } else {
-      $('#event-member-limit').attr('disabled', false);
       EditEvent.eventPrivate.setPublic();
     }
   },

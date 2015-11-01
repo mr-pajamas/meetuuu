@@ -118,6 +118,13 @@ Meteor.startup(function () {
         nickname: "王五0",
         status: MemberStatus.Joined,
         statusUpdatedAt: new Date()
+      },
+      {
+        groupId: groups[0]._id,
+        userId: users[1]._id,
+        nickname: "lili",
+        status: MemberStatus.Joined,
+        statusUpdatedAt: new Date()
       }
     ];
 
