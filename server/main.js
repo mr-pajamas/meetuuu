@@ -79,7 +79,7 @@ Meteor.startup(function () {
         defaultRole: "hZKu3ssFiPWpF5k7i",
         roles: {
           owner: {name: "组长"},
-          "hZKu3ssFiPWpF5k7i": {name: "成员", permissions: ["create-topic", "modify-own-topic"]}
+          "hZKu3ssFiPWpF5k7i": {name: "成员", permissions: ["create-topic", "modify-own-topic", "create-event", "modify-event"]}
         }
       }
     ];
@@ -93,27 +93,31 @@ Meteor.startup(function () {
         groupId: groups[0]._id,
         userId: users[0]._id,
         nickname: "张三0",
-        joinDate: new Date(),
+        status: MemberStatus.Joined,
+        statusUpdatedAt: new Date(),
         role: "owner"
       },
       {
         groupId: groups[1]._id,
         userId: users[0]._id,
         nickname: "张三1",
-        joinDate: new Date()
+        status: MemberStatus.Joined,
+        statusUpdatedAt: new Date()
       },
       {
         groupId: groups[1]._id,
         userId: users[1]._id,
         nickname: "李四1",
-        joinDate: new Date(),
+        status: MemberStatus.Joined,
+        statusUpdatedAt: new Date(),
         role: "owner"
       },
       {
         groupId: groups[0]._id,
         userId: users[2]._id,
         nickname: "王五0",
-        joinDate: new Date()
+        status: MemberStatus.Joined,
+        statusUpdatedAt: new Date()
       }
     ];
 
@@ -151,9 +155,8 @@ Meteor.startup(function () {
       traitUsage._id = TraitUsages.insert(traitUsage);
     });
 
-    Roles.addUsersToRoles(users[0]._id, ['create-event'], 'g' + groups[0]._id);
-    //Roles.setUserRoles(users[0]._id, [], 'group1');
-    Roles.addUsersToRoles(users[0]._id, ['create-event', 'create-open-event'], 'g' + groups[1]._id);
+    Roles.addUsersToRoles(users[0]._id, ['create-event', 'modify-event'], 'g' + groups[1]._id);
+    Roles.addUsersToRoles(users[1]._id, ['create-event', 'create-open-event', 'cancel-event'], 'g' + groups[0]._id);
+    Roles.addUsersToRoles(users[2]._id, ['create-event', 'deny-entry'], 'g' + groups[0]._id);
   }
 });
-

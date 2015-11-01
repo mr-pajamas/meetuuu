@@ -1,0 +1,76 @@
+<template name="groupMemberList">
+  <main class="group-member-list-main">
+    <div class="container">
+
+      <div class="page-header">
+        <button class="btn btn-success btn-lg pull-right" type="button">申请加入</button>
+        <h1>成员</h1>
+      </div>
+
+      <form>
+        <div class="input-group input-group-md">
+          <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
+          <input type="text" class="form-control" placeholder="名字&hellip;">
+          <!--<span class="input-group-btn"><button type="submit" class="btn btn-default">查询</button></span>-->
+          <div class="input-group-btn">
+            {{#styledSelect inline=true selectValue="找成员"}}
+              <option>找成员</option>
+              <option>申请者</option>
+            {{/styledSelect}}
+          </div>
+        </div><!-- /.input-group -->
+      </form>
+
+      <ul class="list-unstyled row group-member-list-result">
+        <li class="col-sm-6 col-lg-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="/images/default-avatar.png">
+              <div class="caption">
+                <h4>傻逼1</h4>
+                <p>fuck!</p>
+              </div>
+            </a>
+          </div>
+        </li>
+
+        <li class="col-sm-6 col-lg-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="/images/default-avatar.png">
+              <div class="caption">
+                <h4>傻逼1</h4>
+                <p>fuck!</p>
+              </div>
+            </a>
+          </div>
+        </li>
+
+        <li class="col-sm-6 col-lg-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="/images/default-avatar.png">
+              <div class="caption">
+                <h4>傻逼1</h4>
+                <p>fuck!</p>
+              </div>
+            </a>
+          </div>
+        </li>
+
+        <li class="col-sm-6 col-lg-4">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="/images/default-avatar.png">
+              <div class="caption">
+                <h4>傻逼1</h4>
+                <p>fuck!</p>
+              </div>
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </main>
+
+</template>

@@ -54,12 +54,14 @@
 
         <section class="group-timeline">
 
-          <h3 class="timeline-marker"><span class="label label-future">明天</span></h3>
-          <ul class="timeline timeline-future">
-            {{#each tomorrowTimelineItems}}
-              {{> timelineItem}}
-            {{/each}}
-          </ul>
+          {{#if tomorrowTimelineItems.count}}
+            <h3 class="timeline-marker"><span class="label label-future">明天</span></h3>
+            <ul class="timeline timeline-future">
+              {{#each tomorrowTimelineItems}}
+                {{> timelineItem}}
+              {{/each}}
+            </ul>
+          {{/if}}
 
           <h3 class="timeline-marker"><span class="label label-future">今天</span></h3>
           <ul class="timeline timeline-future">
@@ -76,12 +78,14 @@
             {{/each}}
           </ul>
 
-          <h3 class="timeline-marker"><span class="label label-past">昨天</span></h3>
-          <ul class="timeline timeline-past">
-            {{#each yesterdayTimelineItems}}
-              {{> timelineItem}}
-            {{/each}}
-          </ul>
+          {{#if yesterdayTimelineItems.count}}
+            <h3 class="timeline-marker"><span class="label label-past">昨天</span></h3>
+            <ul class="timeline timeline-past">
+              {{#each yesterdayTimelineItems}}
+                {{> timelineItem}}
+              {{/each}}
+            </ul>
+          {{/if}}
         </section>
       </main>
     </div>
