@@ -265,6 +265,9 @@ Template.editEvent.helpers({
   openEvent: function() {
     var selectGroup = EditEvent.eventGroups.selectedGroup.get();
     console.log(selectGroup);
+    if (!selectGroup) {
+      return "disabled";
+    }
     //console.log(EditEvent.eventGroups.selectedGroup.get());
     //已经通过权限认证
     var membership = Memberships.findOne({userId: Meteor.userId(), groupId: selectGroup.id});
@@ -366,12 +369,23 @@ Template.editEvent.helpers({
       var gid = FlowRouter.getQueryParam("gid");
       var eid = FlowRouter.getParam("eid");
       if (!eid && gid) {
-        defaultCity = MyGroups.findOne({_id: gid}).homeCity;
+        var group = MyGroups.findOne({_id: gid});
+        if (group) {
+          defaultCity = group.homeCity;
+        }
       } else if (eid) {
-        var tempGid = Events.findOne({_id: new Mongo.ObjectID(eid)}).author.club.id;
-        defaultCity = MyGroups.findOne({_id: tempGid}).homeCity;
+        var event = Events.findOne({_id: new Mongo.ObjectID(eid)});
+        if (event) {
+          var club = MyGroups.findOne({_id: event.author.club.id});
+          if (club) {
+            defaultCity = club.homeCity;
+          }
+        }
       } else {
-        defaultCity =  MyGroups.findOne().homeCity;
+        var firstGroup = MyGroups.findOne();
+        if (first) {
+          defaultCity =  firstGroup.homeCity;
+        }
       }
       Session.set("selectedCity", defaultCity);
       return defaultCity;

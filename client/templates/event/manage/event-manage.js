@@ -48,15 +48,21 @@ Template.registerHelper('formatTimeMDHHmm', function(time) {
 Template.eventManage.helpers({
   authEdit: function() {
     var findEID = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
-    var groupId = findEID.author.club.id;
-    var membership = Memberships.findOne({userId: Meteor.userId(), groupId: groupId});
-    if(membership.role === "owner") {
-      return {};
-    } else if (Roles.userIsInRole(Meteor.userId(), ['modify-event'], 'g'+ groupId)) {
-      console.log(Roles.userIsInRole(Meteor.userId(), ['modify-event'], 'g'+ groupId));
-      return {};
+    if (!findEID) {
+      return ;
     } else {
-      return "disabled";
+      var groupId = findEID.author.club.id;
+    }
+    var membership = Memberships.findOne({userId: Meteor.userId(), groupId: groupId});
+    if (membership) {
+      if(membership.role === "owner") {
+        return {};
+      } else if (Roles.userIsInRole(Meteor.userId(), ['modify-event'], 'g'+ groupId)) {
+        console.log(Roles.userIsInRole(Meteor.userId(), ['modify-event'], 'g'+ groupId));
+        return {};
+      } else {
+        return "disabled";
+      }
     }
   },
   authLogin: function() {
@@ -69,7 +75,13 @@ Template.eventManage.helpers({
   // 判断当前用户是否有权限查看俱乐部管理页面
   'hasViewRight': function() {
     var findEID = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
+    if (!findEID) {
+      return ;
+    }
     var myGroup =MyGroups.find().fetch();
+    if (!myGroup) {
+      return ;
+    }
     var groupId = findEID.author.club.id;
     console.log(groupId);
     var privateStatus = findEID.private;
@@ -193,12 +205,12 @@ Template.eventManage.events({
   },
   'change #refuse-forever': function() {
     var event = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
-        var path = event && 'g' + event.author.club.id;
-        var membership = Memberships.findOne({userId: Meteor.userId(), groupId: event.author.club.id});
+    var path = event && 'g' + event.author.club.id;
+    var membership = Memberships.findOne({userId: Meteor.userId(), groupId: event.author.club.id});
     console.log(Roles.userIsInRole(Meteor.userId(), ['block-entry'], path));
-        if (!Roles.userIsInRole(Meteor.userId(), ['block-entry'], path) && !(membership.role === "owner")) {
-          alert('您无权永久拒绝该报名');
-        }
+    if (!Roles.userIsInRole(Meteor.userId(), ['block-entry'], path) && !(membership.role === "owner")) {
+      alert('您无权永久拒绝该报名');
+    }
   },
 
   "click #denySignRequest": function() {
