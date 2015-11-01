@@ -383,7 +383,7 @@ Template.editEvent.helpers({
         }
       } else {
         var firstGroup = MyGroups.findOne();
-        if (first) {
+        if (firstGroup) {
           defaultCity =  firstGroup.homeCity;
         }
       }
