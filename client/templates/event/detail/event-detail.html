@@ -1,147 +1,147 @@
 <template name="eventDetail">
-  <div class="event-detail-wrap">
+<div class="event-detail-wrap">
 
-    <!-- 活动详情介绍 -->
-    <div class="container event-home">
-      {{#if Template.subscriptionsReady}}
+  <!-- 活动详情介绍 -->
+  <div class="container event-home">
+    {{#if Template.subscriptionsReady}}
 
 
-        <div class="row">
+      <div class="row">
 
-          <div class="col-sm-9 col-xs-12 main-container">
+        <div class="col-sm-9 col-xs-12 main-container">
 
-            {{#with eventDetail}}
-              <section class="event-poster" id="poster">
-                <!-- 活动基本信息 -->
-                <img class="img-responsive" src="{{#if isPreview}}{{previewPoster}}{{else}}{{eventPoster poster}}{{/if}}" alt="活动海报">
-                <div class="introduction event-post-padding">
-                  <header class="poster-header">
-                    {{title}}
-                  </header>
-                  <ul class="list-inline event-intro-share">
-                    {{#if isSaved}}
-                      <button id="saveEvent" class="btn btn-default" disabled>已收藏</button>
-                    {{else}}
-                      <button id="saveEvent" class="btn btn-default">收藏</button>
-                    {{/if}}
-                    <li><a title="分享到微信" class="fa fa-weixin small-img" href="#"></a></li>
-                    <li><a title="分享到新浪微博" class="fa fa-weibo small-img" href="#"></a></li>
-                    <li><a title="分享到qq空间" class="fa fa-qq small-img" href="#"></a></li>
-                  </ul>
+          {{#with eventDetail}}
+            <section class="event-poster" id="poster">
+              <!-- 活动基本信息 -->
+              <img class="img-responsive" src="{{#if isPreview}}{{previewPoster}}{{else}}{{eventPoster poster}}{{/if}}" alt="活动海报">
+              <div class="introduction event-post-padding">
+                <header class="poster-header">
+                  {{title}}
+                </header>
+                <ul class="list-inline event-intro-share">
+                  {{#if isSaved}}
+                    <button id="saveEvent" class="btn btn-default" disabled>已收藏</button>
+                  {{else}}
+                    <button id="saveEvent" class="btn btn-default">收藏</button>
+                  {{/if}}
+                  <li><a title="分享到微信" class="fa fa-weixin small-img" href="#"></a></li>
+                  <li><a title="分享到新浪微博" class="fa fa-weibo small-img" href="#"></a></li>
+                  <li><a title="分享到qq空间" class="fa fa-qq small-img" href="#"></a></li>
+                </ul>
 
-                  <ul class="list-unstyled event-intro-list">
-                    <li class="clearfix"><i class="fa fa-calendar"></i><p>{{eventTime.start}}&nbsp;~&nbsp;{{eventTime.end}}</p></li>
-                    <li class="clearfix"><i class="fa fa-map-marker"></i><p>{{location.city}}{{location.address}}</p></li>
-                    <li class="clearfix"><i class="fa fa-group"></i>
-                      <p>
-                        {{#if joinedCount}}
-                          {{joinedCount}}
-                        {{else}}
-                          0
-                        {{/if}}
-                        &nbsp;/&nbsp;{{member}}
-                      </p>
-                    </li>
-                    <li class="clearfix"><i class="fa fa-dot-circle-o"></i>
-                      <!-- TODO 修改 href 可以链接到俱乐部 -->
-                      <a href="#">
-                        <span class="badge" id="{{author.club.id}}">{{author.club.name}}</span>
-                      </a>
-                    </li>
-                  </ul>
-                  <a href="/event/edit/{{_id._str}}" class="btn btn-lg btn-default {{hiddenPubBtn}}" id="returnToModify">返回修改</a>
-                  <buttom class="btn btn-lg btn-warning {{hiddenPubBtn}}" id="publish-event">发布活动</buttom>
-                </div>
-              </section>
-
-              <!-- 活动详情描述 -->
-              <section class="event-all-info event-post-padding" id="information">
-                <!-- 插入活动详情的 html string -->
-                {{{eventDetailDesc}}}
-              </section>
-
-            {{/with}}
-
-            <section id="comment">
-              <!-- 新建评论输入框 -->
-              {{#with currentUser}}
-                <div class="media new-comment">
-                  <div class="row">
-                    <div class="media-left col-sm-2 col-xs-3">
-                      <a href="#"><img src="{{avatarOrDefault}}" alt="我的头像"/></a>
-                    </div>
-                    <!-- todo 替换为用户的数据 -->
-                    <div class="media-info col-sm-10 col-xs-9">
-                      <h4 class="media-heading">{{profile.name}}</h4>
-                      <!--
-                        <div class="media-date">2015, 09, 05</div>
-                       -->
-                    </div>
-                    <div class="col-sm-10 col-xs-12 media-text">
-                      <form class="new-comment-form">
-                        <textarea name="comment" id="commentContent" class="new-comment-area" rows="6" placeholder="感兴趣吗？评论一下吧！"></textarea>
-                        <input type="button" id="submitComment" class="btn pull-right btn-primary" name="评论" value="评论"/>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              {{/with}}
-              <!-- 包含两个template，评论以及隐藏的回复评论 -->
-              {{> eventComment}}
+                <ul class="list-unstyled event-intro-list">
+                  <li class="clearfix"><i class="fa fa-calendar"></i><p>{{eventTime.start}}&nbsp;~&nbsp;{{eventTime.end}}</p></li>
+                  <li class="clearfix"><i class="fa fa-map-marker"></i><p>{{location.city}}{{location.address}}</p></li>
+                  <li class="clearfix"><i class="fa fa-group"></i>
+                    <p>
+                      {{#if joinedCount}}
+                        {{joinedCount}}
+                      {{else}}
+                        0
+                      {{/if}}
+                      &nbsp;/&nbsp;{{member}}
+                    </p>
+                  </li>
+                  <li class="clearfix"><i class="fa fa-dot-circle-o"></i>
+                    <!-- TODO 修改 href 可以链接到俱乐部 -->
+                    <a href="#">
+                      <span class="badge" id="{{author.club.id}}">{{author.club.name}}</span>
+                    </a>
+                  </li>
+                </ul>
+                <a href="/event/edit/{{_id._str}}" class="btn btn-lg btn-default {{hiddenPubBtn}}" id="returnToModify">返回修改</a>
+                <buttom class="btn btn-lg btn-warning {{hiddenPubBtn}}" id="publish-event">发布活动</buttom>
+              </div>
             </section>
-          </div>
 
-          <!-- Modal -->
-          <div class="modal fade" id="joinEventFormModal" tabindex="-1" role="dialog" aria-labelledby="joinEventForm">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  <h4 class="modal-title">报名活动</h4>
-                </div>
-                {{#if signForm}}
-                  <div class="modal-body">
-                    {{> quickForm buttonContent="报名" schema=signForm id="joinEvent" type='normal' template="bootstrap3-horizontal" label-class="col-sm-3" input-col-class="col-sm-9"}}
+            <!-- 活动详情描述 -->
+            <section class="event-all-info event-post-padding" id="information">
+              <!-- 插入活动详情的 html string -->
+              {{{eventDetailDesc}}}
+            </section>
+
+          {{/with}}
+
+          <section id="comment">
+            <!-- 新建评论输入框 -->
+            {{#with currentUser}}
+              <div class="media new-comment">
+                <div class="row">
+                  <div class="media-left col-sm-2 col-xs-3">
+                    <a href="#"><img src="{{avatarOrDefault}}" alt="我的头像"/></a>
                   </div>
-                {{/if}}
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                  <button id="apply-event" type="button" class="btn btn-primary">我要报名</button>
+                  <!-- todo 替换为用户的数据 -->
+                  <div class="media-info col-sm-10 col-xs-9">
+                    <h4 class="media-heading">{{profile.name}}</h4>
+                    <!--
+                      <div class="media-date">2015, 09, 05</div>
+                     -->
+                  </div>
+                  <div class="col-sm-10 col-xs-12 media-text">
+                    <form class="new-comment-form">
+                      <textarea name="comment" id="commentContent" class="new-comment-area" rows="6" placeholder="感兴趣吗？评论一下吧！"></textarea>
+                      <input type="button" id="submitComment" class="btn pull-right btn-primary" name="评论" value="评论"/>
+                    </form>
+                  </div>
                 </div>
+              </div>
+            {{/with}}
+            <!-- 包含两个template，评论以及隐藏的回复评论 -->
+            {{> eventComment}}
+          </section>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="joinEventFormModal" tabindex="-1" role="dialog" aria-labelledby="joinEventForm">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">报名活动</h4>
+              </div>
+              {{#if signForm}}
+                <div class="modal-body">
+                  {{> quickForm buttonContent="报名" schema=signForm id="joinEvent" type='normal' template="bootstrap3-horizontal" label-class="col-sm-3" input-col-class="col-sm-9"}}
+                </div>
+              {{/if}}
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button id="apply-event" type="button" class="btn btn-primary">我要报名</button>
               </div>
             </div>
           </div>
         </div>
-
-      {{else}}
-        {{> loading}}
-      {{/if}}
-    </div>
-
-    <div class="container fixed-bar-wrap affix">
-      <!-- 活动详情导航Tab -->
-      <div class="row">
-        <div class="event-sidebar col-sm-3 col-sm-offset-9">
-          <div class="content" id="navbar-tobe-fixed">
-            <ul class="nav nav-stacked" id="fixed-sidebar">
-              <li role="presentation"><a class="event-sidebar-scroll" href="#poster">主题海报</a></li>
-              <li role="presentation"><a class="event-sidebar-scroll" href="#information">活动详情</a></li>
-              <li role="presentation"><a class="event-sidebar-scroll" href="#comment">留言</a></li>
-              <!-- 判断用户是否已经报名 -->
-              {{#if isJoined}}
-                <li id="nav-join" class="hidden-xs"><a href="">已报名</a></li>
-              {{else}}
-                <li id="nav-join" class="hidden-xs"><a href="" data-toggle="modal" data-target="#joinEventFormModal">{{optionSignFormTips}}</a></li>
-              {{/if}}
-              {{#if authManage}}
-              <li id="goToManage"><a href="/event/manage/{{eventId}}">管理活动</a></li>
-                {{/if}}
-            </ul>
-          </div>
-        </div>
       </div>
-    </div>
+
+    {{else}}
+      {{> loading}}
+    {{/if}}
   </div>
+
+<div class="container fixed-bar-wrap affix">
+  <!-- 活动详情导航Tab -->
+<div class="row">
+<div class="event-sidebar col-sm-3 col-sm-offset-9">
+<div class="content" id="navbar-tobe-fixed">
+<ul class="nav nav-stacked" id="fixed-sidebar">
+  <li role="presentation"><a class="event-sidebar-scroll" href="#poster">主题海报</a></li>
+  <li role="presentation"><a class="event-sidebar-scroll" href="#information">活动详情</a></li>
+  <li role="presentation"><a class="event-sidebar-scroll" href="#comment">留言</a></li>
+  <!-- 判断用户是否已经报名 -->
+{{#if isJoined}}
+  <li id="nav-join" class="hidden-xs"><a href="" >{{joinStatus}}</a></li>
+  {{else}}
+<li id="nav-join" class="hidden-xs"><a href=""   data-toggle="modal"  data-target="#joinEventFormModal">{{joinStatus}}</a></li>
+  {{/if}}
+{{#if authManage}}
+    <li id="goToManage"><a href="/event/manage/{{eventId}}">管理活动</a></li>
+{{/if}}
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
 </template>
 
 <template name="eventDetailAffixFooter">

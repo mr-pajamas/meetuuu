@@ -162,6 +162,19 @@ Template.eventDetail.helpers({
   'isJoined': function() {
     return JoinForm.findOne();
   },
+  'joinStatus':function() {
+    if(JoinForm.findOne()) {
+      if(JoinForm.findOne().status === "禁止报名") {
+        return "禁止报名";
+      } else {
+        return "已报名";
+      }
+
+    } else {
+      return "我要报名";
+    }
+  },
+
   //  活动 id
   "eventId": function () {
     return FlowRouter.getParam("eid");
