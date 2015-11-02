@@ -10,7 +10,7 @@ Template.header.events({
     event.preventDefault();
     Meteor.setCity($(event.currentTarget).index());
   },
-  "click .navbar-right .dropdown-menu > li:nth-child(5)": function () {
+  "click .navbar-right .dropdown-menu > li:nth-child(5)": function (event) {
     event.preventDefault();
     Meteor.logout();
   }

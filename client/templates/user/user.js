@@ -41,7 +41,7 @@ Template.user.onCreated(function () {
         var endTime = moment(event.time.end);
         var now = moment();
         var startTimeDiff = startTime.diff(now);
-        if (startTimeDiff <= 24 * 3600 * 1000) {
+        if (startTime.endOf("day").toDate() === now.endOf("day").toDate()) {
           if (startTimeDiff <= 3600 * 1000) {
             destoryTimeoutId = Meteor.setTimeout(function () {
               setSingleEvent(null);
@@ -108,7 +108,7 @@ Template.user.helpers({
       return new Mongo.ObjectID(doc.eventId);
     });
     console.log("eveentIds:  " + eventIds);
-    return Events.find({_id: {$in: eventIds}},{sort: {"time.start": 1}});
+    return Events.find({_id: {$in: eventIds}, "time.end": {$gt: new Date()}},{sort: {"time.start": 1}});
     // 这个地方实现了排序，值得一看。
   },
   "eventNow": function () {
@@ -118,6 +118,7 @@ Template.user.helpers({
     var startTime = moment(this.time.start);
     var endTime = moment(this.time.end);
     var now = moment();
+    var tomorrow = now.add(1,"days");
     var startTimeDiff = startTime.diff(now);
     singleEvent.get();
     if (endTime.diff(now) > 0) {
@@ -125,8 +126,8 @@ Template.user.helpers({
       console.log(startTime);
       console.log(startTimeDiff);
       // 只要是小于 48 小时的，都是今天或明天的模板。
-      if (startTimeDiff <= 48 * 3600 * 1000) {
-        if (startTimeDiff <= 24 * 3600 * 1000) {
+      if (tomorrow.endOf("days").toDate() >= startTime.toDate()) {
+        if (startTime.endOf("day").toDate() === now.endOf("day").toDate()) {
           if (3600 * 1000 < startTimeDiff) {
             console.log("this is a today evnet.");
             return "todayOrTomorrowEvent";

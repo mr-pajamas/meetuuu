@@ -53,18 +53,19 @@ Template.editEvent.onRendered(function() {
     '&v=1.0&callback=initialize';
   document.body.appendChild(script);
 
+  var eid = FlowRouter.getParam("eid");
+
   // 自动补全提示
-  //this.autorun(function () {
-  //  if(isInitFinished.get()) {
-  //Meteor.typeahead.inject();
-  //    console.log($("#event-desc"));
-  //    $("#event-desc").wysiwyg();
-  //  }
-  //});
-  var timeoutId = setTimeout(function () {
+  var timeoutId = Meteor.setTimeout(function () {
+    if (eid) {
+      $(".event-group-select").prop("disabled", true);
+    }
+    // initDataPicker.
+    EditEvent.eventTime._initDatePicker("start-date", "end-date");
+    Meteor.typeahead.inject();
     $("#event-desc").wysiwyg();
-      Meteor.typeahead.inject();
-  }, 100);
+    Meteor.clearTimeout(timeoutId);
+  }, 200);
 
   // === 上传海报 Begin  可以删除===
   /* var $image = $(".image-crop > img");
@@ -290,8 +291,16 @@ Template.editEvent.helpers({
     return isInitFinished.get() ? true : false;
   },
   poster: function () {
-    var posterUrl = EditEvent.eventPoster.getKey();
-    return posterUrl ? posterUrl : "/event-create-poster-holder.png";
+    var posterData = Session.get("eventPosterData");
+
+    if (posterData) {
+      if (posterData.startsWith("data:")) {
+        return posterData;
+      }
+    } else {
+      var posterUrl = EditEvent.eventPoster.getKey();
+      return posterUrl ? posterUrl : "/event-create-poster-holder.png";
+    }
   },
   // 加入的俱乐部，且具有创建活动的权利
   groupsWithRight: function() {
@@ -698,7 +707,7 @@ Template.editEvent.events({
 
       var croppedImg = $(".event-poster").find(".img-upload").imgUpload("crop");
       if (croppedImg) {
-        Session.setDefault("eventPosterData", croppedImg);
+        Session.set("eventPosterData", croppedImg);
       } else {
         Session.set("eventPosterData", 1);
       }

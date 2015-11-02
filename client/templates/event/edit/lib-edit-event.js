@@ -250,33 +250,33 @@ EditEvent = (function() {
           var membership = Memberships.findOne({userId: Meteor.userId(), groupId: group._id});
           if (membership) {
             if (Roles.userIsInRole(Meteor.userId(), ['create-event'], 'g'+ group._id) || membership.role === "owner") {
-              var temp = {
-                attr: {
-                  'data-gid': group._id,
-                  'data-path': group.path,
-                  value: group._id
-                },
+            var temp = {
+              attr: {
+                'data-gid': group._id,
+                'data-path': group.path,
+                value: group._id
+              },
+              name: group.name,
+              path: group.path
+            };
+            if (group._id == gid) {
+              temp.attr.selected = true;
+              self.selectedGroup.set({
                 name: group.name,
+                id: group._id,
                 path: group.path
-              };
-              if (group._id == gid) {
-                temp.attr.selected = true;
-                self.selectedGroup.set({
-                  name: group.name,
-                  id: group._id,
-                  path: group.path
-                });
-              }
-              groups.push(temp);
+              });
             }
+            groups.push(temp);
+          }
           }
         });
         if (!self.selectedGroup.get()) {
           if (groups.length) {
             self.selectedGroup.set({
-              name: groups[0] && groups[0].name,
-              id: groups[0] && groups[0].attr['data-gid'],
-              path: groups[0] && groups[0].path
+            name: groups[0] && groups[0].name,
+            id: groups[0] && groups[0].attr['data-gid'],
+            path: groups[0] && groups[0].path
             });
           }
         }
