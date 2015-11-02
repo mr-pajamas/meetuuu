@@ -6,7 +6,7 @@
       <header class="clearfix">
         <h1 class="pull-left">
           <p>{{eventInfo.title}} <span class="label label-info hidden-xs">{{eventInfo.status}}</span></p>
-          <a href="{{eventShortUrl}}" class="event-manage-url hidden-xs">{{eventShortUrl}}</a>
+          <a href="{{eventInfo.dwz}}" class="event-manage-url hidden-xs">{{eventInfo.dwz}}</a>
         </h1>
         <ul class="list-inline pull-right hidden-xs">
           <li><a href="/event/detail/{{eventInfo._id._str}}" class="btn btn-default event-preview"><span class="fa fa-eye"></span> 查看</a></li>
@@ -62,7 +62,7 @@
               </div>
               <dl class="dl-horizontal">
                 <dt>活动时间:</dt>
-                <dd id="event-date-time">{{formatTimeLLLL eventTime.start}} ~ {{formatTimeLLLL eventTime.end}}</dd>
+                <dd id="event-date-time">{{dateFormat eventTime.start "M月D日 HH:mm"}} ~ {{dateFormat eventTime.end "M月D日 HH:mm"}}</dd>
                 <dt>活动地点:</dt>
                 <dd id="event-location">{{eventInfo.location.city}}&nbsp;{{eventInfo.location.address}}</dd>
                 <dt>活动人数:</dt>

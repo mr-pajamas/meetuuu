@@ -15,7 +15,6 @@ Template.editEvent.onDestroyed(function() {
 
 Template.editEvent.onCreated(function () {
   var self = this;
-  // 在路径名字后面添加 event Id
   if (!FlowRouter.getParam('eid')) {
     //FlowRouter.setParams({'eid': new Mongo.ObjectID()._str});
     EditEvent.pureInit();
@@ -28,8 +27,9 @@ Template.editEvent.onCreated(function () {
           var eventInfo = Events.findOne({_id: eid});
           // 各类初始化动作
           if (!eventInfo) {
-            EditEvent.pureInit();
+            return ;
           } else {
+            console.log("this is a existed event");
             EditEvent.InitWithData(eventInfo);
           }
           isInitFinished.set(true);
@@ -63,7 +63,7 @@ Template.editEvent.onRendered(function() {
   //});
   var timeoutId = setTimeout(function () {
     $("#event-desc").wysiwyg();
-    Meteor.typeahead.inject();
+      Meteor.typeahead.inject();
   }, 100);
 
   // === 上传海报 Begin  可以删除===
@@ -385,7 +385,7 @@ Template.editEvent.helpers({
         var firstGroup = MyGroups.findOne();
         if (firstGroup) {
           defaultCity =  firstGroup.homeCity;
-        }
+      }
       }
       Session.set("selectedCity", defaultCity);
       return defaultCity;
@@ -568,7 +568,7 @@ var getFormValues = function () {
   }
 
   //  活动描述是必填的
-  var eventDesc = $("#event-desc").text().trim();
+  var eventDesc = $("#event-desc").html().trim();
   if (!eventDesc.length) {
     alert("请填写活动详细信息。");
     Session.set("validateEventInfo", false);
@@ -577,6 +577,9 @@ var getFormValues = function () {
     EditEvent.eventDesc.setContent("event-desc");
     Session.set("validateEventInfo", true);
   }
+
+  // 当验证完了所有字段之后，就设置edit-event-mask 为block.
+  $(".edit-event-mask").show();
 };
 
 

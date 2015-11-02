@@ -20,6 +20,18 @@
     }
   }
 
+  #fixed-sidebar{
+    #goToManage {
+      a {
+        color: #ffffff;
+        background-color: #f0ad4e;
+        &:hover {
+          background-color: #ec971f;
+        }
+      }
+    }
+  }
+
   #poster {
     .introduction {
       .list-inline {
@@ -68,10 +80,21 @@
   }
   #publish-event {
     position: absolute;
-    bottom: 27px;
-    right: 25px;
-    width: 150px;
-    height: 40px;
+    bottom: 15px;
+    right: 15px;
+    @media (min-width: @screen-sm-min) {
+      bottom: 35px;
+      right: 35px;
+    }
+  }
+  #returnToModify {
+    position: absolute;
+    bottom: 15px;
+    right: 165px;
+    @media (min-width: @screen-sm-min) {
+      bottom: 35px;
+      right: 185px;
+    }
   }
   .event-intro-list i {
     float: left;
@@ -291,7 +314,7 @@
     & > li {
       float: left;
       text-align: center;
-      width: 33.33333%;
+      width: 25%;
       margin-top: 0;
       @media (min-width: @screen-sm-min) {
         width: initial;

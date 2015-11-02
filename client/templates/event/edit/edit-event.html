@@ -4,317 +4,320 @@
 {{#if postAuthRole}}
   <div class="event-create-wrap">
     {{#if Template.subscriptionsReady}}
-    <div class="container create-event-container">
-      <!-- event-id -->
-      <input type="text" value="" id="eventId" hidden/>
-      <!-- 活动基本信息 -->
+      <div class="container create-event-container">
+        <!-- event-id -->
+        <input type="text" value="" id="eventId" hidden/>
+        <!-- 活动基本信息 -->
 
-      <form action="#" class="form-horizontal">
-        <!-- 活动名称 -->
-        <div class="form-group">
-          <label class="col-sm-2 control-label">活动名称 <i class="fa fa-asterisk pull-right"></i></label>
+        <form action="#" class="form-horizontal">
+          <!-- 活动名称 -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label">活动名称 <i class="fa fa-asterisk pull-right"></i></label>
 
-          <div class="col-sm-10">
-            <input type="text" class="form-control" id="event-name" placeholder="活动名称，不少于5个字" value="{{eventTitle}}">
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="event-name" placeholder="活动名称，不少于5个字" value="{{eventTitle}}">
+            </div>
           </div>
-        </div>
 
-        <!-- 活动海报上传 -->
-        <div class="form-group">
-          <label class="col-sm-2 control-label">海报图片&nbsp;</label>
-          <div class="col-sm-10">
-            <div class="center-block event-poster">
+          <!-- 活动海报上传 -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label">海报图片&nbsp;</label>
+            <div class="col-sm-10">
+              <div class="center-block event-poster">
                 {{#if hasPoster}}
                   {{> imgUpload width=847 height=487 src=poster}}
                 {{/if}}
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- 活动时间 -->
-        <div class="form-group">
-          <label class="col-sm-2 col-xs-12 control-label">活动时间&nbsp;</label>
+          <!-- 活动时间 -->
+          <div class="form-group">
+            <label class="col-sm-2 col-xs-12 control-label">活动时间&nbsp;</label>
 
-          <div class="col-sm-2 col-xs-8">  <!-- modified by chenyuan, 9-15 -->
-            <input type="text" class="form-control datetimepicker-start" id="start-date" name="start-time"
-                   placeholder="开始时间" value="{{startDate}}"/>
-          </div>
-          <div class="col-sm-2 col-xs-4">
-            <select class="form-control" id="start-time">
-              {{#each startTimeOptions}}
-                <option {{attr}}>{{content}}</option>
-              {{/each}}
-            </select>
-          </div>
-          <!-- modified by chenyuan, 9-15 -->
-          <div class="col-sm-2">
-            <div class="gap-line"></div>
+            <div class="col-sm-2 col-xs-8">  <!-- modified by chenyuan, 9-15 -->
+              <input type="text" class="form-control datetimepicker-start" id="start-date" name="start-time"
+                     placeholder="开始时间" value="{{startDate}}"/>
+            </div>
+            <div class="col-sm-2 col-xs-4">
+              <select class="form-control" id="start-time">
+                {{#each startTimeOptions}}
+                  <option {{attr}}>{{content}}</option>
+                {{/each}}
+              </select>
+            </div>
+            <!-- modified by chenyuan, 9-15 -->
+            <div class="col-sm-2">
+              <div class="gap-line"></div>
+            </div>
+
+            <div class="col-sm-2 col-xs-8">
+              <input type="text" class="form-control datetimepicker-end" id="end-date" name="end-time"
+                     placeholder="结束时间" value="{{endDate}}"/>
+            </div>
+            <div class="col-sm-2 col-xs-4">
+              <select class="form-control" id="end-time">
+                {{#each endTimeOptions}}
+                  <option {{attr}}>{{content}}</option>
+                {{/each}}
+              </select>
+            </div>
           </div>
 
-          <div class="col-sm-2 col-xs-8">
-            <input type="text" class="form-control datetimepicker-end" id="end-date" name="end-time"
-                   placeholder="结束时间" value="{{endDate}}"/>
-          </div>
-          <div class="col-sm-2 col-xs-4">
-            <select class="form-control" id="end-time">
-              {{#each endTimeOptions}}
-                <option {{attr}}>{{content}}</option>
-              {{/each}}
-            </select>
-          </div>
-        </div>
+          <!-- 活动归属俱乐部 -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label">俱乐部&nbsp;</label>
 
-        <!-- 活动归属俱乐部 -->
-        <div class="form-group">
-          <label class="col-sm-2 control-label">俱乐部&nbsp;</label>
-
-          <div class="col-sm-4">
+            <div class="col-sm-4">
               {{#if hasSelectedGroup}}
                 <input type="text" class="form-control event-group-select" value="{{hasSelectedGroup}}" disabled="disabled"/>
               {{else}}
                 <select {{modifyGroup}} class="event-theme event-group-select form-control">
-              {{#each groupsWithRight}}
-                <option {{attr}}>{{name}}</option>
-              {{/each}}
-            </select>
+                  {{#each groupsWithRight}}
+                    <option {{attr}}>{{name}}</option>
+                  {{/each}}
+                </select>
               {{/if}}
+            </div>
           </div>
-        </div>
 
-        <!-- 活动地点 -->
-        <div class="form-group">
-          <label class="col-sm-2 control-label">活动地点&nbsp;</label>
+          <!-- 活动地点 -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label">活动地点&nbsp;</label>
 
-          <div class="col-sm-4">
+            <div class="col-sm-4">
               <input type="text" class="form-control" id="event-city-select" value="{{cityOptions}}" disabled="disabled"/>
-          </div>
-          <div class="col-sm-6">
-            <input type="text" class="form-control" id="event-detail-address" placeholder="请输入详细地址" value="{{detailAddress}}"/>
-          </div>
-          <div class="col-sm-offset-2 col-sm-10">
-            <div class="event-map-container">
-              <div id="bdmap"></div>
+            </div>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="event-detail-address" placeholder="请输入详细地址" value="{{detailAddress}}"/>
+            </div>
+            <div class="col-sm-offset-2 col-sm-10">
+              <div class="event-map-container">
+                <div id="bdmap"></div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- 私密活动 -->
-        <div class="form-group">
-          <label class="col-sm-2 control-label">私密设置&nbsp;</label>
-          <div class="col-sm-4 checkbox" style="height: 34px;">
-            <label>
+          <!-- 私密活动 -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label">私密设置&nbsp;</label>
+            <div class="col-sm-4 checkbox" style="height: 34px;">
+              <label>
               <input {{modifyPrivate}} type="checkbox" {{openEvent}} id="event-private" {{private}}> 公开活动
-            </label>
-          </div>
-        </div>
-        <!-- 活动人数 -->
-        <div class="form-group">
-          <label class="col-sm-2 control-label">活动人数&nbsp;</label>
-          <!--disabled="{{#if private}}disabled{{/if}}"-->
-          <div class="col-sm-10">
-            <input type="number" class="form-control"  id="event-member-limit" placeholder="活动人数限制，0 代表不限名额" value="{{memberLimit}}">
-          </div>
-        </div>
-        <!-- 活动主题 -->
-        <div class="form-group">
-          <label class="col-sm-2 control-label">活动主题&nbsp;</label>
-
-          <div class="col-sm-4">
-            <select class="event-theme form-control">
-              {{#each themeOptions}}
-                <option {{attr}} >{{name}}</option>
-              {{/each}}
-            </select>
-          </div>
-        </div>
-        <!-- 活动标签 -->
-        <div class="form-group">
-          <label class="col-sm-2 control-label">活动标签&nbsp;</label>
-          <div class="col-sm-4">
-            <input class="form-control typeahead"
-                   type="text"
-                   placeholder="输入标签名字"
-                   autocomplete="on"
-                   spellcheck="off"
-                   data-source="tags"
-                   data-select="selected"
-                   data-template="TagSuggestion"/>
-          </div>
-        </div>
-        <!-- 已选标签容器 -->
-        <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-10">
-            <div id="selected-tag">
-              <div class="tag-tips">已选标签</div>
-              {{#each themeTags}}
-                {{> eventTag this}}
-              {{/each}}
+              </label>
             </div>
           </div>
-        </div>
+          <!-- 活动人数 -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label">活动人数&nbsp;</label>
+          <!--disabled="{{#if private}}disabled{{/if}}"-->
+            <div class="col-sm-10">
+            <input type="number" class="form-control"  id="event-member-limit" placeholder="活动人数限制，0 代表不限名额" value="{{memberLimit}}">
+            </div>
+          </div>
+          <!-- 活动主题 -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label">活动主题&nbsp;</label>
 
-        <!-- 活动详情描述 -->
-        <div class="form-group">
-          <label class="col-sm-2 control-label">活动描述&nbsp;</label>
+            <div class="col-sm-4">
+              <select class="event-theme form-control">
+                {{#each themeOptions}}
+                  <option {{attr}} >{{name}}</option>
+                {{/each}}
+              </select>
+            </div>
+          </div>
+          <!-- 活动标签 -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label">活动标签&nbsp;</label>
+            <div class="col-sm-4">
+              <input class="form-control typeahead"
+                     type="text"
+                     placeholder="输入标签名字"
+                     autocomplete="on"
+                     spellcheck="off"
+                     data-source="tags"
+                     data-select="selected"
+                     data-template="TagSuggestion"/>
+            </div>
+          </div>
+          <!-- 已选标签容器 -->
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <div id="selected-tag">
+                <div class="tag-tips">已选标签</div>
+                {{#each themeTags}}
+                  {{> eventTag this}}
+                {{/each}}
+              </div>
+            </div>
+          </div>
 
-          <div class="col-sm-10">
-            <div class="btn-toolbar" data-role="editor-toolbar" data-target="#event-desc">
-              <div class="btn-group">
-                <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="" data-original-title="Font"><i
-                    class="glyphicon glyphicon-font"></i><b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a data-edit="fontName Serif" style="font-family:'Serif'">Serif</a></li>
-                  <li><a data-edit="fontName Sans" style="font-family:'Sans'">Sans</a></li>
-                  <li><a data-edit="fontName Arial" style="font-family:'Arial'">Arial</a></li>
-                  <li><a data-edit="fontName Arial Black" style="font-family:'Arial Black'">Arial Black</a></li>
-                  <li><a data-edit="fontName Courier" style="font-family:'Courier'">Courier</a></li>
-                  <li><a data-edit="fontName Courier New" style="font-family:'Courier New'">Courier New</a></li>
-                  <li><a data-edit="fontName Comic Sans MS" style="font-family:'Comic Sans MS'">Comic Sans MS</a></li>
-                  <li><a data-edit="fontName Helvetica" style="font-family:'Helvetica'">Helvetica</a></li>
-                  <li><a data-edit="fontName Impact" style="font-family:'Impact'">Impact</a></li>
-                  <li><a data-edit="fontName Lucida Grande" style="font-family:'Lucida Grande'">Lucida Grande</a></li>
-                  <li><a data-edit="fontName Lucida Sans" style="font-family:'Lucida Sans'">Lucida Sans</a></li>
-                  <li><a data-edit="fontName Tahoma" style="font-family:'Tahoma'">Tahoma</a></li>
-                  <li><a data-edit="fontName Times" style="font-family:'Times'">Times</a></li>
-                  <li><a data-edit="fontName Times New Roman" style="font-family:'Times New Roman'">Times New Roman</a>
-                  </li>
-                  <li><a data-edit="fontName Verdana" style="font-family:'Verdana'">Verdana</a></li>
-                </ul>
-              </div>
-              <div class="btn-group">
-                <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title=""
-                   data-original-title="Font Size"><i class="glyphicon glyphicon-text-height"></i>&nbsp;<b
-                    class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a data-edit="fontSize 5"><span style="font-size: large">大</span></a></li>
-                  <li><a data-edit="fontSize 3"><span style="font-size: medium">中</span></a></li>
-                  <li><a data-edit="fontSize 1"><span style="font-size: small">小</span></a></li>
-                </ul>
-              </div>
-              <div class="btn-group">
-                <a class="btn btn-default" data-edit="bold" title="" data-original-title="Bold (Ctrl/Cmd+B)"><i
-                    class="glyphicon glyphicon-bold"></i></a>
-                <a class="btn btn-default" data-edit="italic" title="" data-original-title="Italic (Ctrl/Cmd+I)"><i
-                    class="glyphicon glyphicon-italic"></i></a>
-                <a class="btn btn-default" data-edit="underline" title="" data-original-title="Underline (Ctrl/Cmd+U)"><i
-                    class="glyphicon glyphicon-text-width"></i></a>
-              </div>
-              <div class="btn-group">
-                <a class="btn btn-default" data-edit="insertunorderedlist" title="" data-original-title="Bullet list"><i
-                    class="glyphicon glyphicon-list"></i></a>
-                <a class="btn btn-default" data-edit="insertorderedlist" title="" data-original-title="Number list"><i
-                    class="glyphicon glyphicon-list-alt"></i></a>
-                <a class="btn btn-default" data-edit="outdent" title="" data-original-title="Reduce indent (Shift+Tab)"><i
-                    class="glyphicon glyphicon-indent-left"></i></a>
-                <a class="btn btn-default" data-edit="indent" title="" data-original-title="Indent (Tab)"><i
-                    class="glyphicon glyphicon-indent-right"></i></a>
-              </div>
-              <div class="btn-group">
-                <a class="btn btn-default" data-edit="justifyleft" title="" data-original-title="Align Left (Ctrl/Cmd+L)"><i
-                    class="glyphicon glyphicon-align-left"></i></a>
-                <a class="btn btn-default" data-edit="justifycenter" title="" data-original-title="Center (Ctrl/Cmd+E)"><i
-                    class="glyphicon glyphicon-align-center"></i></a>
-                <a class="btn btn-default" data-edit="justifyright" title=""
-                   data-original-title="Align Right (Ctrl/Cmd+R)"><i class="glyphicon glyphicon-align-right"></i></a>
-                <a class="btn btn-default" data-edit="justifyfull" title="" data-original-title="Justify (Ctrl/Cmd+J)"><i
-                    class="glyphicon glyphicon-align-justify"></i></a>
-              </div>
+          <!-- 活动详情描述 -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label">活动描述&nbsp;</label>
 
-              <div class="btn-group">
-                <a class="btn btn-default" title="" id="pictureBtn"
+            <div class="col-sm-10">
+              <div class="btn-toolbar" data-role="editor-toolbar" data-target="#event-desc">
+                <div class="btn-group">
+                  <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="" data-original-title="Font"><i
+                      class="glyphicon glyphicon-font"></i><b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a data-edit="fontName Serif" style="font-family:'Serif'">Serif</a></li>
+                    <li><a data-edit="fontName Sans" style="font-family:'Sans'">Sans</a></li>
+                    <li><a data-edit="fontName Arial" style="font-family:'Arial'">Arial</a></li>
+                    <li><a data-edit="fontName Arial Black" style="font-family:'Arial Black'">Arial Black</a></li>
+                    <li><a data-edit="fontName Courier" style="font-family:'Courier'">Courier</a></li>
+                    <li><a data-edit="fontName Courier New" style="font-family:'Courier New'">Courier New</a></li>
+                    <li><a data-edit="fontName Comic Sans MS" style="font-family:'Comic Sans MS'">Comic Sans MS</a></li>
+                    <li><a data-edit="fontName Helvetica" style="font-family:'Helvetica'">Helvetica</a></li>
+                    <li><a data-edit="fontName Impact" style="font-family:'Impact'">Impact</a></li>
+                    <li><a data-edit="fontName Lucida Grande" style="font-family:'Lucida Grande'">Lucida Grande</a></li>
+                    <li><a data-edit="fontName Lucida Sans" style="font-family:'Lucida Sans'">Lucida Sans</a></li>
+                    <li><a data-edit="fontName Tahoma" style="font-family:'Tahoma'">Tahoma</a></li>
+                    <li><a data-edit="fontName Times" style="font-family:'Times'">Times</a></li>
+                    <li><a data-edit="fontName Times New Roman" style="font-family:'Times New Roman'">Times New Roman</a>
+                    </li>
+                    <li><a data-edit="fontName Verdana" style="font-family:'Verdana'">Verdana</a></li>
+                  </ul>
+                </div>
+                <div class="btn-group">
+                  <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title=""
+                     data-original-title="Font Size"><i class="glyphicon glyphicon-text-height"></i>&nbsp;<b
+                      class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a data-edit="fontSize 5"><span style="font-size: large">大</span></a></li>
+                    <li><a data-edit="fontSize 3"><span style="font-size: medium">中</span></a></li>
+                    <li><a data-edit="fontSize 1"><span style="font-size: small">小</span></a></li>
+                  </ul>
+                </div>
+                <div class="btn-group">
+                  <a class="btn btn-default" data-edit="bold" title="" data-original-title="Bold (Ctrl/Cmd+B)"><i
+                      class="glyphicon glyphicon-bold"></i></a>
+                  <a class="btn btn-default" data-edit="italic" title="" data-original-title="Italic (Ctrl/Cmd+I)"><i
+                      class="glyphicon glyphicon-italic"></i></a>
+                  <a class="btn btn-default" data-edit="underline" title="" data-original-title="Underline (Ctrl/Cmd+U)"><i
+                      class="glyphicon glyphicon-text-width"></i></a>
+                </div>
+                <div class="btn-group">
+                  <a class="btn btn-default" data-edit="insertunorderedlist" title="" data-original-title="Bullet list"><i
+                      class="glyphicon glyphicon-list"></i></a>
+                  <a class="btn btn-default" data-edit="insertorderedlist" title="" data-original-title="Number list"><i
+                      class="glyphicon glyphicon-list-alt"></i></a>
+                  <a class="btn btn-default" data-edit="outdent" title="" data-original-title="Reduce indent (Shift+Tab)"><i
+                      class="glyphicon glyphicon-indent-left"></i></a>
+                  <a class="btn btn-default" data-edit="indent" title="" data-original-title="Indent (Tab)"><i
+                      class="glyphicon glyphicon-indent-right"></i></a>
+                </div>
+                <div class="btn-group">
+                  <a class="btn btn-default" data-edit="justifyleft" title="" data-original-title="Align Left (Ctrl/Cmd+L)"><i
+                      class="glyphicon glyphicon-align-left"></i></a>
+                  <a class="btn btn-default" data-edit="justifycenter" title="" data-original-title="Center (Ctrl/Cmd+E)"><i
+                      class="glyphicon glyphicon-align-center"></i></a>
+                  <a class="btn btn-default" data-edit="justifyright" title=""
+                     data-original-title="Align Right (Ctrl/Cmd+R)"><i class="glyphicon glyphicon-align-right"></i></a>
+                  <a class="btn btn-default" data-edit="justifyfull" title="" data-original-title="Justify (Ctrl/Cmd+J)"><i
+                      class="glyphicon glyphicon-align-justify"></i></a>
+                </div>
+
+                <div class="btn-group">
+                  <a class="btn btn-default" title="" id="pictureBtn"
                      data-original-title="Insert picture (or just drag &amp; drop)"><i class="glyphicon glyphicon-picture">
                     <input id="upload-picture" type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage">
                   </i></a>
 
+                </div>
               </div>
-            </div>
               <div class="form-control" id="event-desc">
-              {{{eventDesc}}}
+                {{{eventDesc}}}
+              </div>
             </div>
           </div>
-        </div>
 
 
-        <!-- 设置报名表单 -->
-        <!-- modified by chenyaun, 2015-09-15-->
-        <!-- 由于页面中其他部分都没有添加container, 故删除以下模块中的container以及row 部分。-->
-        <div class="form-group">
-          <label class="col-sm-2 control-label">报名表单&nbsp;</label>
+          <!-- 设置报名表单 -->
+          <!-- modified by chenyaun, 2015-09-15-->
+          <!-- 由于页面中其他部分都没有添加container, 故删除以下模块中的container以及row 部分。-->
+          <div class="form-group">
+            <label class="col-sm-2 control-label">报名表单&nbsp;</label>
 
-          <div class="col-sm-10">
-            <div id="custom-form-container">
-              <!-- container for evnet sign forms -->
+            <div class="col-sm-10">
+              <div id="custom-form-container">
+                <!-- container for evnet sign forms -->
 
-              {{#each eventForms}}
-                {{> ESF_CUSTOM}}
-              {{/each}}
+                {{#each eventForms}}
+                  {{> ESF_CUSTOM}}
+                {{/each}}
 
-            </div>
-            <div class="empty-from-item-container event-sign-form-setting">
-              <div class="row">
-                <div class="col-sm-3  col-xs-6">
-                  <div class=" btn btn-success custom-form-item" data-type="ESF_SINGLE_TEXT"><i
-                      class="fa fa-plus-square-o"></i> 单行文本</div>
-                </div>
-                <div class="col-sm-3  col-xs-6">
-                  <div class=" btn btn-success custom-form-item" data-type="ESF_MULTI_TEXT"> <i
-                      class="fa fa-plus-square-o"></i> 多行文本</div>
-                </div>
-                <div class="col-sm-3  col-xs-6">
-                  <div class=" btn btn-success custom-form-item" data-type="ESF_SELECT_RADIO"> <i
-                      class="fa fa-plus-square-o"></i> 单选栏目</div>
-                </div>
-                <div class="col-sm-3  col-xs-6">
-                  <div class=" btn btn-success custom-form-item" data-type="ESF_SELECT_CHECKBOX"> <i
-                      class="fa fa-plus-square-o"></i> 多选栏目</div>
+              </div>
+              <div class="empty-from-item-container event-sign-form-setting">
+                <div class="row">
+                  <div class="col-sm-3  col-xs-6">
+                    <div class=" btn btn-success custom-form-item" data-type="ESF_SINGLE_TEXT"><i
+                        class="fa fa-plus-square-o"></i> 单行文本</div>
+                  </div>
+                  <div class="col-sm-3  col-xs-6">
+                    <div class=" btn btn-success custom-form-item" data-type="ESF_MULTI_TEXT"> <i
+                        class="fa fa-plus-square-o"></i> 多行文本</div>
+                  </div>
+                  <div class="col-sm-3  col-xs-6">
+                    <div class=" btn btn-success custom-form-item" data-type="ESF_SELECT_RADIO"> <i
+                        class="fa fa-plus-square-o"></i> 单选栏目</div>
+                  </div>
+                  <div class="col-sm-3  col-xs-6">
+                    <div class=" btn btn-success custom-form-item" data-type="ESF_SELECT_CHECKBOX"> <i
+                        class="fa fa-plus-square-o"></i> 多选栏目</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <!-- 提交信息-->
-        <!-- 保存活动基本信息 -->
-        <hr/>
-        <div class="form-group">
-          <div class="col-sm-10 col-sm-offset-2">
-            <div class="preview-submit-wrap clearfix">
-              <div class="preview-submit-buttons">
-                <!-- created by Chen Yuan, -->
-                <button type="button" data-loading-text="保存中..." class="btn btn-default previewEventInfo btn-lg" autocomplete="off">
-                  预览
-                </button>
-                <button type="button" class="btn btn-primary btn-lg" id="publishEvent">立即发布</button>
+          <!-- 提交信息-->
+          <!-- 保存活动基本信息 -->
+          <hr/>
+          <div class="form-group">
+            <div class="col-sm-10 col-sm-offset-2">
+              <div class="preview-submit-wrap clearfix">
+                <div class="preview-submit-buttons">
+                  <!-- created by Chen Yuan, -->
+                  <button type="button" data-loading-text="保存中..." class="btn btn-default previewEventInfo btn-lg" autocomplete="off">
+                    预览
+                  </button>
+                  <button type="button" class="btn btn-primary btn-lg" id="publishEvent">立即发布</button>
+                </div>
+                <div class="checkbox"><label><input type="checkbox" checked/> 我同意 <a href="##">某某协议</a></label></div>
               </div>
-              <div class="checkbox"><label><input type="checkbox" checked/> 我同意 <a href="##">某某协议</a></label></div>
             </div>
           </div>
-        </div>
-      </form>
-      <!-- Modal -->
-      <div class="modal fade" id="preview-sign-form-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                  aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title" id="myModalLabel">表单预览</h4>
-            </div>
-            <div id="preform-container">
+        </form>
+        <!-- Modal -->
+        <div class="modal fade" id="preview-sign-form-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">表单预览</h4>
+              </div>
+              <div id="preform-container">
 
-              {{#if signForm}}
-                <div class="modal-body">
-                  {{> quickForm schema=signForm preserveForm='false' id="contactForm"}}
-                </div>
-              {{/if}}
+                {{#if signForm}}
+                  <div class="modal-body">
+                    {{> quickForm schema=signForm preserveForm='false' id="contactForm"}}
+                  </div>
+                {{/if}}
 
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      <div class="edit-event-mask"></div>
+    {{else}}
+      {{> loading}}
     {{/if}}
   </div>
   {{else}}

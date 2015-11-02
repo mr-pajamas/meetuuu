@@ -1,20 +1,5 @@
 // 短网址
-var eventShortUrl = new ReactiveVar('加载短网址中......');
-
-
-Template.qrcodeTpl.onRendered(function() {
-  // 获取短网址
-  var url = 'http://localhost:3000/event/detail/' + FlowRouter.getParam('eid');
-  getShortUrl(eventShortUrl, url, function(surl) {
-    // 活动二维码
-    if ($('#eventQrcode').length) {
-      $('#eventQrcode').qrcode({width: 200, height: 200, text: surl});
-      // 将 canvas 导入 a 标签，提供下载功能
-      var dataURL = $('#eventQrcode').find('canvas')[0].toDataURL();
-      $('#eventQrcodeDownLoad').attr('href', dataURL);
-    }
-  });
-});
+//var eventShortUrl = new ReactiveVar('加载短网址中......');
 
 Template.eventManage.onCreated(function() {
   var self = this;
@@ -27,14 +12,40 @@ Template.eventManage.onCreated(function() {
   });
 });
 
-getShortUrl = function(reactiveVar, url, callback) {
-  Meteor.call('bdShortUrl', url, function(err, res) {
-    if (!err && res.surl) {
-      reactiveVar.set(res.surl);
-      callback && _.isFunction(callback) && callback(res.surl);
-    }
-  })
-};
+Template.qrcodeTpl.onRendered(function() {
+  // 获取短网址
+  var shortUrl = Events.findOne({_id: new Mongo.ObjectID(FlowRouter.getParam("eid"))}).dwz;
+
+  //var url = 'http://localhost:3000/event/detail/' + FlowRouter.getParam('eid');
+
+  var qrcode = $('#eventQrcode');
+
+  qrcode.qrcode({width: 200, height: 200, text: shortUrl});
+
+  var dataURL = qrcode.find('canvas')[0].toDataURL();
+  $('#eventQrcodeDownLoad').attr('href', dataURL);
+
+
+  /*getShortUrl = function(reactiveVar, url, callback) {
+   Meteor.call('bdShortUrl', url, function(err, res) {
+   if (!err && res.surl) {
+   reactiveVar.set(res.surl);
+   callback && _.isFunction(callback) && callback(res.surl);
+   }
+   })
+   };*/
+
+  /*getShortUrl(eventShortUrl, url, function(surl) {
+   // 活动二维码
+   if ($('#eventQrcode').length) {
+   $('#eventQrcode').qrcode({width: 200, height: 200, text: surl});
+   // 将 canvas 导入 a 标签，提供下载功能
+   var dataURL = $('#eventQrcode').find('canvas')[0].toDataURL();
+   $('#eventQrcodeDownLoad').attr('href', dataURL);
+   }
+   });*/
+});
+
 
 Template.registerHelper('formatTimeLLLL', function(time) {
   return moment(time).format('LLLL');
@@ -128,9 +139,6 @@ Template.eventManage.helpers({
   'disableCancel': function() {
     var event = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
     return event && event.status === '未发布' ? 'hidden': '';
-  },
-  'eventShortUrl': function() {
-    return eventShortUrl.get();
   },
   'eventCommentCount': function() {
     return EventComments.find({'eventId': FlowRouter.getParam('eid')}).count();

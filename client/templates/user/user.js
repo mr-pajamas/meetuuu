@@ -8,6 +8,7 @@ var hasEvents = new ReactiveVar(false);
 var viewTimeoutId,
   destoryTimeoutId;
 
+
 function setSingleEvent(event) {            // 在 reactive data set之前，先刷新 scroll-spy.
   Tracker.afterFlush(function () {
     $(document.body).scrollspy("refresh");
@@ -33,6 +34,7 @@ Template.user.onCreated(function () {
         return new Mongo.ObjectID(doc.eventId);
       });
       var event = Events.findOne({_id: {$in: eventIds}, "time.end": {$gt: new Date()}}, {sort: {"time.start": 1}});
+      console.log(event);
       if (event) {      // 这里返回的是一个字符串，所以需要检测它的长度。 如果要在helper里面用到属性，就需要做判断有无数据。
         hasEvents.set(true);
         var startTime = moment(event.time.start);
@@ -72,19 +74,21 @@ Template.user.onRendered(function () {
 
   // 使用一个session 变量在两个页面之间进行通信。
 
+  //  默认是每个Tab 都带上　tab 参数。
+
   this.autorun(function () {
-    console.log(FlowRouter.getParam("tab"));
-    switch (FlowRouter.getParam("tab")) {
-      case undefined :
-        FlowRouter.setParams({tab: $(".user-tab")[0].hash});
-        $("#event-menu").addClass("in");
-        break;
-      case "#clubs":
-        $("#club-menu").addClass("in");
-        $("#clubs").tab("show");
-        break;
-      case "#basic-info-tab":
-        $("#basic-info").tab("show");
+    var tab = FlowRouter.getParam("tab");
+    if (tab === "events") {
+      $(".collapse").not($("#event-menu")).collapse("hide");
+      $("#event-menu").collapse("toggle");
+      $("#events-tab").tab("show");
+    } else if (tab === "clubs") {
+      $(".collapse").not($("#club-menu")).collapse("hide");
+      $("#club-menu").collapse("toggle");
+      $("#clubs-tab").tab("show");
+    } else if (tab === "userInfo") {
+      $(".collapse").collapse("hide");
+      $("#basic-info-tab").tab("show");
     }
   });
 });
@@ -103,6 +107,7 @@ Template.user.helpers({
     var eventIds = JoinForm.find({userId: FlowRouter.getParam("userId")}).map(function (doc) {
       return new Mongo.ObjectID(doc.eventId);
     });
+    console.log("eveentIds:  " + eventIds);
     return Events.find({_id: {$in: eventIds}},{sort: {"time.start": 1}});
     // 这个地方实现了排序，值得一看。
   },
@@ -116,13 +121,21 @@ Template.user.helpers({
     var startTimeDiff = startTime.diff(now);
     singleEvent.get();
     if (endTime.diff(now) > 0) {
+      console.log("from dynamic template");
+      console.log(startTime);
+      console.log(startTimeDiff);
+      // 只要是小于 48 小时的，都是今天或明天的模板。
       if (startTimeDiff <= 48 * 3600 * 1000) {
         if (startTimeDiff <= 24 * 3600 * 1000) {
           if (3600 * 1000 < startTimeDiff) {
+            console.log("this is a today evnet.");
             return "todayOrTomorrowEvent";
           }
+        } else {
+          return "todayOrTomorrowEvent";
         }
       } else {
+        console.log("this is a calendar evnet.");
         return "calendarEvent";
       }
     }
@@ -131,7 +144,11 @@ Template.user.helpers({
     return UserSavedEvents.find({"user.id": FlowRouter.getParam("userId")});
   },
   "singleWatchEvent": function () {
+    console.log(this);
     return Events.findOne({_id: this.event.id});
+  },
+  "poster": function () {
+    return this.poster ? this.poster : "/event-create-poster-holder.png";
   },
   "eventTime": function () {
     console.log(this);
@@ -144,7 +161,8 @@ Template.user.helpers({
     return eventTime;
   },
   "eventGroup": function () {
-    return Groups.findOne({_id: singleEvent.author.club.id});
+    console.log(this);
+    return Groups.findOne({_id: this.author.club.id});
   },
   "groups": function () {
     return MyGroups.find();
@@ -180,11 +198,14 @@ Template.user.onDestroyed(function () {
 Template.user.events({
   "click .user-tab": function (e) {
     e.preventDefault();
-    FlowRouter.setParams({tab: $(e.currentTarget)[0].hash});
-    var target = $(e.currentTarget).data().accordion;
-    $(".collapse").not($(target)).collapse("hide");
-    $(target).collapse("toggle");
-    $(e.currentTarget).tab("show");
+    var targetTab = $(e.currentTarget).attr("id");
+    if (targetTab === "events-tab") {
+      FlowRouter.setParams({tab: "events"});
+    } else if (targetTab === "clubs-tab") {
+      FlowRouter.setParams({tab: "clubs"});
+    } else if (targetTab === "basic-info-tab") {
+      FlowRouter.setParams({tab: "userInfo"});
+    }
   },
   "click .scroll-trigger": function (e) {
     var that = e.currentTarget;
@@ -192,7 +213,7 @@ Template.user.events({
       var target = $(that.hash);
       target = target.length ? target : $('[name=' + that.hash.slice(1) + ']');
       if (target.length) {
-        $('body').animate({
+        $('body, html').animate({
           scrollTop: target.offset().top - 61
           // TODO:  这里的61需要优化，以便能够适应更多情况。
         }, 300);
@@ -235,6 +256,9 @@ Template.calendarEvent.helpers({
 });
 
 Template.doingEvent.helpers({
+  "poster": function () {
+    return this.poster ? this.poster : "/event-create-poster-holder.png";
+  },
   "eventTime": function () {
     var eventTime = {},
       time = this.time;

@@ -1,5 +1,8 @@
 EditEvent = (function() {
 
+  /*
+   生成活动 ID
+   * */
   var initEventId = {
     eid: 0,
     setEventId: function () {
@@ -13,6 +16,28 @@ EditEvent = (function() {
       return this.eid;
     }
   };
+
+  //  生成活动短网址
+  var dwz = {
+    url: "",
+    setUrl: function () {
+      var url = location.protocol + "//" + location.host + "/event/detail/" + initEventId.getEventId()._str;
+      console.log("eventid from dwz object:  " + initEventId.getEventId()._str);
+      console.log("url in dwz object  " + url);
+      Meteor.defer(function () {
+        Meteor.call("bdShortUrl", url, function (err, res) {
+          if (!err && res.surl) {
+            dwz.url = res.surl;
+            console.log("set short url from dbShortUrl  " + dwz.url);
+          }
+        });
+      });
+    },
+    getUrl: function () {
+      return this.url;
+    }
+  };
+
   /**
    * event title
    */
@@ -610,6 +635,12 @@ EditEvent = (function() {
     setContent: function (contentContainerId) {
       this.contentContainerDom.set($('#' + contentContainerId));
     },
+    getDescSHA: function () {
+      var eventDesc = this.contentContainerDom.get().html().trim();
+      console.log(eventDesc);
+      console.log(CryptoJS.SHA1(eventDesc).toString());
+      return CryptoJS.SHA1(eventDesc).toString();
+    },
     uploadToQiniu: function(eventId) {
       var self = this;
       var eventDesc = this.contentContainerDom.get().html();
@@ -618,8 +649,6 @@ EditEvent = (function() {
       Meteor.call('sendRichTextInBase64', originKey, eventDesc, function(err, res) {
         if (!err && res.code === 0) {
           self.key.set(res.key);
-          console.log("response key: " + res.key);
-          console.log("eventId " + eventId);
           Meteor.call('updateEventDesc', eventId, res.key);
           console.log('活动详情上传成功');
         } else {
@@ -957,11 +986,12 @@ EditEvent = (function() {
       tags: eventTags.getTags(),
       author: author,
       private: eventPrivate.getPrivateStatus(),
-      desc: eventDesc.getContent(),
       signForm: eventSignForm.getForms()
     };
 
     var posterKey = eventPoster.getKey();
+
+    console.log("活动短网址：  " + dwz.getUrl());
 
     if(posterKey) {
       // 必须是data url 或者是占位符图片才能够存储。
@@ -970,9 +1000,30 @@ EditEvent = (function() {
       }
     }
 
-    console.log("eventId from lib-edit.js  " + eid);
-    console.log("eventId str " + eid._str);
-    eventDesc.uploadToQiniu(eid._str);
+    // 如果活动详情有更行，则1, 更新eventdesc, 2, 更新 desc sha1 value.
+    var isNewEvent = Events.findOne({_id: eid});
+    console.log(isNewEvent);
+    if ( isNewEvent ) {   // 该活动存在
+      console.log(isNewEvent.descSHA);
+      var newDescSHA = eventDesc.getDescSHA();
+      console.log(newDescSHA);
+      if ( newDescSHA != isNewEvent.descSHA) {
+        eventInfo.descSHA = newDescSHA;
+        eventInfo.desc = eventDesc.getContent();
+        Meteor.defer(function () {
+          eventDesc.uploadToQiniu(eid._str);
+        });
+        console.log("upload to qiniu");
+      }
+    } else {        // 该活动不存在。
+      console.log("这个活动还没有创建。");
+      eventInfo.descSHA = eventDesc.getDescSHA();
+      eventInfo.desc = eventDesc.getContent();
+      Meteor.defer(function () {
+        eventDesc.uploadToQiniu(eid._str);
+      });
+      eventInfo.dwz =  dwz.getUrl();
+    }
 
     Meteor.call('event.save', eventInfo, function(err, res) {
       if (!err && 0 === res.code) {
@@ -988,7 +1039,7 @@ EditEvent = (function() {
    */
   var saveEvent = function() {
     var alertSuccess = function() {
-      var eid = initEventId.getEventId();
+      var eid = initEventId.getEventId()._str;
       //created by Chen Yuan, 打开活动详情页面到当前页面，用FlowRouter.go()
       FlowRouter.go("/event/detail/" + eid);
     };
@@ -1000,7 +1051,7 @@ EditEvent = (function() {
    */
   var previewEvent = function() {
     var goToDetailPage = function() {
-      var eid = initEventId.getEventId();
+      var eid = initEventId.getEventId()._str;
       FlowRouter.go("/event/detail/" + eid + "?preview=true");
       //window.open('/event/detail/' + eid + '?preview=true');
     };
@@ -1009,13 +1060,14 @@ EditEvent = (function() {
 
   var pureInit = function() {
     initEventId.setEventId();
+    dwz.setUrl();
     eventTitle.init('');
-    var d = FlowRouter.getQueryParam('time') ? new Date(FlowRouter.getQueryParam('time')) : new Date();
-    eventTime.init('start-date', 'end-date', d, d, 30);
     eventLocation.init('', '');
     eventPrivate.init(true);      // 默认是内部活动。
     eventMemberLimit.init(0);
     eventTheme.init('创业');
+    var d = FlowRouter.getQueryParam('time') ? new Date(FlowRouter.getQueryParam('time')) : new Date();
+    eventTime.init('start-date', 'end-date', d, d, 30);
     eventTags.init([]);
     eventDesc.init('event-desc', '');
     eventSignForm.init([]);
@@ -1040,6 +1092,7 @@ EditEvent = (function() {
 
   return {
     initEventId       : initEventId,
+    dwz               : dwz,
     eventTitle        : eventTitle,
     eventTime         : eventTime,
     eventLocation     : eventLocation,

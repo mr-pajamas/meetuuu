@@ -12,4 +12,4 @@ Meteor.methods({
       return content.status === 0 ? {surl: content.tinyurl} : {surl: ''};
     }
   }
-})
+});

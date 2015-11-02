@@ -5,18 +5,31 @@ Meteor.methods({
       EventTag.update({'_id': tag._id}, {$inc: {refers: 1}});
     });
 
+    //  判断是否存在该活动。
+    var tempEvent = Events.findOne({_id: eventInfo._id});
+    if (tempEvent) {
+      Meteor.defer(function () {
+        Emitter.emit("eventModified", eventInfo);
+      });
+    } else {
+      Meteor.defer(function () {
+        Emitter.emit("eventCreated", eventInfo);
+      });
+    }
+
     // 插入或者更新
     Events.update({_id: eventInfo._id}, {'$set': eventInfo}, {upsert: true});
+
 
     console.log("海报是否存在： " + eventInfo.poster);
     if (eventInfo.poster) {         //  用来判断是否修改了海报。
       // 活动海报的更新，  活动详情的更新。
       Meteor.defer(function () {
-        var tempEvent = Events.findOne({_id: eventInfo._id}, {fields: {"poster": 1}});
 
         var newPosterUrl = ObjectStore.putDataUri(eventInfo.poster);
 
         var result = Events.update({_id: eventInfo._id}, {$set: {poster: newPosterUrl}});
+
 
         if (tempEvent && result) {
           ObjectStore.removeByUrl(tempEvent.poster);
@@ -68,12 +81,13 @@ Meteor.methods({
     }
   },
   "updatePoster": function (eid, datauri) {
-    if (datauri && datauri.startsWith("data:")) {
+    if (datauri && datauri.toString().startsWith("data:")) {
       var tempEvent = Events.findOne({_id: eid}, {fields: {"poster": 1}});
 
       var newPosterUrl = ObjectStore.putDataUri(datauri);
 
       var result =  Events.update({_id: eid}, {$set: {poster: newPosterUrl}});
+
 
       if (tempEvent && result) {
         ObjectStore.removeByUrl(tempEvent.poster);

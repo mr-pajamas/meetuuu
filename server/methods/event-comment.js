@@ -3,6 +3,7 @@ Meteor.methods({
     check(comment, CommentSchema.eventComments);
     var id;
     // 保存评论
+    console.log(comment);
     id = EventComments.insert(comment);
     // 如果是回复评论，将嵌入到评论
     if (comment.commentType === 'comment') {

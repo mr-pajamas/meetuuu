@@ -20,11 +20,14 @@ Template.userEdit.events({
       userInfo.gender = $("input[name='gender']:checked").val();
 
       if (userInfo.name.length <= 10) {
-        userInfo.avatar = template.$("#upload-avatar").find(".img-upload").imgUpload("crop");
+        var avatar = template.$("#upload-avatar").find(".img-upload").imgUpload("crop");
+        if (avatar) {
+          userInfo.avatar = avatar;
+        }
         Meteor.call("updateUserInfo", userInfo, function (error) {
             $(target).attr("disabled", false).text("保存");
             if (!error) {
-              FlowRouter.go("/users/" + FlowRouter.getParam("userId") + "/%2523basic-info");
+              FlowRouter.go("/users/" + FlowRouter.getParam("userId") + "/userInfo");
             } else {
               alert(error.reason);
             }

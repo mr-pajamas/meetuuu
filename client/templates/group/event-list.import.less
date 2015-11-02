@@ -1,0 +1,60 @@
+// created by chenyuan
+
+.group-event-list-wrap {
+  .container {
+    .page-header {
+      button {
+        margin-top: -3px;
+      }
+    }
+    ul {
+      margin-bottom: 15px;
+      @media (min-width: @screen-sm-min) {
+        margin-bottom: 35px;
+      }
+      li.media {
+        background-color: #ffffff;
+        padding: 20px;
+        @media (min-width: @screen-sm-min) {
+          padding: 15px;
+        }
+        .media-left {
+
+          .media-object {
+            width: 90px;
+            text-align: center;
+          }
+          .month {
+            background-color: #337ab7;
+            color: #ffffff;
+            padding-top: 5px;
+            padding-bottom: 5px;
+          }
+          .day {
+            font-weight: bold;
+            background-color: #eeeeee;
+            font-size: 36px;
+          }
+        }
+        .media-body {
+          position: relative;
+          .event-title {
+            display: block;
+            font-size: 16px;
+            @media (min-width: @screen-sm-min) {
+              font-size: 18px;
+            }
+            color: #333333;
+            margin-bottom: 15px;
+          }
+          .fixed-box-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}

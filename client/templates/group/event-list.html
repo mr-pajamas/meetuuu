@@ -1,0 +1,29 @@
+<template name="groupEventList">
+  <div class="group-event-list-wrap">
+    <div class="container">
+      <div class="page-header">
+        <a href="/event/edit/?gid={{currentGroupId}}" class="btn btn-success btn-lg pull-right">发布新活动</a>
+        <h1>活动</h1>
+      </div>
+      <ul class="list-unstyled">
+        {{#each events}}
+          <li class="media">
+            <div class="media-left">
+              <div class="media-object">
+                <div class="month small">{{eventCalendar.month}}</div>
+                <div class="day">{{eventCalendar.day}}</div>
+              </div>
+            </div>
+            <div class="media-body">
+              <a href="/event/detail/{{_id._str}}" class="event-title">{{title}}</a>
+              <div class="clearfix fixed-box-bottom">
+                {{#if isOvered}}<span class="event-over pull-left">已结束</span>{{/if}}
+                <span class="registered-persons pull-right">已经有{{#if joinedCount}}{{joinedCount}}{{else}}0{{/if}}&nbsp;人报名</span>
+              </div>
+            </div>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+</template>

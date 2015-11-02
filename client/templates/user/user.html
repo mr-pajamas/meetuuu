@@ -32,103 +32,105 @@
     <div class="row">
       <div class="col-sm-9 col-sm-offset-3 col-xs-12">
         <main class="tab-content">
-            <section id="event" class="tab-pane active" role="tabpanel" aria-labelledby="events-tab">
-              {{#with eventNow}}
-                {{> doingEvent}}
-              {{/with}}
-              <div id="event-registered">
-                {{#if hasEvents}}
-                  <h3 id="event-registered-anchor">{{meOrOther}}报名的活动</h3>
-                {{else}}
-                  <h3>{{meOrOther}}目前没有参加活动</h3>
-                {{/if}}
-                <ul class="list-unstyled">
-                  {{#each events}}
-                    {{> Template.dynamic template=dTemplate}}
-                  {{/each}}
-                </ul>
-              </div>
-              <div id="event-focused">
-                <h3 id="event-focused-anchor">{{meOrOther}}关注的活动</h3>
-                <ul class="list-unstyled">
-                  {{#each watchingEvents}}
+          <section id="event" class="tab-pane active" role="tabpanel" aria-labelledby="events-tab">
+            {{#with eventNow}}
+              {{> doingEvent}}
+            {{/with}}
+            <div id="event-registered">
+              {{#if hasEvents}}
+                <h3 id="event-registered-anchor">{{meOrOther}}报名的活动</h3>
+              {{else}}
+                <h3>{{meOrOther}}目前没有参加活动</h3>
+              {{/if}}
+              <ul class="list-unstyled">
+                {{#each events}}
+                  {{> Template.dynamic template=dTemplate}}
+                {{/each}}
+              </ul>
+            </div>
+            <div id="event-focused">
+              <h3 id="event-focused-anchor">{{meOrOther}}关注的活动</h3>
+              <ul class="list-unstyled">
+                {{#each watchingEvents}}
+                  {{#with singleWatchEvent}}
                     <li class="media">
                       <div class="media-left">
-                        <a href="/event/detail/{{singleWatchEvent._id._str}}"><img class="media-object" src="http://7xjl8x.com1.z0.glb.clouddn.com/{{singleWatchEvent.poster}}" alt="活动海报"/>
+                        <a href="/event/detail/{{_id._str}}"><img class="media-object" src="{{poster}}" alt="活动海报"/>
                         </a>
                       </div>
                       <div class="media-body">
-                        <a href="/event/detail/{{singleWatchEvent._id._str}}" class="event-title"><h4 class="media-heading">{{singleWatchEvent.title}}</h4></a>
-                        <div class="date-plus-total fixed-box-bottom hidden-xs"><span class="date pull-left">{{#with singleWatchEvent}}{{eventTime.start}} - {{eventTime.end}}{{/with}}</span></div>
-                        <div class="clearfix fixed-box-bottom">{{#with eventGroup}}<a href="{{pathFor 'groupHome' groupPath=eventGroup.path}}" class="event-organizer pull-left">{{eventGroup.name}}</a>{{/with}}<span class="total pull-right"><span>{{#if singleWatchEvent.joinedCount}}{{singleWatchEvent.joinedCount}}{{else}}0{{/if}}</span> / <span>{{singleWatchEvent.member}}</span></span></div>
+                        <a href="/event/detail/{{_id._str}}" class="event-title"><h4 class="media-heading">{{title}}</h4></a>
+                        <div class="date-plus-total fixed-box-bottom hidden-xs"><span class="date pull-left">{{eventTime.start}} - {{eventTime.end}}</span></div>
+                        <div class="clearfix fixed-box-bottom"><a href="{{pathFor 'groupHome' groupPath=eventGroup.path}}" class="event-organizer pull-left">{{eventGroup.name}}</a><span class="total pull-right"><span>{{#if joinedCount}}{{joinedCount}}{{else}}0{{/if}}</span> / <span>{{member}}</span></span></div>
                       </div>
                     </li>
-                  {{/each}}
-                </ul>
-              </div>
-            </section>
-            <section id="clubs" class="tab-pane" role="tabpanel" aria-labelledby="clubs-tab">
-              <div id="my-club">
-                <h3 id="club-anchor">{{meOrOther}}的俱乐部</h3>
-                <ul class="list-unstyled">
-                  {{#each groups}}
-                    <li class="media">
-                      <div class="media-left">
-                        <a href="{{pathFor 'groupHome' groupPath=path}}">
-                          <img src="{{logoUrl}}" alt="group logo"/>
-                        </a>
+                  {{/with}}
+                {{/each}}
+              </ul>
+            </div>
+          </section>
+          <section id="clubs" class="tab-pane" role="tabpanel" aria-labelledby="clubs-tab">
+            <div id="my-club">
+              <h3 id="club-anchor">{{meOrOther}}的俱乐部</h3>
+              <ul class="list-unstyled">
+                {{#each groups}}
+                  <li class="media">
+                    <div class="media-left">
+                      <a href="{{pathFor 'groupHome' groupPath=path}}">
+                        <img src="{{logoUrl}}" alt="group logo"/>
+                      </a>
+                    </div>
+                    <div class="media-body">
+                      <a href="{{pathFor 'groupHome' groupPath=path}}"><h4 class="media-heading">{{name}}</h4></a>
+                      <div class="fixed-box-bottom">
+                        <span class="group-members"><i class="fa fa-group"></i>{{memberCount}}</span>
+                        <span class="group-events"><i class="fa fa-calendar-o"></i>{{eventCount}}</span>
                       </div>
-                      <div class="media-body">
-                        <a href="{{pathFor 'groupHome' groupPath=path}}"><h4 class="media-heading">{{name}}</h4></a>
-                        <div class="fixed-box-bottom">
-                          <span class="group-members"><i class="fa fa-group"></i>{{memberCount}}</span>
-                          <span class="group-events"><i class="fa fa-calendar-o"></i>{{eventCount}}</span>
+                    </div>
+                  </li>
+                {{/each}}
+              </ul>
+            </div>
+            <div id="my-focused-club">
+              <h3 id="focused-club-anchor">{{meOrOther}}关注的俱乐部</h3>
+              <ul class="list-unstyled row group-card-list">
+                {{#each watchingGroupIds}}
+                  {{#with watchingGroups}}
+                    <li class="col-md-4 col-sm-6 group-card">
+                      <a href="{{pathFor 'groupHome' groupPath=path}}" style="background-image: url({{logoUrl}});">
+                        <div class="group-card-mask"></div>
+                        <div class="group-card-caption">
+                          <h3>{{name}}</h3>
+                          <p>{{watchingGroupsMemberCount}} 名成员，{{watchingGroupsEventCount}} 次活动</p>
                         </div>
-                      </div>
+                      </a>
                     </li>
-                  {{/each}}
-                </ul>
-              </div>
-              <div id="my-focused-club">
-                <h3 id="focused-club-anchor">{{meOrOther}}关注的俱乐部</h3>
-                <ul class="list-unstyled row group-card-list">
-                  {{#each watchingGroupIds}}
-                    {{#with watchingGroups}}
-                      <li class="col-md-4 col-sm-6 group-card">
-                        <a href="{{pathFor 'groupHome' groupPath=path}}" style="background-image: url({{logoUrl}});">
-                          <div class="group-card-mask"></div>
-                          <div class="group-card-caption">
-                            <h3>{{name}}</h3>
-                            <p>{{watchingGroupsMemberCount}} 名成员，{{watchingGroupsEventCount}} 次活动</p>
-                          </div>
-                        </a>
-                      </li>
-                    {{/with}}
-                  {{/each}}
-                </ul>
-              </div>
-            </section>
-            <section id="basic-info" class="tab-pane" role="tabpanel" aria-labelledby="basic-info-tab">
-              {{#with basicInfo}}
-                <div class="user-info">
-                  <div class="portrait"><img class="img-responsive img-circle" src="{{avatarOrDefault}}" alt="avatar"/>
-                  </div>
-                  <div class="info-list">
-                    <p><span class="name">{{profile.name}}</span>{{#if hasGender}}<span class="label label-default"><i class="fa {{userGender}}"></i></span>{{/if}}</p>
-                    {{#if userJudge}}<div class="phone-number">{{mobile}}</div>{{/if}}
-                  </div>
+                  {{/with}}
+                {{/each}}
+              </ul>
+            </div>
+          </section>
+          <section id="basic-info" class="tab-pane" role="tabpanel" aria-labelledby="basic-info-tab">
+            {{#with basicInfo}}
+              <div class="user-info">
+                <div class="portrait"><img class="img-responsive img-circle" src="{{avatarOrDefault}}" alt="avatar"/>
                 </div>
-                <ul class="list-inline tag-list">
-                  {{#each profile.traits}}
-                    <li class="tag"><span class="label label-default">{{name}}</span></li>
-                  {{/each}}
-                </ul>
-                <hr class="hidden-xs"/>
-                {{#if userJudge}}
-                  <a href="/users/{{_id}}/edit" class="btn btn-lg btn-block btn-default btn-edit">编辑</a>
-                {{/if}}
-              {{/with}}
-            </section>
+                <div class="info-list">
+                  <p><span class="name">{{profile.name}}</span>{{#if hasGender}}<span class="label label-default"><i class="fa {{userGender}}"></i></span>{{/if}}</p>
+                  {{#if userJudge}}<div class="phone-number">{{mobile}}</div>{{/if}}
+                </div>
+              </div>
+              <ul class="list-inline tag-list">
+                {{#each profile.traits}}
+                  <li class="tag"><span class="label label-default">{{name}}</span></li>
+                {{/each}}
+              </ul>
+              <hr class="hidden-xs"/>
+              {{#if userJudge}}
+                <a href="/users/{{_id}}/edit" class="btn btn-lg btn-block btn-default btn-edit">编辑</a>
+              {{/if}}
+            {{/with}}
+          </section>
         </main>
       </div>
     </div>
@@ -174,7 +176,7 @@
 <template name="doingEvent">
   <div id="event-doing">
     <h3 id="event-doing-anchor">当前的活动</h3>
-    <img class="img-responsive" src="http://7xjl8x.com1.z0.glb.clouddn.com/{{poster}}" alt="event-poster"/>
+    <img class="img-responsive" src="{{poster}}" alt="event-poster"/>
     <div class="introduction event-post-padding">
       <header class="poster-header">{{title}}</header>
       <ul class="list-inline event-intro-share">
