@@ -62,6 +62,24 @@ Template.eventDetail.onRendered(function() {
   // affix event.
   $(".fixed-bar-wrap").affix();
 
+  // 如果是从预览按钮点击过来的，禁用 报名, 收藏和评论按钮。
+
+  this.autorun(function () {
+    Session.get("eventPosterData");
+    console.log(Session.get("eventPosterData"));
+    var timeoutId = Meteor.setTimeout(function () {
+      if (Session.get("eventPosterData")) {
+        $("#saveEvent").prop("disabled", true);
+        $("#apply-event").prop("disabled", true);
+        $("#submitComment").prop("disabled", true);
+      } else {
+        $("#saveEvent").prop("disabled", false);
+        $("#apply-event").prop("disabled", false);
+        $("#submitComment").prop("disabled", false);
+      }
+      Meteor.clearTimeout(timeoutId);
+    }, 100);
+  });
 });
 
 //created by Chen Yuan.
@@ -113,8 +131,8 @@ Template.eventDetail.helpers({
       time = this.time;  // 取了with 中的时间，用于改写格式，此 helper 优先级高于 with
     if (time) {
       // 更改时间格式 ISO -> 2015年9月15日星期二下午5点37分
-      eventTime.start = moment(time.start).format('M月D日H点:m分');
-      eventTime.end = moment(time.end).format('M月D日H点:m分');
+      eventTime.start = moment(time.start).format('M月D日 HH:mm');
+      eventTime.end = moment(time.end).format('M月D日 HH:mm');
     }
     return eventTime;
   },
@@ -144,17 +162,25 @@ Template.eventDetail.helpers({
   'isJoined': function() {
     return JoinForm.findOne();
   },
-  'joinStatus':function() {
-    if(JoinForm.findOne()) {
-      if(JoinForm.findOne().status === "禁止报名") {
-        return "禁止报名";
-      } else {
-        return "已报名";
-      }
+  //  活动 id
+  "eventId": function () {
+    return FlowRouter.getParam("eid");
+  },
+  authManage: function() {
+    if(Meteor.userId()) {
+      var findEID = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
+          var groupId = findEID.author.club.id;
+          var membership = Memberships.findOne({userId: Meteor.userId(), groupId: groupId});
+          if(membership.role === "owner") {
+            return true;
+          } else if (Roles.userIsInRole(Meteor.userId(), ['create-event'], 'g'+ groupId)) {
+            console.log(Roles.userIsInRole(Meteor.userId(), ['create-event'], 'g'+ groupId));
+            return true;
+          } else {
+            return false;
+          }
 
-    } else {
-      return "我要报名";
-    }
+    } else return false;
   }
 });
 
@@ -166,8 +192,13 @@ Template.eventDetail.events({
       alert('请先登录');
       return;
     }
+
     var eid = FlowRouter.getParam('eid');
     var commentContent = $('#commentContent').val();
+    // 判断是否输入了字符。
+    if (!commentContent.trim().length) {
+      alert("请输入评论内容。");
+    }
     var comment = {
       commentType: 'event',
       eventId: eid,
@@ -178,6 +209,7 @@ Template.eventDetail.events({
         avatar: Meteor.user().profile.avatar
       }
     };
+    console.log(comment);
     Meteor.call('submitEventComment', comment, function(err, res) {
       if (!err && res.code === 0) {
         $('#commentContent').val('');
@@ -190,8 +222,9 @@ Template.eventDetail.events({
     if (location.pathname.replace(/^\//, '') == that.pathname.replace(/^\//, '') && location.hostname == that.hostname) {
       var target = $(that.hash);
       target = target.length ? target : $('[name=' + that.hash.slice(1) + ']');
+      console.log(target);
       if (target.length) {
-        $('body').animate({
+        $('body, html').animate({
           scrollTop: target.offset().top - $(".event-home").offset().top
         }, 300);
       }
@@ -223,7 +256,7 @@ Template.eventDetail.events({
 
     EditEvent.eventPoster.setKey(Session.get("eventPosterData"));
 
-    var eid = FlowRouter.getParam("eid");
+    var eid = EditEvent.initEventId.getEventId()._str;
 
     //  只是上传海报。
     Meteor.defer(function () {
@@ -237,6 +270,7 @@ Template.eventDetail.events({
     Meteor.call('setEventStatus', new Mongo.ObjectID(eid), '已发布', function(err, res) {
       if (!err && res.code === 0) {
         // TODO:  这个地方需要修改，因为本来就在详情页面，没必要再go, 这个是暂时的方案。
+        Session.set("eventPosterData", 0);
         FlowRouter.go("/event/detail/" + eid);
         //FlowRouter.go('eventManage', {'eid': eid});
       }

@@ -30,7 +30,7 @@
                   </ul>
 
                   <ul class="list-unstyled event-intro-list">
-                    <li class="clearfix"><i class="fa fa-calendar"></i><p>{{eventTime.start}}&nbsp;--&nbsp;{{eventTime.end}}</p></li>
+                    <li class="clearfix"><i class="fa fa-calendar"></i><p>{{eventTime.start}}&nbsp;~&nbsp;{{eventTime.end}}</p></li>
                     <li class="clearfix"><i class="fa fa-map-marker"></i><p>{{location.city}}{{location.address}}</p></li>
                     <li class="clearfix"><i class="fa fa-group"></i>
                       <p>
@@ -49,7 +49,8 @@
                       </a>
                     </li>
                   </ul>
-                  <buttom class="btn btn-warning {{hiddenPubBtn}}" id="publish-event" href="">发布活动</buttom>
+                  <a href="/event/edit/{{_id._str}}" class="btn btn-lg btn-default {{hiddenPubBtn}}" id="returnToModify">返回修改</a>
+                  <buttom class="btn btn-lg btn-warning {{hiddenPubBtn}}" id="publish-event">发布活动</buttom>
                 </div>
               </section>
 
@@ -89,6 +90,7 @@
               {{> eventComment}}
             </section>
           </div>
+
           <!-- Modal -->
           <div class="modal fade" id="joinEventFormModal" tabindex="-1" role="dialog" aria-labelledby="joinEventForm">
             <div class="modal-dialog" role="document">
@@ -127,9 +129,14 @@
               <li role="presentation"><a class="event-sidebar-scroll" href="#comment">留言</a></li>
               <!-- 判断用户是否已经报名 -->
               {{#if isJoined}}
-                <li id="nav-join" class="hidden-xs"><a href="" >{{joinStatus}}</a></li>
-                {{else}}
-              <li id="nav-join" class="hidden-xs"><a href=""   data-toggle="modal"  data-target="#joinEventFormModal">{{joinStatus}}</a></li>
+                <li id="nav-join" class="hidden-xs"><a href="">已报名</a></li>
+              {{else}}
+                <li id="nav-join" class="hidden-xs"><a href="" data-toggle="modal" data-target="#joinEventFormModal">{{optionSignFormTips}}</a></li>
+              {{/if}}
+              {{#if authManage}}
+              <li id="goToManage"><a href="/event/manage/{{eventId}}">管理活动</a></li>
+            <!--  {{else}}
+                <li id="goToManage"><a href="#">管理活动</a></li>-->
                 {{/if}}
             </ul>
           </div>
