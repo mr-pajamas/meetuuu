@@ -584,7 +584,8 @@ var getFormValues = function () {
 Template.editEvent.events({
   //  俱乐部选择
   "change .event-group-select": function (e) {
-    console.log("change event from group select");
+    var gid = $(e.currentTarget).val();
+    EditEvent.eventGroups.changeSelectedGroup(gid);
     Session.set("eventGroupId", $(e.currentTarget).val());
     Session.set("selectedCity", MyGroups.findOne({_id: Session.get("eventGroupId")}).homeCity);
   },

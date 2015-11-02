@@ -47,11 +47,10 @@ Meteor.methods({
     return {'code': cnt ? 0 : -1};
   },
   'denySignRequest': function(denyInfo) {
-        console.log("huuuu");
-    console.log("拒绝私有活动"+Roles.userIsInRole(Meteor.userId(), ['deny-entry'], denyInfo.groupId));
+    console.log("拒绝私有活动"+Roles.userIsInRole(Meteor.userId(), ['deny-entry'], "g"+denyInfo.groupId));
        var code={};
        var cnt, ejc;
-        if(!Meteor.userId()) return ;
+        if(!Meteor.userId()) return {code: -1} ;
         var myGroup = Memberships.findOne({userId: Meteor.userId(), groupId: denyInfo.groupId, status: "joined"});
         //如果在该分组中
         if(myGroup) {
@@ -69,11 +68,11 @@ Meteor.methods({
                  cnt = JoinForm.remove({'_id': denyInfo.id});
                  ejc = Events.update({_id: denyInfo.eid},{$inc:{joinedCount:-1}});
                }
-          } else if(Roles.userIsInRole(Meteor.userId(), ['deny-entry'], denyInfo.groupId)) {
-            console.log("拒绝私有活动"+Roles.userIsInRole(Meteor.userId(), ['deny-entry'], denyInfo.groupId));
+          } else if(Roles.userIsInRole(Meteor.userId(), ['deny-entry'],"g"+denyInfo.groupId)) {
+           // console.log("拒绝私有活动"+Roles.userIsInRole(Meteor.userId(), ['deny-entry'], "g"+denyInfo.groupId));
             //如果不具有公开活动的权限而是操作公开活动
-            if(!Roles.userIsInRole(Meteor.userId(), ['create-open-event'], 'g'+ denyInfo.groupId) && !privateStatus) {
-              return ;
+            if(!Roles.userIsInRole(Meteor.userId(), ['create-open-event'], 'g'+ denyInfo.groupId) && ! denyInfo.private) {
+              return {code: -1} ;;
             } else {
               if (denyInfo.forever === true) {
                    status = '禁止报名';
@@ -83,7 +82,7 @@ Meteor.methods({
                  if(status == '禁止报名') {
                    if(!Roles.userIsInRole(Meteor.userId(), ['block-entry'], 'g'+ denyInfo.groupId))
                    {
-                     return ;
+                      return {code: -1} ;;
                    }
                     cnt = JoinForm.update({'_id': denyInfo.id}, {$set: {'denyResult': denyInfo.result, 'status': status}});
                     ejc = Events.update({_id: denyInfo.eid},{$inc:{joinedCount:-1}});
