@@ -1,5 +1,11 @@
 .group-member-list-main {
 
+  .page-header {
+    .btn.pull-right {
+      margin-top: -3px;
+    }
+  }
+
   form {
     margin-bottom: 18px;
   }
@@ -20,17 +26,32 @@
         margin-bottom: 0;
 
         a {
+          display: block;
           .clearfix();
+          text-decoration: none;
+
+          &:hover {
+            background-color: #eee;
+          }
 
           img {
             .img-responsive();
-            width: 80px;
+            width: 87px;
             float: left;
           }
 
           .caption {
             margin-left: 80px + 10;
+            padding-right: 20px;
+            position: relative;
 
+            .label {
+              position: absolute;
+              right: -4px;
+              top: -4px;
+              display: inline-block;
+              padding: 4px 8px;
+            }
           }
         }
       }

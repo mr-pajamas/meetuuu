@@ -3,5 +3,9 @@
 
   {{> Template.dynamic template=main}}
 
-  {{> footerCompact}}
+  {{#with footer}}
+    {{> Template.dynamic template=this}}
+  {{else}}
+    {{> footerCompact}}
+  {{/with}}
 </template>

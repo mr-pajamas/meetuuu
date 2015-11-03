@@ -1,0 +1,158 @@
+.group-settings-main {
+
+  .page-header {
+    margin-bottom: 0;
+  }
+
+  .group-settings-affix {
+    width: 100%;
+
+    + .container {
+      margin-top: 46px + 15px;
+    }
+
+    &.affix-top {
+      position: absolute;
+    }
+
+    &.affix {
+      top: @navbar-height + 1;
+    }
+    &.affix-bottom {
+      position: absolute;
+    }
+
+    .nav-pills {
+      width: 100%;
+
+      > li {
+        float: none;
+        display: table-cell;
+        width: 1%;
+
+        > a {
+          text-align: center;
+          margin-bottom: 0;
+          border-radius: 0;
+          font-size: 16px;
+          padding: 12px 16px;
+        }
+      }
+    }
+
+    @media (max-width: @screen-xs-max) {
+      .container {
+        width: 100%;
+        .row > * {
+          padding-left: 0;
+          padding-right: 0;
+        }
+      }
+    }
+
+    @media (max-width: @screen-sm-max) {
+      background-color: white;
+      z-index: 500;
+    }
+
+    @media (min-width: @screen-sm-min) {
+      &.affix {
+        top: @navbar-lg-height + 1;
+      }
+    }
+
+    @media (min-width: @screen-md-min) {
+
+      padding-top: 20px;
+
+      + .container {
+        margin-top: 20px;
+      }
+
+      .row > div > div {
+        min-height: 600px;
+      }
+
+      .nav-pills {
+        > li {
+          float: none;
+          display: block;
+          width: 100%;
+
+          > a {
+            text-align: left;
+          }
+
+          + li {
+            margin-top: 2px;
+            margin-left: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .group-settings-page {
+    background-color: white;
+    padding-top: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}
+
+.group-setting-basic-form {
+  .img-upload {
+    border: 1px solid @input-border;
+    margin-bottom: 0;
+
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+
+    @media (min-width: @screen-sm-min) {
+      width: 250px;
+    }
+
+    @media (min-width: @screen-md-min) {
+      width: 100%;
+    }
+  }
+}
+
+.group-setting-roles-list {
+  > a {
+    padding: 15px;
+
+    .close:disabled {
+      cursor: default;
+      color: @brand-danger;
+      text-decoration: none;
+      .opacity(.8);
+    }
+
+    .close + .close {
+      margin-right: .5em;
+    }
+
+    h4 {
+      margin-bottom: 10px;
+      line-height: 22px;
+
+      .label {
+        display: inline-block;
+        font-size: 85%;
+        vertical-align: top;
+        margin-left: .3em;
+      }
+    }
+  }
+}
+
+.group-setting-roles-form {
+  .radio,
+  .checkbox {
+    height: 34px !important;
+  }
+}

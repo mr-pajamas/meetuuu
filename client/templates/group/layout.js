@@ -5,7 +5,7 @@ Template.groupLayout.onCreated(function () {
   var template = this;
 
   template.autorun(function () {
-    template.groupHandle && template.groupHandle.stop();
+    //template.groupHandle && template.groupHandle.stop();
     template.groupHandle = template.subscribe("singleGroupByPath", FlowRouter.getParam("groupPath"));
   });
 });

@@ -1,0 +1,261 @@
+<template name="groupSettings">
+
+  <main class="group-settings-main">
+    <div class="container">
+      <div class="page-header">
+        <h1 class="text-muted"><i class="fa fa-wrench"></i> 设置</h1>
+      </div>
+    </div>
+
+    <div class="group-settings-affix">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3">
+            <ul class="nav nav-pills">
+              <li role="presentation" class="{{isActiveRoute name='groupSettingBasic'}}"><a href="{{pathFor 'groupSettingBasic' groupPath=path}}">基本信息</a></li>
+              <li role="presentation" class="{{isActiveRoute regex='^groupSettingRole'}}"><a href="{{pathFor 'groupSettingRoleList' groupPath=path}}">角色与权限</a></li>
+              <li role="presentation" class="{{isActiveRoute name='groupSettingPrivacy'}}"><a href="{{pathFor 'groupSettingPrivacy' groupPath=path}}">可见性设置</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-9 col-md-offset-3">
+          <div class="group-settings-page">
+            {{> Template.dynamic template=currentRouteName}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</template>
+
+
+<template name="groupSettingBasic">
+  <form class="form-horizontal group-setting-basic-form">
+    <div class="form-group">
+      <label for="inputGroupName" class="col-md-2 control-label">组织名</label>
+      <div class="col-md-9">
+        <input type="text" class="form-control" id="inputGroupName" name="name" placeholder="逗比俱乐部&hellip;">
+      </div>
+    </div>
+
+    <div class="form-group hidden-xs">
+      <label for="inputGroupPath" class="col-md-2 control-label">组织URL</label>
+      <div class="col-md-9">
+        <div class="input-group">
+          <span class="input-group-addon">http://meetuuu.com/groups/</span>
+          <input type="text" class="form-control" id="inputGroupPath" name="path" placeholder="path-of-group&hellip;">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="inputGroupBadge" class="col-md-2 control-label">组织徽标</label>
+      <div class="col-md-4">
+        {{> imgUpload width=400 height=400 defaultSrc="/images/default-badge.png"}}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="inputMemberAlias" class="col-md-2 control-label">成员自称</label>
+      <div class="col-md-4">
+        <input type="text" class="form-control" id="inputMemberAlias" name="memberAlias"
+               placeholder="逗比&hellip;">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="inputGroupDescription" class="col-md-2 control-label">组织简介</label>
+      <div class="col-md-9">
+        <textarea class="form-control" rows="5" id="inputGroupDescription" name="description" placeholder="向大家介绍一下这个可爱的组织吧！"></textarea>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-9 text-right">
+        <button type="submit" class="btn btn-primary btn-lg btn-center-block-xs">保存</button>
+      </div>
+    </div>
+  </form>
+</template>
+
+
+<template name="groupSettingRoleList">
+  <a href="{{pathFor 'groupSettingRole' groupPath=path roleId=newRoleId}}" class="btn btn-success btn-center-block-xs" role="button"><i class="fa fa-plus"></i> 添加新角色</a>
+  <hr>
+  <div class="list-group group-setting-roles-list">
+    {{#each roleList}}
+      <a href="{{pathFor 'groupSettingRole' groupPath=../path roleId=_id}}" class="list-group-item">
+        {{#unless owner}}
+          {{#unless default}}<button type="button" class="close" aria-label="删除"><i class="fa fa-trash-o"></i></button>{{/unless}}
+          <button type="button" class="close" aria-label="默认角色" disabled="{{default 'disabled'}}"><i class="fa fa-flag"></i></button>
+        {{/unless}}
+
+        <h4 class="list-group-item-heading">{{name}}{{!-- {{#if default}}<span class="label label-primary">默认角色</span>{{/if}}--}}</h4>
+        <p class="list-group-item-text text-muted">权限：{{permissionCount}}</p>
+      </a>
+    {{/each}}
+  </div>
+</template>
+
+<template name="groupSettingRole">
+  <a href="{{pathFor 'groupSettingRoleList' groupPath=path}}" class="btn btn-default group-setting-roles-back"><i class="fa fa-chevron-left"></i> 返回角色列表</a>
+  <hr>
+
+  {{#with role}}
+    <form class="form-horizontal group-setting-roles-form">
+      <div class="form-group">
+        <label for="inputRoleName" class="col-xs-12">角色名</label>
+        <div class="col-xs-12">
+          <input type="text" class="form-control" id="inputRoleName" name="name" placeholder="活动召集人&hellip;" value="{{name}}">
+        </div>
+      </div>
+
+      {{!--
+      <div class="form-group">
+        <div class="col-xs-12">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" aria-describedby="defaultRoleHelp" disabled="{{isOwnerRole}}" checked="{{isDefaultRole}}"> 默认角色
+            </label>
+          </div>
+          <span id="defaultRoleHelp" class="help-block">默认角色将自动分配给新加入的成员</span>
+        </div>
+      </div>
+      --}}
+
+      <div class="panel panel-danger">
+        <div class="panel-heading">
+          <h3 class="panel-title">成员管理</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="checkbox col-sm-4">
+              <label>
+                <input type="checkbox" name="permissions" value="approve-membership" disabled="{{isOwnerRole}}" checked="{{hasPermission 'approve-membership'}}"> 成员入会审批
+              </label>
+            </div>
+            <div class="checkbox col-sm-4">
+              <label>
+                <input type="checkbox" name="permissions" value="offer-membership" disabled="{{isOwnerRole}}" checked="{{hasPermission 'offer-membership'}}"> 邀请入会
+              </label>
+            </div>
+            <div class="checkbox col-sm-4">
+              <label>
+                <input type="checkbox" name="permissions" value="edit-member" disabled="{{isOwnerRole}}" checked="{{hasPermission 'edit-member'}}"> 成员编辑
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="checkbox col-sm-4">
+              <label>
+                <input type="checkbox" name="permissions" value="expel-member" disabled="{{isOwnerRole}}" checked="{{hasPermission 'expel-member'}}"> 开除成员
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">活动组织</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="checkbox col-sm-4">
+              <label>
+                <input type="checkbox" name="permissions" value="create-event" disabled="{{isOwnerRole}}" checked="{{hasPermission 'create-event'}}"> 创建内部活动
+              </label>
+            </div>
+            <div class="checkbox col-sm-4">
+              <label>
+                <input type="checkbox" name="permissions" value="create-open-event" disabled="{{isOwnerRole}}" checked="{{hasPermission 'create-open-event'}}"> 创建公开活动
+              </label>
+            </div>
+            <div class="checkbox col-sm-4">
+              <label>
+                <input type="checkbox" name="permissions" value="modify-event" disabled="{{isOwnerRole}}" checked="{{hasPermission 'modify-event'}}"> 编辑活动
+              </label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="checkbox col-sm-4">
+              <label>
+                <input type="checkbox" name="permissions" value="cancel-event" disabled="{{isOwnerRole}}" checked="{{hasPermission 'cancel-event'}}"> 取消活动
+              </label>
+            </div>
+            <div class="checkbox col-sm-4">
+              <label>
+                <input type="checkbox" name="permissions" value="deny-entry" disabled="{{isOwnerRole}}" checked="{{hasPermission 'deny-entry'}}"> 拒绝报名
+              </label>
+            </div>
+            <div class="checkbox col-sm-4">
+              <label>
+                <input type="checkbox" name="permissions" value="block-entry" disabled="{{isOwnerRole}}" checked="{{hasPermission 'block-entry'}}"> 永久拒绝报名
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">讨论区建设</h3>
+        </div>
+        <div class="panel-body">
+        </div>
+      </div>
+      -->
+      <hr>
+
+      <div class="form-group">
+        <div class="col-md-offset-2 col-md-9 text-right">
+          <button type="submit" class="btn btn-primary btn-lg btn-center-block-xs">保存并返回</button>
+        </div>
+      </div>
+    </form>
+  {{/with}}
+</template>
+
+
+<template name="groupSettingPrivacy">
+  <form class="form-horizontal group-setting-privacy-form">
+    <div class="form-group">
+      <div class="col-sm-offset-1 col-sm-11">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" aria-describedby="publishMembersHelp"> 公开成员信息
+          </label>
+        </div>
+        <span id="publishMembersHelp" class="help-block">外部人员可以访问俱乐部成员的信息</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-1 col-sm-11">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" aria-describedby="publishEventsHelp"> 公开内部活动信息
+          </label>
+        </div>
+        <span id="publishEventsHelp" class="help-block">外部人员可以访问俱乐部内部活动的标题和时间</span>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-9 text-right">
+        <button type="submit" class="btn btn-primary btn-lg btn-center-block-xs">保存</button>
+      </div>
+    </div>
+  </form>
+</template>

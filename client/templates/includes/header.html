@@ -41,9 +41,9 @@
                   <div><span>{{profile.name}}</span> &nbsp;<span class="caret"></span></div>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a href="/users/{{_id}}/events">我的活动</a></li>
-                  <li><a href="/users/{{_id}}/clubs">我的组织</a></li>
-                  <li><a href="/users/{{_id}}/userInfo">个人中心</a></li>
+                  <li><a href="{{pathFor 'user' userId=_id tab='events'}}">我的活动</a></li>
+                  <li><a href="{{pathFor 'user' userId=_id tab='clubs'}}">我的组织</a></li>
+                  <li><a href="{{pathFor 'user' userId=_id tab='userInfo'}}">个人中心</a></li>
                   <li role="separator" class="divider hidden-xs"></li>
                   <li><a href="#">注销</a></li>
                 </ul>

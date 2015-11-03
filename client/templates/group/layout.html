@@ -1,17 +1,17 @@
 <template name="groupLayout">
   {{#unless groupReady}}
-    {{> header}}
-    {{> loading}}
-    {{> footerCompact}}
+    {{> layout main="loading"}}
   {{else}}
     {{#with group}}
       {{> groupHeader}}
       {{> Template.dynamic template=../main}}
-      {{> footerCompact}}
+      {{#with ../footer}}
+        {{> Template.dynamic template=this}}
+      {{else}}
+        {{> footerCompact}}
+      {{/with}}
     {{else}}
-      {{> header}}
-      {{> notFound}}
-      {{> footer}}
+      {{> layout main="notFound" footer="footer"}}
     {{/with}}
   {{/unless}}
 </template>

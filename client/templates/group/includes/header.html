@@ -40,7 +40,7 @@
             <li class="{{isActiveRoute name='groupEventList'}}"><a href="{{pathFor 'groupEventList' groupPath=path}}"><i class="fa fa-calendar fa-fw"></i> 活动</a></li>
             <!--<li><a href="#">相册</a></li>-->
             <!--<li><a href="#">讨论区</a></li>-->
-            <li><a href="#"><i class="fa fa-wrench fa-fw"></i> 管理</a></li>
+            <li class="{{isActiveRoute regex='^groupSetting'}}"><a href="{{pathFor 'groupSettingBasic' groupPath=path}}"><i class="fa fa-wrench fa-fw"></i> 设置</a></li>
             {{#unless currentUser}}<li><a href="#"><i class="fa fa-sign-in fa-fw"></i> 登录 / 注册</a></li>{{/unless}}
           </ul>
         </div>
