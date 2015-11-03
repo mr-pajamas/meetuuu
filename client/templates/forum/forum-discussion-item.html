@@ -10,7 +10,7 @@
           <span class="glyphicon glyphicon-time">{{dateFormate createdAt }}</span>
         </p>
         <p>
-          <span><a href="#{{_id}}" id="{{_id}}">锚</a></span>
+         <!-- <span><a href="#{{_id}}" id="{{_id}}">锚</a></span>-->
           {{#if canModify}}
             <span> <a href="{{pathFor "editDisc" discId=_id }}">编辑</a> </span>
           {{/if}}
@@ -31,9 +31,9 @@
         </a>
       </div>
       {{#if flagStatus}}
-        <div class="discussion-item-content-container animate">
+        <div class="discussion-item-content-container1 animate">
           <div class="content">
-            <p>{{contentFormate}}...
+            <p class="flagImgShow">{{contentFormate}}...
             </p>
           </div>
           <div class="content-img">
@@ -47,7 +47,7 @@
           </div>
         </div>
       {{else}}
-        <div class="discussion-item-content-container animate" id="discussion-item-content-container">
+        <div class="discussion-item-content-container2 animate" id="discussion-item-content-container">
           <p>
             {{{content}}}
           </p>
