@@ -64,14 +64,12 @@ Template.eventManage.helpers({
       return ;
     } else {
       groupId= findEID.author.club.id;
-      console.log("该活动俱乐部"+groupId);
     }
     var membership = Memberships.findOne({userId: Meteor.userId(), groupId: groupId});
     if (membership) {
       if(membership.role === "owner") {
         return {};
       } else if (Roles.userIsInRole(Meteor.userId(), ['modify-event'], 'g'+ groupId)) {
-        console.log(Roles.userIsInRole(Meteor.userId(), ['modify-event'], 'g'+ groupId));
         return {};
       } else {
         return "disabled";
@@ -96,12 +94,10 @@ Template.eventManage.helpers({
       return ;
     }
     var groupId = findEID.author.club.id;
-    console.log(groupId);
     var privateStatus = findEID.private;
     if(myGroup) {
       //如果有聚乐部
       var getMyGroupId = MyGroups.findOne({_id: groupId});
-      console.log(getMyGroupId);
       //如果我在该分组
       if(getMyGroupId) {
         var membership = Memberships.findOne({userId: Meteor.userId(), groupId: groupId});
@@ -109,7 +105,6 @@ Template.eventManage.helpers({
           return true;
           //是不是具有发帖权限
         } else if(Roles.userIsInRole(Meteor.userId(), ['create-event'], 'g'+ groupId)) {
-          //console.log("权限"+Roles.userIsInRole(Meteor.userId(), ['create-open-event'], 'g'+ groupId)+"活动状态"+privateStatus);
           return true;
         } else {
           return false;
@@ -127,7 +122,6 @@ Template.eventManage.helpers({
      var event = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
      var path = event && 'g' + event.author.club.id;
      var membership = Memberships.findOne({userId: Meteor.userId(), groupId: event.author.club.id});
-     console.log(Roles.userIsInRole(Meteor.userId(), ['block-entry'], path));
      if (!Roles.userIsInRole(Meteor.userId(), ['block-entry'], path) && !(membership.role === "owner")) {
       return "disabled";
      }
@@ -217,7 +211,6 @@ Template.eventManage.events({
     }
     var eid = FlowRouter.getParam('eid');
     var event = Events.findOne({_id: new Mongo.ObjectID(eid)});
-    //console.log(event);
     if(confirm("您是否要发布该活动！")) {
       Meteor.call('setEventStatus', new Mongo.ObjectID(eid), '已发布', event.author.club.id, event.private);
     }
@@ -250,7 +243,6 @@ Template.eventManage.events({
       private: private
     };
     Meteor.call('denySignRequest', denyInfo, function(err, res) {
-      console.log(res.code);
       if (!err && res.code === 0) {
         alert('拒绝成功');
       } else {

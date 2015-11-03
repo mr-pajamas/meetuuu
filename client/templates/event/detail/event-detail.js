@@ -65,7 +65,6 @@ Template.eventDetail.onRendered(function() {
 
   this.autorun(function () {
     var preview = FlowRouter.getQueryParam("preview");
-    console.log(preview);
     var timeoutId = Meteor.setTimeout(function () {
       if (preview === "true") {
         $("#saveEvent").prop("disabled", true);
@@ -192,7 +191,6 @@ Template.eventDetail.helpers({
       if(membership.role === "owner") {
         return true;
       } else if (Roles.userIsInRole(Meteor.userId(), ['create-event'], 'g'+ groupId)) {
-        console.log(Roles.userIsInRole(Meteor.userId(), ['create-event'], 'g'+ groupId));
         return true;
       } else {
         return false;
@@ -227,7 +225,6 @@ Template.eventDetail.events({
         avatar: Meteor.user().profile.avatar
       }
     };
-    console.log(comment);
     Meteor.call('submitEventComment', comment, function(err, res) {
       if (!err && res.code === 0) {
         $('#commentContent').val('');
@@ -240,7 +237,6 @@ Template.eventDetail.events({
     if (location.pathname.replace(/^\//, '') == that.pathname.replace(/^\//, '') && location.hostname == that.hostname) {
       var target = $(that.hash);
       target = target.length ? target : $('[name=' + that.hash.slice(1) + ']');
-      console.log(target);
       if (target.length) {
         $('body, html').animate({
           scrollTop: target.offset().top - $(".event-home").offset().top
@@ -275,7 +271,6 @@ Template.eventDetail.events({
     EditEvent.eventPoster.setKey(Session.get("eventPosterData"));
 
     var eid = FlowRouter.getParam("eid");
-    console.log("eid from event detail page  " + eid);
 
     //  只是上传海报。
     Meteor.defer(function () {
@@ -299,8 +294,7 @@ Template.eventDetail.events({
       if (!err && res.code === 0) {
         // TODO:  这个地方需要修改，因为本来就在详情页面，没必要再go, 这个是暂时的方案。
         Session.set("eventPosterData", 0);
-        FlowRouter.go("/event/detail/" + eid);
-        //FlowRouter.go('eventManage', {'eid': eid});
+        FlowRouter.go("eventDetail", {eid: eid});
       }
     });
   },

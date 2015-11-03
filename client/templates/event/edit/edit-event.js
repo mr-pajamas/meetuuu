@@ -29,7 +29,6 @@ Template.editEvent.onCreated(function () {
           if (!eventInfo) {
             return ;
           } else {
-            console.log("this is a existed event");
             EditEvent.InitWithData(eventInfo);
           }
           isInitFinished.set(true);
@@ -98,7 +97,6 @@ Template.editEvent.onRendered(function() {
    }
 
    $('#setDrag').on('click', function () {
-   console.log($image.cropper("getDataURL"));
    var $btn = $(this).button('loading');
    // business logic...
    Meteor.call('sendPosterInBase64', EditEvent.eventPoster.getKey(), $image.cropper("getDataURL"), function(err, res) {
@@ -152,7 +150,6 @@ Template.editEvent.helpers({
   //验证是否具有权限
   postAuthRole: function() {
     //选择的聚乐部
-    //console.log(EditEvent.eventGroups.selectedGroup.get());
     //var membership = Memberships.findOne({userId: Meteor.userId()});
     var myGroup =MyGroups.find().fetch();
     var groupId = FlowRouter.getQueryParam("eid");
@@ -163,14 +160,9 @@ Template.editEvent.helpers({
     if(findEID) {
       var groupId = findEID.author.club.id;
       var privateStatus = findEID.private;
-      //console.log(privateStatus);
       if(myGroup) {
-        //console.log("ID is"+findEID.author.club.id);
         //如果有聚乐部
         var getMyGroupId = MyGroups.findOne({_id: groupId});
-        /*console.log(Meteor.userId());
-         console.log("g"+groupId);
-         console.log(Roles.userIsInRole(Meteor.userId(), ['modify-event'], 'g'+ groupId));*/
         //如果我在该分组
         if(getMyGroupId) {
           var membership = Memberships.findOne({userId: Meteor.userId(), groupId: groupId});
@@ -178,7 +170,6 @@ Template.editEvent.helpers({
             return true;
             //是不是具有发帖权限Meteor.userId(), ['create-event'], 'g'+ groupId) &&
           } else if(Roles.userIsInRole(Meteor.userId(), ['modify-event'], 'g'+ groupId)) {
-            console.log("权限"+Roles.userIsInRole(Meteor.userId(), ['create-open-event'], 'g'+ groupId)+"活动状态"+privateStatus+"修改权限"+Roles.userIsInRole(Meteor.userId(), ['modify-event'], 'g'+ groupId));
             if(!Roles.userIsInRole(Meteor.userId(), ['create-open-event'], 'g'+ groupId) && !privateStatus) {
               return false;
             } else {
@@ -264,19 +255,24 @@ Template.editEvent.helpers({
   },
   //验证是否可以发布公开消息
   openEvent: function() {
-    var selectGroup = EditEvent.eventGroups.selectedGroup.get();
-    console.log(selectGroup);
+    // 获取实时更改的俱乐部Id.
+    var selectGroup;
+    var initialSelectedGroup = EditEvent.eventGroups.selectedGroup;
+    if (Session.get("eventGroupId")) {
+      selectGroup = Session.get("eventGroupId");
+    } else if (initialSelectedGroup) {
+      selectGroup = initialSelectedGroup.id;
+    }
     if (!selectGroup) {
       return "disabled";
     }
-    //console.log(EditEvent.eventGroups.selectedGroup.get());
     //已经通过权限认证
-    var membership = Memberships.findOne({userId: Meteor.userId(), groupId: selectGroup.id});
+    var membership = Memberships.findOne({userId: Meteor.userId(), groupId: selectGroup});
     //如果是群主
     if(membership && membership.role === "owner") {
       return {};
       ////如果不具备发布公开活动的权限
-    } else if(Roles.userIsInRole(Meteor.userId(), ['create-open-event'], 'g'+ selectGroup.id)) {
+    } else if(Roles.userIsInRole(Meteor.userId(), ['create-open-event'], 'g'+ selectGroup)) {
       return {};
     } else {
       return "disabled";
@@ -292,14 +288,16 @@ Template.editEvent.helpers({
   },
   poster: function () {
     var posterData = Session.get("eventPosterData");
+    var posterUrl = Events.findOne();
 
     if (posterData) {
-      if (posterData.startsWith("data:")) {
+      if (posterData === 1) {
+        return posterUrl ? posterUrl.poster : "/event-create-poster-holder.png";
+      } else if (posterData.startsWith("data:")) {
         return posterData;
       }
     } else {
-      var posterUrl = EditEvent.eventPoster.getKey();
-      return posterUrl ? posterUrl : "/event-create-poster-holder.png";
+      return posterUrl ? posterUrl.poster : "/event-create-poster-holder.png";
     }
   },
   // 加入的俱乐部，且具有创建活动的权利
@@ -408,7 +406,6 @@ Template.editEvent.helpers({
   },
   // 活动是否公开
   private: function() {
-    //console.log(EditEvent.eventPrivate.getPrivateStatus());
     return (EditEvent.eventPrivate.getPrivateStatus() && {}) || "checked";
   },
   // 活动人数

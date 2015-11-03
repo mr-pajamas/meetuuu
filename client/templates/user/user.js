@@ -18,7 +18,6 @@ function setSingleEvent(event) {            // 在 reactive data set之前，先
 }
 
 Template.user.onCreated(function () {
-  console.log("from on created.");
   var template = this;
   this.autorun(function () {
     var userId = FlowRouter.getParam('userId');
@@ -35,7 +34,6 @@ Template.user.onCreated(function () {
         return new Mongo.ObjectID(doc.eventId);
       });
       var event = Events.findOne({_id: {$in: eventIds}, "time.end": {$gt: new Date()}}, {sort: {"time.start": 1}});
-      console.log(event);
       if (event) {      // 这里返回的是一个字符串，所以需要检测它的长度。 如果要在helper里面用到属性，就需要做判断有无数据。
         hasEvents.set(true);
         var startTime = moment(event.time.start);
@@ -108,7 +106,6 @@ Template.user.helpers({
     var eventIds = JoinForm.find({userId: FlowRouter.getParam("userId")}).map(function (doc) {
       return new Mongo.ObjectID(doc.eventId);
     });
-    console.log("eveentIds:  " + eventIds);
     return Events.find({_id: {$in: eventIds}, "time.end": {$gt: new Date()}},{sort: {"time.start": 1}});
     // 这个地方实现了排序，值得一看。
   },
@@ -121,11 +118,9 @@ Template.user.helpers({
     var tomorrow = moment().add(1,"day");
     singleEvent.get();
     if (endTime.diff(moment()) > 0) {
-      console.log("from dynamic template");
-      console.log(startTime);
-      console.log(tomorrow.endOf("day").diff(startTime.endOf("day")));
       //这里的代码需要优化。
-      if ( !tomorrow.endOf("day").diff(startTime.endOf("day")) || !moment().endOf("day").diff(moment(this.time.start).endOf("day"))) {
+      if ( !tomorrow.endOf("day").diff(startTime.endOf("day"))
+        || !moment().endOf("day").diff(moment(this.time.start).endOf("day"))) {
         if ( !moment(this.time.start).endOf("day").diff(moment().endOf("day")) ) {
           if (3600 * 1000 < moment(this.time.start).diff(moment())) {
             return "todayOrTomorrowEvent";
@@ -142,7 +137,6 @@ Template.user.helpers({
     return UserSavedEvents.find({"user.id": FlowRouter.getParam("userId")});
   },
   "singleWatchEvent": function () {
-    console.log(this);
     return Events.findOne({_id: this.event.id});
   },
   "poster": function () {
@@ -158,7 +152,6 @@ Template.user.helpers({
     return eventTime;
   },
   "eventGroup": function () {
-    console.log(this);
     return Groups.findOne({_id: this.author.club.id});
   },
   "groups": function () {
@@ -171,7 +164,6 @@ Template.user.helpers({
     return GroupWatchings.find({"userId": Meteor.userId()});
   },
   "watchingGroups": function () {
-    console.log(this.groupId);
     return MyWatchingGroups.findOne({_id: this.groupId});
   },
   "watchingGroupsMemberCount": function () {

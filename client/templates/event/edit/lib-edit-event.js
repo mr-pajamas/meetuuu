@@ -22,13 +22,10 @@ EditEvent = (function() {
     url: "",
     setUrl: function () {
       var url = location.protocol + "//" + location.host + "/event/detail/" + initEventId.getEventId()._str;
-      console.log("eventid from dwz object:  " + initEventId.getEventId()._str);
-      console.log("url in dwz object  " + url);
       Meteor.defer(function () {
         Meteor.call("bdShortUrl", url, function (err, res) {
           if (!err && res.surl) {
             dwz.url = res.surl;
-            console.log("set short url from dbShortUrl  " + dwz.url);
           }
         });
       });
@@ -56,7 +53,6 @@ EditEvent = (function() {
     },
     checkVilidation: function() {
       if (!this.content.get()) {
-        console.log('活动标题尚未创建成功');
         return false
       }
       return true;
@@ -236,7 +232,7 @@ EditEvent = (function() {
    */
   var eventGroups = {
     groupOptions: new ReactiveVar([]),
-    selectedGroup: new ReactiveVar(),
+    selectedGroup: null,
     inited: false,
     // 俱乐部Id
     init: function(gid) {
@@ -261,23 +257,23 @@ EditEvent = (function() {
             };
             if (group._id == gid) {
               temp.attr.selected = true;
-              self.selectedGroup.set({
+              self.selectedGroup = {
                 name: group.name,
                 id: group._id,
                 path: group.path
-              });
+              };
             }
             groups.push(temp);
           }
           }
         });
-        if (!self.selectedGroup.get()) {
+        if (!self.selectedGroup) {
           if (groups.length) {
-            self.selectedGroup.set({
+            self.selectedGroup = {
             name: groups[0] && groups[0].name,
             id: groups[0] && groups[0].attr['data-gid'],
             path: groups[0] && groups[0].path
-            });
+            };
           }
         }
         self.groupOptions.set(groups);
@@ -288,7 +284,7 @@ EditEvent = (function() {
       return this.groupOptions.get();
     },
     getSelectdGroup: function() {
-      return this.selectedGroup.get();
+      return this.selectedGroup;
     },
     changeSelectedGroup: function(gid) {
       var newSelectedGroup;
@@ -298,7 +294,7 @@ EditEvent = (function() {
         id: gid,
         path: group.path
       };
-      this.selectedGroup.set(newSelectedGroup);
+      this.selectedGroup = newSelectedGroup;
       /*this.groupOptions.get().forEach(function(group) {
        if (group.attr['data-gid'] === gid) {
        newSelectedGroup = {
@@ -439,9 +435,6 @@ EditEvent = (function() {
        // 输出裁剪的参数信息
        }
        });*/
-
-
-      key = Session.get("eventPosterData") ? Session.get("eventPosterData") : key;
 
       this.key.set(key);
 
@@ -637,8 +630,6 @@ EditEvent = (function() {
     },
     getDescSHA: function () {
       var eventDesc = this.contentContainerDom.get().html().trim();
-      console.log(eventDesc);
-      console.log(CryptoJS.SHA1(eventDesc).toString());
       return CryptoJS.SHA1(eventDesc).toString();
     },
     uploadToQiniu: function(eventId) {
@@ -650,7 +641,6 @@ EditEvent = (function() {
         if (!err && res.code === 0) {
           self.key.set(res.key);
           Meteor.call('updateEventDesc', eventId, res.key);
-          console.log('活动详情上传成功');
         } else {
           console.log("error  " + err);
         }
@@ -991,8 +981,6 @@ EditEvent = (function() {
 
     var posterKey = eventPoster.getKey();
 
-    console.log("活动短网址：  " + dwz.getUrl());
-
     if(posterKey) {
       // 必须是data url 或者是占位符图片才能够存储。
       if (posterKey.startsWith("data:")) {
@@ -1002,21 +990,16 @@ EditEvent = (function() {
 
     // 如果活动详情有更行，则1, 更新eventdesc, 2, 更新 desc sha1 value.
     var isNewEvent = Events.findOne({_id: eid});
-    console.log(isNewEvent);
     if ( isNewEvent ) {   // 该活动存在
-      console.log(isNewEvent.descSHA);
       var newDescSHA = eventDesc.getDescSHA();
-      console.log(newDescSHA);
       if ( newDescSHA != isNewEvent.descSHA) {
         eventInfo.descSHA = newDescSHA;
         eventInfo.desc = eventDesc.getContent();
         Meteor.defer(function () {
           eventDesc.uploadToQiniu(eid._str);
         });
-        console.log("upload to qiniu");
       }
     } else {        // 该活动不存在。
-      console.log("这个活动还没有创建。");
       eventInfo.descSHA = eventDesc.getDescSHA();
       eventInfo.desc = eventDesc.getContent();
       Meteor.defer(function () {
@@ -1041,7 +1024,7 @@ EditEvent = (function() {
     var alertSuccess = function() {
       var eid = initEventId.getEventId()._str;
       //created by Chen Yuan, 打开活动详情页面到当前页面，用FlowRouter.go()
-      FlowRouter.go("/event/detail/" + eid);
+      FlowRouter.go("eventDetail", {eid: eid});
     };
     __saveEvent(alertSuccess, '已发布');
   };
@@ -1052,8 +1035,7 @@ EditEvent = (function() {
   var previewEvent = function() {
     var goToDetailPage = function() {
       var eid = initEventId.getEventId()._str;
-      FlowRouter.go("/event/detail/" + eid + "?preview=true");
-      //window.open('/event/detail/' + eid + '?preview=true');
+      FlowRouter.go("eventDetail", {eid: eid}, {preview: true});
     };
     __saveEvent(goToDetailPage);
   };
