@@ -597,7 +597,7 @@ Template.editEvent.events({
     EditEvent.eventGroups.changeSelectedGroup(gid);
     Session.set("eventGroupId", $(e.currentTarget).val());
     Session.set("selectedCity", MyGroups.findOne({_id: Session.get("eventGroupId")}).homeCity);
-    $(".event-group-select").prop("checked", false);
+   // $(".event-group-select").prop("checked", false);
     EditEvent.eventPrivate.setPrivate();
     //console.log(EditEvent.eventPrivate.getPrivateStatus());
   },
