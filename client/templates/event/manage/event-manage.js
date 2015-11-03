@@ -206,7 +206,9 @@ Template.eventManage.events({
       return false;
     }
     var eid = FlowRouter.getParam('eid');
-    Meteor.call('setEventStatus', new Mongo.ObjectID(eid), '未发布', event.author.club.id, event.private);
+    if(confirm("您是否要取消该活动！")) {
+      Meteor.call('setEventStatus', new Mongo.ObjectID(eid), '未发布', event.author.club.id, event.private);
+    }
   },
   'click #event-publish': function() {
     if (!Meteor.userId()) {
@@ -216,7 +218,9 @@ Template.eventManage.events({
     var eid = FlowRouter.getParam('eid');
     var event = Events.findOne({_id: new Mongo.ObjectID(eid)});
     //console.log(event);
-    Meteor.call('setEventStatus', new Mongo.ObjectID(eid), '已发布',event.author.club.id, event.private);
+    if(confirm("您是否要发布该活动！")) {
+      Meteor.call('setEventStatus', new Mongo.ObjectID(eid), '已发布', event.author.club.id, event.private);
+    }
   },
 
 
