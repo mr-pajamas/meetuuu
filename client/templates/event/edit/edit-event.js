@@ -597,6 +597,9 @@ Template.editEvent.events({
     EditEvent.eventGroups.changeSelectedGroup(gid);
     Session.set("eventGroupId", $(e.currentTarget).val());
     Session.set("selectedCity", MyGroups.findOne({_id: Session.get("eventGroupId")}).homeCity);
+    $(".event-group-select").prop("checked", false);
+    EditEvent.eventPrivate.setPrivate();
+    //console.log(EditEvent.eventPrivate.getPrivateStatus());
   },
 
   // 活动详情输入框 focus
@@ -658,8 +661,10 @@ Template.editEvent.events({
     var isPublic = $(e.target).prop("checked");
     if (!isPublic) {
       EditEvent.eventPrivate.setPrivate();
+     // console.log(EditEvent.eventPrivate.getPrivateStatus());
     } else {
       EditEvent.eventPrivate.setPublic();
+     // console.log(EditEvent.eventPrivate.getPrivateStatus());
     }
   },
   // 活动主题选择
