@@ -77,7 +77,7 @@
                   <li class="media">
                     <div class="media-left">
                       <a href="{{pathFor 'groupHome' groupPath=path}}">
-                        <img src="{{logoUrl}}" alt="group logo"/>
+                        <img src="{{groupLogo}}" alt="group logo"/>
                       </a>
                     </div>
                     <div class="media-body">
@@ -97,7 +97,7 @@
                 {{#each watchingGroupIds}}
                   {{#with watchingGroups}}
                     <li class="col-md-4 col-sm-6 group-card">
-                      <a href="{{pathFor 'groupHome' groupPath=path}}" style="background-image: url({{logoUrl}});">
+                      <a href="{{pathFor 'groupHome' groupPath=path}}" style="background-image: url({{groupLogo}});">
                         <div class="group-card-mask"></div>
                         <div class="group-card-caption">
                           <h3>{{name}}</h3>

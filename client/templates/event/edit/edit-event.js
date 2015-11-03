@@ -208,9 +208,9 @@ Template.editEvent.helpers({
           if(getMyGroupId) {
             var membership = Memberships.findOne({userId: Meteor.userId(), groupId: groupId});
             if(membership && membership.role === "owner") {
-                return true;
-                //是不是具有发帖权限
-              } else if(Roles.userIsInRole(Meteor.userId(), ['create-event'], 'g'+ groupId)) {
+              return true;
+              //是不是具有发帖权限
+            } else if(Roles.userIsInRole(Meteor.userId(), ['create-event'], 'g'+ groupId)) {
               return true;
             } else {
               return false;
@@ -234,7 +234,7 @@ Template.editEvent.helpers({
             if(membership && membership.role === "owner") {
               return true;
             } else if(Roles.userIsInRole(Meteor.userId(), ['create-event'], 'g'+ myGroup[i]._id)){
-             // console.log(Roles.userIsInRole(Meteor.userId(), ['create-open-event'], 'g'+ myGroup[i]._id));
+              // console.log(Roles.userIsInRole(Meteor.userId(), ['create-open-event'], 'g'+ myGroup[i]._id));
               return true;
             } else {
               return false;
@@ -244,9 +244,9 @@ Template.editEvent.helpers({
         else {
           alert("no find group");
           return false;
-             }
-           }
-         }
+        }
+      }
+    }
     /* var role1=Roles.userIsInRole(Meteor.userId(), ['create-open-event'],'g'+groupId);
      var role2=Roles.userIsInRole(Meteor.userId(), ['create-event'],'g'+groupId);
      console.log(role1+"he"+role2);
@@ -333,18 +333,18 @@ Template.editEvent.helpers({
   },
   //公有活动的不能变私有的
   modifyPrivate: function() {
-     var eid = new Mongo.ObjectID(FlowRouter.getParam('eid'));
-     var findEID = Events.findOne({_id: eid});
-     if(findEID) {
-     if(!findEID.private) {
-       return "disabled";
-     } else {
-       return {};
-     }
-     } else {
-       return {};
-     }
-   },
+    var eid = new Mongo.ObjectID(FlowRouter.getParam('eid'));
+    var findEID = Events.findOne({_id: eid});
+    if(findEID) {
+      if(!findEID.private) {
+        return "disabled";
+      } else {
+        return {};
+      }
+    } else {
+      return {};
+    }
+  },
   // 活动开始日期
   startDate: function() {
     var startTime = EditEvent.eventTime.getStartDateInUnix();
@@ -394,7 +394,7 @@ Template.editEvent.helpers({
         var firstGroup = MyGroups.findOne();
         if (firstGroup) {
           defaultCity =  firstGroup.homeCity;
-      }
+        }
       }
       Session.set("selectedCity", defaultCity);
       return defaultCity;

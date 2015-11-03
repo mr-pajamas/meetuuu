@@ -27,7 +27,7 @@ Template.userEdit.events({
         Meteor.call("updateUserInfo", userInfo, function (error) {
             $(target).attr("disabled", false).text("保存");
             if (!error) {
-              FlowRouter.go("/users/" + FlowRouter.getParam("userId") + "/userInfo");
+              FlowRouter.go("user", {userId: FlowRouter.getParam("userId"), tab: "userInfo"});
             } else {
               alert(error.reason);
             }

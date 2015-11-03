@@ -14,7 +14,6 @@
         eventSignInfo.signForm = doc;
         Meteor.call('submitJoinForm', eventSignInfo, function(err, res) {
           if (!err && res.code === 0) {
-            alert('报名成功');
             $('#joinEventFormModal').modal('hide');
           }
         });
@@ -65,10 +64,10 @@ Template.eventDetail.onRendered(function() {
   // 如果是从预览按钮点击过来的，禁用 报名, 收藏和评论按钮。
 
   this.autorun(function () {
-    Session.get("eventPosterData");
-    console.log(Session.get("eventPosterData"));
+    var preview = FlowRouter.getQueryParam("preview");
+    console.log(preview);
     var timeoutId = Meteor.setTimeout(function () {
-      if (Session.get("eventPosterData")) {
+      if (preview === "true") {
         $("#saveEvent").prop("disabled", true);
         $("#apply-event").prop("disabled", true);
         $("#submitComment").prop("disabled", true);
@@ -182,16 +181,22 @@ Template.eventDetail.helpers({
   authManage: function() {
     if(Meteor.userId()) {
       var findEID = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
-          var groupId = findEID.author.club.id;
-          var membership = Memberships.findOne({userId: Meteor.userId(), groupId: groupId});
-          if(membership.role === "owner") {
-            return true;
-          } else if (Roles.userIsInRole(Meteor.userId(), ['create-event'], 'g'+ groupId)) {
-            console.log(Roles.userIsInRole(Meteor.userId(), ['create-event'], 'g'+ groupId));
-            return true;
-          } else {
-            return false;
-          }
+      if (!findEID) {
+        return ;
+      }
+      var groupId = findEID.author.club.id;
+      var membership = Memberships.findOne({userId: Meteor.userId(), groupId: groupId});
+      if (!membership) {
+        return ;
+      }
+      if(membership.role === "owner") {
+        return true;
+      } else if (Roles.userIsInRole(Meteor.userId(), ['create-event'], 'g'+ groupId)) {
+        console.log(Roles.userIsInRole(Meteor.userId(), ['create-event'], 'g'+ groupId));
+        return true;
+      } else {
+        return false;
+      }
 
     } else return false;
   }
@@ -269,7 +274,8 @@ Template.eventDetail.events({
 
     EditEvent.eventPoster.setKey(Session.get("eventPosterData"));
 
-    var eid = EditEvent.initEventId.getEventId()._str;
+    var eid = FlowRouter.getParam("eid");
+    console.log("eid from event detail page  " + eid);
 
     //  只是上传海报。
     Meteor.defer(function () {
@@ -280,7 +286,16 @@ Template.eventDetail.events({
       });
     });
 
-    Meteor.call('setEventStatus', new Mongo.ObjectID(eid), '已发布', function(err, res) {
+    var curEvent = Events.findOne({_id: new Mongo.ObjectID(eid)});
+    var curEventGid = 0;
+    var privateStatus = 0;
+    if (!curEvent) {
+      return ;
+    } else {
+      curEventGid = curEvent.author.club.id;
+      privateStatus = curEvent.private;
+    }
+    Meteor.call('setEventStatus', new Mongo.ObjectID(eid), '已发布', curEventGid, privateStatus, function(err, res) {
       if (!err && res.code === 0) {
         // TODO:  这个地方需要修改，因为本来就在详情页面，没必要再go, 这个是暂时的方案。
         Session.set("eventPosterData", 0);

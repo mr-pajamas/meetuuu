@@ -51,6 +51,9 @@ Meteor.methods({
     Events.update({_id: new Mongo.ObjectID(eid)}, {'$inc': {'readCount': 1}});
   },
   'setEventStatus': function(eid, status, groupId, privateStatus) {
+    console.log("eid " + eid);
+    console.log("status " + status);
+    console.log("groupId " + groupId);
     check(eid, Mongo.ObjectID);
     check(status, String);
     check(groupId, String);
@@ -74,7 +77,7 @@ Meteor.methods({
         } else {
           cnt = Events.update(eid, {$set: {status: status}});
           return {code: cnt === 1 ? 0 : 1};
-      }
+        }
       }
     } else {
       return ;

@@ -4,7 +4,6 @@
 
 Meteor.methods({
   updateUserInfo: function (userInfo) {
-    check(userInfo, Object);
 
     var avatarUrl, oldUrl;
 
@@ -14,7 +13,10 @@ Meteor.methods({
     };
 
     if (userInfo.avatar) {
-      oldUrl = Meteor.users.findOne(this.userId, {fields: {"profile.avatar": 1}}).profile.avatar;
+      var userFound = Meteor.users.findOne(this.userId, {fields: {"profile.avatar": 1}});
+      if (userFound) {
+        oldUrl = userFound.profile.avatar;
+      }
       avatarUrl = ObjectStore.putDataUri(userInfo.avatar);
       setOptions["profile.avatar"] = avatarUrl;
     }

@@ -18,6 +18,7 @@ function setSingleEvent(event) {            // 在 reactive data set之前，先
 }
 
 Template.user.onCreated(function () {
+  console.log("from on created.");
   var template = this;
   this.autorun(function () {
     var userId = FlowRouter.getParam('userId');
@@ -38,21 +39,21 @@ Template.user.onCreated(function () {
       if (event) {      // 这里返回的是一个字符串，所以需要检测它的长度。 如果要在helper里面用到属性，就需要做判断有无数据。
         hasEvents.set(true);
         var startTime = moment(event.time.start);
-        var endTime = moment(event.time.end);
         var now = moment();
-        var startTimeDiff = startTime.diff(now);
-        if (startTime.endOf("day").toDate() === now.endOf("day").toDate()) {
-          if (startTimeDiff <= 3600 * 1000) {
+        var endOfNow = now.endOf("day");
+        var endOfStartTime = startTime.endOf("day");
+        if (!endOfStartTime.diff(endOfNow)) {
+          if (moment(event.time.start).diff(moment()) <= 3600 * 1000) {
             destoryTimeoutId = Meteor.setTimeout(function () {
               setSingleEvent(null);
               Meteor.clearTimeout(destoryTimeoutId);
-            }, endTime.diff(now));
+            }, moment(moment(event.time.end)).diff(moment()));
             setSingleEvent(event);
           } else {
             viewTimeoutId = Meteor.setTimeout(function () {
               setSingleEvent(event);
               Meteor.clearTimeout(viewTimeoutId);
-            }, startTimeDiff - 3600 * 1000);
+            }, moment(moment(event.time.start)).diff(moment()) - 3600 * 1000);
           }
         }
       }
@@ -117,26 +118,22 @@ Template.user.helpers({
   "dTemplate": function () {
     var startTime = moment(this.time.start);
     var endTime = moment(this.time.end);
-    var now = moment();
-    var tomorrow = now.add(1,"days");
-    var startTimeDiff = startTime.diff(now);
+    var tomorrow = moment().add(1,"day");
     singleEvent.get();
-    if (endTime.diff(now) > 0) {
+    if (endTime.diff(moment()) > 0) {
       console.log("from dynamic template");
       console.log(startTime);
-      console.log(startTimeDiff);
-      // 只要是小于 48 小时的，都是今天或明天的模板。
-      if (tomorrow.endOf("days").toDate() >= startTime.toDate()) {
-        if (startTime.endOf("day").toDate() === now.endOf("day").toDate()) {
-          if (3600 * 1000 < startTimeDiff) {
-            console.log("this is a today evnet.");
+      console.log(tomorrow.endOf("day").diff(startTime.endOf("day")));
+      //这里的代码需要优化。
+      if ( !tomorrow.endOf("day").diff(startTime.endOf("day")) || !moment().endOf("day").diff(moment(this.time.start).endOf("day"))) {
+        if ( !moment(this.time.start).endOf("day").diff(moment().endOf("day")) ) {
+          if (3600 * 1000 < moment(this.time.start).diff(moment())) {
             return "todayOrTomorrowEvent";
           }
         } else {
           return "todayOrTomorrowEvent";
         }
       } else {
-        console.log("this is a calendar evnet.");
         return "calendarEvent";
       }
     }
@@ -152,7 +149,6 @@ Template.user.helpers({
     return this.poster ? this.poster : "/event-create-poster-holder.png";
   },
   "eventTime": function () {
-    console.log(this);
     var eventTime = {},
       time = this.time;
     if (time) {
@@ -167,6 +163,9 @@ Template.user.helpers({
   },
   "groups": function () {
     return MyGroups.find();
+  },
+  "groupLogo": function () {
+    return this.logoUrl ? this.logoUrl : "/images/default-badge.png";
   },
   "watchingGroupIds": function () {
     return GroupWatchings.find({"userId": Meteor.userId()});
@@ -264,8 +263,8 @@ Template.doingEvent.helpers({
     var eventTime = {},
       time = this.time;
     if (time) {
-      eventTime.start = moment(time.start).format("LLLL");
-      eventTime.end = moment(time.end).format("LLLL");
+      eventTime.start = moment(time.start).format('M月D日 HH:mm');
+      eventTime.end = moment(time.end).format('M月D日 HH:mm');
     }
     return eventTime;
   }
