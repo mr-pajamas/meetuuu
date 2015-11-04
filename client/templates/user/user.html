@@ -55,11 +55,11 @@
                   {{#with singleWatchEvent}}
                     <li class="media">
                       <div class="media-left">
-                        <a href="/event/detail/{{_id._str}}"><img class="media-object" src="{{poster}}" alt="活动海报"/>
+                        <a href="{{pathFor 'eventDetail' eid=_id._str}}"><img class="media-object" src="{{poster}}" alt="活动海报"/>
                         </a>
                       </div>
                       <div class="media-body">
-                        <a href="/event/detail/{{_id._str}}" class="event-title"><h4 class="media-heading">{{title}}</h4></a>
+                        <a href="{{pathFor 'eventDetail' eid=_id._str}}" class="event-title"><h4 class="media-heading">{{title}}</h4></a>
                         <div class="date-plus-total fixed-box-bottom hidden-xs"><span class="date pull-left">{{eventTime.start}} - {{eventTime.end}}</span></div>
                         <div class="clearfix fixed-box-bottom"><a href="{{pathFor 'groupHome' groupPath=eventGroup.path}}" class="event-organizer pull-left">{{eventGroup.name}}</a><span class="total pull-right"><span>{{#if joinedCount}}{{joinedCount}}{{else}}0{{/if}}</span> / <span>{{member}}</span></span></div>
                       </div>
@@ -127,7 +127,7 @@
               </ul>
               <hr class="hidden-xs"/>
               {{#if userJudge}}
-                <a href="/users/{{_id}}/edit" class="btn btn-lg btn-block btn-default btn-edit">编辑</a>
+                <a href="{{pathFor 'userInfoEdit' userId=_id}}" class="btn btn-lg btn-block btn-default btn-edit">编辑</a>
               {{/if}}
             {{/with}}
           </section>
@@ -146,9 +146,9 @@
       </div>
     </div>
     <div class="media-body">
-      <a href="/event/detail/{{_id._str}}" class="event-title">{{title}}</a>
+      <a href="{{pathFor 'eventDetail' eid=_id._str}}" class="event-title">{{title}}</a>
       <div class="clearfix fixed-box-bottom">
-        <a href="" class="event-organizer pull-left hidden-xs">{{author.club.name}}</a>
+        <a href="{{pathFor 'groupHome' groupPath=author.club.path}}" class="event-organizer pull-left hidden-xs">{{author.club.name}}</a>
         <span class="registered-persons pull-right">已经有<span>{{#if joinedCount}}{{joinedCount}}{{else}}0{{/if}}&nbsp;</span>人报名</span>
       </div>
     </div>
@@ -164,9 +164,9 @@
       </div>
     </div>
     <div class="media-body">
-      <a href="/event/detail/{{_id._str}}" class="event-title">{{title}}</a>
+      <a href="{{pathFor 'eventDetail' eid=_id._str}}" class="event-title">{{title}}</a>
       <div class="clearfix fixed-box-bottom">
-        <a href="" class="event-organizer pull-left hidden-xs">{{author.club.name}}</a>
+        <a href="{{pathFor 'groupHome' groupPath=author.club.path}}" class="event-organizer pull-left hidden-xs">{{author.club.name}}</a>
         <span class="registered-persons pull-right">已经有<span>{{#if joinedCount}}{{joinedCount}}{{else}}0{{/if}}&nbsp;</span>人报名</span>
       </div>
     </div>
