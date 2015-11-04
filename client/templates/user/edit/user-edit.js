@@ -5,6 +5,9 @@
 Template.userEdit.helpers({
   "userBasicInfo": function () {
     return Meteor.user();
+  },
+  "isChecked": function (gender) {
+    return this.profile.gender === gender && "checked";
   }
 });
 

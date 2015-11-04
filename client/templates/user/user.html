@@ -37,11 +37,7 @@
               {{> doingEvent}}
             {{/with}}
             <div id="event-registered">
-              {{#if hasEvents}}
-                <h3 id="event-registered-anchor">{{meOrOther}}报名的活动</h3>
-              {{else}}
-                <h3>{{meOrOther}}目前没有参加活动</h3>
-              {{/if}}
+              <h3 id="event-registered-anchor">{{meOrOther}}{{#unless hasEvents}}目前没有{{/unless}}报名的活动</h3>
               <ul class="list-unstyled">
                 {{#each events}}
                   {{> Template.dynamic template=dTemplate}}
@@ -49,7 +45,7 @@
               </ul>
             </div>
             <div id="event-focused">
-              <h3 id="event-focused-anchor">{{meOrOther}}关注的活动</h3>
+              <h3 id="event-focused-anchor">{{meOrOther}}{{#unless hasWatchingEvents}}没有{{/unless}}关注的活动</h3>
               <ul class="list-unstyled">
                 {{#each watchingEvents}}
                   {{#with singleWatchEvent}}
@@ -71,7 +67,7 @@
           </section>
           <section id="clubs" class="tab-pane" role="tabpanel" aria-labelledby="clubs-tab">
             <div id="my-club">
-              <h3 id="club-anchor">{{meOrOther}}的俱乐部</h3>
+              <h3 id="club-anchor">{{meOrOther}}{{#if hasGroups}}的俱乐部{{else}}目前没有俱乐部{{/if}}</h3>
               <ul class="list-unstyled">
                 {{#each groups}}
                   <li class="media">
@@ -92,7 +88,7 @@
               </ul>
             </div>
             <div id="my-focused-club">
-              <h3 id="focused-club-anchor">{{meOrOther}}关注的俱乐部</h3>
+              <h3 id="focused-club-anchor">{{meOrOther}}{{#unless hasWatchingGroups}}没有{{/unless}}关注的俱乐部</h3>
               <ul class="list-unstyled row group-card-list">
                 {{#each watchingGroupIds}}
                   {{#with watchingGroups}}

@@ -66,49 +66,6 @@ Template.editEvent.onRendered(function() {
     Meteor.clearTimeout(timeoutId);
   }, 200);
 
-  // === 上传海报 Begin  可以删除===
-  /* var $image = $(".image-crop > img");
-   var $inputImage = $("#inputImage");
-   if (window.FileReader) {
-   $inputImage.change(function() {
-   var fileReader = new FileReader(),
-   files = this.files,
-   file;
-
-   if (!files.length) {
-   return;
-   }
-
-   file = files[0];
-
-   if (/^image\/\w+$/.test(file.type)) {
-   fileReader.readAsDataURL(file);
-   fileReader.onload = function () {
-   $inputImage.val("");
-   $image.cropper("reset", true)
-   .cropper("replace", this.result);
-   };
-   } else {
-   alert("请选择图片");
-   }
-   });
-   } else {
-   $inputImage.addClass("hide");
-   }
-
-   $('#setDrag').on('click', function () {
-   var $btn = $(this).button('loading');
-   // business logic...
-   Meteor.call('sendPosterInBase64', EditEvent.eventPoster.getKey(), $image.cropper("getDataURL"), function(err, res) {
-   console.log(err);
-   if(!err && res.code === 0) {
-   EditEvent.eventPoster.setKey(res.key);
-   $btn.button('reset');
-   alert('海报上传成功');
-   }
-   });
-   });*/
-  // === 上传海报 End===
 });
 
 

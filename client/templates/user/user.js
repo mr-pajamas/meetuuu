@@ -3,7 +3,10 @@
  */
 
 var singleEvent = new ReactiveVar(null);    //  初始化, 用来存储findOne得到的值。
-var hasEvents = new ReactiveVar(false);
+var hasEvents = new ReactiveVar(null);
+var hasWatchingEvents = new ReactiveVar(null);
+var hasGroups = new ReactiveVar(null);
+var hasWatchingGroups = new ReactiveVar(null);
 
 var viewTimeoutId,
   destoryTimeoutId;
@@ -77,7 +80,9 @@ Template.user.onRendered(function () {
 
   this.autorun(function () {
     var tab = FlowRouter.getParam("tab");
-    if (tab === "events") {
+    if (!tab) {
+      $("#event-menu").collapse("toggle");
+    } else if (tab === "events") {
       $(".collapse").not($("#event-menu")).collapse("hide");
       $("#event-menu").collapse("toggle");
       $("#events-tab").tab("show");
@@ -134,7 +139,17 @@ Template.user.helpers({
     }
   },
   "watchingEvents": function () {
-    return UserSavedEvents.find({"user.id": FlowRouter.getParam("userId")});
+    var eventIds = UserSavedEvents.find({"user.id": FlowRouter.getParam("userId")});
+    if (eventIds.count()) {
+      hasWatchingEvents.set(1);
+      return evnetIds;
+    } else {
+      hasWatchingEvents.set(0);
+      return false;
+    }
+  },
+  "hasWatchingEvents": function () {
+    return hasWatchingEvents.get();
   },
   "singleWatchEvent": function () {
     return Events.findOne({_id: this.event.id});
@@ -155,13 +170,33 @@ Template.user.helpers({
     return Groups.findOne({_id: this.author.club.id});
   },
   "groups": function () {
-    return MyGroups.find();
+    var groups = MyGroups.find();
+    if (groups.count()) {
+      hasGroups.set(1);
+      return groups;
+    } else {
+      hasGroups.set(0);
+      return false;
+    }
+  },
+  "hasGroups": function () {
+    return hasGroups.get();
   },
   "groupLogo": function () {
     return this.logoUrl ? this.logoUrl : "/images/default-badge.png";
   },
   "watchingGroupIds": function () {
-    return GroupWatchings.find({"userId": Meteor.userId()});
+    var groups = GroupWatchings.find({"userId": Meteor.userId()});
+    if (groups.count()) {
+      hasWatchingGroups.set(1);
+      return groups;
+    } else {
+      hasWatchingGroups.set(0);
+      return false;
+    }
+  },
+  "hasWatchingGroups": function () {
+    return hasWatchingGroups.get();
   },
   "watchingGroups": function () {
     return MyWatchingGroups.findOne({_id: this.groupId});

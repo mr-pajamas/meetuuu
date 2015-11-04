@@ -17,7 +17,7 @@ Meteor.publishComposite("userDetailById", function (uid) {
   }
 });
 Meteor.publish("userDetail", function (uid) {
-  return Meteor.users.find({_id: uid});
+  return Meteor.users.find({_id: uid}, {fields: {_id: 1, profile: 1, mobile: 1}});
 });
 Meteor.publishComposite("userWatchingEvents", function (uid) {
   return {

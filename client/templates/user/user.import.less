@@ -33,11 +33,12 @@
             padding-right: 15px;
             a {
               img {
+                //   活动海报尺寸比例：  width: height  ====  1 : 0.575
                 width: 64px;
-                height: 64px;
+                height: 37px;
                 @media (min-width: @screen-sm-min) {
                   width: 120px;
-                  height: 120px;
+                  height: 69px;
                 }
               }
             }
@@ -290,6 +291,18 @@
         .card-block();
         ul {
           .media {
+            .media-left {
+              a {
+                img {
+                  width: 64px;
+                  height: 64px;
+                  @media (min-width: @screen-sm-min) {
+                    width: 120px;
+                    height: 120px;
+                  }
+                }
+              }
+            }
             .media-body {
               h4 {
                 margin-bottom: @mobile-padding;
