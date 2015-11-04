@@ -12,7 +12,8 @@ Template.forumListDiscussion.onCreated(function () {
  // template.subscribe("singleGroupByPath",FlowRouter.getParam("groupPath"));
   var path = FlowRouter.getParam("groupPath");
   //var groupId = Groups.findOne({path:path});
-  console.log(path);
+  var myGroup = MyGroups.findOne({path: path});
+  console.log(myGroup.path);
   template.autorun(function () {
     template.subscribe("listDiscussion", parseInt(limit.get()+1), sortType.get(), path);
   });
