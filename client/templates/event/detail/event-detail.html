@@ -43,12 +43,12 @@
                       </p>
                     </li>
                     <li class="clearfix"><i class="fa fa-dot-circle-o"></i>
-                      <a href="#">
+                      <a href="{{pathFor 'groupHome' groupPath=author.club.path}}">
                         <span class="badge" id="{{author.club.id}}">{{author.club.name}}</span>
                       </a>
                     </li>
                   </ul>
-                  <a href="/event/edit/{{_id._str}}" class="btn btn-lg btn-default {{hiddenPubBtn}}" id="returnToModify">返回修改</a>
+                  <a href="{{pathFor 'eventDetail' eid=_id._str}}" class="btn btn-lg btn-default {{hiddenPubBtn}}" id="returnToModify">返回修改</a>
                   <buttom class="btn btn-lg btn-warning {{hiddenPubBtn}}" id="publish-event">发布活动</buttom>
                 </div>
               </section>
@@ -67,9 +67,8 @@
                 <div class="media new-comment">
                   <div class="row">
                     <div class="media-left col-sm-2 col-xs-3">
-                      <a href="#"><img src="{{avatarOrDefault}}" alt="我的头像"/></a>
+                      <a href="{{pathFor 'user' userId=_id}}"><img src="{{avatarOrDefault}}" alt="我的头像"/></a>
                     </div>
-                    <!-- todo 替换为用户的数据 -->
                     <div class="media-info col-sm-10 col-xs-9">
                       <h4 class="media-heading">{{profile.name}}</h4>
                       <!--
@@ -137,7 +136,7 @@
                 <li id="nav-join" class="hidden-xs my-join"><a href="" >我要报名</a></li>
               {{/if}}
               {{#if authManage}}
-                <li id="goToManage"><a href="/event/manage/{{eventId}}">管理活动</a></li>
+                <li id="goToManage"><a href="{{pathFor 'eventManage' eid=eventId}}">管理活动</a></li>
               {{/if}}
             </ul>
           </div>

@@ -9,9 +9,9 @@
           <a href="{{eventInfo.dwz}}" class="event-manage-url hidden-xs">{{eventInfo.dwz}}</a>
         </h1>
         <ul class="list-inline pull-right hidden-xs">
-          <li><a href="/event/detail/{{eventInfo._id._str}}" class="btn btn-default event-preview"><span class="fa fa-eye"></span> 查看</a></li>
+          <li><a href="{{pathFor 'eventDetail' eid=eventInfo._id._str}}" class="btn btn-default event-preview"><span class="fa fa-eye"></span> 查看</a></li>
           <li>
-            <a href="/event/edit/{{eventInfo._id._str}}" class="btn btn-default event-edit {{authEdit}}"><span class="fa fa-pencil-square-o"> 编辑</span></a>
+            <a href="{{pathFor 'eventEdit' eid=eventInfo._id._str}}" class="btn btn-default event-edit {{authEdit}}"><span class="fa fa-pencil-square-o"> 编辑</span></a>
           </li>
         </ul>
       </header>
@@ -81,7 +81,7 @@
               {{> qrcodeTpl}}
 
               <button class="btn btn-primary hidden-xs" id="event-code" data-toggle="modal" data-target="#eventQrcodeModal">活动二维码</button>
-              <a href="/event/edit/{{eventInfo._id._str}}" class="btn btn-primary visible-xs-inline-block">编辑活动</a>
+              <a href="{{pathFor 'eventEdit' eid=eventInfo._id._str}}" class="btn btn-primary visible-xs-inline-block">编辑活动</a>
               {{#if disableCancel}}
                 <button disabled class="btn bg-warning">活动已取消</button>
               {{else}}
