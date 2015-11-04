@@ -60,13 +60,22 @@ Template.eventManage.helpers({
   authEdit: function() {
     var groupId;
     var findEID = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
+    var privateStatus = findEID.private;
     if (!findEID) {
       return ;
     } else {
       groupId= findEID.author.club.id;
     }
     var membership = Memberships.findOne({userId: Meteor.userId(), groupId: groupId});
-    if (membership) {
+    if(membership && membership.role === "owner"){
+      return {};
+    } else if(Roles.userIsInRole(Meteor.userId(), ['modify-event'], 'g'+ groupId)){
+      if(!Roles.userIsInRole(Meteor.userId(), ['create-open-event'], 'g'+ groupId) && !privateStatus) {
+        return "disabled";
+      } else {return {};}
+    } else { return "disabled";}
+
+   /* if (membership) {
       if(membership.role === "owner") {
         return {};
       } else if (Roles.userIsInRole(Meteor.userId(), ['modify-event'], 'g'+ groupId)) {
@@ -74,7 +83,7 @@ Template.eventManage.helpers({
       } else {
         return "disabled";
       }
-    }
+    }*/
   },
   authLogin: function() {
     if(Meteor.userId()) {
