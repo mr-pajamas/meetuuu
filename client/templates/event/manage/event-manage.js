@@ -75,15 +75,15 @@ Template.eventManage.helpers({
       } else {return {};}
     } else { return "disabled";}
 
-   /* if (membership) {
-      if(membership.role === "owner") {
-        return {};
-      } else if (Roles.userIsInRole(Meteor.userId(), ['modify-event'], 'g'+ groupId)) {
-        return {};
-      } else {
-        return "disabled";
-      }
-    }*/
+    /* if (membership) {
+     if(membership.role === "owner") {
+     return {};
+     } else if (Roles.userIsInRole(Meteor.userId(), ['modify-event'], 'g'+ groupId)) {
+     return {};
+     } else {
+     return "disabled";
+     }
+     }*/
   },
   authLogin: function() {
     if(Meteor.userId()) {
@@ -128,14 +128,58 @@ Template.eventManage.helpers({
     }
   },
   authRefuseForever: function() {
-     var event = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
-     var path = event && 'g' + event.author.club.id;
-     var membership = Memberships.findOne({userId: Meteor.userId(), groupId: event.author.club.id});
-     if (!Roles.userIsInRole(Meteor.userId(), ['block-entry'], path) && !(membership.role === "owner")) {
+    var event = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
+    var path = event && 'g' + event.author.club.id;
+    var membership = Memberships.findOne({userId: Meteor.userId(), groupId: event.author.club.id});
+    if (!Roles.userIsInRole(Meteor.userId(), ['block-entry'], path) && !(membership.role === "owner")) {
       return "disabled";
-     }
-     return {};
-   },
+    }
+    return {};
+  },
+ /* authPostEvent: function() {
+    if (!Meteor.userId()) {
+      return false;
+    }
+    var event = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
+    var path = event && 'g' + event.author.club.id;
+    var privateStatus = event.private;
+    var membership = Memberships.findOne({userId: Meteor.userId(), groupId: event.author.club.id});
+    if(membership.role === "owner") {return true}
+    else if (Roles.userIsInRole(Meteor.userId(), ['create-event'], path)) {
+      console.log("具有发布活动的权限");
+      if(!Roles.userIsInRole(Meteor.userId(), ['create-open-event'], path) && !privateStatus) {
+        console.log("具有发布活动的权限，但是没有创建公开活动的权限，而这里是公开活动");
+        return false;
+      } else {
+        return true;
+      }
+    }
+    else { return true;}
+
+  },*/
+  authCancelEvent: function() {
+    if (!Meteor.userId()) {
+      return false;
+    }
+    var event = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
+    var path = event && 'g' + event.author.club.id;
+    var privateStatus = event.private;
+    var membership = Memberships.findOne({userId: Meteor.userId(), groupId: event.author.club.id});
+    if(membership && membership.role === "owner"){
+     // console.log("我是role");
+         return true;
+       } else if(Roles.userIsInRole(Meteor.userId(), ['cancel-event'], path)){
+         if(!Roles.userIsInRole(Meteor.userId(), ['create-open-event'], path) && !privateStatus) {
+           //console.log("我能取消，但是这是个公开活动，我对他没权限");
+           return false;
+         } else {return true;}
+       } else { return false;}
+   /* if (!Roles.userIsInRole(Meteor.userId(), ['cancel-event'], path) && !(membership.role === "owner")) {
+      // alert('您无权限取消活动');
+      return false;
+    }
+    else { return true;}*/
+  },
   'eventInfo': function() {
     return Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
   },
@@ -199,7 +243,7 @@ Template.eventManage.events({
   'click #event-cancel': function() {
     if (!Meteor.userId()) {
       alert('请先登录！');
-      return;
+      return false;
     }
     var event = Events.findOne({'_id': new Mongo.ObjectID(FlowRouter.getParam('eid'))});
     var path = event && 'g' + event.author.club.id;

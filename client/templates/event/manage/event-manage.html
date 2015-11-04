@@ -83,9 +83,11 @@
               <button class="btn btn-primary hidden-xs" id="event-code" data-toggle="modal" data-target="#eventQrcodeModal">活动二维码</button>
               <a href="/event/edit/{{eventInfo._id._str}}" class="btn btn-primary visible-xs-inline-block">编辑活动</a>
               {{#if disableCancel}}
-                <button id="event-publish" class="btn bg-warning">发布活动</button>
+                <button disabled class="btn bg-warning">活动已取消</button>
               {{else}}
+                {{#if authCancelEvent}}
                 <span id="event-cancel" >取消活动</span>
+                  {{/if}}
               {{/if}}
             </section>
 
