@@ -156,6 +156,9 @@ Template.eventDetail.helpers({
   'isSaved': function() {
     return UserSavedEvents.findOne();
   },
+  authJoinLogin: function() {
+    return Meteor.userId();
+  },
   // 判断当前用户是否已经报名
   'isJoined': function() {
     return JoinForm.findOne();
@@ -201,6 +204,9 @@ Template.eventDetail.helpers({
 });
 
 Template.eventDetail.events({
+  "click .my-join": function() {
+    alert("请先登录！");
+  },
   // 提交留言
   'click #submitComment': function(e) {
     e.preventDefault();

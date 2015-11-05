@@ -127,10 +127,14 @@
               <li role="presentation"><a class="event-sidebar-scroll" href="#information">活动详情</a></li>
               <li role="presentation"><a class="event-sidebar-scroll" href="#comment">留言</a></li>
               <!-- 判断用户是否已经报名 -->
+              {{#if authJoinLogin}}
               {{#if isJoined}}
                 <li id="nav-join" class="hidden-xs"><a href="" >{{joinStatus}}</a></li>
               {{else}}
                 <li id="nav-join" class="hidden-xs"><a href=""   data-toggle="modal"  data-target="#joinEventFormModal">{{joinStatus}}</a></li>
+              {{/if}}
+                {{else}}
+                <li id="nav-join" class="hidden-xs my-join"><a href="" >我要报名</a></li>
               {{/if}}
               {{#if authManage}}
                 <li id="goToManage"><a href="/event/manage/{{eventId}}">管理活动</a></li>
