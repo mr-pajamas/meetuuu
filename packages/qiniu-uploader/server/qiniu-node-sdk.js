@@ -3,9 +3,9 @@ QiniuNodeSDK = Npm.require('qiniu');
 
 // 创建上传策略：服务端上传
 /* ==================++++填写下面三个参数++++=================*/
-var ak = 'ArTWIe1q_1iDUdMm2notK3vjhARjbcNa_8S1zrZ5';//'ACCESS KEY';
-var sk = 'N9fwW3xXTNvUCdBKQqtcYZsUmaDquwSK1xh9anFv';//'SECRET KEY';
-var bucketname = 'meetuuu';//'BUCKET NAME';
+var ak = 'QSPlgLpakTk0_msuxWS_SqU2e-6BIHpzrkRNhrrw';//'ACCESS KEY';
+var sk = 'TEje3jKKP22MdxEjET5qnzIn_HSCn5GnvffceS4r';//'SECRET KEY';
+var bucketname = 'meetuuu-event';//'BUCKET NAME';
 
 //var qiniuKeys = Assets.getText('qiniu-keys.json');
 //console.log(qiniuKeys);
