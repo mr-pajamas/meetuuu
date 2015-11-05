@@ -300,6 +300,10 @@ Template.eventDetail.events({
   },
   // 提交报名表单
   "click #apply-event": function (e, template) {
+    if(!Meteor.userId()) {
+      alert("请先登录！");
+      return false;
+    }
     template.$("#joinEvent").submit();
   }
 });
