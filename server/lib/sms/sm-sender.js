@@ -97,12 +97,12 @@ var ERR_MSGS = {
   "-1903": "数据库删除操作失败"
 };
 
-var CDKEY = "0SDK-EBB-6688-JFSNK";
-var PASSWORD = "793178";
+var CDKEY = "8SDK-EMY-6699-RDULT";
+var PASSWORD = "501241";
 
 SmSender = function () {
 
-  var ENDPOINT = "http://sdk4rptws.eucp.b2m.cn:8080/sdkproxy";
+  var ENDPOINT = "http://hprpt2.eucp.b2m.cn:8080/sdkproxy";
 
   function parseResultContent(content) {
     return xml2js.parseStringSync(content, {explicitRoot: false, explicitArray: false});

@@ -1,6 +1,11 @@
 <template name="timelineCreateEvent">
   {{#timelineMediaLayout}}
-    <h4 class="media-heading"><a href="#">{{membership.nickname}}</a> 举办了一个内部活动 <a href="{{pathFor 'eventDetail' eid=event._id._str}}">{{event.title}}</a></h4>
-    <p class="text-muted">希望大家踊跃报名！</p>
+    {{#if event.private}}
+      <h4 class="media-heading"><a href="#">{{membership.nickname}}</a> 举办了一个内部活动 <a href="{{pathFor 'eventDetail' eid=event._id._str}}">{{event.title}}</a></h4>
+      <p class="text-muted">希望大家踊跃报名！</p>
+    {{else}}
+      <h4 class="media-heading">土豪 <a href="#">{{membership.nickname}}</a> 举办了一个对内外公开的大活动 <a href="{{pathFor 'eventDetail' eid=event._id._str}}">{{event.title}}</a></h4>
+      <p class="text-muted">大家赶快去捧场吧！</p>
+    {{/if}}
   {{/timelineMediaLayout}}
 </template>

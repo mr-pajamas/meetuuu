@@ -1,4 +1,63 @@
 <template name="groupHome">
+  {{> authModal}}
+
+  <div class="modal fade group-home-join-modal" tabindex="-1" role="dialog" aria-labelledby="groupHomeJoinModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
+          <h4 class="modal-title" id="groupHomeJoinModalLabel">让大家了解我</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal">
+            {{#unless currentUser.profile.avatar}}
+              <div class="form-group">
+                <label for="inputGroupBadge" class="col-md-3 control-label">头像</label>
+                <div class="col-md-5">
+                  {{> imgUpload width=400 height=400 defaultSrc="/images/default-avatar.png"}}
+                </div>
+              </div>
+            {{/unless}}
+
+            {{#unless currentUser.profile.gender}}
+              <div class="form-group">
+                <label class="col-md-3 control-label">性别</label>
+                <div class="col-md-8">
+                  <div class="radio radio-inline">
+                    <label>
+                      <input type="radio" name="gender" value="男" checked="checked"> 男
+                    </label>
+                  </div>
+                  <div class="radio radio-inline">
+                    <label>
+                      <input type="radio" name="gender" value="女"> 女
+                    </label>
+                  </div>
+                </div>
+              </div>
+            {{/unless}}
+
+            <div class="form-group">
+              <label for="inputBio" class="col-md-3 control-label">自我介绍</label>
+              <div class="col-md-8">
+                <textarea class="form-control" rows="5" id="inputBio" name="bio" placeholder="向大家介绍下自己吧……"></textarea>
+              </div>
+            </div>
+
+            <button class="hidden" type="submit">申请</button>
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary">申请入会</button>
+        </div>
+
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>
+
   <div class="container group-home-container">
     <div class="row">
       <aside class="col-md-3">
@@ -47,7 +106,7 @@
           <p class="text-muted">{{description}}</p>
           <hr>
           <div class="text-right">
-            <a class="btn btn-lg btn-success" href="#" role="button">赶快加入</a>
+            {{#if canJoin}}<button class="btn btn-lg btn-success" type="button">赶快加入</button>{{/if}}
             <a class="btn btn-lg btn-default" href="#" role="button">关注</a>
           </div>
         </section>

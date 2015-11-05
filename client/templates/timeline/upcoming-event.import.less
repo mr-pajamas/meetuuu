@@ -1,0 +1,43 @@
+.timeline-upcoming-event-thumbnail {
+  margin-bottom: 0;
+
+  > a {
+    position: relative;
+    display: inline-block;
+
+    img {
+      width: 100%;
+    }
+
+    &:after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      content: " ";
+      width: 100%;
+      height: 100%;
+      display: block;
+      .box-shadow(inset 0 0 20px rgba(0, 0, 0, .06));
+    }
+  }
+
+  .caption {
+    h3 {
+      .text-overflow();
+
+      margin-bottom: 15px;
+    }
+
+    .fa-ul {
+      margin-bottom: 15px;
+
+      li {
+        margin: 5px 0;
+      }
+    }
+
+    hr {
+      margin: 15px 0;
+    }
+  }
+}

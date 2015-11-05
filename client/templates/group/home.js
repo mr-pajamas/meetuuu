@@ -50,6 +50,10 @@ Template.groupHome.onCreated(function () {
 });
 
 Template.groupHome.helpers({
+  canJoin: function () {
+    return !Memberships.findOne({groupId: this._id, userId: Meteor.userId(), status: {$in: [MemberStatus.Joined, MemberStatus.Banned]}});
+  },
+
   foundedDate: function () {
     return moment(this.foundedDate).format("ll");
   },
@@ -93,7 +97,77 @@ Template.groupHome.helpers({
 });
 
 Template.groupHome.events({
+  "click .group-description button.btn-success": function (event, template) {
+    if (!Meteor.user()) {
+      template.$(".auth-modal").modal();
+    } else {
+      template.$(".group-home-join-modal").modal();
+    }
+  },
+  "login.muuu .auth-modal": function (event, template) {
+    if (!Memberships.findOne({groupId: template.data._id, userId: Meteor.userId(), status: {$in: [MemberStatus.Joined, MemberStatus.Banned]}})) {
+      template.$(".group-home-join-modal").modal();
+    } else {
+      alert("你已经在俱乐部里了");
+    }
+  },
+  "click .group-home-join-modal .modal-footer > button.btn-primary": function(event, template) {
+    if (Meteor.user()) {
+      template.$(".group-home-join-modal form").submit();
+    } else {
+      template.$(".group-home-join-modal").modal("hide");
+    }
+  },
+  "submit .group-home-join-modal form": function (event, template) {
+    event.preventDefault();
 
+    var $target = $(event.currentTarget);
+    var $imgUpload = $target.find(".img-upload");
+    var $gender = $target.find("[name=gender]:checked");
+    var $btnPrimary = template.$(".group-home-join-modal .modal-footer > .btn.btn-primary");
+
+    var croppedImg = $imgUpload.length && $imgUpload.imgUpload("crop");
+    var gender = $gender.val();
+    var bio = $target.find("[name=bio]").val();
+
+    if ($imgUpload.length && !croppedImg) {
+      alert("请上传头像");
+      return;
+    }
+
+    if (!Match.test(bio, Pattern.NonEmptyString)) {
+      alert("请填写自我介绍");
+      return;
+    }
+
+
+    $btnPrimary.text("提交中...").prop("disabled", true);
+
+    if (croppedImg) {
+      Meteor.defer(function () {
+        Meteor.call("uploadAvatar", croppedImg);
+      });
+    }
+
+    if (gender) {
+      Meteor.users.update(Meteor.userId(), {$set: {"profile.gender": gender}});
+    }
+
+    var group = template.data;
+    var applyOptions = {
+      groupId: group._id,
+      bio: bio
+    };
+
+    Meteor.call("applyMembership", applyOptions, function (error, result) {
+      $btnPrimary.text("申请入会").prop("disabled", false);
+      if (error) {
+        alert(error.reason);
+      } else {
+        template.$(".group-home-join-modal").modal("hide");
+      }
+    });
+  }
 });
 
 Template.groupHome.onDestroyed(function () {

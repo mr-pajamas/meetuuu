@@ -1,16 +1,16 @@
 <template name="timelineUpcomingEvent">
 
-  <div class="thumbnail">
-    <img src="{{posterOrDefault event.poster}}" alt="活动海报" class="img-responsive">
+  <div class="thumbnail timeline-upcoming-event-thumbnail">
+    <a href="{{pathFor 'eventDetail' eid=event._id._str}}"><img src="{{posterOrDefault event.poster}}" alt="活动海报" class="img-responsive"></a>
+
     <div class="caption">
       <h3>{{event.title}}</h3>
-      <ul class="fa-ul">
-        <li><i class="fa-li fa fa-check-square"></i>List icons</li>
-        <li><i class="fa-li fa fa-check-square"></i>can be used</li>
-        <li><i class="fa-li fa fa-spinner fa-spin"></i>as bullets</li>
-        <li><i class="fa-li fa fa-square"></i>in lists</li>
+      <ul class="fa-ul text-muted">
+        <li><i class="fa-li fa fa-map-marker"></i>{{event.location.address}}</li>
+        <li><i class="fa-li fa fa-users"></i>{{#with event.joinedCount}}已有 {{this}} 名小伙伴报名{{else}}还没有人报名……{{/with}}</li>
       </ul>
-      <p class="text-right"><a href="#" class="btn btn-primary" role="button">报名参加</a> <a href="#" class="btn btn-default" role="button">收藏</a></p>
+      <hr>
+      <p class="text-right"><a href="{{pathFor 'eventDetail' eid=event._id._str}}" class="btn btn-primary" role="button">报名参加</a> <a href="#" class="btn btn-default" role="button">收藏</a></p>
     </div>
   </div>
 </template>

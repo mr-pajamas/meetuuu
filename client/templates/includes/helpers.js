@@ -26,3 +26,7 @@ Template.registerHelper("pronoun", function (user) {
 Template.registerHelper("fromNow", function (date) {
   return moment(date).fromNow();
 });
+
+Template.registerHelper("toNow", function (date) {
+  return moment(date).toNow();
+});
