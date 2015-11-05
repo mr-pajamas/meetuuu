@@ -5,6 +5,233 @@ Meteor.startup(function () {
   if (Meteor.users.find().count() === 0) {
     var users = [
       {
+        mobile: "13000000001",
+        createdAt: new Date(),
+        profile: {
+          name: "寇大海",
+          gender: "男"
+        },
+        services: {
+          common: {md5Password: CryptoJS.MD5("123qwe").toString()}
+        }
+      },
+      {
+        mobile: "13000000002",
+        createdAt: new Date(),
+        profile: {
+          name: "温菱",
+          gender: "女"
+        },
+        services: {
+          common: {md5Password: CryptoJS.MD5("123qwe").toString()}
+        }
+      },
+      {
+        mobile: "13000000003",
+        createdAt: new Date(),
+        profile: {
+          name: "缪小杰",
+          gender: "男"
+        },
+        services: {
+          common: {md5Password: CryptoJS.MD5("123qwe").toString()}
+        }
+      },
+      {
+        mobile: "13000000004",
+        createdAt: new Date(),
+        profile: {
+          name: "林文霞",
+          gender: "女"
+        },
+        services: {
+          common: {md5Password: CryptoJS.MD5("123qwe").toString()}
+        }
+      },
+      {
+        mobile: "13000000005",
+        createdAt: new Date(),
+        profile: {
+          name: "黄晓曼",
+          gender: "女"
+        },
+        services: {
+          common: {md5Password: CryptoJS.MD5("123qwe").toString()}
+        }
+      },
+      {
+        mobile: "13000000006",
+        createdAt: new Date(),
+        profile: {
+          name: "马英",
+          gender: "女"
+        },
+        services: {
+          common: {md5Password: CryptoJS.MD5("123qwe").toString()}
+        }
+      },
+      {
+        mobile: "13000000007",
+        createdAt: new Date(),
+        profile: {
+          name: "王千华",
+          gender: "女"
+        },
+        services: {
+          common: {md5Password: CryptoJS.MD5("123qwe").toString()}
+        }
+      },
+      {
+        mobile: "13000000008",
+        createdAt: new Date(),
+        profile: {
+          name: "刘灿",
+          gender: "男"
+        },
+        services: {
+          common: {md5Password: CryptoJS.MD5("123qwe").toString()}
+        }
+      },
+      {
+        mobile: "13000000009",
+        createdAt: new Date(),
+        profile: {
+          name: "李丝丝",
+          gender: "女"
+        },
+        services: {
+          common: {md5Password: CryptoJS.MD5("123qwe").toString()}
+        }
+      },
+      {
+        mobile: "13000000010",
+        createdAt: new Date(),
+        profile: {
+          name: "李维",
+          gender: "男"
+        },
+        services: {
+          common: {md5Password: CryptoJS.MD5("123qwe").toString()}
+        }
+      },
+      {
+        mobile: "13000000011",
+        createdAt: new Date(),
+        profile: {
+          name: "崔贤",
+          gender: "男"
+        },
+        services: {
+          common: {md5Password: CryptoJS.MD5("123qwe").toString()}
+        }
+      },
+      {
+        mobile: "13000000012",
+        createdAt: new Date(),
+        profile: {
+          name: "赵吉吉",
+          gender: "男"
+        },
+        services: {
+          common: {md5Password: CryptoJS.MD5("123qwe").toString()}
+        }
+      },
+      {
+        mobile: "13000000013",
+        createdAt: new Date(),
+        profile: {
+          name: "夏天",
+          gender: "男"
+        },
+        services: {
+          common: {md5Password: CryptoJS.MD5("123qwe").toString()}
+        }
+      },
+      {
+        mobile: "13000000014",
+        createdAt: new Date(),
+        profile: {
+          name: "金素妍",
+          gender: "女"
+        },
+        services: {
+          common: {md5Password: CryptoJS.MD5("123qwe").toString()}
+        }
+      },
+      {
+        mobile: "13000000015",
+        createdAt: new Date(),
+        profile: {
+          name: "贾青",
+          gender: "男"
+        },
+        services: {
+          common: {md5Password: CryptoJS.MD5("123qwe").toString()}
+        }
+      },
+      {
+        mobile: "13000000016",
+        createdAt: new Date(),
+        profile: {
+          name: "年怀仁",
+          gender: "男"
+        },
+        services: {
+          common: {md5Password: CryptoJS.MD5("123qwe").toString()}
+        }
+      },
+      {
+        mobile: "13000000017",
+        createdAt: new Date(),
+        profile: {
+          name: "大宝剑",
+          gender: "男"
+        },
+        services: {
+          common: {md5Password: CryptoJS.MD5("123qwe").toString()}
+        }
+      },
+      {
+        mobile: "13000000018",
+        createdAt: new Date(),
+        profile: {
+          name: "黄天慧",
+          gender: "女"
+        },
+        services: {
+          common: {md5Password: CryptoJS.MD5("123qwe").toString()}
+        }
+      },
+      {
+        mobile: "13000000019",
+        createdAt: new Date(),
+        profile: {
+          name: "锦天亮",
+          gender: "男"
+        },
+        services: {
+          common: {md5Password: CryptoJS.MD5("123qwe").toString()}
+        }
+      },
+      {
+        mobile: "13000000020",
+        createdAt: new Date(),
+        profile: {
+          name: "谢天天",
+          gender: "男"
+        },
+        services: {
+          common: {md5Password: CryptoJS.MD5("123qwe").toString()}
+        }
+      }
+    ];
+
+    _.each(users, function (user) {
+      user._id = Meteor.users.insert(user);
+    });
+/*
+    var users = [
+      {
         mobile: 18000000001,
         createdAt: new Date(),
         profile: {
@@ -168,5 +395,6 @@ Meteor.startup(function () {
     Roles.addUsersToRoles(users[0]._id, ['create-event', 'modify-event'], 'g' + groups[1]._id);
     Roles.addUsersToRoles(users[1]._id, ['create-event', 'create-open-event', 'cancel-event'], 'g' + groups[0]._id);
     Roles.addUsersToRoles(users[2]._id, ['create-event', 'deny-entry'], 'g' + groups[0]._id);
+    */
   }
 });
