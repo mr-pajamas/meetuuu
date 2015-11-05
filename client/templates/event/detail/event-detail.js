@@ -132,7 +132,7 @@ Template.eventDetail.helpers({
     }
   },
   "eventDetailDesc": function () {
-    HTTP.get('http://7xjl8x.com1.z0.glb.clouddn.com/' + this.desc, function(err, res) {
+    HTTP.get('http://7xnxwx.com1.z0.glb.clouddn.com/' + this.desc, function(err, res) {
       if(!err && res.statusCode === 200) {
         eventDesc.set(res.content);
       }

@@ -652,7 +652,7 @@ EditEvent = (function() {
         return ;
       }
       var self = this;
-      HTTP.get('http://7xjl8x.com1.z0.glb.clouddn.com/' + this.key.get(), function(err, res) {
+      HTTP.get('http://7xnxwx.com1.z0.glb.clouddn.com/' + this.key.get(), function(err, res) {
         if(!err && res.statusCode === 200) {
           self.content.set(res.content);
         }
