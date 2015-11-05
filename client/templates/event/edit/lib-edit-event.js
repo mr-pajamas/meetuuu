@@ -1063,7 +1063,7 @@ EditEvent = (function() {
     EditEvent.eventTime.init('start-date', 'end-date', eventInfo.time.start, eventInfo.time.end, 30);
     EditEvent.eventLocation.init(eventInfo.location.city, eventInfo.location.address);
     EditEvent.eventPrivate.init(eventInfo.private);
-    EditEvent.eventMemberLimit.init(eventInfo.private ? 0 : eventInfo.member);
+    EditEvent.eventMemberLimit.init(eventInfo.member);
     EditEvent.eventTheme.init(eventInfo.theme);
     EditEvent.eventTags.init(eventInfo.tags);
     EditEvent.eventDesc.init('event-desc', eventInfo.desc);

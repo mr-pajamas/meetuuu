@@ -72,9 +72,9 @@
                   {{#if hasSelectedGroup}}
                     <input type="text" class="form-control event-group-select" value="{{hasSelectedGroup}}" disabled="disabled"/>
                   {{else}}
-                    <select {{modifyGroup}} class="event-theme event-group-select form-control">
+                    <select {{modifyGroup}} class="event-group-select form-control">
                       {{#each groupsWithRight}}
-                        <option {{attr}}>{{name}}</option>
+                        <option value="{{name}}" {{attr}}>{{name}}</option>
                       {{/each}}
                     </select>
                   {{/if}}
@@ -110,7 +110,6 @@
               <!-- 活动人数 -->
               <div class="form-group">
                 <label class="col-sm-2 control-label">活动人数&nbsp;</label>
-                <!--disabled="{{#if private}}disabled{{/if}}"-->
                 <div class="col-sm-10">
                   <input type="number" class="form-control"  id="event-member-limit" placeholder="活动人数限制，0 代表不限名额" value="{{memberLimit}}">
                 </div>

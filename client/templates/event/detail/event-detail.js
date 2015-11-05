@@ -9,14 +9,27 @@
           alert('请登录！');
           return;
         }
-        var eventSignInfo = {};
-        eventSignInfo.eventId = FlowRouter.getParam('eid');
-        eventSignInfo.signForm = doc;
-        Meteor.call('submitJoinForm', eventSignInfo, function(err, res) {
-          if (!err && res.code === 0) {
-            $('#joinEventFormModal').modal('hide');
+        //  这是前端部分的对报名人数的限制。
+        var eventId = FlowRouter.getParam('eid');
+        var event = Events.findOne({_id: new Mongo.ObjectID(eventId)});
+        if (event) {
+          if (event.member && event.status === "已发布") {
+            if (event.joinedCount + 1 > event.member) {
+              alert("人已经满了，下次早点报名吧!");
+              return ;
+            } else {
+              var eventSignInfo = {};
+              eventSignInfo.eventId = eventId;
+              eventSignInfo.signForm = doc;
+              Meteor.call('submitJoinForm', eventSignInfo, function(err, res) {
+                if (!err && res.code === 0) {
+                  alert("报名成功了！");
+                  $('#joinEventFormModal').modal('hide');
+                }
+              });
+            }
           }
-        });
+        }
         return false;
       }
     }
@@ -27,7 +40,12 @@ var eventDesc = new ReactiveVar('');
 Template.eventDetail.onCreated(function () {
   var template = this;
   //打开一次记录一次阅读记录
-  Meteor.call('eventReadInc', FlowRouter.getParam('eid'));
+  var event = Events.findOne({_id: FlowRouter.getParam("eid")});
+  if (event) {
+    if (event.status === "已发布") {
+      Meteor.call('eventReadInc', FlowRouter.getParam('eid'));
+    }
+  }
 
   template.autorun(function() {
     var eid = FlowRouter.getParam('eid');
@@ -63,20 +81,23 @@ Template.eventDetail.onRendered(function() {
 
   // 如果是从预览按钮点击过来的，禁用 报名, 收藏和评论按钮。
 
-  this.autorun(function () {
-    var preview = FlowRouter.getQueryParam("preview");
-    var timeoutId = Meteor.setTimeout(function () {
-      if (preview === "true") {
-        $("#saveEvent").prop("disabled", true);
-        $("#apply-event").prop("disabled", true);
-        $("#submitComment").prop("disabled", true);
-      } else {
-        $("#saveEvent").prop("disabled", false);
-        $("#apply-event").prop("disabled", false);
-        $("#submitComment").prop("disabled", false);
-      }
-      Meteor.clearTimeout(timeoutId);
-    }, 100);
+  //  afterFlush  用来执行数据加载之后的回调。确保数据都加载完毕
+  var template = this;
+  template.autorun(function () {
+    if (template.subscriptionsReady()) {
+      Tracker.afterFlush(function () {
+        var preview = FlowRouter.getQueryParam("preview");
+        if (preview === "true") {
+          $("#saveEvent").prop("disabled", true);
+          $("#apply-event").prop("disabled", true);
+          $("#submitComment").prop("disabled", true);
+        } else {
+          $("#saveEvent").prop("disabled", false);
+          $("#apply-event").prop("disabled", false);
+          $("#submitComment").prop("disabled", false);
+        }
+      });
+    }
   });
 });
 
@@ -119,14 +140,16 @@ Template.eventDetail.helpers({
     return eventDesc.get();
   },
   'hiddenPubBtn': function() {
-    return this.status === '未发布' ? '': 'hidden';
+    var event = Events.findOne({_id: new Mongo.ObjectID(FlowRouter.getParam("eid"))});
+    if (event) {
+      return event.status === '未发布' ? '': 'hidden';
+    }
   },
   'optionSignFormTips': function() {
     return !!FlowRouter.getQueryParam('preview') ? '预览报名表单': '我要报名';
   },
   'eventTime': function () {
-    var eventTime   = {},
-      time = this.time;  // 取了with 中的时间，用于改写格式，此 helper 优先级高于 with
+    var eventTime = {}, time = this.time;  // 取了with 中的时间，用于改写格式，此 helper 优先级高于 with
     if (time) {
       // 更改时间格式 ISO -> 2015年9月15日星期二下午5点37分
       eventTime.start = moment(time.start).format('M月D日 HH:mm');
@@ -301,6 +324,7 @@ Template.eventDetail.events({
         // TODO:  这个地方需要修改，因为本来就在详情页面，没必要再go, 这个是暂时的方案。
         Session.set("eventPosterData", 0);
         FlowRouter.go("eventDetail", {eid: eid});
+        FlowRouter.reload();
       }
     });
   },
@@ -311,5 +335,59 @@ Template.eventDetail.events({
       return false;
     }
     template.$("#joinEvent").submit();
+  }
+});
+
+Template.eventDetailAffixFooter.helpers({
+  'hiddenPubBtn': function() {
+    var event = Events.findOne({_id: new Mongo.ObjectID(FlowRouter.getParam("eid"))});
+    if (event) {
+      return event.status === '未发布' ? '': 'hidden';
+    }
+  }
+});
+
+Template.eventDetailAffixFooter.events({
+  "click #publish-event-mobile": function (e) {
+    e.preventDefault();
+    if (!Meteor.userId()) {
+      alert('请先登录！');
+      return;
+    }
+
+    var target = e.currentTarget;
+
+    $(target).attr("disabled", true).text("活动发布中...");
+
+    EditEvent.eventPoster.setKey(Session.get("eventPosterData"));
+
+    var eid = FlowRouter.getParam("eid");
+
+    //  只是上传海报。
+    Meteor.defer(function () {
+      Meteor.call("updatePoster", new Mongo.ObjectID(eid), Session.get("eventPosterData"), function (err) {
+        if (err) {
+          console.log("upload poster faield in event detail page.");
+        }
+      });
+    });
+
+    var curEvent = Events.findOne({_id: new Mongo.ObjectID(eid)});
+    var curEventGid = 0;
+    var privateStatus = 0;
+    if (!curEvent) {
+      return ;
+    } else {
+      curEventGid = curEvent.author.club.id;
+      privateStatus = curEvent.private;
+    }
+    Meteor.call('setEventStatus', new Mongo.ObjectID(eid), '已发布', curEventGid, privateStatus, function(err, res) {
+      if (!err && res.code === 0) {
+        // TODO:  这个地方需要修改，因为本来就在详情页面，没必要再go, 这个是暂时的方案。
+        Session.set("eventPosterData", 0);
+        FlowRouter.go("eventDetail", {eid: eid});
+        FlowRouter.reload();
+      }
+    });
   }
 });

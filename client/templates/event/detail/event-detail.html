@@ -48,8 +48,8 @@
                       </a>
                     </li>
                   </ul>
-                  <a href="{{pathFor 'eventDetail' eid=_id._str}}" class="btn btn-lg btn-default {{hiddenPubBtn}}" id="returnToModify">返回修改</a>
-                  <buttom class="btn btn-lg btn-warning {{hiddenPubBtn}}" id="publish-event">发布活动</buttom>
+                  <a href="{{pathFor 'eventEdit' eid=_id._str}}" class="hidden-xs btn btn-lg btn-default returnToModify {{hiddenPubBtn}}">返回修改</a>
+                  <button id="publish-event" class="hidden-xs btn btn-lg btn-warning {{hiddenPubBtn}}">发布活动</button>
                 </div>
               </section>
 
@@ -134,9 +134,14 @@
               {{/if}}
                 {{else}}
                 <li id="nav-join" class="hidden-xs my-join"><a href="" >我要报名</a></li>
+              {{#if hiddenPubBtn}}
+                {{#if authManage}}
+                  <li id="goToManage"><a href="{{pathFor 'eventManage' eid=eventId}}">管理活动</a></li>
+                {{/if}}
+              {{else}}
+                <!-- 移动端的返回修改按钮位置。 -->
+                <li><a href="{{pathFor 'eventEdit' eid=eventId}}" class="visible-xs-block btn btn-lg btn-default {{hiddenPubBtn}} modify">返回修改</a></li>
               {{/if}}
-              {{#if authManage}}
-                <li id="goToManage"><a href="{{pathFor 'eventManage' eid=eventId}}">管理活动</a></li>
               {{/if}}
             </ul>
           </div>
@@ -150,7 +155,15 @@
   {{#footerCustom affix=true}}
     <div class="event-detail-footer">
       <section class="visible-xs-block mobile-join-wrap text-center">
-        <button class="btn btn-lg btn-success mobile-join" data-toggle="modal" data-target="#joinEventFormModal">报名参加</button>
+        {{#if hiddenPubBtn}}
+          {{#if isJoined}}
+            <button class="btn btn-lg btn-success mobile-join">{{joinStatus}}</button>
+          {{else}}
+            <button class="btn btn-lg btn-success mobile-join" data-toggle="modal" data-target="#joinEventFormModal">报名参加</button>
+          {{/if}}
+        {{else}}
+          <button id="publish-event-mobile" class="visible-xs-inline-block btn btn-lg btn-warning mobile-join">发布活动</button>
+        {{/if}}
       </section>
     </div>
   {{/footerCustom}}

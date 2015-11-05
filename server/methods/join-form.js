@@ -47,7 +47,6 @@ Meteor.methods({
     return {'code': cnt ? 0 : -1};
   },
   'denySignRequest': function(denyInfo) {
-    console.log("拒绝私有活动"+Roles.userIsInRole(Meteor.userId(), ['deny-entry'], "g"+denyInfo.groupId));
        var code={};
        var cnt, ejc;
         if(!Meteor.userId()) return {code: -1} ;

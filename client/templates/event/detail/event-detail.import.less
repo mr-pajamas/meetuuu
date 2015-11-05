@@ -21,6 +21,14 @@
   }
 
   #fixed-sidebar{
+    .modify {
+      line-height: inherit;
+      border: none;
+      @media (min-width: @screen-sm-min) {
+        border: 1px solid transparent;
+        line-height: 1.333333;
+      }
+    }
     #goToManage {
       a {
         color: #ffffff;
@@ -87,7 +95,7 @@
       right: 35px;
     }
   }
-  #returnToModify {
+  .returnToModify {
     position: absolute;
     bottom: 15px;
     right: 165px;

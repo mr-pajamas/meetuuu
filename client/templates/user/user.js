@@ -142,7 +142,7 @@ Template.user.helpers({
     var eventIds = UserSavedEvents.find({"user.id": FlowRouter.getParam("userId")});
     if (eventIds.count()) {
       hasWatchingEvents.set(1);
-      return evnetIds;
+      return eventIds;
     } else {
       hasWatchingEvents.set(0);
       return false;

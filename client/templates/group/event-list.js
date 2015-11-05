@@ -19,14 +19,10 @@ Template.groupEventList.onRendered(function () {
 
 Template.groupEventList.helpers({
   currentGroupId: function () {
-    console.log(path);
-    console.log(Groups.findOne({path: path})._id);
     return Groups.findOne({path: path})._id;
   },
   events: function () {
     var groupId = Groups.findOne({path: path})._id;
-    console.log(groupId);
-    console.log(Events.find({"author.club.path": groupId}, {sort: {"time.start": 1}}));
     return Events.find({"author.club.id": groupId}, {sort: {"time.start": 1}});
   },
   "eventCalendar": function () {

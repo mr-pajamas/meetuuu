@@ -7,6 +7,7 @@ Session.setDefault("eventGroupId", 0);
 Session.setDefault("validateEventInfo", true);   // 暂时的前端用来验证事件的session变量。 这个会做修改的。
 
 var isInitFinished = new ReactiveVar(false);
+
 // 百度地图
 var bdmap = null;
 Template.editEvent.onDestroyed(function() {
@@ -54,19 +55,30 @@ Template.editEvent.onRendered(function() {
 
   var eid = FlowRouter.getParam("eid");
 
-  // 自动补全提示
-  var timeoutId = Meteor.setTimeout(function () {
-    if (eid) {
-      $(".event-group-select").prop("disabled", true);
+  var template = this;
+  template.autorun(function () {
+    if (template.subscriptionsReady()) {
+      Tracker.afterFlush(function () {
+        isInitFinished.set(true);
+        if (eid) {
+          $(".event-group-select").prop("disabled", true);
+        }
+        // initDataPicker.
+        EditEvent.eventTime._initDatePicker("start-date", "end-date");
+        //  设置活动主题为当前活动
+        Meteor.typeahead.inject();
+        $("#event-desc").wysiwyg();
+      });
     }
-    // initDataPicker.
-    EditEvent.eventTime._initDatePicker("start-date", "end-date");
-    Meteor.typeahead.inject();
-    $("#event-desc").wysiwyg();
-    Meteor.clearTimeout(timeoutId);
-  }, 200);
+  });
 
+  // 自动补全提示
+  Meteor.setTimeout(function () {
+
+  }, 2000);
 });
+
+
 
 
 
@@ -241,12 +253,16 @@ Template.editEvent.helpers({
     return EditEvent.eventTitle.getTitle();
   },
   hasPoster: function () {
-    return isInitFinished.get() ? true : false;
+    return isInitFinished.get();
   },
   poster: function () {
     var posterData = Session.get("eventPosterData");
-    var posterUrl = Events.findOne();
-
+    var eid = FlowRouter.getParam("eid");
+    if (!eid) {
+      return "/event-create-poster-holder.png";
+    } else {
+      var posterUrl = Events.findOne({_id: new Mongo.ObjectID(eid)});
+    }
     if (posterData) {
       if (posterData === 1) {
         return posterUrl ? posterUrl.poster : "/event-create-poster-holder.png";
@@ -391,13 +407,15 @@ Template.editEvent.helpers({
         console.log(err);
         return;
       }
-      if (_.isArray(res) && res.length === 0) {
-        // 未找到匹配信息，提示创建新 Tag
-        res.push({'name': '创建 "' + query + ' "标签', 'refers': 0, 'type': 'new', 'value': query});
-      }
+      //  没有找到也是可以　提示创建新的标签的.
+      res.push({'name': '创建 "' + query + ' "标签', 'refers': 0, 'type': 'new', 'value': query});
+      /*if (_.isArray(res) && res.length === 0) {
+       // 未找到匹配信息，提示创建新 Tag
+       res.push({'name': '创建 "' + query + ' "标签', 'refers': 0, 'type': 'new', 'value': query});
+       }*/
       // callback 为提示框提供选项
       callback(res);
-    })
+    });
   },
   selected: function(event, selectedSuggestion) {
     function insertTag(tag) {
@@ -554,7 +572,7 @@ Template.editEvent.events({
     EditEvent.eventGroups.changeSelectedGroup(gid);
     Session.set("eventGroupId", $(e.currentTarget).val());
     Session.set("selectedCity", MyGroups.findOne({_id: Session.get("eventGroupId")}).homeCity);
-   // $(".event-group-select").prop("checked", false);
+    // $(".event-group-select").prop("checked", false);
     EditEvent.eventPrivate.setPrivate();
     //console.log(EditEvent.eventPrivate.getPrivateStatus());
   },
@@ -618,10 +636,10 @@ Template.editEvent.events({
     var isPublic = $(e.target).prop("checked");
     if (!isPublic) {
       EditEvent.eventPrivate.setPrivate();
-     // console.log(EditEvent.eventPrivate.getPrivateStatus());
+      // console.log(EditEvent.eventPrivate.getPrivateStatus());
     } else {
       EditEvent.eventPrivate.setPublic();
-     // console.log(EditEvent.eventPrivate.getPrivateStatus());
+      // console.log(EditEvent.eventPrivate.getPrivateStatus());
     }
   },
   // 活动主题选择

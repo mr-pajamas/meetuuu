@@ -21,7 +21,6 @@ Meteor.methods({
     Events.update({_id: eventInfo._id}, {'$set': eventInfo}, {upsert: true});
 
 
-    console.log("海报是否存在： " + eventInfo.poster);
     if (eventInfo.poster) {         //  用来判断是否修改了海报。
       // 活动海报的更新，  活动详情的更新。
       Meteor.defer(function () {
@@ -51,30 +50,23 @@ Meteor.methods({
     Events.update({_id: new Mongo.ObjectID(eid)}, {'$inc': {'readCount': 1}});
   },
   'setEventStatus': function(eid, status, groupId, privateStatus) {
-    console.log("eid " + eid);
-    console.log("status " + status);
-    console.log("groupId " + groupId);
     check(eid, Mongo.ObjectID);
     check(status, String);
     check(groupId, String);
     check(privateStatus, Boolean);
-    //console.log(groupId);
     var cnt;
     if(!Meteor.userId()) return ;
     var myGroup = Memberships.findOne({userId: Meteor.userId(), groupId: groupId, status: "joined"});
     //如果在该分组中
     if(status === "未发布") {
       if(myGroup) {
-        console.log(myGroup);
         if(myGroup.role === "owner") {
-          console.log(Meteor.userId());
           cnt = Events.update(eid, {$set: {status: status}});
           return {code: cnt === 1 ? 0 : 1};
         } else if(Roles.userIsInRole(Meteor.userId(), ['cancel-event'], 'g'+ groupId)) {
           //如果不具有公开活动的权限而是操作公开活动
-          console.log(Roles.userIsInRole(Meteor.userId(), ['create-open-event'], 'g'+ groupId));
-          if(!Roles.userIsInRole(Meteor.userId(), ['create-open-event'], 'g'+ groupId) && !privateStatus) {
-            return ;
+          if (!Roles.userIsInRole(Meteor.userId(), ['create-open-event'], 'g' + groupId) && !privateStatus) {
+            return;
           } else {
             cnt = Events.update(eid, {$set: {status: status}});
             return {code: cnt === 1 ? 0 : 1};

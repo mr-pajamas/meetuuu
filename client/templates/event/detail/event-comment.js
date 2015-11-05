@@ -25,7 +25,6 @@ Template.eventComment.helpers({
       }
       return reply;
     });
-    console.log(fc);
     return fc;
   }
 });
@@ -84,11 +83,12 @@ Template.eventComment.events({
     };
     Meteor.call('submitEventComment', comment, function(err, res) {
       if (!err && res.code === 0) {
-        alert('评论成功');
         // 显示回复按钮
         $('#replyContainer-' + cid).show();
         // 清楚评论并收起评论框
         $('#replyComment-' + cid).slideUp().find('textarea').val('');
+      } else {
+        alert("评论失败，请重新提交评论");
       }
     });
   }
