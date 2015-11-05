@@ -1,0 +1,8 @@
+<template name="timelineNewMember">
+  {{#timelineMediaLayout}}
+    <h4 class="media-heading">新人到！欢迎 <a href="#">{{membership.nickname}}</a> 成为我们中的一员！</h4>
+    {{#with membership.bio}}
+      <p class="text-muted"><i class="fa fa-quote-left fa-pull-left"></i> {{this}}</p>
+    {{/with}}
+  {{/timelineMediaLayout}}
+</template>

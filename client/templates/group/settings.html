@@ -40,7 +40,7 @@
     <div class="form-group">
       <label for="inputGroupName" class="col-md-2 control-label">组织名</label>
       <div class="col-md-9">
-        <input type="text" class="form-control" id="inputGroupName" name="name" placeholder="逗比俱乐部&hellip;">
+        <input type="text" class="form-control" id="inputGroupName" name="name" placeholder="逗比俱乐部&hellip;" value="{{name}}">
       </div>
     </div>
 
@@ -49,7 +49,7 @@
       <div class="col-md-9">
         <div class="input-group">
           <span class="input-group-addon">http://meetuuu.com/groups/</span>
-          <input type="text" class="form-control" id="inputGroupPath" name="path" placeholder="path-of-group&hellip;">
+          <input type="text" class="form-control" id="inputGroupPath" name="path" placeholder="path-of-group&hellip;" value="{{path}}">
         </div>
       </div>
     </div>
@@ -57,22 +57,21 @@
     <div class="form-group">
       <label for="inputGroupBadge" class="col-md-2 control-label">组织徽标</label>
       <div class="col-md-4">
-        {{> imgUpload width=400 height=400 defaultSrc="/images/default-badge.png"}}
+        {{> imgUpload width=400 height=400 defaultSrc="/images/default-badge.png" src=logoUrl}}
       </div>
     </div>
 
     <div class="form-group">
       <label for="inputMemberAlias" class="col-md-2 control-label">成员自称</label>
       <div class="col-md-4">
-        <input type="text" class="form-control" id="inputMemberAlias" name="memberAlias"
-               placeholder="逗比&hellip;">
+        <input type="text" class="form-control" id="inputMemberAlias" name="memberAlias" placeholder="逗比&hellip;" value="{{memberAlias}}">
       </div>
     </div>
 
     <div class="form-group">
       <label for="inputGroupDescription" class="col-md-2 control-label">组织简介</label>
       <div class="col-md-9">
-        <textarea class="form-control" rows="5" id="inputGroupDescription" name="description" placeholder="向大家介绍一下这个可爱的组织吧！"></textarea>
+        <textarea class="form-control" rows="5" id="inputGroupDescription" name="description" placeholder="向大家介绍一下这个可爱的组织吧！">{{description}}</textarea>
       </div>
     </div>
 
@@ -90,27 +89,27 @@
 <template name="groupSettingRoleList">
   <a href="{{pathFor 'groupSettingRole' groupPath=path roleId=newRoleId}}" class="btn btn-success btn-center-block-xs" role="button"><i class="fa fa-plus"></i> 添加新角色</a>
   <hr>
-  <div class="list-group group-setting-roles-list">
+  <div class="list-group group-setting-role-list">
     {{#each roleList}}
       <a href="{{pathFor 'groupSettingRole' groupPath=../path roleId=_id}}" class="list-group-item">
         {{#unless owner}}
-          {{#unless default}}<button type="button" class="close" aria-label="删除"><i class="fa fa-trash-o"></i></button>{{/unless}}
-          <button type="button" class="close" aria-label="默认角色" disabled="{{default 'disabled'}}"><i class="fa fa-flag"></i></button>
+          {{#unless defaultOrReferenced}}<button type="button" class="close group-setting-role-remove" aria-label="删除"><i class="fa fa-trash-o fa-fw"></i></button>{{/unless}}
+          <button type="button" class="close group-setting-role-default" aria-label="默认角色" disabled="{{default 'disabled'}}"><i class="fa fa-flag fa-fw"></i></button>
         {{/unless}}
 
-        <h4 class="list-group-item-heading">{{name}}{{!-- {{#if default}}<span class="label label-primary">默认角色</span>{{/if}}--}}</h4>
-        <p class="list-group-item-text text-muted">权限：{{permissionCount}}</p>
+        <h4 class="list-group-item-heading">{{name}}  <span class="label label-default">{{permissionCount}}</span></h4>
+        <p class="list-group-item-text text-muted">引用数：{{referenceCount}}</p>
       </a>
     {{/each}}
   </div>
 </template>
 
 <template name="groupSettingRole">
-  <a href="{{pathFor 'groupSettingRoleList' groupPath=path}}" class="btn btn-default group-setting-roles-back"><i class="fa fa-chevron-left"></i> 返回角色列表</a>
+  <a href="{{pathFor 'groupSettingRoleList' groupPath=path}}" class="btn btn-default group-setting-role-back"><i class="fa fa-chevron-left"></i> 返回角色列表</a>
   <hr>
 
   {{#with role}}
-    <form class="form-horizontal group-setting-roles-form">
+    <form class="form-horizontal group-setting-role-form">
       <div class="form-group">
         <label for="inputRoleName" class="col-xs-12">角色名</label>
         <div class="col-xs-12">
@@ -232,7 +231,7 @@
       <div class="col-sm-offset-1 col-sm-11">
         <div class="checkbox">
           <label>
-            <input type="checkbox" aria-describedby="publishMembersHelp"> 公开成员信息
+            <input type="checkbox" aria-describedby="publishMembersHelp" name="revealMembers" checked="{{revealMembers}}"> 公开成员信息
           </label>
         </div>
         <span id="publishMembersHelp" class="help-block">外部人员可以访问俱乐部成员的信息</span>
@@ -243,7 +242,7 @@
       <div class="col-sm-offset-1 col-sm-11">
         <div class="checkbox">
           <label>
-            <input type="checkbox" aria-describedby="publishEventsHelp"> 公开内部活动信息
+            <input type="checkbox" aria-describedby="publishEventsHelp" name="revealEvents" checked="{{revealEvents}}"> 公开内部活动信息
           </label>
         </div>
         <span id="publishEventsHelp" class="help-block">外部人员可以访问俱乐部内部活动的标题和时间</span>

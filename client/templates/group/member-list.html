@@ -1,76 +1,124 @@
 <template name="groupMemberList">
+  {{> authModal}}
+
+  <div class="modal fade group-member-list-modal" tabindex="-1" role="dialog" aria-labelledby="groupMemberListModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
+          <h4 class="modal-title" id="groupMemberListModalLabel">让大家了解我</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal">
+            {{#unless currentUser.profile.avatar}}
+              <div class="form-group">
+                <label for="inputGroupBadge" class="col-md-3 control-label">头像</label>
+                <div class="col-md-5">
+                  {{> imgUpload width=400 height=400 defaultSrc="/images/default-avatar.png"}}
+                </div>
+              </div>
+            {{/unless}}
+
+            {{#unless currentUser.profile.gender}}
+              <div class="form-group">
+                <label class="col-md-3 control-label">性别</label>
+                <div class="col-md-8">
+                  <div class="radio radio-inline">
+                    <label>
+                      <input type="radio" name="gender" value="男" checked="checked"> 男
+                    </label>
+                  </div>
+                  <div class="radio radio-inline">
+                    <label>
+                      <input type="radio" name="gender" value="女"> 女
+                    </label>
+                  </div>
+                </div>
+              </div>
+            {{/unless}}
+
+            <div class="form-group">
+              <label for="inputBio" class="col-md-3 control-label">自我介绍</label>
+              <div class="col-md-8">
+                <textarea class="form-control" rows="5" id="inputBio" name="bio" placeholder="向大家介绍下自己吧……"></textarea>
+              </div>
+            </div>
+
+            <button class="hidden" type="submit">申请</button>
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary">申请入会</button>
+        </div>
+
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>
+
   <main class="group-member-list-main">
     <div class="container">
 
       <div class="page-header">
-        <button class="btn btn-success btn-lg pull-right" type="button">申请加入</button>
+        {{#if canJoin}}<button class="btn btn-success btn-lg pull-right" type="button">申请加入</button>{{/if}}
         <h1 class="text-muted"><i class="fa fa-users"></i> 成员</h1>
       </div>
 
       <form>
         <div class="input-group input-group-md">
           <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
-          <input type="text" class="form-control" placeholder="名字&hellip;">
+          <input type="text" class="form-control" name="searchString" placeholder="名字&hellip;">
           <!--<span class="input-group-btn"><button type="submit" class="btn btn-default">查询</button></span>-->
           <div class="input-group-btn">
-            {{#styledSelect inline=true selectValue="找成员"}}
+            {{#styledSelect inline=true selectValue=searchOption}}
               <option>找成员</option>
-              <option>申请者</option>
+              <option>申请人</option>
             {{/styledSelect}}
           </div>
         </div><!-- /.input-group -->
+
+        <button class="hidden" type="submit">查询</button>
       </form>
 
-      <ul class="list-unstyled row group-member-list-result">
-        <li class="col-sm-6 col-lg-4">
-          <div class="thumbnail">
-            <a href="#">
-              <img src="/images/default-avatar.png">
-              <div class="caption">
-                <h4>傻逼1<span class="label label-default">成员</span></h4>
-                <p class="text-muted">fuck!</p>
-              </div>
-            </a>
-          </div>
-        </li>
-
-        <li class="col-sm-6 col-lg-4">
-          <div class="thumbnail">
-            <a href="#">
-              <img src="/images/default-avatar.png">
-              <div class="caption">
-                <h4>傻逼1<span class="label label-default">组长</span></h4>
-                <p class="text-muted">fuck!</p>
-              </div>
-            </a>
-          </div>
-        </li>
-
-        <li class="col-sm-6 col-lg-4">
-          <div class="thumbnail">
-            <a href="#">
-              <img src="/images/default-avatar.png">
-              <div class="caption">
-                <h4>傻逼1<span class="label label-default">社群经理</span></h4>
-                <p class="text-muted">fuck!</p>
-              </div>
-            </a>
-          </div>
-        </li>
-
-        <li class="col-sm-6 col-lg-4">
-          <div class="thumbnail">
-            <a href="#">
-              <img src="/images/default-avatar.png">
-              <div class="caption">
-                <h4>傻逼1<span class="label label-default">论坛版主</span></h4>
-                <p class="text-muted">fuck!</p>
-              </div>
-            </a>
-          </div>
-        </li>
-      </ul>
+      {{#unless resultSetReady}}
+        <div class="text-muted text-center loader"><i class="fa fa-refresh fa-2x fa-spin"></i></div>
+      {{else}}
+        {{#if memberList.count}}
+          <ul class="list-unstyled row group-member-list-result">
+            {{#each memberList}}
+              <li class="col-sm-6 col-lg-4">
+                <div class="thumbnail">
+                  {{#if membersOrApplicants}}
+                    <a href="{{pathFor 'groupMember' groupPath=../path memberId=_id}}">
+                      <img src="{{avatarOrDefault user.profile.avatar}}">
+                      <div class="caption">
+                        <h4>{{nickname}}<span class="label label-default">{{roleName}}</span></h4>
+                        <p class="text-muted">加入日期：{{dateFormat statusUpdatedAt "ll"}}</p>
+                      </div>
+                    </a>
+                  {{else}}
+                    <div class="btn-group-vertical pull-right group-applicant-btn-group" role="group" aria-label="Vertical button group">
+                      <button type="button" class="btn btn-success">同意</button>
+                      <button type="button" class="btn btn-default">忽略</button>
+                    </div>
+                    <a href="{{pathFor 'groupApplicant' groupPath=../path applicantId=_id}}" class="group-applicant-card">
+                      <img src="{{avatarOrDefault user.profile.avatar}}">
+                      <div class="caption">
+                        <h4>{{nickname}}</h4>
+                        <p class="text-muted">申请时间：{{fromNow statusUpdatedAt}}</p>
+                      </div>
+                    </a>
+                  {{/if}}
+                </div>
+              </li>
+            {{/each}}
+          </ul>
+        {{else}}
+          <p class="text-center text-muted">没有相关记录</p>
+        {{/if}}
+      {{/unless}}
     </div>
   </main>
-
 </template>

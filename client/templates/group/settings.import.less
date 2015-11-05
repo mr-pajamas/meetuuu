@@ -121,12 +121,12 @@
   }
 }
 
-.group-setting-roles-list {
+.group-setting-role-list {
   > a {
     padding: 15px;
 
     .close:disabled {
-      cursor: default;
+      cursor: inherit;
       color: @brand-danger;
       text-decoration: none;
       .opacity(.8);
@@ -145,12 +145,13 @@
         font-size: 85%;
         vertical-align: top;
         margin-left: .3em;
+        border-radius: 1em;
       }
     }
   }
 }
 
-.group-setting-roles-form {
+.group-setting-role-form {
   .radio,
   .checkbox {
     height: 34px !important;

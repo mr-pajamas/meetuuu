@@ -65,7 +65,7 @@ Meteor.startup(function () {
         defaultRole: "2g42gkbMGivsFBfKn",
         roles: {
           owner: {name: "校长"},
-          "2g42gkbMGivsFBfKn": {name: "学生", permissions: ["create-topic"]}
+          "2g42gkbMGivsFBfKn": {name: "学生", permissions: [], referenceCount: 2}
         }
       },
       {
@@ -79,7 +79,7 @@ Meteor.startup(function () {
         defaultRole: "hZKu3ssFiPWpF5k7i",
         roles: {
           owner: {name: "组长"},
-          "hZKu3ssFiPWpF5k7i": {name: "成员", permissions: ["create-topic", "modify-own-topic", "create-event", "modify-event"]}
+          "hZKu3ssFiPWpF5k7i": {name: "成员", permissions: ["create-event", "modify-event"], referenceCount: 1}
         }
       }
     ];
@@ -102,7 +102,8 @@ Meteor.startup(function () {
         userId: users[0]._id,
         nickname: "张三1",
         status: MemberStatus.Joined,
-        statusUpdatedAt: new Date()
+        statusUpdatedAt: new Date(),
+        role: "hZKu3ssFiPWpF5k7i"
       },
       {
         groupId: groups[1]._id,
@@ -117,14 +118,16 @@ Meteor.startup(function () {
         userId: users[2]._id,
         nickname: "王五0",
         status: MemberStatus.Joined,
-        statusUpdatedAt: new Date()
+        statusUpdatedAt: new Date(),
+        role: "2g42gkbMGivsFBfKn"
       },
       {
         groupId: groups[0]._id,
         userId: users[1]._id,
         nickname: "lili",
         status: MemberStatus.Joined,
-        statusUpdatedAt: new Date()
+        statusUpdatedAt: new Date(),
+        role: "2g42gkbMGivsFBfKn"
       }
     ];
 

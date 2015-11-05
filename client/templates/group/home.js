@@ -100,3 +100,13 @@ Template.groupHome.onDestroyed(function () {
   this.timeShiftTid && Meteor.clearTimeout(this.timeShiftTid);
   this.dayShiftTid && Meteor.clearTimeout(this.dayShiftTid);
 });
+
+Template.timelineItem.helpers({
+  timelineItemData: function () {
+    var group = Template.parentData();
+    var user = Meteor.users.findOne(this.userId);
+    var membership = Memberships.findOne({groupId: this.groupId, userId: this.userId});
+
+    return {groupTimelineItem: this, group: group, user: user, membership: membership};
+  }
+});

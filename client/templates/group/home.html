@@ -99,7 +99,7 @@
       <div class="timeline-heading visible-xs-block">
         <h3 class="timeline-title">{{timelineItemName}}<small class="pull-right"><i class="fa fa-clock-o"></i> {{dateFormat datetime "HH:mm"}}</small></h3>
       </div>
-      {{> Template.dynamic template=timelineItemTemplate}}
+      {{> Template.dynamic template=timelineItemTemplate data=timelineItemData}}
     </div>
   </li>
 </template>

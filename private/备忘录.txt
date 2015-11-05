@@ -5,3 +5,7 @@ qiniu-uploader需要改参数
 内部活动可以升级为公开活动，而公开活动不可以降级
 
 俱乐部管理页面affix有问题
+
+
+meteor add matb33:collection-hooks
+meteor add dburles:collection-helpers
