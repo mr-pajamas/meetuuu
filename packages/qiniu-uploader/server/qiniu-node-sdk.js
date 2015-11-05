@@ -5,7 +5,7 @@ QiniuNodeSDK = Npm.require('qiniu');
 /* ==================++++填写下面三个参数++++=================*/
 var ak = 'QSPlgLpakTk0_msuxWS_SqU2e-6BIHpzrkRNhrrw';//'ACCESS KEY';
 var sk = 'TEje3jKKP22MdxEjET5qnzIn_HSCn5GnvffceS4r';//'SECRET KEY';
-var bucketname = 'meetuuu-event';//'BUCKET NAME';
+var bucketname = 'meetuuu-events';//'BUCKET NAME';
 
 //var qiniuKeys = Assets.getText('qiniu-keys.json');
 //console.log(qiniuKeys);
