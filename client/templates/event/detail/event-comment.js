@@ -84,7 +84,6 @@ Template.eventComment.events({
       commentBy: {
         username: Meteor.user().profile.name,
         uid: Meteor.userId(),
-        avatar: Meteor.user().profile.avatar
       }
     };
     Meteor.call('submitEventComment', comment, function(err, res) {

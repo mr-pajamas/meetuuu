@@ -155,7 +155,7 @@ Template.user.helpers({
     return Events.findOne({_id: this.event.id});
   },
   "poster": function () {
-    return this.poster ? this.poster : "/event-create-poster-holder.png";
+    return this.poster ? this.poster : "/images/default-poster.png";
   },
   "eventTime": function () {
     var eventTime = {},
@@ -284,7 +284,7 @@ Template.calendarEvent.helpers({
 
 Template.doingEvent.helpers({
   "poster": function () {
-    return this.poster ? this.poster : "/event-create-poster-holder.png";
+    return this.poster ? this.poster : "/images/default-poster.png";
   },
   "eventTime": function () {
     var eventTime = {},

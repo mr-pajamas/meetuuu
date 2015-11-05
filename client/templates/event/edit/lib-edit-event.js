@@ -425,7 +425,7 @@ EditEvent = (function() {
        // Set options for cropper plugin
        var $image = $(".image-crop > img");
        // 设置图片
-       $image.attr('src', key ? 'http://7xjl8x.com1.z0.glb.clouddn.com/' + key : '/event-create-poster-holder.png');
+       $image.attr('src', key ? 'http://7xjl8x.com1.z0.glb.clouddn.com/' + key : '/images/default-poster.png');
        $($image).cropper({
        //aspectRatio: 16 / 9,
        preview: ".img-preview",
@@ -1054,7 +1054,7 @@ EditEvent = (function() {
     eventDesc.init('event-desc', '');
     eventSignForm.init([]);
     eventGroups.init();
-    eventPoster.init("/event-create-poster-holder.png");
+    eventPoster.init("/images/default-poster.png");
   };
 
   var InitWithData = function(eventInfo) {

@@ -126,7 +126,7 @@ Template.eventDetail.helpers({
   "previewPoster": function () {
     var poster = Session.get("eventPosterData");
     if (poster === 1) {
-      return this.poster ? this.poster : "/event-create-poster-holder.png";
+      return this.poster ? this.poster : "/images/default-poster.png";
     } else {
       return poster;
     }
@@ -250,8 +250,7 @@ Template.eventDetail.events({
       content: commentContent,
       commentBy: {
         username: Meteor.user().profile.name,
-        uid: Meteor.userId(),
-        avatar: Meteor.user().profile.avatar
+        uid: Meteor.userId()
       }
     };
     Meteor.call('submitEventComment', comment, function(err, res) {

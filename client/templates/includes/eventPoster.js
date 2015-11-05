@@ -3,5 +3,5 @@
  */
 
 Template.registerHelper("eventPoster", function (poster) {
-  return poster || "/event-create-poster-holder.png";
+  return poster || "/images/default-poster.png";
 });

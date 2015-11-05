@@ -122,8 +122,8 @@
         <div class="event-sidebar col-sm-3 col-sm-offset-9">
           <div class="content" id="navbar-tobe-fixed">
             <ul class="nav nav-stacked" id="fixed-sidebar">
-              <li role="presentation"><a class="event-sidebar-scroll" href="#poster">主题海报</a></li>
-              <li role="presentation"><a class="event-sidebar-scroll" href="#information">活动详情</a></li>
+              <li role="presentation"><a class="event-sidebar-scroll" href="#poster"><span class="hidden-xs">主题</span>海报</a></li>
+              <li role="presentation"><a class="event-sidebar-scroll" href="#information"><span class="hidden-xs">活动</span>详情</a></li>
               <li role="presentation"><a class="event-sidebar-scroll" href="#comment">留言</a></li>
               <!-- 判断用户是否已经报名 -->
               {{#if authJoinLogin}}
@@ -134,6 +134,7 @@
               {{/if}}
                 {{else}}
                 <li id="nav-join" class="hidden-xs my-join"><a href="" >我要报名</a></li>
+              {{/if}}
               {{#if hiddenPubBtn}}
                 {{#if authManage}}
                   <li id="goToManage"><a href="{{pathFor 'eventManage' eid=eventId}}">管理活动</a></li>
@@ -141,7 +142,6 @@
               {{else}}
                 <!-- 移动端的返回修改按钮位置。 -->
                 <li><a href="{{pathFor 'eventEdit' eid=eventId}}" class="visible-xs-block btn btn-lg btn-default {{hiddenPubBtn}} modify">返回修改</a></li>
-              {{/if}}
               {{/if}}
             </ul>
           </div>

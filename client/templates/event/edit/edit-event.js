@@ -258,18 +258,18 @@ Template.editEvent.helpers({
     var posterData = Session.get("eventPosterData");
     var eid = FlowRouter.getParam("eid");
     if (!eid) {
-      return "/event-create-poster-holder.png";
+      return "/images/default-poster.png";
     } else {
       var posterUrl = Events.findOne({_id: new Mongo.ObjectID(eid)});
     }
     if (posterData) {
       if (posterData === 1) {
-        return posterUrl ? posterUrl.poster : "/event-create-poster-holder.png";
+        return posterUrl ? posterUrl.poster : "/images/default-poster.png";
       } else if (posterData.startsWith("data:")) {
         return posterData;
       }
     } else {
-      return posterUrl ? posterUrl.poster : "/event-create-poster-holder.png";
+      return posterUrl ? posterUrl.poster : "/images/default-poster.png";
     }
   },
   // 加入的俱乐部，且具有创建活动的权利
