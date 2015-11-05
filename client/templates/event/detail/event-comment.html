@@ -5,7 +5,7 @@
       <div class="media">
         <div class="row">
           <div class="media-left col-sm-2 col-xs-3">
-            <a href="#"><img src="{{avatarOrDefault commentBy.avatar }}" alt="个人头像"/></a>
+            <a href="{{pathFor 'user' userId=commentBy.uid}}"><img src="{{avatarOrDefault commentAvatar}}" alt="个人头像"/></a>
           </div>
           <div class="media-info col-sm-10 col-xs-9">
             <h4 class="media-heading">{{commentBy.username}}</h4>
@@ -28,7 +28,6 @@
       <!-- 回复按钮 -->
       <div class="reply clearfix" id="replyContainer-{{_id}}">
         <a href="" title="回复该帖子" class="replyComment fa fa-reply pull-right" data-id="{{_id}}">&nbsp;回复</a>
-        <!--<a href="" title="删除该帖子" class="deleteComment fa fa-trash-o pull-right" data-id="{{_id}}">删除</a> -->
       </div>
     </div>
   {{/each}}

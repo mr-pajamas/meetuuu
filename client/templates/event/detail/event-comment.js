@@ -26,6 +26,12 @@ Template.eventComment.helpers({
       return reply;
     });
     return fc;
+  },
+  'commentAvatar': function () {
+    var user = Meteor.users.findOne({_id: this.commentBy.uid});
+    if (user) {
+      return user.profile.avatar;
+    }
   }
 });
 

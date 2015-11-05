@@ -194,7 +194,6 @@ Template.editEvent.helpers({
             if(membership && membership.role === "owner") {
               return true;
             } else if(Roles.userIsInRole(Meteor.userId(), ['create-event'], 'g'+ myGroup[i]._id)){
-              // console.log(Roles.userIsInRole(Meteor.userId(), ['create-open-event'], 'g'+ myGroup[i]._id));
               return true;
             } else {
               return false;
