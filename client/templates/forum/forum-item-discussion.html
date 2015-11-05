@@ -17,12 +17,12 @@
             {{#if setTopCss}}
               <span class="setTop">顶</span>
             {{/if}}
-            <a href="{{pathFor "singleDisc" discId=_id }}">{{subject}}</a>
+            <a href="{{pathFor "discussion/singlediscussion/:discId" discId=_id }}">{{subject}}</a>
           </h3>
         </div>
         <div class="content">
           <p>{{contentFormate}}...
-            <a href="{{pathFor "singleDisc" discId=_id }}">《查看详情</a>
+            <a href="{{pathFor "discussion/singlediscussion/:discId" discId=_id }}">《查看详情</a>
           </p>
 
         </div>
@@ -48,8 +48,8 @@
                  </a>
                {{/if}}
                <span class="badge">{{upVoteCount}}</span>
-               <!-- {{pathFor '/singlediscussion/:discId' discId=_id query='flag=1'}}-->
-               <a  href="{{pathFor "singleDisc" discId=_id  query='flag=1'}}" class="reply">
+               <!-- {{pathFor 'discussion/singlediscussion/:discId' discId=_id query='flag=1'}}-->
+               <a  href="{{pathFor 'discussion/singlediscussion/:discId' discId=_id  query='flag=1'}}" class="reply">
                  <span class="glyphicon glyphicon-comment"></span>
                </a>
                <span class="badge">{{commentCount}}</span>
