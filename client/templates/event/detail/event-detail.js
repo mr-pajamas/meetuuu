@@ -40,12 +40,6 @@ var eventDesc = new ReactiveVar('');
 Template.eventDetail.onCreated(function () {
   var template = this;
   //打开一次记录一次阅读记录
-  var event = Events.findOne({_id: FlowRouter.getParam("eid")});
-  if (event) {
-    if (event.status === "已发布") {
-      Meteor.call('eventReadInc', FlowRouter.getParam('eid'));
-    }
-  }
 
   template.autorun(function() {
     var eid = FlowRouter.getParam('eid');
@@ -61,6 +55,13 @@ Template.eventDetail.onCreated(function () {
         $(".mobile-join-wrap").fadeTo("fast", 1);
         //  将报名modal 里面的 Submit 修改为 报名
         template.$("#joinEvent button[type=submit]").hide();
+
+        var event = Events.findOne({_id: new Mongo.ObjectID(eid)});
+        if (event) {
+          if (event.status === "已发布") {
+            Meteor.call('eventReadInc', FlowRouter.getParam('eid'));
+          }
+        }
       });
     });
   });
@@ -84,6 +85,7 @@ Template.eventDetail.onRendered(function() {
   //  afterFlush  用来执行数据加载之后的回调。确保数据都加载完毕
   var template = this;
   template.autorun(function () {
+
     if (template.subscriptionsReady()) {
       Tracker.afterFlush(function () {
         var preview = FlowRouter.getQueryParam("preview");
