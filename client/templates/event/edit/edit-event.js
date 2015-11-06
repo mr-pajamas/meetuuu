@@ -62,6 +62,8 @@ Template.editEvent.onRendered(function() {
         isInitFinished.set(true);
         if (eid) {
           $(".event-group-select").prop("disabled", true);
+        } else {
+          $("#event-desc").html("");
         }
         // initDataPicker.
         EditEvent.eventTime._initDatePicker("start-date", "end-date");
