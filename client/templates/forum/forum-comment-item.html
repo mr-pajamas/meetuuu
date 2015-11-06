@@ -6,10 +6,13 @@
           <p><span class="glyphicon glyphicon glyphicon-user">{{userName}}</span></p>
         </td>
         <td class="col2">
-          <div class="speech-bubble speech-bubble-left" style="padding: 10px 10px;">
-            <span  style="font-size: 14px; color: #222222">{{comment}}</span>
+
+          <div class="col2-row">
+            <div class="col2-line col2-lf">
+            {{comment}}
+            </div>
           </div>
-          <p>{{ dateFormate createdAt}}</p>
+          <div style="text-align: left">{{ dateFormate createdAt}}</div>
         </td>
         <td class="col3">
 
@@ -18,13 +21,14 @@
     {{else}}
       <tr>
         <td class="col1">
-
         </td>
         <td class="col2">
-          <div class="speech-bubble speech-bubble-right" style="padding: 10px 10px;">
-            <span style="font-size: 14px; color: #222222">{{comment}}</span>
+          <div class="col2-row">
+            <div class="col2-line col2-rf">
+            {{comment}}
+            </div>
           </div>
-          <p>{{ dateFormate createdAt}}</p>
+          <div style="text-align: right">{{ dateFormate createdAt}}</div>
         </td>
         <td class="col3">
           <img style=" padding: 10px;"  src="/images/luntan.jpg" />

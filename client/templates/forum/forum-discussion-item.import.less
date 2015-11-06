@@ -105,7 +105,41 @@
       };
     };
   };
-  .discussion-item-comment{
+  .discussion-item-comment {
     margin-top: 20px;
+    .form-content {
+      border: solid 1px #c0c0c0;
+      height: 56px;
+    .form-content-wrap {
+      width: 100%;
+      .form-content-left {
+        width: 85%;
+        float: left;
+        textarea {
+          height: 54px;
+          width: 100%;
+        }
+      ;
+        .comment {
+          border: none;
+        }
+      }
+    ;
+      .form-content-right {
+        float: left;
+        width: 15%;
+
+        button {
+          background-color: #d9534f !important;
+          border: none;
+          width: 100%;
+          height: 54px;
+          line-height: 54px;
+        }
+      ;
+      }
+    }
+  ;
+  }
   };
 }

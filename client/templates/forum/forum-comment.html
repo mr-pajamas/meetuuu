@@ -1,10 +1,16 @@
 <template name="forumComment">
-    <form class="form" id="reply">
-        <div class="form-group">
-            <!--<label for="comment">回复：</label>-->
-            <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="请回复..."></textarea>
-            <span class="help-block">{{errorMessage 'comment'}}</span>
-            <button type="submit" class="btn btn-danger text-right">Submit</button>
+  <form class="form" id="reply">
+    <div class="form-content">
+    <div class="form-content-wrap">
+        <div class="form-content-left">
+          <textarea class="comment" id="comment" name="comment"  placeholder="请回复..."></textarea>
         </div>
-    </form>
+        <div class="form-content-right">
+          <button  type="submit" >发送</button>
+         </div>
+      <div style="clear: both"></div>
+    </div>
+    </div>
+    <span class="help-block">{{errorMessage 'comment'}}</span>
+  </form>
 </template>

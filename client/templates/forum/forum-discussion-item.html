@@ -1,87 +1,95 @@
 <template name="forumDiscussionItem">
   <div class="discussion-item">
-    <div class="discussion-item-header">
-      <div class="discussion-item-header-left">
-        <img src="/images/luntan.jpg" />
-      </div>
-      <div class="discussion-item-header-right">
-        <p>
-          <span class="glyphicon glyphicon glyphicon-user">{{userName}}</span>
-          <span class="glyphicon glyphicon-time">{{dateFormate createdAt }}</span>
-        </p>
-        <p>
-         <!-- <span><a href="#{{_id}}" id="{{_id}}">锚</a></span>-->
-          {{#if canModify}}
-            <span> <a href="{{pathFor "/groups/:groupPath/discussion/edit/:discId" groupPath = path discId=_id }}">编辑</a> </span>
-          {{/if}}
-          <span><a href="#reply" class="btn replyBtn">回复</a></span>
-          {{#if existUserData}}
-            <span class="glyphicon glyphicon-thumbs-up">已赞</span>
-          {{else}}
-            <span><a href="#" class="btn upVote"> <span class="glyphicon glyphicon-thumbs-up">赞</span></a></span>
-          {{/if}}
-        </p>
-      </div>
-      <div class="clear"></div>
-    </div>
-    <div class="discussion-item-content ">
-      <div class="discussion-item-content-subject container">
-        <a class="collapseBtn" href="#">
-          <span class="panel-title"><h4>主题：{{subject}}</h4></span>
-        </a>
-      </div>
-      {{#if flagStatus}}
-        <div class="discussion-item-content-container1 animate">
-          <div class="content">
-            <p class="flagImgShow">{{contentFormate}}...
-            </p>
-          </div>
-          <div class="content-img">
-            <div class="row">
-              {{#each imgPath}}
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                  <img class="img-thumbnail item-img" src="{{this}}">
-                </div>
-              {{/each}}
-            </div>
-          </div>
-        </div>
-      {{else}}
-        <div class="discussion-item-content-container2 animate" id="discussion-item-content-container">
-          <p>
-            {{{content}}}
-          </p>
-        </div>
+    <div class="row">
+      <div class="col-md-7 col-xs-12">
+        <div class="discussion-item-header">
+             <div class="discussion-item-header-left">
+               <img src="/images/luntan.jpg" />
+             </div>
+             <div class="discussion-item-header-right">
+               <p>
+                 <span class="glyphicon glyphicon glyphicon-user">{{userName}}</span>
+                 <span class="glyphicon glyphicon-time">{{dateFormate createdAt }}</span>
+               </p>
+               <p>
+                 {{#if canModify}}
+                   <span> <a href="{{pathFor "/groups/:groupPath/discussion/edit/:discId" groupPath = groupPath discId=_id }}">编辑</a> </span>
+                 {{/if}}
+                 <span><a href="#reply" class="btn replyBtn">回复</a></span>
+                 {{#if existUserData}}
+                   <span class="glyphicon glyphicon-thumbs-up">已赞</span>
+                 {{else}}
+                   <span><a href="#" class="btn upVote"> <span class="glyphicon glyphicon-thumbs-up">赞</span></a></span>
+                 {{/if}}
+                 <span>浏览量 {{viewCount}}</span>
+               </p>
+             </div>
+             <div class="clear"></div>
+           </div>
+        <div class="discussion-item-content ">
+             <div class="discussion-item-content-subject">
+               <a class="collapseBtn" href="#">
+                 <span class="panel-title">主题：{{subject}}</span>
+               </a>
+             </div>
+             {{#if flagStatus}}
+               <div class="discussion-item-content-container1 animate">
+                 <div class="content">
+                   <p class="flagImgShow">{{contentFormate}}...
+                   </p>
+                 </div>
+                 <div class="content-img">
+                   <div class="row">
+                     {{#each imgPath}}
+                       <div class="col-md-3 col-sm-6 col-xs-12">
+                         <img class="img-thumbnail item-img" src="{{this}}">
+                       </div>
+                     {{/each}}
+                   </div>
+                 </div>
+               </div>
+             {{else}}
+               <div class="discussion-item-content-container2 animate" id="discussion-item-content-container">
+                 <p>
+                   {{{content}}}
+                 </p>
+               </div>
 
-      {{/if}}
-    </div>
-    <div class="discussion-item-reply">
-      {{#if existData}}
-        <div class="load">
-          {{#if discussionCount}}
-            <a id="load-more" class="load-more">浏览历史...</a>
-          {{/if}}
-        </div>
-        <table class="comment-item">
-          {{#each commentItemsBefore}}
-            {{> forumCommentItem}}
-          {{/each}}
+             {{/if}}
+           </div>
+        <div class="discussion-item-footer">
 
-          {{#each commentItemsAfter}}
-            {{> forumCommentItem}}
-          {{/each}}
-        </table>
-      {{else}}
-        <a class="loaded">暂无评论</a>
-      {{/if}}
-    </div>
-    <div class="discussion-item-comment">
-      {{#onlyIfLogin}}
-        {{> forumComment}}
-      {{else}}
-        <p>请先登录！</p>
-      {{/onlyIfLogin}}
+        </div>
+      </div>
+      <div class="col-md-5 col-xs-12">
+        <div class="discussion-item-reply">
+             {{#if existData}}
+               <div class="load">
+                 {{#if discussionCount}}
+                   <a id="load-more" class="load-more">浏览历史...</a>
+                 {{/if}}
+               </div>
+               <table class="comment-item">
+                 {{#each commentItemsBefore}}
+                   {{> forumCommentItem}}
+                 {{/each}}
+
+                 {{#each commentItemsAfter}}
+                   {{> forumCommentItem}}
+                 {{/each}}
+               </table>
+             {{else}}
+               <a class="loaded">暂无评论</a>
+             {{/if}}
+           </div>
+        <div class="discussion-item-comment">
+             {{#onlyIfLogin}}
+               {{> forumComment}}
+             {{else}}
+               <p>请先登录！</p>
+             {{/onlyIfLogin}}
+           </div>
+      </div>
     </div>
   </div>
-
 </template>

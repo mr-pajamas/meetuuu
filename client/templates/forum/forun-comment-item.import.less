@@ -1,39 +1,42 @@
 .discussion-item-reply table.comment-item{
+  background: #ffffff;
   width: 100%;
   //display: block;
   tr{
     margin-top: 20px;
     td.col1{
       text-align: center;
-      width: 15%;
-      max-width: 20%;
+      width: 20%;
       img{
-        max-width:100%;
+        width:100%;
       };
     };
     td.col2{
-      width: 70%;
-      max-width: 60%;
-      .speech-bubble {
-        //position: relative;
-        word-break: break-all;
-        background: #cccccc;
-        //background: #cccccc none repeat scroll 0% 0%;
-        //width: auto;
-        //min-height: 50px;
-        //color: #efe7e0;
-        text-align: left;
-        border-radius: 5px;
-        font-size: 14px;
-        opacity: 0.4;
+      width: 60%;
+      .col2-row{
+        overflow: hidden;
+        width: 100%;
+        .col2-line{
+          padding: 5px;
+          background:#efe7e0;
+          border-radius: 5px;
+          margin-top: 10px;
+          max-width: 100%;
+          word-break: break-all;
+        };
+        .col2-lf{
+          float: left;
+        };
+        .col2-rf{
+          float: right;
+        };
       };
     };
     td.col3{
       text-align: center;
-      width: 15%;
-      max-width: 20%;
+      width: 20%;
       img{
-        max-width:100%;
+        width:100%;
       };
     };
   };

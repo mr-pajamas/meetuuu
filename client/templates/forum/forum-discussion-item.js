@@ -12,8 +12,13 @@ Template.forumDiscussionItem.onCreated( function () {
     template.subscribe('commentItemBefore', FlowRouter.getParam("discId") , parseInt(limit.get()+1), setPageTime);
   });
   template.subscribe('commentItemAfter', FlowRouter.getParam("discId") , setPageTime);
+  //console.log(this)
+  Discussion.update({_id: FlowRouter.getParam("discId")},{$inc: {viewCount: 1}})
 });
 Template.forumDiscussionItem.helpers({
+  groupPath: function(){
+    return FlowRouter.getParam("groupPath");
+  },
   flagStatus: function () {
     return (FlowRouter.getQueryParam("flag") === "1" && FlowRouter.getQueryParam("flag")!=null);
   },

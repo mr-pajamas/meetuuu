@@ -49,7 +49,8 @@ Template.forumStartDiscussion.events({
     Discussion.insert(post,{ validationContext: "insert"}, function(error, result) {
       var myContext1 = Discussion.simpleSchema().namedContext("insert");
       if(result) {
-        FlowRouter.go("singleDisc", {discId:result});
+       // console.log(FlowRouter.getParam("groupPath"));
+        FlowRouter.go("/groups/:groupPath/discussion/singlediscussion/:discId", {groupPath: FlowRouter.getParam("groupPath"),discId: result});
       }
     });
   }

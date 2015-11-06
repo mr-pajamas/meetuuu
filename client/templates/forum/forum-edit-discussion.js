@@ -32,7 +32,7 @@ Template.forumEditDiscussion.events({
     var updateId = this._id;
     Discussion.update(updateId, {$set: post}, function (error, result) {
       if (result) {
-        FlowRouter.go("singleDisc", {discId:updateId});
+        FlowRouter.go("/groups/:groupPath/discussion/singlediscussion/:discId", {groupPath: FlowRouter.getParam("groupPath"),discId:updateId});
       }
     });
   },
