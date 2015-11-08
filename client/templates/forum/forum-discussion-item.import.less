@@ -1,6 +1,15 @@
 
 
 .discussion-item{
+  .forum-discussion-header{
+    margin-top: 20px;
+    .forum-discussion-header-left{
+      float: left;
+    };
+    .forum-discussion-header-right{
+      float: right;
+    };
+  };
   .discussion-item-header{
     border: #cccccc solid 1px;
     margin-top: 20px;
@@ -75,10 +84,16 @@
     }
 
   };
+  .discussion-item-comment-wrap{
+    //position: fixed;
   .discussion-item-reply{
+    height: 400px;
+    overflow: scroll;
     border: #cccccc solid 1px;
     margin-top: 20px;
+
     a.load-more {
+      //position: fixed;
       display: block;
       border-radius: 3px;
       background: rgba(0, 0, 0, 0.05);
@@ -92,6 +107,7 @@
       };
     };
     a.loaded {
+      position: fixed;
       display: block;
       border-radius: 3px;
       background: rgba(0, 0, 0, 0.05);
@@ -142,4 +158,5 @@
   ;
   }
   };
+  }
 }
