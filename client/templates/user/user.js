@@ -161,8 +161,8 @@ Template.user.helpers({
     var eventTime = {},
       time = this.time;
     if (time) {
-      eventTime.start = moment(time.start).format("MMMM DD");
-      eventTime.end = moment(time.end).format("MMMM DD");
+      eventTime.start = moment(time.start).format("MM DD");
+      eventTime.end = moment(time.end).format("MM DD");
     }
     return eventTime;
   },

@@ -320,11 +320,12 @@
 
   #fixed-sidebar {
     & > li {
-      float: left;
+      display: table-cell;
+      width: 1%;
       text-align: center;
-      width: 25%;
       margin-top: 0;
       @media (min-width: @screen-sm-min) {
+        display: block;
         width: initial;
         text-align: left;
         float: none;

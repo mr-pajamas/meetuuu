@@ -86,9 +86,10 @@ Template.eventDetail.onRendered(function() {
   var template = this;
   template.autorun(function () {
 
+    var preview = FlowRouter.getQueryParam("preview");
+
     if (template.subscriptionsReady()) {
       Tracker.afterFlush(function () {
-        var preview = FlowRouter.getQueryParam("preview");
         if (preview === "true") {
           $("#saveEvent").prop("disabled", true);
           $("#apply-event").prop("disabled", true);
@@ -167,12 +168,15 @@ Template.eventDetail.helpers({
     }
     var forms = eventDetail.signForm,
       signForm = EditEvent.eventSignForm.setPreviewForm(forms);
-    for (var key in signForm) {
-      if (signForm[key].label === '电话') {
-        signForm[key].defaultValue = Meteor.user().mobile;
-      }
-      if (signForm[key].label === '姓名') {
-        signForm[key].defaultValue = Meteor.user().profile.name;
+    var user = Meteor.user();
+    if (user) {
+      for (var key in signForm) {
+        if (signForm[key].label === '电话') {
+          signForm[key].defaultValue = user.mobile;
+        }
+        if (signForm[key].label === '姓名') {
+          signForm[key].defaultValue = user.profile.name;
+        }
       }
     }
     return new SimpleSchema(signForm);

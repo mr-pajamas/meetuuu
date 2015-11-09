@@ -75,7 +75,7 @@
                         <div class="media-date">2015, 09, 05</div>
                        -->
                     </div>
-                    <div class="col-sm-10 col-xs-12 media-text">
+                    <div class="col-sm-10 col-sm-offset-2 col-xs-12 media-text">
                       <form class="new-comment-form">
                         <textarea name="comment" id="commentContent" class="new-comment-area" rows="6" placeholder="感兴趣吗？评论一下吧！"></textarea>
                         <input type="button" id="submitComment" class="btn pull-right btn-primary" name="评论" value="评论"/>
@@ -127,12 +127,12 @@
               <li role="presentation"><a class="event-sidebar-scroll" href="#comment">留言</a></li>
               <!-- 判断用户是否已经报名 -->
               {{#if authJoinLogin}}
-              {{#if isJoined}}
-                <li id="nav-join" class="hidden-xs"><a href="" >{{joinStatus}}</a></li>
-              {{else}}
-                <li id="nav-join" class="hidden-xs"><a href=""   data-toggle="modal"  data-target="#joinEventFormModal">{{joinStatus}}</a></li>
-              {{/if}}
+                {{#if isJoined}}
+                  <li id="nav-join" class="hidden-xs"><a href="" >{{joinStatus}}</a></li>
                 {{else}}
+                  <li id="nav-join" class="hidden-xs"><a href=""   data-toggle="modal"  data-target="#joinEventFormModal">{{joinStatus}}</a></li>
+                {{/if}}
+              {{else}}
                 <li id="nav-join" class="hidden-xs my-join"><a href="" >我要报名</a></li>
               {{/if}}
               {{#if hiddenPubBtn}}
