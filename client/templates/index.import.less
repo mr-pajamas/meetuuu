@@ -128,4 +128,79 @@
       }
     }
   }
+
+  .event-card-list {
+
+    margin-left: -12px !important;
+    margin-right: -12px !important;
+
+    .event-card {
+      margin-bottom: 18px;
+      padding-left: 12px !important;
+      padding-right: 12px !important;
+
+      > a {
+        display: block;
+        padding: 0;
+        line-height: @line-height-base;
+        background-color: @thumbnail-bg;
+        border: 1px solid @thumbnail-border;
+        border-radius: @thumbnail-border-radius;
+        .transition(border .2s ease-in-out);
+        text-decoration: none;
+        color: @gray-light;
+
+        &:hover,
+        &:focus {
+          color: @gray;
+        }
+
+        > .event-card-header {
+          padding: 0 15px;
+          h4 {
+            .text-overflow();
+          }
+        }
+
+        > .event-card-poster {
+          position: relative;
+
+          img {
+            .img-responsive();
+            width: 100%;
+          }
+
+          h3 {
+            color: white;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 0 18px 10px 18px;
+            line-height: @line-height-large;
+            z-index: 100;
+          }
+
+          &:after {
+            content: " ";
+            display: block;
+            .mask();
+            #gradient > .vertical-three-colors(rgba(15, 20, 31, 0); rgba(15, 20, 31, .1); 25%; rgba(15, 20, 31, .8));
+          }
+        }
+
+        > .event-card-caption {
+          padding: 15px;
+
+          .fa-ul {
+            margin-bottom: 0;
+
+            li {
+              margin: 5px 0;
+            }
+          }
+        }
+      }
+    }
+  }
 }

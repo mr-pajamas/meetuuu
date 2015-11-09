@@ -4,7 +4,7 @@
 Template.groupMemberList.onCreated(function () {
   var template = this;
 
-  template.searchString = new ReactiveVar();
+  //template.searchString = new ReactiveVar();
 
   template.autorun(function () {
     var group = Template.currentData();

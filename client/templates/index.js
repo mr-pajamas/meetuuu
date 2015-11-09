@@ -4,6 +4,54 @@
 var expandJumbotron;
 var fixSearchBar;
 
+Template.index.onCreated(function () {
+  var template = this;
+
+  template.now = new ReactiveVar(new Date());
+
+  template.autorun(function () {
+    var city = Meteor.city();
+    var routeName = FlowRouter.getRouteName();
+    var searchString = FlowRouter.getQueryParam("q");
+
+    var selector, options;
+
+    if (routeName == "eventList") {
+
+      Tracker.autorun(function () {
+        var now = template.now.get();
+
+        // TODO
+      });
+
+    } else {
+      selector = {};
+      if (searchString) selector.name = {$regex: searchString, $options: "i"};
+
+      options = {
+        sort: {
+          foundedDate: -1,
+          eventCount: -1,
+          memberCount: -1
+        },
+        limit: 20
+      };
+
+      template.searchHandle = template.subscribe("groups", city, selector, options);
+    }
+  });
+
+  template.autorun(function () {
+    template.now.get();
+    var now = moment();
+
+    var upcoming = Events.findOne({});
+
+    // TODO
+
+  });
+});
+
 Template.index.onRendered(function () {
 
   //var $headerNavbar = $(".header-navbar");
@@ -69,6 +117,45 @@ Template.index.onDestroyed(function () {
   });
 });
 
+Template.index.helpers({
+
+  groupList: function () {
+    var searchString = FlowRouter.getQueryParam("q");
+    var selector = {homeCity: Meteor.city()};
+    if (searchString) selector.name = {$regex: searchString, $options: "i"};
+
+    var options = {
+      sort: {
+        foundedDate: -1,
+        eventCount: -1,
+        memberCount: -1
+      },
+      limit: 20
+    };
+
+    return Groups.find(selector, options);
+  },
+
+  eventList: function () {
+    var searchString = FlowRouter.getQueryParam("q");
+    var selector = {"location.city": Meteor.city()};
+    if (searchString) selector.title = {$regex: searchString, $options: "i"};
+
+    var options = {
+      sort: {
+
+      },
+      limit: 20
+    };
+
+    // TODO
+  },
+
+  searchOption: function () {
+    return FlowRouter.getRouteName() === "eventList" ? "找活动" : "找组织";
+  }
+});
+
 Template.index.events({
   "click .modal button[data-dismiss=modal]": function () {
     if (Meteor.user()) Session.setAuth("hasSkippedSettingAvatar", true);
@@ -95,5 +182,30 @@ Template.index.events({
     } else {
       template.$(".modal").modal("hide");
     }
+  },
+  "change .index-search-bar select, change .index-search-bar [name=searchOption]:checked": function (event) {
+    var query = {};
+    if (FlowRouter.getQueryParam("q")) query.q = FlowRouter.getQueryParam("q");
+
+    var currentValue = $(event.currentTarget).val();
+    if ("找活动" === currentValue) {
+      FlowRouter.go("eventList", {}, query);
+    } else {
+      FlowRouter.go("groupList", {}, query);
+    }
+  },
+
+  "input .index-search-bar input[name=searchString]": _.debounce(triggerSearch, 300),
+
+  "submit .index-search-bar form": function (event, template) {
+    event.preventDefault();
+    triggerSearch(event, template);
   }
 });
+
+function triggerSearch(event, template) {
+  var val = template.$(".index-search-bar form:visible input[name=searchString]").val();
+  template.$(".index-search-bar input[name=searchString]").val(val);
+  var q = $.trim(val) || null;
+  FlowRouter.setQueryParams({q: q});
+}

@@ -42,126 +42,180 @@
         <form class="visible-xs-block">
           <div class="input-group input-group-md">
             <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
-            <input type="text" class="form-control" placeholder="车友协会&hellip;">
+            <input type="text" class="form-control" placeholder="车友协会&hellip;" name="searchString">
             <div class="input-group-btn">
-              {{#styledSelect inline=true selectValue="找活动"}}
+              {{#styledSelect inline=true selectValue=searchOption}}
                 <option>找活动</option>
                 <option>找组织</option>
               {{/styledSelect}}
             </div>
           </div>
+
+          <button class="hidden" type="submit">查询</button>
         </form>
         <form class="hidden-xs">
           <div class="input-group input-group-md">
             <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
-            <input type="text" class="form-control" placeholder="车友协会&hellip;">
+            <input type="text" class="form-control" placeholder="车友协会&hellip;" name="searchString">
             <div class="input-group-btn" data-toggle="buttons">
-              <label class="btn btn-default active">
-                <input type="radio" name="searchOptions" autocomplete="off" checked> 找活动
+              <label class="btn btn-default {{isActiveRoute name='eventList'}}">
+                <input type="radio" name="searchOption" autocomplete="off" checked="{{isActiveRoute name='eventList' class='checked'}}" value="找活动"> 找活动
               </label>
-              <label class="btn btn-default">
-                <input type="radio" name="searchOptions" autocomplete="off"> 找组织
+              <label class="btn btn-default {{isActiveRoute name='groupList'}}">
+                <input type="radio" name="searchOption" autocomplete="off" checked="{{isActiveRoute name='groupList' class='checked'}}" value="找组织"> 找组织
               </label>
             </div>
           </div>
+
+          <button class="hidden" type="submit">查询</button>
         </form>
       </div>
     </div>
 
     <div class="index-search-result">
       <div class="container">
-        <ul class="list-unstyled row group-card-list">
-          <li class="col-sm-6 col-md-4 col-lg-3 group-card">
-            <a href="javascript:void(0)" style="background-image: url('bros.jpg');">
-              <div class="group-card-mask"></div>
-              <div class="group-card-caption">
-                <h3>狼窝</h3>
-                <p>已有 1 个色狼</p>
-              </div>
-            </a>
-          </li>
-          <li class="col-sm-6 col-md-4 col-lg-3 group-card">
-            <a href="javascript:void(0)" style="background-image: url(http://photos3.meetupstatic.com/photo_api/event/rx308x180/cpt/cr308x180/ql90/sgb54c13bc46/439966373.jpeg);">
-              <div class="group-card-mask"></div>
-              <div class="group-card-caption">
-                <h3>测试群组1</h3>
-                <p>已有 2 个成员</p>
-              </div>
-            </a>
-          </li>
-          <li class="col-sm-6 col-md-4 col-lg-3 group-card">
-            <a href="javascript:void(0)" style="background-image: url(http://photos4.meetupstatic.com/photo_api/event/rx308x180/cpt/cr308x180/ql90/sgb54c13bc46/438182650.jpeg);">
-              <div class="group-card-mask"></div>
-              <div class="group-card-caption">
-                <h3>上海足球爱好者</h3>
-                <p>已有 2 个球友</p>
-              </div>
-            </a>
-          </li>
-          <li class="col-sm-6 col-md-4 col-lg-3 group-card">
-            <a href="javascript:void(0)" style="background-image: url(http://photos3.meetupstatic.com/photo_api/event/rx308x180/cpt/cr308x180/ql90/sgb54c13bc46/439303338.jpeg);">
-              <div class="group-card-mask"></div>
-              <div class="group-card-caption">
-                <h3>测试群组3</h3>
-                <p>已有 1 个成员</p>
-              </div>
-            </a>
-          </li>
-          <li class="col-sm-6 col-md-4 col-lg-3 group-card">
-            <a href="javascript:void(0)" style="background-image: url(http://photos4.meetupstatic.com/photo_api/event/rx308x180/cpt/cr308x180/ql90/sgb54c13bc46/427321222.jpeg);">
-              <div class="group-card-mask"></div>
-              <div class="group-card-caption">
-                <h3>测试群组4</h3>
-                <p>已有 1 个成员</p>
-              </div>
-            </a>
-          </li>
-          <li class="col-sm-6 col-md-4 col-lg-3 group-card">
-            <a href="javascript:void(0)" style="background-image: url('bros.jpg');">
-              <div class="group-card-mask"></div>
-              <div class="group-card-caption">
-                <h3>狼窝</h3>
-                <p>已有 1 个色狼</p>
-              </div>
-            </a>
-          </li>
-          <li class="col-sm-6 col-md-4 col-lg-3 group-card">
-            <a href="javascript:void(0)" style="background-image: url(http://photos3.meetupstatic.com/photo_api/event/rx308x180/cpt/cr308x180/ql90/sgb54c13bc46/439966373.jpeg);">
-              <div class="group-card-mask"></div>
-              <div class="group-card-caption">
-                <h3>测试群组1</h3>
-                <p>已有 2 个成员</p>
-              </div>
-            </a>
-          </li>
-          <li class="col-sm-6 col-md-4 col-lg-3 group-card">
-            <a href="javascript:void(0)" style="background-image: url(http://photos4.meetupstatic.com/photo_api/event/rx308x180/cpt/cr308x180/ql90/sgb54c13bc46/438182650.jpeg);">
-              <div class="group-card-mask"></div>
-              <div class="group-card-caption">
-                <h3>上海足球爱好者</h3>
-                <p>已有 2 个球友</p>
-              </div>
-            </a>
-          </li>
-          <li class="col-sm-6 col-md-4 col-lg-3 group-card">
-            <a href="javascript:void(0)" style="background-image: url(http://photos3.meetupstatic.com/photo_api/event/rx308x180/cpt/cr308x180/ql90/sgb54c13bc46/439303338.jpeg);">
-              <div class="group-card-mask"></div>
-              <div class="group-card-caption">
-                <h3>测试群组3</h3>
-                <p>已有 1 个成员</p>
-              </div>
-            </a>
-          </li>
-          <li class="col-sm-6 col-md-4 col-lg-3 group-card">
-            <a href="javascript:void(0)" style="background-image: url(http://photos4.meetupstatic.com/photo_api/event/rx308x180/cpt/cr308x180/ql90/sgb54c13bc46/427321222.jpeg);">
-              <div class="group-card-mask"></div>
-              <div class="group-card-caption">
-                <h3>测试群组4</h3>
-                <p>已有 1 个成员</p>
-              </div>
-            </a>
-          </li>
-        </ul>
+        {{#if isActiveRoute "eventList"}}
+
+          <ul class="list-unstyled row event-card-list">
+            <li class="col-sm-6 col-md-4 col-lg-4 event-card">
+              <a href="#" class="">
+                <div class="event-card-header">
+                  <h4>某俱乐部</h4>
+                </div>
+                <div class="event-card-poster">
+                  <img src="/images/default-poster.png">
+                  <h3>测试活动1</h3>
+                </div>
+                <div class="event-card-caption">
+                  <ul class="fa-ul text-muted">
+                    <li><i class="fa-li fa fa-clock-o"></i>10月5日 19:00 开始</li>
+                    <li><i class="fa-li fa fa-users"></i>已有 1 人报名</li>
+                  </ul>
+                </div>
+              </a>
+            </li>
+            <li class="col-sm-6 col-md-4 col-lg-4 event-card">
+              <a href="#" class="">
+                <div class="event-card-header">
+                  <h4>某俱乐部</h4>
+                </div>
+                <div class="event-card-poster">
+                  <img src="/images/default-poster.png">
+                  <h3>测试活动1</h3>
+                </div>
+                <div class="event-card-caption">
+                  <ul class="fa-ul text-muted">
+                    <li><i class="fa-li fa fa-clock-o"></i>10月5日 19:00 开始</li>
+                    <li><i class="fa-li fa fa-users"></i>已有 1 人报名</li>
+                  </ul>
+                </div>
+              </a>
+            </li>
+            <li class="col-sm-6 col-md-4 col-lg-4 event-card">
+              <a href="#" class="">
+                <div class="event-card-header">
+                  <h4>某俱乐部某俱乐部某俱乐部某俱乐部某俱乐部某俱乐部</h4>
+                </div>
+                <div class="event-card-poster">
+                  <img src="/images/default-poster.png">
+                  <h3>测试活动1</h3>
+                </div>
+                <div class="event-card-caption">
+                  <ul class="fa-ul text-muted">
+                    <li><i class="fa-li fa fa-clock-o"></i>10月5日 19:00 开始</li>
+                    <li><i class="fa-li fa fa-users"></i>已有 1 人报名</li>
+                  </ul>
+                </div>
+              </a>
+            </li>
+            <li class="col-sm-6 col-md-4 col-lg-4 event-card">
+              <a href="#" class="">
+                <div class="event-card-header">
+                  <h4>某俱乐部某俱乐部某俱乐部某俱乐部某俱乐部某俱乐部</h4>
+                </div>
+                <div class="event-card-poster">
+                  <img src="/images/default-poster.png">
+                  <h3>测试活动1</h3>
+                </div>
+                <div class="event-card-caption">
+                  <ul class="fa-ul text-muted">
+                    <li><i class="fa-li fa fa-clock-o"></i>10月5日 19:00 开始</li>
+                    <li><i class="fa-li fa fa-users"></i>已有 1 人报名</li>
+                  </ul>
+                </div>
+              </a>
+            </li>
+            <li class="col-sm-6 col-md-4 col-lg-4 event-card">
+              <a href="#" class="">
+                <div class="event-card-header">
+                  <h4>某俱乐部某俱乐部某俱乐部某俱乐部某俱乐部某俱乐部</h4>
+                </div>
+                <div class="event-card-poster">
+                  <img src="/images/default-poster.png">
+                  <h3>测试活动1</h3>
+                </div>
+                <div class="event-card-caption">
+                  <ul class="fa-ul text-muted">
+                    <li><i class="fa-li fa fa-clock-o"></i>10月5日 19:00 开始</li>
+                    <li><i class="fa-li fa fa-users"></i>已有 1 人报名</li>
+                  </ul>
+                </div>
+              </a>
+            </li>
+            <li class="col-sm-6 col-md-4 col-lg-4 event-card">
+              <a href="#" class="">
+                <div class="event-card-header">
+                  <h4>某俱乐部某俱乐部某俱乐部某俱乐部某俱乐部某俱乐部</h4>
+                </div>
+                <div class="event-card-poster">
+                  <img src="/images/default-poster.png">
+                  <h3>测试活动1</h3>
+                </div>
+                <div class="event-card-caption">
+                  <ul class="fa-ul text-muted">
+                    <li><i class="fa-li fa fa-clock-o"></i>10月5日 19:00 开始</li>
+                    <li><i class="fa-li fa fa-users"></i>已有 1 人报名</li>
+                  </ul>
+                </div>
+              </a>
+            </li>
+            <li class="col-sm-6 col-md-4 col-lg-4 event-card">
+              <a href="#" class="">
+                <div class="event-card-header">
+                  <h4>某俱乐部某俱乐部某俱乐部某俱乐部某俱乐部某俱乐部</h4>
+                </div>
+                <div class="event-card-poster">
+                  <img src="/images/default-poster.png">
+                  <h3>测试活动1</h3>
+                </div>
+                <div class="event-card-caption">
+                  <ul class="fa-ul text-muted">
+                    <li><i class="fa-li fa fa-clock-o"></i>10月5日 19:00 开始</li>
+                    <li><i class="fa-li fa fa-users"></i>已有 1 人报名</li>
+                  </ul>
+                </div>
+              </a>
+            </li>
+          </ul>
+        {{else}}
+          {{#if groupList.count}}
+            <ul class="list-unstyled row group-card-list">
+              {{#each groupList}}
+                <li class="col-sm-6 col-md-4 col-lg-3 group-card">
+                  <a href="{{pathFor 'groupHome' groupPath=path}}" style="background-image: url('{{badgeOrDefault logoUrl}}');">
+                    <div class="group-card-mask"></div>
+                    <div class="group-card-caption">
+                      <h3>{{name}}</h3>
+                      <p>已有 {{memberCount}} 个{{memberAlias}}</p>
+                    </div>
+                  </a>
+                </li>
+              {{/each}}
+            </ul>
+          {{else}}
+            <p class="text-center text-muted">没有相关记录</p>
+          {{/if}}
+        {{/if}}
       </div>
     </div>
   </main>
