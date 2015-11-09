@@ -3,11 +3,16 @@
     <div class="">
       <div class="forum-discussion-header">
         <div class="forum-discussion-header-left">
-          <span><a href="{{pathFor "/groups/:groupPath/discussion" groupPath = groupPath}}" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left">返回列表</i></a></span>
+          <span><a
+              href="{{pathFor "/groups/:groupPath/discussion" groupPath = groupPath}}"
+              class="btn btn-default"><i
+              class="glyphicon glyphicon-chevron-left">返回列表</i></a></span>
         </div>
         <div class="forum-discussion-header-right">
-          <span><a href="{{pathFor "/groups/:groupPath/discussion/edit/:discId" groupPath = groupPath discId=_id }}" class="btn btn-warning">编辑</a></span>
-          <span><button class="btn btn-danger">删除</button></span>
+          <span><a
+              href="{{pathFor "/groups/:groupPath/discussion/edit/:discId" groupPath = groupPath discId=_id }}"
+              class="btn btn-warning">编辑</a></span>
+          <span><button class="btn btn-danger delDisc">删除</button></span>
         </div>
         <div style="clear: both"></div>
       </div>
@@ -17,25 +22,48 @@
       <div class="col-md-8 col-xs-12">
         <div class="discussion-item-header">
           <div class="discussion-item-header-left">
-            <img src="/images/luntan.jpg" />
+            <table>
+              <tr>
+                <td>
+                  <img src="/images/luntan.jpg"/>
+                </td>
+                <td>
+                  <p>
+                    <span class="glyphicon glyphicon glyphicon-user">{{userName}}</span>
+                  </p>
+                  <p>
+                    <span class="glyphicon glyphicon-time">{{dateFormate createdAt }}</span>
+                  </p>
+                </td>
+              </tr>
+            </table>
           </div>
           <div class="discussion-item-header-right">
-            <p>
-              <span class="glyphicon glyphicon glyphicon-user">{{userName}}</span>
-              <span class="glyphicon glyphicon-time">{{dateFormate createdAt }}</span>
-            </p>
-            <p>
-              {{#if canModify}}
-                <span> <a href="{{pathFor "/groups/:groupPath/discussion/edit/:discId" groupPath = groupPath discId=_id }}">编辑</a> </span>
-              {{/if}}
-              <span><a href="#reply" class="btn replyBtn">回复</a></span>
-              {{#if existUserData}}
-                <span class="glyphicon glyphicon-thumbs-up">已赞</span>
-              {{else}}
-                <span><a href="#" class="btn upVote"> <span class="glyphicon glyphicon-thumbs-up">赞</span></a></span>
-              {{/if}}
-              <span>浏览量 {{viewCount}}</span>
-            </p>
+            <table>
+              <tr>
+                <td>
+                  <p>{{viewCount}}</p>
+
+                  <p>浏览量</p>
+                </td>
+                <td>
+                  <p>{{upVoteCount}}</p>
+
+                  <p>被点赞</p>
+                </td>
+                <td>
+                  <p>5</p>
+
+                  <p>被分享</p>
+                </td>
+                <td>
+                  <p>{{#if collectionCount}}{{collectionCount}}{{else}}
+                    0{{/if}}</p>
+
+                  <p>被收藏</p>
+                </td>
+              </tr>
+            </table>
           </div>
           <div class="clear"></div>
         </div>
@@ -62,20 +90,39 @@
               </div>
             </div>
           {{else}}
-            <div class="discussion-item-content-container2 animate" id="discussion-item-content-container">
+            <div class="discussion-item-content-container2 animate"
+                 id="discussion-item-content-container">
               <p>
                 {{{content}}}
               </p>
             </div>
 
           {{/if}}
-        </div>
-        <div class="discussion-item-footer">
 
         </div>
+        <div class="discussion-item-footer">
+          {{#if existUserData}}
+            <span><i class="glyphicon glyphicon-heart"
+                     style=" color: #d9534f"></i>已赞</span>
+          {{else}}
+            <span class="upVote"><i style=" color: #d9534f"
+                                    class="glyphicon glyphicon-heart "></i>赞</span>
+          {{/if}}
+          <span><i class="glyphicon glyphicon-share" style=" color:#0097cf"></i>分享</span>
+          {{#if existMyCollection}}
+            <span><i class="glyphicon glyphicon-star"
+                     style=" color: #3c763d"></i>已收藏</span>
+          {{else}}
+            <span class="my-collection"><i class="glyphicon glyphicon-star"
+                                           style=" color: #3c763d"></i>收藏</span>
+          {{/if}}
+        </div>
+
       </div>
-      <div class="col-md-4 col-xs-12 container">
+      <div class="col-md-4 col-xs-12 ">
+
         <div class="discussion-item-comment-wrap">
+
           <div class="discussion-item-reply">
             {{#if existData}}
               <div class="load">
@@ -105,6 +152,7 @@
               <p>请先登录！</p>
             {{/onlyIfLogin}}
           </div>
+
         </div>
       </div>
     </div>

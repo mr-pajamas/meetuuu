@@ -11,16 +11,23 @@
     };
   };
   .discussion-item-header{
+    background: #ffffff;
     border: #cccccc solid 1px;
     margin-top: 20px;
     .discussion-item-header-left{
       float:left;
+      margin-right: 50px;
       img{
         padding: 10px;
       };
     };
     .discussion-item-header-right{
-      margin-left: 20px;
+      table {
+        td{
+          text-align: center;
+          padding: 10px;
+        };
+      };
       padding: 10px;
       float:left;
     };
@@ -84,79 +91,121 @@
     }
 
   };
+  .discussion-item-footer{
+    height: 60px;
+    line-height: 60px;
+       font-size: 20px;
+       text-align: center;
+       margin: 10px 0;
+       background:#ffffff;
+       span{
+         margin-right: 10px;
+       };
+     };
   .discussion-item-comment-wrap{
-    //position: fixed;
-  .discussion-item-reply{
-    height: 400px;
-    overflow: scroll;
-    border: #cccccc solid 1px;
-    margin-top: 20px;
 
-    a.load-more {
-      //position: fixed;
-      display: block;
-      border-radius: 3px;
-      background: rgba(0, 0, 0, 0.05);
-      text-align: center;
-      height: 60px;
-      line-height: 60px;
-      margin-bottom: 10px;
-      &:hover {
-        text-decoration: none;
-        background: rgba(0, 0, 0, 0.1);
-      };
-    };
-    a.loaded {
+    @media (min-width: 1200px){
       position: fixed;
-      display: block;
-      border-radius: 3px;
-      background: rgba(0, 0, 0, 0.05);
-      text-align: center;
-      height: 60px;
-      line-height: 60px;
-      margin-bottom: 10px;
-      &:hover {
-        text-decoration: none;
-        background: rgba(0, 0, 0, 0.1);
+      margin: 0 auto;
+      padding-right: 107px;
+    }
+    @media (max-width: 1200px){
+          position: fixed;
+          margin: 0 auto;
+          padding-right: 71px;
+        }
+    @media (max-width: 992px){
+      position: fixed;
+      margin: 0 auto;
+      padding-right: 66px;
+    }
+    @media (max-width: 768px){
+      position: relative;
+      margin: 0 auto;
+      padding-right: 0px;
+    }
+    .discussion-item-reply{
+      height: 400px;
+      overflow: scroll;
+      border: #cccccc solid 1px;
+      margin-top: 20px;
+
+      a.load-more {
+        //position: fixed;
+        display: block;
+        border-radius: 3px;
+        background: rgba(0, 0, 0, 0.05);
+        text-align: center;
+        height: 60px;
+        line-height: 60px;
+        margin-bottom: 10px;
+        &:hover {
+          text-decoration: none;
+          background: rgba(0, 0, 0, 0.1);
+        };
+      };
+      a.loaded {
+
+        display: block;
+        border-radius: 3px;
+        background: rgba(0, 0, 0, 0.05);
+        text-align: center;
+        height: 60px;
+        line-height: 60px;
+        margin-bottom: 10px;
+        &:hover {
+          text-decoration: none;
+          background: rgba(0, 0, 0, 0.1);
+        };
       };
     };
-  };
-  .discussion-item-comment {
-    margin-top: 20px;
-    .form-content {
-      border: solid 1px #c0c0c0;
-      height: 56px;
-    .form-content-wrap {
-      width: 100%;
-      .form-content-left {
-        width: 85%;
-        float: left;
-        textarea {
-          height: 54px;
+    .discussion-item-comment {
+      margin-top: 20px;
+      .form-content {
+        border: solid 1px #c0c0c0;
+        height: 56px;
+        .form-content-wrap {
           width: 100%;
-        }
-      ;
-        .comment {
-          border: none;
-        }
-      }
-    ;
-      .form-content-right {
-        float: left;
-        width: 15%;
+          .form-content-left {
+            width: 85%;
+            float: left;
+            textarea {
+              height: 54px;
+              width: 100%;
+            }
+          ;
+            .comment {
+              border: none;
+            }
+          }
+        ;
+          .form-content-right {
+            float: left;
+            width: 15%;
 
-        button {
-          background-color: #d9534f !important;
-          border: none;
-          width: 100%;
-          height: 54px;
-          line-height: 54px;
+            button {
+              background-color: #d9534f !important;
+              border: none;
+              width: 100%;
+              height: 54px;
+              line-height: 54px;
+            }
+          ;
+          }
         }
       ;
       }
-    }
-  ;
-  }
-  };
+    };
   }
 }
+
+/*@media only screen and (max-width: 768px){
+  .discussion-item{
+    .discussion-item-comment-wrap{
+      position: relative;
+
+    }
+
+  }
+
+}*/

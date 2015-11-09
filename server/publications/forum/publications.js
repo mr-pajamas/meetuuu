@@ -39,4 +39,8 @@ Meteor.publish('commentItemAfter', function (discId,setPageTime) {
   return Comments.find({discussionId: discId, createdAt: {$gt:setPageTime}});
 });
 
+Meteor.publish("MyCollectionData", function(discId, userId) {
+  return MyCollection.find({discussionId: discId, userId: userId});
+})
+
 
