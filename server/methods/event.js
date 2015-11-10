@@ -108,7 +108,7 @@ Meteor.methods({
       var result =  Events.update({_id: eid}, {$set: {poster: newPosterUrl}});
 
 
-      if (tempEvent && result) {
+      if (tempEvent && result && tempEvent.poster) {
         ObjectStore.removeByUrl(tempEvent.poster);
       }
     }
