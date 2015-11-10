@@ -1,6 +1,69 @@
 <template name="forumItemDiscussion">
   <div class="item-discussion">
-    <div class="item-discussion-wrap">
+    <div class="row">
+      <div class="col-md-2">
+        <div class="item-discussion-user">
+          <div class="row">
+            <div class="col-md-12 col-sm-4 col-xs-4">
+              <img class="" src="/images/luntan.jpg"/>
+            </div>
+            <div class="col-md-12 col-sm-8 col-xs-8">
+              <div class="my-info">
+                <p><span class="glyphicon glyphicon glyphicon-user">{{userName}}</span></p>
+                <p><span class="glyphicon glyphicon-time">{{ showTime }}</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="item-discussion-content">
+          <div class="content-header">
+            <p>
+              {{#if setTopCss}}
+                <span class="setTop">顶</span>
+              {{/if}}
+              <a href="{{pathFor "discussion/singlediscussion/:discId" discId=_id }}">{{subject}}</a>
+            </p>
+          </div>
+          <div class="content">
+            <p>{{contentFormate}}...
+              <a href="{{pathFor "discussion/singlediscussion/:discId" discId=_id }}">《查看详情</a>
+            </p>
+
+          </div>
+          <div class="content-img">
+            <div class="row">
+              {{#each imgPath}}
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                  <img class="item-img" src="{{this}}">
+                </div>
+              {{/each}}
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="content-footer">
+           <span class="glyphicon glyphicon-eye-open">{{viewCount}}</span>
+          {{#if alreadyVote}}
+            <span class="glyphicon glyphicon-thumbs-up"></span>
+          {{else}}
+            <a href="#" class="upVote">
+              <span class="glyphicon glyphicon-thumbs-up"></span>
+            </a>
+          {{/if}}
+          <span class="">{{upVoteCount}}</span>
+          <a  href="{{pathFor 'discussion/singlediscussion/:discId' discId=_id  query='flag=1'}}" class="reply">
+            <span class="glyphicon glyphicon-comment"></span>
+          </a>
+          <span class="">{{commentCount}}</span>
+        </div>
+      </div>
+    </div>
+
+    <!--  <div class="item-discussion-wrap">
       <div class="item-discussion-header">
         <div class="item-discussion-header-left">
           <img class="" src="/images/luntan.jpg"/>
@@ -48,7 +111,7 @@
                  </a>
                {{/if}}
                <span class="badge">{{upVoteCount}}</span>
-               <!-- {{pathFor 'discussion/singlediscussion/:discId' discId=_id query='flag=1'}}-->
+               &lt;!&ndash; {{pathFor 'discussion/singlediscussion/:discId' discId=_id query='flag=1'}}&ndash;&gt;
                <a  href="{{pathFor 'discussion/singlediscussion/:discId' discId=_id  query='flag=1'}}" class="reply">
                  <span class="glyphicon glyphicon-comment"></span>
                </a>
@@ -57,6 +120,6 @@
           </p>
         </div>
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
