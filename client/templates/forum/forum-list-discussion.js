@@ -53,5 +53,11 @@ Template.forumListDiscussion.events({
   "click .forum-comment":function (e, template) {
     sortType.set("commentCount");
     console.log(sortType.get());
-    }
+    },
+  "change .disc-type": function(e, template) {
+    var mySelect = template.$(".disc-type").val();
+    //console.log(""+mySelect);
+    sortType.set(mySelect);
+  }
+
 });
