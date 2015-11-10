@@ -19,11 +19,41 @@ Template.index.onCreated(function () {
     if (routeName == "eventList") {
 
       Tracker.autorun(function () {
-        var now = template.now.get();
+        var now = moment(template.now.get());
+        var twoHoursLater = moment(now).add(2, "h");
 
-        // TODO
+        selector = {"time.start": {$gt: twoHoursLater.toDate()}};
+        if (searchString) selector.title = {$regex: searchString, $options: "i"};
+
+        options = {
+          sort: {
+            "time.start": 1,
+            joinedCount: -1,
+            createAt: 1
+          },
+          limit: 20
+        };
+
+        template.searchHandle = template.subscribe("events", city, selector, options);
+
+        Tracker.autorun(function () {
+          template.timeShiftTid && (Meteor.clearTimeout(template.timeShiftTid), template.timeShiftTid = undefined);
+
+          var realNow = moment();
+          var realTwoHoursLater = moment(realNow).add(2, "h");
+
+          var _selector = _.extend({"location.city": city, private: false, status: "已发布"}, selector, {"time.start": {$gt: realTwoHoursLater.toDate()}});
+          var _options = _.clone(options);
+
+          var upcoming = Events.findOne(_selector, _options);
+          if (upcoming) {
+            template.timeShiftTid = Meteor.setTimeout(function () {
+              template.timeShiftTid = undefined;
+              template.now.set(new Date());
+            }, moment(upcoming.time.start).diff(realTwoHoursLater));
+          }
+        });
       });
-
     } else {
       selector = {};
       if (searchString) selector.name = {$regex: searchString, $options: "i"};
@@ -39,16 +69,6 @@ Template.index.onCreated(function () {
 
       template.searchHandle = template.subscribe("groups", city, selector, options);
     }
-  });
-
-  template.autorun(function () {
-    template.now.get();
-    var now = moment();
-
-    var upcoming = Events.findOne({});
-
-    // TODO
-
   });
 });
 
@@ -137,18 +157,27 @@ Template.index.helpers({
   },
 
   eventList: function () {
+
+    var now = moment(Template.instance().now.get());
+    var twoHoursLater = moment(now).add(2, "h");
     var searchString = FlowRouter.getQueryParam("q");
-    var selector = {"location.city": Meteor.city()};
+    var selector = {"location.city": Meteor.city(), private: false, status: "已发布", "time.start": {$gt: twoHoursLater.toDate()}};
     if (searchString) selector.title = {$regex: searchString, $options: "i"};
 
     var options = {
       sort: {
-
+        "time.start": 1,
+        joinedCount: -1,
+        createAt: 1
       },
       limit: 20
     };
 
-    // TODO
+    return Events.find(selector, options);
+  },
+
+  eventGroup: function () {
+    return Groups.findOne(this.author.club.id);
   },
 
   searchOption: function () {

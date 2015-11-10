@@ -189,7 +189,7 @@ var ImgUpload = function (template) {
 
       canvasContext.drawImage($picture[0], sx, sy, sw, sh, 0, 0, dw, dh);
 
-      var result = canvas.toDataURL("image/jpeg", 0.75);
+      var result = canvas.toDataURL();
 
       clearCanvas();
       canvasContext.restore();

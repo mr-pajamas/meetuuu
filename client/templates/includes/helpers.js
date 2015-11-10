@@ -30,3 +30,7 @@ Template.registerHelper("fromNow", function (date) {
 Template.registerHelper("toNow", function (date) {
   return moment(date).toNow();
 });
+
+Template.registerHelper("subscriptionReady", function (subscriptionHandle) {
+  return Template.instance()[subscriptionHandle].ready();
+});
