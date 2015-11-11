@@ -6,6 +6,10 @@ Template.header.helpers({
 });
 
 Template.header.events({
+  "click .navbar-collapse .navbar-right:last-child > li, click .navbar-brand, click .dropdown.navbar-left": function (event, template) {
+    template.$(".navbar-collapse").collapse("hide");
+  },
+
   "click .navbar-left > .dropdown-menu > li": function (event) {
     event.preventDefault();
     Meteor.setCity($(event.currentTarget).index());
