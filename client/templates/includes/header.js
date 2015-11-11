@@ -6,7 +6,7 @@ Template.header.helpers({
 });
 
 Template.header.events({
-  "click .navbar-collapse .navbar-right:last-child > li, click .navbar-brand, click .dropdown.navbar-left": function (event, template) {
+  "click .navbar-collapse .navbar-right li:not(.dropdown), click .navbar-brand, click .dropdown.navbar-left": function (event, template) {
     template.$(".navbar-collapse").collapse("hide");
   },
 
