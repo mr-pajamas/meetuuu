@@ -6,9 +6,9 @@
                <h3 class="">上海苗圃创业俱乐部</h3>
              </div>
              <div class="col-md-4 col-sm-4 col-xs-12">
-               <h3 style="text-align: right">
-               <button id="manageView" class="btn btn-default">管理视图</button>
-               <a href="{{ pathFor 'start' groupPath = path}}" class="btn btn-success">发布新帖</a>
+               <h3 class="my-controller">
+               <button id="manageView" class="btn btn-default manageView">{{#if flagStatus}}普通视图{{else}}管理视图{{/if}}</button>
+              <span {{authCreate}}> <a href="{{ pathFor 'start' groupPath = path}}" class="btn btn-success">发布新帖</a></span>
                </h3>
              </div>
 

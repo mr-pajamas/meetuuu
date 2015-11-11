@@ -11,6 +11,20 @@ Template.forumStartDiscussion.onRendered( function () {
 
 //$('#content').wysiwyg();
 Template.forumStartDiscussion.helpers({
+  authCreate:function() {
+    var userId = Meteor.userId();
+       //获得用户path
+       var path = FlowRouter.getParam("groupPath");
+       var group = Groups.findOne(path);
+       //console.log("分组表"+groupId._id);
+       var  groupId = group._id;
+       var membership = Memberships.findOne({userId: userId, groupId: groupId});
+       if(membership && membership.role === "owner") {
+         return true;
+       } else if(Roles.userIsInRole(userId, ['create-topic'], 'g'+ groupId)) {
+         return true;
+       }  else return false;
+  },
   existGroup: function() {
     var groupId = Groups.findOne({path: FlowRouter.getParam("groupPath")});
     console.log(groupId);

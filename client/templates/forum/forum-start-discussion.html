@@ -1,6 +1,7 @@
 <template name="forumStartDiscussion">
   <div class="start-discussion">
     {{#onlyIfLogin}}
+      {{#if authCreate}}
       <div class="container">
         <div class="row">
           <div class="col-md-10">
@@ -132,9 +133,11 @@
           </div>
         </div>
       </div>
+        {{else}}
+        <h5>您没有权限使用该功能！</h5>
+        {{/if}}
       {{else}}
       <p>请先登录</p>
-
     {{/onlyIfLogin}}
   </div>
 </template>

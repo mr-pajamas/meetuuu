@@ -17,6 +17,44 @@ Template.forumDiscussionItem.onCreated(function () {
   Discussion.update({_id: FlowRouter.getParam("discId")}, {$inc: {viewCount: 1}})
 });
 Template.forumDiscussionItem.helpers({
+  authEdit: function(){
+    //获得用户ID
+    var userId = Meteor.userId();
+    //获得用户path
+    var path = FlowRouter.getParam("groupPath");
+    var group = Groups.findOne(path);
+    //console.log("分组表"+groupId._id);
+    var  groupId = group._id;
+    var membership = Memberships.findOne({userId: userId, groupId: groupId});
+    if(membership && membership.role === "owner") {
+      return {};
+    } else if(Roles.userIsInRole(userId, ['modify-topic'], 'g'+ groupId)) {
+      return {};
+    } else {
+      if(Roles.userIsInRole(userId, ['modify-own-topic'], 'g'+ groupId)) {
+        return {};
+      } else return "hidden";
+    }
+  },
+  authDelete: function() {
+      //获得用户ID
+    var userId = Meteor.userId();
+    //获得用户path
+    var path = FlowRouter.getParam("groupPath");
+    var group = Groups.findOne(path);
+    //console.log("分组表"+groupId._id);
+    var  groupId = group._id;
+    var membership = Memberships.findOne({userId: userId, groupId: groupId});
+    if(membership && membership.role === "owner") {
+      return {};
+    } else if(Roles.userIsInRole(userId, ['remove-topic'], 'g'+ groupId)) {
+      return {};
+    } else {
+      if(Roles.userIsInRole(userId, ['remove-own-topic'], 'g'+ groupId)) {
+        return {};
+      } else return "hidden";
+    }
+  },
   groupPath: function () {
     return FlowRouter.getParam("groupPath");
   },
@@ -96,6 +134,7 @@ Template.forumDiscussionItem.events({
     e.preventDefault();
     if (FlowRouter.getQueryParam("flag") == 1) {
       FlowRouter.setQueryParams({flag: 0});
+
       //console.log(FlowRouter.getQueryParam("flag"));
     } else {
       FlowRouter.setQueryParams({flag: 1});

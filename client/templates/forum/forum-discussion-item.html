@@ -9,10 +9,10 @@
               class="glyphicon glyphicon-chevron-left">返回列表</i></a></span>
         </div>
         <div class="forum-discussion-header-right">
-          <span><a
+          <span {{authEdit}}><a
               href="{{pathFor "/groups/:groupPath/discussion/edit/:discId" groupPath = groupPath discId=_id }}"
               class="btn btn-warning">编辑</a></span>
-          <span><button class="btn btn-danger delDisc">删除</button></span>
+          <span {{authDelete}}><button class="btn btn-danger delDisc">删除</button></span>
         </div>
         <div style="clear: both"></div>
       </div>

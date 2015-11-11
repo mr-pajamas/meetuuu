@@ -37,13 +37,16 @@ Template.forumItemDiscussion.helpers({
   },
   contentFormate: function () {
     if(this.content.indexOf('<img')>=0)
-     {
-       return  (this.content.substring(0, this.content.indexOf('<img'))).replace(/<[^>]+>/g,"").substring(0,150) ;
-     }
-     else
-     {
-       return this.content.replace(/<[^>]+>/g,"").substring(0,150) ;
-     }
+    {
+      return  (this.content.substring(0, this.content.indexOf('<img'))).replace(/<[^>]+>/g,"").substring(0,150) ;
+    }
+    else
+    {
+      return this.content.replace(/<[^>]+>/g,"").substring(0,150) ;
+    }
+  },
+  flagStatus: function () {
+    return (FlowRouter.getQueryParam("flag") === "1" && FlowRouter.getQueryParam("flag") != null);
   }
 });
 
@@ -74,4 +77,23 @@ Template.forumItemDiscussion.events({
       FlowRouter.go("join");
     }
   },
+  "click .delBtn": function(e, template) {
+    if (confirm("确定将该贴删除")) {
+      var updateId = template.data._id;
+      Discussion.remove({_id: updateId});
+      if (Comments.findOne({discussionId: updateId})) {
+        Meteor.call("deleteDiscussion", updateId);
+      }
+      FlowRouter.go("/groups/:groupPath/discussion", {groupPath: groupPath});
+    }
+  },
+  "click .setTopBtn": function(e, template) {
+    e.preventDefault();
+       if (confirm("确定将该贴置顶")) {
+            var updateId = template.data._id;
+            Discussion.update({_id:updateId},{$set:{setTop: 1}}, function (error, result) {
+              console.log(result);
+            });
+          }
+  }
 });

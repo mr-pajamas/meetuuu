@@ -32,13 +32,37 @@ Template.forumListDiscussion.helpers({
   discussionCount: function () {
     var count = Discussion.find().count();
     return count == limit.get() + 1;
+  },
+  flagStatus: function () {
+        return (FlowRouter.getQueryParam("flag") === "1" && FlowRouter.getQueryParam("flag") != null);
+      },
+  authCreate: function() {
+    var userId = Meteor.userId();
+          //获得用户path
+          var path = FlowRouter.getParam("groupPath");
+          var group = Groups.findOne(path);
+          //console.log("分组表"+groupId._id);
+          var  groupId = group._id;
+          var membership = Memberships.findOne({userId: userId, groupId: groupId});
+          if(membership && membership.role === "owner") {
+            return {};
+          } else if(Roles.userIsInRole(userId, ['create-topic'], 'g'+ groupId)) {
+            return {};
+          }  else return "hidden";
   }
 });
-
 Template.forumListDiscussion.events({
   "click .load-more": function (e, template) {
     e.preventDefault();
     limit.set(limit.get()+PAGE_SIZE);
+  },
+  "click .manageView": function(e, template) {
+    if (FlowRouter.getQueryParam("flag") == 1) {
+          FlowRouter.setQueryParams({flag: 0});
+          console.log(FlowRouter.getQueryParam("flag"));
+        } else {
+          FlowRouter.setQueryParams({flag: 1});
+        }
   },
   "click .forum-new":function (e, template) {
     sortType.set("createdAt");
