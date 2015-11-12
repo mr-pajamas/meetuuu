@@ -1,7 +1,6 @@
 /**
  * Created by jym on 2015/9/29.
  */
-
 var PAGE_SIZE = 10;
 var limit;
 var sortType;
@@ -12,8 +11,8 @@ Template.forumListDiscussion.onCreated(function () {
  // template.subscribe("singleGroupByPath",FlowRouter.getParam("groupPath"));
   var path = FlowRouter.getParam("groupPath");
   //var groupId = Groups.findOne({path:path});
-  var myGroup = MyGroups.findOne({path: path});
-  console.log(myGroup.path);
+ /* var myGroup = MyGroups.findOne({path: path});
+  console.log(myGroup.path);*/
   template.autorun(function () {
     template.subscribe("listDiscussion", parseInt(limit.get()+1), sortType.get(), path);
   });
@@ -36,6 +35,20 @@ Template.forumListDiscussion.helpers({
   flagStatus: function () {
         return (FlowRouter.getQueryParam("flag") === "1" && FlowRouter.getQueryParam("flag") != null);
       },
+  authManage: function() {
+    var userId = Meteor.userId();
+              //获得用户path
+              var path = FlowRouter.getParam("groupPath");
+              var group = Groups.findOne(path);
+              //console.log("分组表"+groupId._id);
+              var  groupId = group._id;
+              var membership = Memberships.findOne({userId: userId, groupId: groupId});
+              if(membership && membership.role === "owner") {
+                return {};
+              } else if(Roles.userIsInRole(userId, ['pin-topic'], 'g'+ groupId) || Roles.userIsInRole(userId, ['remove-own-topic'], 'g'+ groupId)) {
+                return {};
+              }  else return "hidden";
+  },
   authCreate: function() {
     var userId = Meteor.userId();
           //获得用户path

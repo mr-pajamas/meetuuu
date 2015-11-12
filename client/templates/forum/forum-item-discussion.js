@@ -1,6 +1,7 @@
 /**
  * Created by jym on 2015/10/8.
  */
+
 Template.forumItemDiscussion.onRendered( function () {
 
 })
@@ -47,6 +48,34 @@ Template.forumItemDiscussion.helpers({
   },
   flagStatus: function () {
     return (FlowRouter.getQueryParam("flag") === "1" && FlowRouter.getQueryParam("flag") != null);
+  },
+  authSetTop: function(){
+    var userId = Meteor.userId();
+    //获得用户path
+    var path = FlowRouter.getParam("groupPath");
+    var group = Groups.findOne(path);
+    //console.log("分组表"+groupId._id);
+    var  groupId = group._id;
+    var membership = Memberships.findOne({userId: userId, groupId: groupId});
+    if(membership && membership.role === "owner") {
+      return {};
+    } else if(Roles.userIsInRole(userId, ['pin-topic'], 'g'+ groupId)) {
+      return {};
+    }  else return "disabled";
+  },
+  authDel:function() {
+    var userId = Meteor.userId();
+    //获得用户path
+    var path = FlowRouter.getParam("groupPath");
+    var group = Groups.findOne(path);
+    //console.log("分组表"+groupId._id);
+    var  groupId = group._id;
+    var membership = Memberships.findOne({userId: userId, groupId: groupId});
+    if(membership && membership.role === "owner") {
+      return {};
+    } else if(Roles.userIsInRole(userId, ['remove-own-topic'], 'g'+ groupId)) {
+      return {};
+    }  else return "disabled";
   }
 });
 
@@ -78,6 +107,7 @@ Template.forumItemDiscussion.events({
     }
   },
   "click .delBtn": function(e, template) {
+    var groupPath = FlowRouter.getParam("groupPath");
     if (confirm("确定将该贴删除")) {
       var updateId = template.data._id;
       Discussion.remove({_id: updateId});
@@ -89,11 +119,11 @@ Template.forumItemDiscussion.events({
   },
   "click .setTopBtn": function(e, template) {
     e.preventDefault();
-       if (confirm("确定将该贴置顶")) {
-            var updateId = template.data._id;
-            Discussion.update({_id:updateId},{$set:{setTop: 1}}, function (error, result) {
-              console.log(result);
-            });
-          }
+    if (confirm("确定将该贴置顶")) {
+      var updateId = template.data._id;
+      Discussion.update({_id:updateId},{$set:{setTop: 1}}, function (error, result) {
+        console.log(result);
+      });
+    }
   }
 });
