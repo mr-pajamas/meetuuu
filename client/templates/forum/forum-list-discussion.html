@@ -2,17 +2,17 @@
   <div class="list-discussion">
     <div class="container ">
       <div class="row">
-             <div class="col-md-8 col-sm-8 col-xs-12">
-               <h3 class="">上海苗圃创业俱乐部</h3>
-             </div>
-             <div class="col-md-4 col-sm-4 col-xs-12">
-               <h3 class="my-controller">
-               <span {{authManage}}><button id="manageView" class="btn btn-default manageView">{{#if flagStatus}}普通视图{{else}}管理视图{{/if}}</button></span>
-              <span {{authCreate}}> <a href="{{ pathFor 'start' groupPath = path}}" class="btn btn-success">发布新帖</a></span>
-               </h3>
-             </div>
+        <div class="col-md-8 col-sm-8 col-xs-12">
+          <h3 class="">上海苗圃创业俱乐部</h3>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <h3 class="my-controller">
+            <span {{authManage}}><button id="manageView" class="btn btn-default manageView">{{#if flagStatus}}普通视图{{else}}管理视图{{/if}}</button></span>
+            <span {{authCreate}}> <a href="{{ pathFor 'start' groupPath = path}}" class="btn btn-success">发布新帖</a></span>
+          </h3>
+        </div>
 
-      <!--  <div class="col-md-12">
+        <!--  <div class="col-md-12">
           <div class="">
             <div>
               <h3 class="">上海苗圃创业俱乐部</h3>
@@ -44,19 +44,26 @@
         </div>-->
       </div>
       <div class="list-discussion-form">
-        <form class="form-inline">
-          <div class="form-group">
-            <div class="input-group">
-              <input type="search" class="form-control" id="exampleInputAmount" placeholder="">
-              <div class="input-group-addon"><i class="glyphicon glyphicon-search "></i></div>
+        <form class="">
+          <div class="form-group ">
+            <div class="input-group input-group-md">
+              <div class="input-group-addon"><i class="glyphicon glyphicon-search searchBtn"></i></div>
+              <input type="search" class="form-control search-text" name="search-text" id="search-text" placeholder="请输入关键字...">
+              <div class="input-group-btn">
+                <div class="select-div select-div-inline">
+                  <div class="select-face clearfix form-control">
+                    <span class="fa fa-caret-down pull-right"></span>
+                    <div class="select-text">发帖排序</div>
+                  </div>
+                  <select style="float: right;" class="form-control disc-type">
+                    <option value="createdAt">最新发帖</option>
+                    <option value="upVoteCount">最近热门</option>
+                    <option value="commentCount">评论最多</option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
-
-          <select style="float: right;" class="form-control disc-type">
-            <option value="createdAt">最新发帖</option>
-            <option value="upVoteCount">最近热门</option>
-            <option value="commentCount">评论最多</option>
-          </select>
         </form>
       </div>
 
@@ -71,7 +78,7 @@
       <div class="load">
         {{#if discussionCount}}
           <a id="load-more" class="load-more">加载更多...</a>
-        <!--{{else}}
+            <!--{{else}}
           <a class="loaded">加载完毕...</a>-->
         {{/if}}
       </div>

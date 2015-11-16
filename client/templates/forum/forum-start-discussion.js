@@ -44,10 +44,35 @@ Template.forumStartDiscussion.events({
     var subject = $(e.target).find('[name=subject]').val();
     var str = [];
     var content = template.$("#content").html();
-    var imgSrc = template.$("#content").find('img').each(function () {
-      str.push($(this).attr('src'));
+
+    var $content = template.$("#content");
+
+    var $contentCloned = $content.clone();
+
+    $contentCloned.find("img").each(function () {
+      str.push($(this).attr("src"));
+    }).attr("src", function (index) {
+      return "/images/default-poster.png?i=" + index;
     });
-    if(str!=""&&str != null)
+
+    console.log(str);
+    console.log($contentCloned.html());
+/*
+
+    var i=0;
+    var imgSrc = template.$("#content").find('img').each(function () {
+      //str.push($(this).attr('src'));
+      $(this).attr('src',"/images/default-poster.png?i="+(i++));
+      str.push($(this).attr('src',"/images/default-poster.png?i="+(i++)));
+    });
+*/
+/*
+    var contentStr = content.find('img').each(function() {
+      $(this).attr('src',"/images/default-poster.png?i="+(i++));
+    });
+    console.log(contentStr);
+    */
+    /*if(str!=""&&str != null)
     {
       str = str.slice(0,4);
     }
@@ -66,6 +91,6 @@ Template.forumStartDiscussion.events({
        // console.log(FlowRouter.getParam("groupPath"));
         FlowRouter.go("/groups/:groupPath/discussion/singlediscussion/:discId", {groupPath: FlowRouter.getParam("groupPath"),discId: result});
       }
-    });
+    });*/
   }
 });

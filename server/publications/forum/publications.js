@@ -2,17 +2,23 @@
  * Created by jym on 2015/9/9.
  */
 //社群论坛
-Meteor.publishComposite("listDiscussion", function (limitNum, sortType, groupPath) {return {
+Meteor.publishComposite("listDiscussion", function (limitNum, sortType, selector, groupPath) {
+  check(selector, Match.Optional(Object));
+  selector = selector || {};
+  return {
   find: function () {
     return Groups.find({path:groupPath});
   },
   children: [
     {
+
       find: function (group) {
         var sort = {};
         sort.setTop = -1;
         sort[sortType] = -1;
-        return Discussion.find({groupId: group._id},{sort: sort, limit: limitNum});
+        selector.groupId = group._id;
+
+        return Discussion.find(selector,{sort: sort, limit: limitNum});
       }
     }
   ]

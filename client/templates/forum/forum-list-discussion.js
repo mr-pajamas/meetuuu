@@ -10,15 +10,32 @@ Template.forumListDiscussion.onCreated(function () {
   var template = this;
  // template.subscribe("singleGroupByPath",FlowRouter.getParam("groupPath"));
   var path = FlowRouter.getParam("groupPath");
+
   //var groupId = Groups.findOne({path:path});
  /* var myGroup = MyGroups.findOne({path: path});
   console.log(myGroup.path);*/
   template.autorun(function () {
-    template.subscribe("listDiscussion", parseInt(limit.get()+1), sortType.get(), path);
+
+    var searchString = FlowRouter.getQueryParam("q");
+    //var selector ={};
+    var selector1 = {};
+
+    if (searchString) {
+      selector1.$or =[];
+      //selector.subject = {$regex: searchString, $options: "i"};
+      selector1.$or.push({subject: {$regex: searchString, $options: "i"}});
+      //selector.content = {$regex: searchString, $options: "i"};
+      selector1.$or.push({content: {$regex: searchString, $options: "i"}});
+    }
+        console.log(selector1);
+    template.subscribe("listDiscussion", parseInt(limit.get()+1), sortType.get(), selector1, path);
   });
 });
 
 Template.forumListDiscussion.helpers({
+  existSearchText: function() {
+
+  },
   listDiscussions: function () {
     var sort={};
     sort.setTop=-1;
@@ -65,6 +82,10 @@ Template.forumListDiscussion.helpers({
   }
 });
 Template.forumListDiscussion.events({
+  "click .searchBtn":function (e, template) {
+    var searchTxt = template.$(".search-text").val();
+    console.log(searchTxt);
+  },
   "click .load-more": function (e, template) {
     e.preventDefault();
     limit.set(limit.get()+PAGE_SIZE);
@@ -95,6 +116,22 @@ Template.forumListDiscussion.events({
     var mySelect = template.$(".disc-type").val();
     //console.log(""+mySelect);
     sortType.set(mySelect);
-  }
+  },
+  "input .list-discussion-form form input[name=search-text]": _.debounce(triggerSearch, 300),
+
+   "submit .list-discussion-form form": function (event, template) {
+     event.preventDefault();
+     triggerSearch(event, template);
+     //console.log(FlowRouter.getQueryParam("q"));
+   },
+
 
 });
+function triggerSearch(event, template) {
+  var q = $.trim(template.$(".list-discussion-form form input[name=search-text]").val()) || null;
+  FlowRouter.setQueryParams({q: q});
+}
+
+
+
+
