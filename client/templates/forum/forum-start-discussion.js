@@ -54,9 +54,22 @@ Template.forumStartDiscussion.events({
     }).attr("src", function (index) {
       return "/images/default-poster.png?i=" + index;
     });
+    //console.log(str);
+    //console.log($contentCloned.html());
+    var groupId = Groups.findOne({path: FlowRouter.getParam("groupPath")});
+    var post ={subject:subject, content: $contentCloned.html(), imgPath:str, groupId:groupId._id};
+    post= _.extend(post,{
+             userId:Meteor.user()._id,
+             userName: Meteor.user().profile.name,
+             commentCount: 0,
+             upVoteCount: 0
+           });
+    console.log(post);
+    Meteor.call("insertForum",function(error, result){
 
-    console.log(str);
-    console.log($contentCloned.html());
+
+    })
+
 /*
 
     var i=0;
@@ -76,9 +89,7 @@ Template.forumStartDiscussion.events({
     {
       str = str.slice(0,4);
     }
-    var groupId = Groups.findOne({path: FlowRouter.getParam("groupPath")});
-   // console.log(groupId);
-    var post ={subject:subject, content: content, imgPath:str, groupId:groupId._id};
+
     post= _.extend(post,{
           userId:Meteor.user()._id,
           userName: Meteor.user().profile.name,
