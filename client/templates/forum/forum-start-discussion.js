@@ -65,9 +65,9 @@ Template.forumStartDiscussion.events({
              upVoteCount: 0
            });
     console.log(post);
-    Meteor.call("insertForum",function(error, result){
-
-
+    Meteor.call("insertForum",post,function(error, result){
+     if(result)
+       FlowRouter.go("/groups/:groupPath/discussion/singlediscussion/:discId", {groupPath: FlowRouter.getParam("groupPath"),discId: result});
     })
 
 /*
