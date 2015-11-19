@@ -61,6 +61,14 @@ Template.forumDiscussionItem.helpers({
   flagStatus: function () {
     return (FlowRouter.getQueryParam("flag") === "1" && FlowRouter.getQueryParam("flag") != null);
   },
+  imgPathStr: function(){
+      var imgPathStr=[];
+      if(this.imgPath!="" && this.imgPath !=null){
+        imgPathStr = this.imgPath;
+        imgPathStr = imgPathStr.slice(0,4);
+      }
+      return imgPathStr || {};
+    },
   contentFormate: function () {
     if (this.content.indexOf('<img') >= 0) {
       return (this.content.substring(0, this.content.indexOf('<img'))).replace(/<[^>]+>/g, "").substring(0, 150);

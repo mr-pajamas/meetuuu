@@ -54,8 +54,6 @@ Template.forumStartDiscussion.events({
     }).attr("src", function (index) {
       return "/images/default-poster.png?i=" + index;
     });
-    //console.log(str);
-    //console.log($contentCloned.html());
     var groupId = Groups.findOne({path: FlowRouter.getParam("groupPath")});
     var post ={subject:subject, content: $contentCloned.html(), imgPath:str, groupId:groupId._id};
     post= _.extend(post,{

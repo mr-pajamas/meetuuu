@@ -81,9 +81,10 @@
               </div>
               <div class="content-img">
                 <div class="row">
-                  {{#each imgPath}}
+                  {{#each imgPathStr}}
                     <div class="col-md-3 col-sm-6 col-xs-12">
-                      <img class="img-thumbnail item-img" src="{{this}}">
+                      <div class="content-img-item" style=" background: url('{{this}}') no-repeat"></div>
+                      <!--<img class="item-img" src="{{this}}">-->
                     </div>
                   {{/each}}
                 </div>

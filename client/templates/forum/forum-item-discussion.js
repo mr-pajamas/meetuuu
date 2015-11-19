@@ -36,6 +36,14 @@ Template.forumItemDiscussion.helpers({
       return false;
     }
   },
+  imgPathStr: function(){
+    var imgPathStr=[];
+    if(this.imgPath!="" && this.imgPath !=null){
+      imgPathStr = this.imgPath;
+      imgPathStr = imgPathStr.slice(0,4);
+    }
+    return imgPathStr || {};
+  },
   contentFormate: function () {
     if(this.content.indexOf('<img')>=0)
     {
