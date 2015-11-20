@@ -18,15 +18,15 @@ Meteor.methods({
     {
       Meteor.defer(function (i) {
         return function(){
-          console.log(post.imgPath[i]);
+         // console.log(post.imgPath[i]);
           url = ObjectStore.putDataUri(imgPath[i]);
-          console.log(url);
+         // console.log(url);
           if (url && discId) {
             var restring="/images/default-poster.png?i="+i;
-            console.log(restring);
+            //console.log(restring);
             // content = content.replace(new RegExp("("+restring+")", "g"), url);
             content = content.replace(""+restring, url);
-            console.log(content);
+           // console.log(content);
             imgPath[i] = url;
             Discussion.update({_id: discId}, {
               $set: {
@@ -56,20 +56,20 @@ Meteor.methods({
     for(var i=0; i<imgPath.length; i++)
     {
       if((new RegExp(/^data:/)).test(imgPath[i])){
-        console.log("需要上传");
+        //console.log("需要上传");
         Meteor.defer(function (i) {
           return function(){
-            console.log(post.imgPath[i]);
+            //console.log(post.imgPath[i]);
             url = ObjectStore.putDataUri(imgPath[i]);
-            console.log(url);
+            //console.log(url);
             if (url && discId) {
               var restring="/images/default-poster.png?i="+i;
              // console.log(restring);
               // content = content.replace(new RegExp("("+restring+")", "g"), url);
               content = content.replace(""+restring, url);
-              console.log("替换后内容"+content);
+              //console.log("替换后内容"+content);
               imgPath[i] = url;
-              console.log("图片存储"+imgPath[i]);
+              //console.log("图片存储"+imgPath[i]);
               var updateId = Discussion.update({_id: discIdUpdate}, {
                           $set: {
                             content: content,

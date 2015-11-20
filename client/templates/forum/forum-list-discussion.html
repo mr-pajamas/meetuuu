@@ -50,17 +50,22 @@
               <div class="input-group-addon"><i class="glyphicon glyphicon-search searchBtn"></i></div>
               <input type="search" class="form-control search-text" name="search-text" id="search-text" placeholder="请输入关键字...">
               <div class="input-group-btn">
+               <!-- {{#styledSelect inline=true }}
+                  <option value="createdAt">最新发帖</option>
+                  <option value="upVoteCount">最近热门</option>
+                  <option value="commentCount">评论最多</option>
+                {{/styledSelect}}-->
                 <div class="select-div select-div-inline">
                   <div class="select-face clearfix form-control">
                     <span class="fa fa-caret-down pull-right"></span>
                     <div class="select-text">发帖排序</div>
                   </div>
-                  <select style="float: right;" class="form-control disc-type">
-                    <option value="createdAt">最新发帖</option>
-                    <option value="upVoteCount">最近热门</option>
-                    <option value="commentCount">评论最多</option>
-                  </select>
-                </div>
+                 <select style="float: right;" class="form-control disc-type">
+                   <option selected value="createdAt">最新发帖</option>
+                   <option value="upVoteCount">最近热门</option>
+                   <option value="commentCount">评论最多</option>
+                 </select>
+               </div>
               </div>
             </div>
           </div>

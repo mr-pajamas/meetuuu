@@ -93,7 +93,7 @@ Template.forumListDiscussion.events({
   "click .manageView": function(e, template) {
     if (FlowRouter.getQueryParam("flag") == 1) {
           FlowRouter.setQueryParams({flag: 0});
-          console.log(FlowRouter.getQueryParam("flag"));
+          //console.log(FlowRouter.getQueryParam("flag"));
         } else {
           FlowRouter.setQueryParams({flag: 1});
         }
@@ -114,6 +114,8 @@ Template.forumListDiscussion.events({
     },
   "change .disc-type": function(e, template) {
     var mySelect = template.$(".disc-type").val();
+    //console.log(template.$(".disc-type option:selected").text());
+    template.$(".select-text").html(template.$(".disc-type option:selected").text());
     //console.log(""+mySelect);
     sortType.set(mySelect);
   },
