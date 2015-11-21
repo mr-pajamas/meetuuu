@@ -8,6 +8,9 @@
     };
     .forum-discussion-header-right{
       float: right;
+      .dropdown-menu{
+        min-width: 100px!important;
+      }
     };
   };
   .discussion-item-header{
@@ -17,7 +20,12 @@
     .discussion-item-header-left{
       float:left;
       margin-right: 50px;
+      span.subject-txt{
+        font-size: 24px;
+      }
       img{
+        width: 100px;
+        height: 100px;
         padding: 10px;
       };
     };
@@ -35,15 +43,47 @@
       clear: both;
     }
   };
+  .discussion-item-header-xs{
+      border: #cccccc solid 1px;
+      margin-top: 20px;
+      .discussion-item-header-left{
+        float:left;
+        margin-right: 50px;
+        span.subject-txt{
+          font-size: 24px;
+        }
+        img{
+          width: 100px;
+          height: 100px;
+          padding: 10px;
+        };
+      };
+      .discussion-item-header-right{
+        table {
+          td{
+            text-align: center;
+            padding: 10px;
+          };
+        };
+        padding: 10px;
+        float:left;
+      };
+      .clear{
+        clear: both;
+      }
+    };
   //��ʽʧЧ
   .discussion-item-content{
     background: #ffffff;
     width: 100%;
     margin-top: 20px;
     .discussion-item-content-subject{
-      text-align: center;
+      text-align: left;
       color: #222222;
-      font-size: 18px;
+      font-size: 24px;
+      p{
+        text-indent: 1em;
+      }
       a{
         margin: 10px 10px;
         text-underline: none;

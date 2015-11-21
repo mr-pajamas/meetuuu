@@ -1,6 +1,6 @@
 <template name="forumDiscussionItem">
   <div class="discussion-item">
-    <div class="">
+    <!-- <div class="">
       <div class="forum-discussion-header">
         <div class="forum-discussion-header-left">
           <span><a
@@ -16,11 +16,44 @@
         </div>
         <div style="clear: both"></div>
       </div>
-
-    </div>
+    </div>-->
     <div class="row">
       <div class="col-md-8 col-xs-12">
-        <div class="discussion-item-header">
+        <div class="forum-discussion-header">
+          <div class="forum-discussion-header-left">
+                 <span><a
+                     href="{{pathFor "/groups/:groupPath/discussion" groupPath = groupPath}}"
+                     class="btn btn-default"><i
+                     class="glyphicon glyphicon-chevron-left">返回列表</i></a></span>
+          </div>
+          <div class="forum-discussion-header-right">
+            <div class="dropdown">
+              <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">帖子管理
+                <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li {{authEdit}}><a href="{{pathFor "/groups/:groupPath/discussion/edit/:discId" groupPath = groupPath discId=_id }}">编辑</a></li>
+                <li {{authDelete}}><a class="delDisc">删除</a></li>
+                <li><a href="#" class="setTopBtn">置顶</a></li>
+                <li><a href="#">加精</a></li>
+                <li><a href="#" class="closeBtn">关闭</a></li>
+              </ul>
+            </div>
+
+            <!-- <span {{authEdit}}><a
+                     href="{{pathFor "/groups/:groupPath/discussion/edit/:discId" groupPath = groupPath discId=_id }}"
+                     class="btn btn-warning">编辑</a></span>
+            <span {{authDelete}}><button class="btn btn-danger delDisc">删除</button></span>-->
+          </div>
+          <div style="clear: both"></div>
+        </div>
+        <div class="discussion-item-header hidden-xs collapseBtn">
+        <!--{{#if flagStatus}}
+            <div class="discussion-item-header-left">
+              <span><img src="{{posterOrDefault firstImg}}"></span>
+              <span class="subject-txt">{{subject}}</span>
+            </div>
+            <div class="clear"></div>
+            {{else}}-->
           <div class="discussion-item-header-left">
             <table>
               <tr>
@@ -66,15 +99,117 @@
             </table>
           </div>
           <div class="clear"></div>
+            <!--{{/if}}-->
+        </div>
+        <div class="discussion-item-header-xs visible-xs collapseBtn">
+          {{#if flagStatus}}
+            <div class="discussion-item-header-left">
+              <span><img class="img-circle" src="{{posterOrDefault firstImg}}"></span>
+              <span class="subject-txt">{{subject}}</span>
+            </div>
+            <div class="clear"></div>
+          {{else}}
+            <div class="discussion-item-header-left">
+              <table>
+                <tr>
+                  <td>
+                    <img src="/images/luntan.jpg"/>
+                  </td>
+                  <td>
+                    <p>
+                      <span class="glyphicon glyphicon glyphicon-user">{{userName}}</span>
+                    </p>
+                    <p>
+                      <span class="glyphicon glyphicon-time">{{dateFormate createdAt }}</span>
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="clear"></div>
+
+          {{/if}}
+
+          <!-- {{#if flagStatus}}
+          {{else}}
+                 <div class="discussion-item-header-left">
+                   <table>
+                     <tr>
+                       <td>
+                         <img src="/images/luntan.jpg"/>
+                       </td>
+                       <td>
+                         <p>
+                           <span class="glyphicon glyphicon glyphicon-user">{{userName}}</span>
+                         </p>
+                         <p>
+                           <span class="glyphicon glyphicon-time">{{dateFormate createdAt }}</span>
+                         </p>
+                       </td>
+                     </tr>
+                   </table>
+                 </div>
+                 <div class="discussion-item-header-right">
+                   <table>
+                     <tr>
+                       <td>
+                         <p>{{viewCount}}</p>
+
+                         <p>浏览量</p>
+                       </td>
+                       <td>
+                         <p>{{upVoteCount}}</p>
+
+                         <p>被点赞</p>
+                       </td>
+                       <td>
+                         <p>5</p>
+
+                         <p>被分享</p>
+                       </td>
+                       <td>
+                         <p>{{#if collectionCount}}{{collectionCount}}{{else}}
+                           0{{/if}}</p>
+
+                         <p>被收藏</p>
+                       </td>
+                     </tr>
+                   </table>
+                 </div>
+                 <div class="clear"></div>
+                 {{/if}}-->
         </div>
         <div class="discussion-item-content ">
-          <div class="discussion-item-content-subject">
-            <a class="collapseBtn" href="#">
-              <span class="panel-title">主题：{{subject}}</span>
-            </a>
+          <div class="hidden-xs">
+            <div class="discussion-item-content-subject">
+              <p>{{subject}}</p>
+            </div>
+            <div class="discussion-item-content-container2 animate"
+                 id="discussion-item-content-container">
+              <p>
+                {{{content}}}
+              </p>
+            </div>
+            <div class="discussion-item-footer">
+              {{#if existUserData}}
+                <span><i class="glyphicon glyphicon-thumbs-up"
+                         style=" color: #d9534f"></i>已赞</span>
+              {{else}}
+                <span class="upVote"><i style=" color: #d9534f"
+                                        class="glyphicon glyphicon-thumbs-up "></i>赞</span>
+              {{/if}}
+              <span><i class="glyphicon glyphicon-share" style=" color:#0097cf"></i>分享</span>
+              {{#if existMyCollection}}
+                <span><i class="glyphicon glyphicon-star"
+                         style=" color: #3c763d"></i>已收藏</span>
+              {{else}}
+                <span class="my-collection"><i class="glyphicon glyphicon-star"
+                                               style=" color: #3c763d"></i>收藏</span>
+              {{/if}}
+            </div>
           </div>
           {{#if flagStatus}}
-            <div class="discussion-item-content-container1 animate">
+            <!-- <div class="discussion-item-content-container1 animate">
               <div class="content">
                 <p class="flagImgShow">{{contentFormate}}...
                 </p>
@@ -84,40 +219,45 @@
                   {{#each imgPathStr}}
                     <div class="col-md-3 col-sm-6 col-xs-12">
                       <div class="content-img-item" style=" background: url('{{this}}') no-repeat"></div>
-                      <!--<img class="item-img" src="{{this}}">-->
+                      &lt;!&ndash;<img class="item-img" src="{{this}}">&ndash;&gt;
                     </div>
                   {{/each}}
                 </div>
               </div>
-            </div>
+            </div>-->
           {{else}}
+            <div class="hidden-md hidden-sm hidden-lg">
+            <div class="discussion-item-content-subject">
+              <p>{{subject}}</p>
+            </div>
             <div class="discussion-item-content-container2 animate"
                  id="discussion-item-content-container">
               <p>
                 {{{content}}}
               </p>
             </div>
-
+            <div class="discussion-item-footer">
+              {{#if existUserData}}
+                <span><i class="glyphicon glyphicon-thumbs-up"
+                         style=" color: #d9534f"></i>已赞</span>
+              {{else}}
+                <span class="upVote"><i style=" color: #d9534f"
+                                        class="glyphicon glyphicon-thumbs-up "></i>赞</span>
+              {{/if}}
+              <span><i class="glyphicon glyphicon-share" style=" color:#0097cf"></i>分享</span>
+              {{#if existMyCollection}}
+                <span><i class="glyphicon glyphicon-star"
+                         style=" color: #3c763d"></i>已收藏</span>
+              {{else}}
+                <span class="my-collection"><i class="glyphicon glyphicon-star"
+                                               style=" color: #3c763d"></i>收藏</span>
+              {{/if}}
+            </div>
+            </div>
           {{/if}}
 
         </div>
-        <div class="discussion-item-footer">
-          {{#if existUserData}}
-            <span><i class="glyphicon glyphicon-thumbs-up"
-                     style=" color: #d9534f"></i>已赞</span>
-          {{else}}
-            <span class="upVote"><i style=" color: #d9534f"
-                                    class="glyphicon glyphicon-thumbs-up "></i>赞</span>
-          {{/if}}
-          <span><i class="glyphicon glyphicon-share" style=" color:#0097cf"></i>分享</span>
-          {{#if existMyCollection}}
-            <span><i class="glyphicon glyphicon-star"
-                     style=" color: #3c763d"></i>已收藏</span>
-          {{else}}
-            <span class="my-collection"><i class="glyphicon glyphicon-star"
-                                           style=" color: #3c763d"></i>收藏</span>
-          {{/if}}
-        </div>
+
 
       </div>
       <div class="col-md-4 col-xs-12 ">
@@ -148,7 +288,11 @@
           </div>
           <div class="discussion-item-comment">
             {{#onlyIfLogin}}
+              {{#if closeStatus}}
+                <p>该帖已被关闭，不可回复</p>
+              {{else}}
               {{> forumComment}}
+                {{/if}}
             {{else}}
               <p>请先登录！</p>
             {{/onlyIfLogin}}

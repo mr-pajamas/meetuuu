@@ -24,34 +24,36 @@ Template.forumEditDiscussion.events({
     var str = [];
     var content = template.$("#content").html();
 
-       var $content = template.$("#content");
+    var $content = template.$("#content");
 
-       var $contentCloned = $content.clone();
+    var $contentCloned = $content.clone();
 
-       $contentCloned.find("img").each(function () {
-         str.push($(this).attr("src"));
-       }).attr("src", function (index) {
-         return "/images/default-poster.png?i=" + index;
-       });
+    $contentCloned.find("img").each(function () {
+      str.push($(this).attr("src"));
+    }).attr("src", function (index, value) {
+      //console.log(value);
+      if((new RegExp(/^data:/)).test(value))
+      return "/images/default-poster.png?i=" + index;
+    });
     var updateId = this._id;
     var post ={subject:subject, content: $contentCloned.html(), imgPath:str,DiscId: updateId};
     Meteor.call("updateForum",post,function(error, result){
-        if(result)
-          FlowRouter.go("/groups/:groupPath/discussion/singlediscussion/:discId", {groupPath: FlowRouter.getParam("groupPath"),discId:updateId});
-       })
-   /* var imgSrc = template.$("#content").find('img').each(function () {
-      str.push($(this).attr('src'));
-    });
-    if (str != "" && str != null) {
-      str = str.slice(0, 4);
-    }*/
+      if(result)
+        FlowRouter.go("/groups/:groupPath/discussion/singlediscussion/:discId", {groupPath: FlowRouter.getParam("groupPath"),discId:updateId});
+    })
+    /* var imgSrc = template.$("#content").find('img').each(function () {
+     str.push($(this).attr('src'));
+     });
+     if (str != "" && str != null) {
+     str = str.slice(0, 4);
+     }*/
     //var post = {subject: subject, content: content, imgPath: str};
 
-   /* var updateId = this._id;
-    Discussion.update(updateId, {$set: post}, function (error, result) {
-      if (result) {
-        FlowRouter.go("/groups/:groupPath/discussion/singlediscussion/:discId", {groupPath: FlowRouter.getParam("groupPath"),discId:updateId});
-      }
-    });*/
+    /* var updateId = this._id;
+     Discussion.update(updateId, {$set: post}, function (error, result) {
+     if (result) {
+     FlowRouter.go("/groups/:groupPath/discussion/singlediscussion/:discId", {groupPath: FlowRouter.getParam("groupPath"),discId:updateId});
+     }
+     });*/
   },
 });

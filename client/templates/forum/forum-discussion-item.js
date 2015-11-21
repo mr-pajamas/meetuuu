@@ -37,7 +37,7 @@ Template.forumDiscussionItem.helpers({
     }
   },
   authDelete: function() {
-      //获得用户ID
+    //获得用户ID
     var userId = Meteor.userId();
     //获得用户path
     var path = FlowRouter.getParam("groupPath");
@@ -61,14 +61,21 @@ Template.forumDiscussionItem.helpers({
   flagStatus: function () {
     return (FlowRouter.getQueryParam("flag") === "1" && FlowRouter.getQueryParam("flag") != null);
   },
+  firstImg: function() {
+    var imgPathStr=[];
+    if(this.imgPath!="" && this.imgPath !=null){
+      imgPathStr = this.imgPath;
+    }
+    return imgPathStr[0];
+  },
   imgPathStr: function(){
-      var imgPathStr=[];
-      if(this.imgPath!="" && this.imgPath !=null){
-        imgPathStr = this.imgPath;
-        imgPathStr = imgPathStr.slice(0,4);
-      }
-      return imgPathStr || {};
-    },
+    var imgPathStr=[];
+    if(this.imgPath!="" && this.imgPath !=null){
+      imgPathStr = this.imgPath;
+      imgPathStr = imgPathStr.slice(0,4);
+    }
+    return imgPathStr || {};
+  },
   contentFormate: function () {
     if (this.content.indexOf('<img') >= 0) {
       return (this.content.substring(0, this.content.indexOf('<img'))).replace(/<[^>]+>/g, "").substring(0, 150);
@@ -77,9 +84,9 @@ Template.forumDiscussionItem.helpers({
       return this.content.replace(/<[^>]+>/g, "").substring(0, 150);
     }
   },
- existMyCollection: function() {
-   return MyCollection.findOne();
- },
+  existMyCollection: function() {
+    return MyCollection.findOne();
+  },
   existUserData: function () {
     var updateId = FlowRouter.getParam("discId");
     var disc = Discussion.findOne({_id: updateId});
@@ -111,10 +118,32 @@ Template.forumDiscussionItem.helpers({
   discussionCount: function () {
     var count = Comments.find({createdAt: {$lte: setPageTime}}).count();
     return count == limit.get() + 1;
-  }
+  },
+  closeStatus: function() {
+    console.log(this.closeStatus);
+    return this.closeStatus;
+  },
 });
 
 Template.forumDiscussionItem.events({
+  "click .setTopBtn": function(e, template) {
+    e.preventDefault();
+    if (confirm("确定将该贴置顶")) {
+      var updateId = template.data._id;
+      Discussion.update({_id:updateId},{$set:{setTop: 1}}, function (error, result) {
+        console.log(result);
+      });
+    }
+  },
+  "click .closeBtn": function(e, template) {
+    e.preventDefault();
+    if (confirm("确定将该贴关闭，关闭后不可恢复")) {
+      var updateId = template.data._id;
+      Discussion.update({_id:updateId},{$set:{closeStatus: 1}}, function (error, result) {
+        //console.log(result);
+      });
+    }
+  },
   "click .my-collection":function() {
     var insertData={discussionId: FlowRouter.getParam("discId"), userId: Meteor.userId()};
     console.log(insertData);
@@ -129,16 +158,16 @@ Template.forumDiscussionItem.events({
     if (confirm("是否要删除该讨论！")) {
       var updateId = FlowRouter.getParam("discId");
       var groupPath = FlowRouter.getParam("groupPath");
-     // console.log(updateId);
-      //console.log(groupPath);
-      Discussion.remove({_id: updateId});
-      if(Comments.findOne({discussionId: updateId})){
-        Meteor.call("deleteDiscussion",updateId);
-      }
+      var delDisc = {updateId: updateId, groupPath: groupPath};
+      Meteor.call("deleteDiscussion",delDisc);
+      /* Discussion.remove({_id: updateId});
+       if(Comments.findOne({discussionId: updateId})){
+       Meteor.call("deleteDiscussion",updateId);
+       }*/
       FlowRouter.go("/groups/:groupPath/discussion",{groupPath: groupPath});
     }
   },
-  "click a.collapseBtn": function (e, template) {
+  "click .collapseBtn": function (e, template) {
     e.preventDefault();
     if (FlowRouter.getQueryParam("flag") == 1) {
       FlowRouter.setQueryParams({flag: 0});
