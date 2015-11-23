@@ -15,3 +15,6 @@ meteor add dburles:collection-helpers
 
 活动开办以后，开活动者自动报名
 
+members 加 status参数   【完成】
+七牛批量上传和批量删除  【完成，批量上传没有】
+论坛页面框架

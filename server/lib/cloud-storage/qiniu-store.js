@@ -12,7 +12,7 @@ var BUCKET_DOMAIN = "7xns4u.com1.z0.glb.clouddn.com";
 var client = new qiniu.rs.Client();
 
 var wrappedQiniuIo = Async.wrap(qiniu.io, ["put"]);
-var wrappedQiniuRsClient = Async.wrap(client, ["remove"]);
+var wrappedQiniuRsClient = Async.wrap(client, ["remove", "batchDelete"]);
 
 function uptoken(key) {
   var putPolicy = new qiniu.rs.PutPolicy(BUCKET_NAME + (key && ":" + key));
@@ -52,6 +52,14 @@ function remove(key) {
   return wrappedQiniuRsClient.remove(BUCKET_NAME, key);
 }
 
+function batchDelete(keys) {
+  var paths = _.map(keys, function (key) {
+    return new qiniu.rs.EntryPath(BUCKET_NAME, key);
+  });
+
+  return wrappedQiniuRsClient.batchDelete(paths);
+}
+
 ObjectStore = function () {
   return {
     _put: uploadBuf,
@@ -79,7 +87,13 @@ ObjectStore = function () {
       return getUrl(uploadBuf(key, new Buffer(str, "base64"), mimeType));
     },
     removeByUrl: function (url) {
-      return remove(parseUrl(url));
+      if (_.isArray(url)) {
+        return batchDelete(_.map(url, function (u) {
+          return parseUrl(u);
+        }));
+      } else {
+        return remove(parseUrl(url));
+      }
     }
   }
 }();

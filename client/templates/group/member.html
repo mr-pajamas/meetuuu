@@ -1,3 +1,90 @@
 <template name="groupMember">
 
+  {{#unless subscriptionReady "memberHandle"}}
+    {{> loading}}
+  {{else}}
+
+    {{#with member}}
+
+      <main class="group-member-main">
+        <div class="container">
+          <div class="page-header">
+            <button type="button" class="btn btn-warning pull-right">更换角色</button>
+            <button type="button" class="btn btn-default pull-right">编辑</button>
+            <a href="{{pathFor 'groupMemberList' groupPath=../path}}" class="btn btn-default group-member-back"><i class="fa fa-chevron-left"></i> 返回成员列表</a>
+          </div>
+
+          <section class="group-member-info">
+
+            <div>
+              <div class="thumbnail">
+                <a href="#"><img src="{{avatarOrDefault user.profile.avatar}}"></a>
+                <div class="caption visible-xs-block">
+                  <h2>{{nickname}}</h2>
+                  <h2><span class="label label-info">{{roleName}}</span></h2>
+                  <h2 class="small text-muted">于 {{fromNow statusUpdatedAt}} 加入</h2>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h1 class="hidden-xs">{{nickname}} <span class="label label-info">{{roleName}}</span></h1>
+              <p class="text-muted hidden-xs">于 {{fromNow statusUpdatedAt}} 加入</p>
+              <hr class="hidden-xs">
+
+              <p class="text-muted clearfix"><i class="fa fa-quote-left fa-2x fa-pull-left fa-border"></i>{{bio}}</p>
+              <!--
+              <div class="text-right">
+                <hr>
+                <button class="btn btn-lg btn-default" type="button">编辑</button>
+              </div>
+              -->
+            </div>
+          </section>
+
+          <section class="group-member-stats row">
+            <div class="col-xs-6 col-md-4">
+              <div class="bg-info">
+                <h4 class="text-muted">最近访问</h4>
+                <p class="lead">5天前</p>
+              </div>
+            </div>
+            <div class="col-xs-6 col-md-4">
+              <div>
+                <h4 class="text-muted">报名活动</h4>
+                <p class="lead">11</p>
+              </div>
+            </div>
+            <div class="col-xs-6 col-md-4">
+              <div>
+                <h4 class="text-muted">出席活动</h4>
+                <p class="lead">5</p>
+              </div>
+            </div>
+            <div class="col-xs-6 col-md-4">
+              <div>
+                <h4 class="text-muted">分享活动</h4>
+                <p class="lead">5</p>
+              </div>
+            </div>
+            <div class="col-xs-6 col-md-4">
+              <div>
+                <h4 class="text-muted">发表主题</h4>
+                <p class="lead">10</p>
+              </div>
+            </div>
+            <div class="col-xs-6 col-md-4">
+              <div>
+                <h4 class="text-muted">分享主题</h4>
+                <p class="lead">1000</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+
+    {{else}}
+      {{> notFound}}
+    {{/with}}
+  {{/unless}}
 </template>

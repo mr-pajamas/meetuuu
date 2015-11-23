@@ -8,13 +8,15 @@ Template.groupMemberList.onCreated(function () {
 
   template.autorun(function () {
     var group = Template.currentData();
-    var routeName = FlowRouter.getRouteName();
+    //var routeName = FlowRouter.getRouteName();
+
+    var status = FlowRouter.getQueryParam("status");
 
     //var searchString = template.$(".group-member-list-main input[name=searchString]").val();
     var searchString = FlowRouter.getQueryParam("q");
 
     var selector = {
-      status: (routeName == "groupMemberList" ? MemberStatus.Joined : MemberStatus.Applying)
+      status: (status == "applying" ? MemberStatus.Applying : MemberStatus.Joined)
     };
     if (searchString) selector.nickname = {$regex: searchString, $options: "i"};
 
@@ -34,11 +36,12 @@ Template.groupMemberList.helpers({
 
   memberList: function () {
     var group = this;
-    var routeName = FlowRouter.getRouteName();
+    //var routeName = FlowRouter.getRouteName();
+    var status = FlowRouter.getQueryParam("status");
     var searchString = FlowRouter.getQueryParam("q");
     var selector = {
       groupId: group._id,
-      status: (routeName == "groupMemberList" ? MemberStatus.Joined : MemberStatus.Applying)
+      status: (status == "applying" ? MemberStatus.Applying : MemberStatus.Joined)
     };
     if (searchString) selector.nickname = {$regex: searchString, $options: "i"};
 
@@ -46,11 +49,12 @@ Template.groupMemberList.helpers({
   },
 
   membersOrApplicants: function () {
-    return FlowRouter.getRouteName() === "groupMemberList";
+    var status = FlowRouter.getQueryParam("status");
+    return !status || status === "joined";
   },
 
   searchOption: function () {
-    return FlowRouter.getRouteName() === "groupMemberList" ? "找成员" : "申请人";
+    return FlowRouter.getQueryParam("status") === "applying" ? "申请人" : "找成员";
   },
 
   resultSetReady: function () {
@@ -135,7 +139,8 @@ Template.groupMemberList.events({
         alert(error.reason);
       } else {
         template.$(".group-member-list-modal").on("hidden.bs.modal", function () {
-          FlowRouter.go("groupApplicantList", {groupPath: group.path});
+          //FlowRouter.go("groupApplicantList", {groupPath: group.path});
+          FlowRouter.setQueryParams({status: "applying"});
         }).modal("hide");
       }
     });
@@ -148,13 +153,15 @@ Template.groupMemberList.events({
 
     var selectValue = $(event.currentTarget).val();
     if ("找成员" === selectValue) {
-      FlowRouter.go("groupMemberList", {groupPath: group.path}, query);
+      //FlowRouter.go("groupMemberList", {groupPath: group.path}, query);
+      FlowRouter.setQueryParams({status: null});
     } else {
-      FlowRouter.go("groupApplicantList", {groupPath: group.path}, query);
+      //FlowRouter.go("groupApplicantList", {groupPath: group.path}, query);
+      FlowRouter.setQueryParams({status: "applying"});
     }
   },
 
-  "input .group-member-list-main form input[name=searchString]": _.debounce(triggerSearch, 300),
+  "input .group-member-list-main form input[name=searchString]": _.debounce(triggerSearch, 500),
 
   "submit .group-member-list-main form": function (event, template) {
     event.preventDefault();

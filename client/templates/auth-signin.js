@@ -10,6 +10,16 @@ Template.authSignin.events({
     var mobile = template.$("[name=mobile]").val();
     var password = template.$("[name=password]").val();
 
+    if (!Match.test(mobile, Pattern.Mobile)) {
+      alert("请正确填写手机号");
+      return;
+    }
+
+    if (!Match.test(password, Pattern.NonEmptyString)) {
+      alert("请输入密码");
+      return;
+    }
+
     var options = {
       mobile: mobile,
       password: password
