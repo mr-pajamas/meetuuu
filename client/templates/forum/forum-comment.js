@@ -22,6 +22,7 @@ Template.forumComment.events({
             discussionId: discussionId
         });
        // console.log(post);
+
        Comments.insert(post,{ validationContext: "insertComment"}, function(error, result) {
             var myContext1 = Comments.simpleSchema().namedContext("insertComment");
             //console.log(myContext1.getErrorObject());

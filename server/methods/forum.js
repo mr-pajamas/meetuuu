@@ -3,7 +3,7 @@
  */
 
 Meteor.methods({
-  //updateId: updateId, groupPath: groupPath
+  //帖子管理
   deleteDiscussion: function(delDisc){
     check(delDisc.updateId, String);
     check(delDisc.groupPath, String);
@@ -15,13 +15,13 @@ Meteor.methods({
     //console.log(imgPathArray);
     if(imgPathArray){
       for(var i=0; i<imgPathArray.length; i++){
-            Meteor.defer(function(i){
-              return function(){
-                //console.log(imgPathArray[i]);
-                ObjectStore.removeByUrl(imgPathArray[i]);
-              }
-            }(i));
+        Meteor.defer(function(i){
+          return function(){
+            //console.log(imgPathArray[i]);
+            ObjectStore.removeByUrl(imgPathArray[i]);
           }
+        }(i));
+      }
     }
     Discussion.remove({_id: updateId});
     if(Comments.findOne({discussionId: updateId})) {
@@ -29,36 +29,53 @@ Meteor.methods({
     }
   },
   insertForum: function(post){
+    var insertData = {
+      subject: post.subject,
+      content: post.content,
+      imgPath: post.imgPath,
+      groupId: post.groupId,
+      userId: post.userId,
+      userName: post.userName,
+      commentCount: post.commentCount,
+      upVoteCount: post.upVoteCount
+    };
+
+    var authData = {
+      userId: post.userId,
+      groupId: post.groupId,
+      authName: post.authName
+    };
     var content = post.content;
     var imgPath = post.imgPath;
     var url ;
     var discId;
-    discId = Discussion.insert(post);
-
-    for(var i=0; i<imgPath.length; i++)
-    {
-      Meteor.defer(function (i) {
-        return function(){
-          // console.log(post.imgPath[i]);
-          url = ObjectStore.putDataUri(imgPath[i]);
-          // console.log(url);
-          if (url && discId) {
-            var restring="/images/default-poster.png?i="+i;
-            //console.log(restring);
-            // content = content.replace(new RegExp("("+restring+")", "g"), url);
-            content = content.replace(""+restring, url);
-            // console.log(content);
-            imgPath[i] = url;
-            Discussion.update({_id: discId}, {
-              $set: {
-                content: content,
-                imgPath: imgPath
-              }
-            });
+    //插入数据权限认证
+    if(forumCreateAuth(authData)) {
+      discId = Discussion.insert(insertData);
+      for(var i=0; i<imgPath.length; i++)
+      {
+        Meteor.defer(function (i) {
+          return function(){
+            // console.log(post.imgPath[i]);
+            url = ObjectStore.putDataUri(imgPath[i]);
+            // console.log(url);
+            if (url && discId) {
+              var restring="/images/default-poster.png?i="+i;
+              //console.log(restring);
+              // content = content.replace(new RegExp("("+restring+")", "g"), url);
+              content = content.replace(""+restring, url);
+              // console.log(content);
+              imgPath[i] = url;
+              Discussion.update({_id: discId}, {
+                $set: {
+                  content: content,
+                  imgPath: imgPath
+                }
+              });
+            }
           }
-
-        }
-      }(i))
+        }(i))
+      }
     }
     return discId;
   },
@@ -136,9 +153,40 @@ Meteor.methods({
       }
       return discId;
     }
-  }
+  },
+  setTopForum: function(post) {
+   var postStatus = Discussion.update({_id: post},{$set:{setTop: 1}})
+    return postStatus;
+  },
+
+  closeForum: function(post) {
+     var postStatus = Discussion.update({_id: post},{$set:{closeStatus: 1}});
+      return postStatus;
+    },
+
+  //评论管理
+
+
+
 })
 
 function ImgFindDiff(imgpath, postImg) {
   return _.difference(imgpath, postImg);
-}
+};
+//创建帖子权限
+function forumCreateAuth(option) {
+  check(option, Match.ObjectIncluding({
+    userId: String,
+    authName: Array,
+    groupId: String
+  }));
+  var userId = option.userId;
+  var authName = option.authName;
+  var groupId = option.groupId;
+  var membership = Memberships.findOne({userId: userId, groupId: groupId});
+  if(membership && membership.role === "owner") {
+    return true;
+  } else if(Roles.userIsInRole(userId, authName, 'g'+ groupId)) {
+    return true;
+  }  else return false;
+};

@@ -37,6 +37,7 @@ Template.forumEditDiscussion.events({
     });
     var updateId = this._id;
     var post ={subject:subject, content: $contentCloned.html(), imgPath:str,DiscId: updateId};
+
     Meteor.call("updateForum",post,function(error, result){
       if(result)
         FlowRouter.go("/groups/:groupPath/discussion/singlediscussion/:discId", {groupPath: FlowRouter.getParam("groupPath"),discId:updateId});

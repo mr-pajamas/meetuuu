@@ -3,15 +3,15 @@
  */
 //社群论坛区块
 Discussion.allow({
-  insert: function (userId, doc) {
+  /*insert: function (userId, doc) {
     return true;
-  },
-  update: function (userId, doc) {
+  },*/
+  /*update: function (userId, doc) {
     return true;
-  },
-  remove: function (userId, doc) {
+  },*/
+ /* remove: function (userId, doc) {
     return true;
-  }
+  }*/
 });
 
 Comments.allow({
