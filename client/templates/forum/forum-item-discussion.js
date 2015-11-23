@@ -64,12 +64,16 @@ Template.forumItemDiscussion.helpers({
     var group = Groups.findOne(path);
     //console.log("分组表"+groupId._id);
     var  groupId = group._id;
-    var membership = Memberships.findOne({userId: userId, groupId: groupId});
-    if(membership && membership.role === "owner") {
-      return {};
-    } else if(Roles.userIsInRole(userId, ['pin-topic'], 'g'+ groupId)) {
-      return {};
-    }  else return "disabled";
+    var option = {userId : userId, authName: ['pin-topic'] , groupId: groupId};
+    var authStatus;
+    authStatus = forumAuth(option);
+    return authStatus && {} || "disabled";
+    /* var membership = Memberships.findOne({userId: userId, groupId: groupId});
+     if(membership && membership.role === "owner") {
+     return {};
+     } else if(Roles.userIsInRole(userId, ['pin-topic'], 'g'+ groupId)) {
+     return {};
+     }  else return "disabled";*/
   },
   authDel:function() {
     var userId = Meteor.userId();
@@ -78,12 +82,16 @@ Template.forumItemDiscussion.helpers({
     var group = Groups.findOne(path);
     //console.log("分组表"+groupId._id);
     var  groupId = group._id;
-    var membership = Memberships.findOne({userId: userId, groupId: groupId});
-    if(membership && membership.role === "owner") {
-      return {};
-    } else if(Roles.userIsInRole(userId, ['remove-own-topic'], 'g'+ groupId)) {
-      return {};
-    }  else return "disabled";
+    var option = {userId : userId, authName: ['remove-own-topic'] , groupId: groupId};
+    var authStatus;
+    authStatus = forumAuth(option);
+    return authStatus && {} || "disabled";
+    /*var membership = Memberships.findOne({userId: userId, groupId: groupId});
+     if(membership && membership.role === "owner") {
+     return {};
+     } else if(Roles.userIsInRole(userId, ['remove-own-topic'], 'g'+ groupId)) {
+     return {};
+     }  else return "disabled";*/
   }
 });
 

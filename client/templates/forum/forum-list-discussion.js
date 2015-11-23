@@ -8,12 +8,12 @@ Template.forumListDiscussion.onCreated(function () {
   limit = new ReactiveVar(PAGE_SIZE);
   sortType = new ReactiveVar("createdAt");
   var template = this;
- // template.subscribe("singleGroupByPath",FlowRouter.getParam("groupPath"));
+  // template.subscribe("singleGroupByPath",FlowRouter.getParam("groupPath"));
   var path = FlowRouter.getParam("groupPath");
 
   //var groupId = Groups.findOne({path:path});
- /* var myGroup = MyGroups.findOne({path: path});
-  console.log(myGroup.path);*/
+  /* var myGroup = MyGroups.findOne({path: path});
+   console.log(myGroup.path);*/
   template.autorun(function () {
 
     var searchString = FlowRouter.getQueryParam("q");
@@ -27,7 +27,7 @@ Template.forumListDiscussion.onCreated(function () {
       //selector.content = {$regex: searchString, $options: "i"};
       selector1.$or.push({content: {$regex: searchString, $options: "i"}});
     }
-        console.log(selector1);
+    console.log(selector1);
     template.subscribe("listDiscussion", parseInt(limit.get()+1), sortType.get(), selector1, path);
   });
 });
@@ -50,35 +50,43 @@ Template.forumListDiscussion.helpers({
     return count == limit.get() + 1;
   },
   flagStatus: function () {
-        return (FlowRouter.getQueryParam("flag") === "1" && FlowRouter.getQueryParam("flag") != null);
-      },
+    return (FlowRouter.getQueryParam("flag") === "1" && FlowRouter.getQueryParam("flag") != null);
+  },
   authManage: function() {
     var userId = Meteor.userId();
-              //获得用户path
-              var path = FlowRouter.getParam("groupPath");
-              var group = Groups.findOne(path);
-              //console.log("分组表"+groupId._id);
-              var  groupId = group._id;
-              var membership = Memberships.findOne({userId: userId, groupId: groupId});
-              if(membership && membership.role === "owner") {
-                return {};
-              } else if(Roles.userIsInRole(userId, ['pin-topic'], 'g'+ groupId) || Roles.userIsInRole(userId, ['remove-own-topic'], 'g'+ groupId)) {
-                return {};
-              }  else return "hidden";
+    //获得用户path
+    var path = FlowRouter.getParam("groupPath");
+    var group = Groups.findOne(path);
+    //console.log("分组表"+groupId._id);
+    var  groupId = group._id;
+    var option = {userId : userId, authName:['pin-topic','remove-own-topic'] , groupId: groupId};
+    var authStatus;
+    authStatus = forumAuth(option);
+    return authStatus && {} || "hidden";
+    /* var membership = Memberships.findOne({userId: userId, groupId: groupId});
+     if(membership && membership.role === "owner") {
+     return {};
+     } else if(Roles.userIsInRole(userId, ['pin-topic'], 'g'+ groupId) || Roles.userIsInRole(userId, ['remove-own-topic'], 'g'+ groupId)) {
+     return {};
+     }  else return "hidden";*/
   },
   authCreate: function() {
     var userId = Meteor.userId();
-          //获得用户path
-          var path = FlowRouter.getParam("groupPath");
-          var group = Groups.findOne(path);
-          //console.log("分组表"+groupId._id);
-          var  groupId = group._id;
-          var membership = Memberships.findOne({userId: userId, groupId: groupId});
-          if(membership && membership.role === "owner") {
-            return {};
-          } else if(Roles.userIsInRole(userId, ['create-topic'], 'g'+ groupId)) {
-            return {};
-          }  else return "hidden";
+    //获得用户path
+    var path = FlowRouter.getParam("groupPath");
+    var group = Groups.findOne(path);
+    //console.log("分组表"+groupId._id);
+    var  groupId = group._id;
+    var option = {userId : userId, authName:['create-topic'] , groupId: groupId};
+    var authStatus;
+    authStatus = forumAuth(option);
+    return authStatus && {} || "hidden";
+    /* var membership = Memberships.findOne({userId: userId, groupId: groupId});
+     if(membership && membership.role === "owner") {
+     return {};
+     } else if(Roles.userIsInRole(userId, ['create-topic'], 'g'+ groupId)) {
+     return {};
+     }  else return "hidden";*/
   }
 });
 Template.forumListDiscussion.events({
@@ -92,11 +100,11 @@ Template.forumListDiscussion.events({
   },
   "click .manageView": function(e, template) {
     if (FlowRouter.getQueryParam("flag") == 1) {
-          FlowRouter.setQueryParams({flag: 0});
-          //console.log(FlowRouter.getQueryParam("flag"));
-        } else {
-          FlowRouter.setQueryParams({flag: 1});
-        }
+      FlowRouter.setQueryParams({flag: 0});
+      //console.log(FlowRouter.getQueryParam("flag"));
+    } else {
+      FlowRouter.setQueryParams({flag: 1});
+    }
   },
   "click .forum-new":function (e, template) {
     sortType.set("createdAt");
@@ -107,11 +115,11 @@ Template.forumListDiscussion.events({
     sortType.set("upVoteCount");
     console.log(sortType.get());
 
-    },
+  },
   "click .forum-comment":function (e, template) {
     sortType.set("commentCount");
     console.log(sortType.get());
-    },
+  },
   "change .disc-type": function(e, template) {
     var mySelect = template.$(".disc-type").val();
     //console.log(template.$(".disc-type option:selected").text());
@@ -121,11 +129,11 @@ Template.forumListDiscussion.events({
   },
   "input .list-discussion-form form input[name=search-text]": _.debounce(triggerSearch, 300),
 
-   "submit .list-discussion-form form": function (event, template) {
-     event.preventDefault();
-     triggerSearch(event, template);
-     //console.log(FlowRouter.getQueryParam("q"));
-   },
+  "submit .list-discussion-form form": function (event, template) {
+    event.preventDefault();
+    triggerSearch(event, template);
+    //console.log(FlowRouter.getQueryParam("q"));
+  },
 
 
 });

@@ -40,7 +40,7 @@ Template.forumStartDiscussion.helpers({
     var option = {userId : userId, authName:['create-topic'] , groupId: groupId};
     console.log(option);
     var authStatus;
-    authStatus = forumCreateAuth(option);
+    authStatus = forumAuth(option);
     return authStatus || false;
    /* Meteor.call("forumAuth", option, function(error, result){
       if(result) {

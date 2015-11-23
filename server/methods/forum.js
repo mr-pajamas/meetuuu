@@ -39,7 +39,6 @@ Meteor.methods({
       commentCount: post.commentCount,
       upVoteCount: post.upVoteCount
     };
-
     var authData = {
       userId: post.userId,
       groupId: post.groupId,
@@ -50,7 +49,7 @@ Meteor.methods({
     var url ;
     var discId;
     //插入数据权限认证
-    if(forumCreateAuth(authData)) {
+    if(forumAuth(authData)) {
       discId = Discussion.insert(insertData);
       for(var i=0; i<imgPath.length; i++)
       {
@@ -155,38 +154,51 @@ Meteor.methods({
     }
   },
   setTopForum: function(post) {
-   var postStatus = Discussion.update({_id: post},{$set:{setTop: 1}})
+    var postStatus = Discussion.update({_id: post},{$set:{setTop: 1}})
     return postStatus;
   },
-
   closeForum: function(post) {
-     var postStatus = Discussion.update({_id: post},{$set:{closeStatus: 1}});
-      return postStatus;
-    },
-
-  //评论管理
-
-
-
+    var postStatus = Discussion.update({_id: post},{$set:{closeStatus: 1}});
+    return postStatus;
+  },
+//评论管理
+  insertComment: function(post) {
+    check(post, Match.ObjectIncluding({
+      comment: String,
+      userId: String,
+      userName: String,
+      discussionId: String
+    }));
+    var insertData, updateData;
+    console.log(post);
+    if(Meteor.userId())
+    {
+      insertData = Comments.insert(post);
+      if(insertData){
+        updateData = Discussion.update(post.discussionId,  {$inc: {commentCount: 1}, $set:{ lastReplyAt: new Date(), lastReplyUser: post.userName, lastReplyUserId: post.userId}});
+      }
+    }
+    return insertData && updateData || false;
+  }
 })
 
 function ImgFindDiff(imgpath, postImg) {
   return _.difference(imgpath, postImg);
 };
 //创建帖子权限
-function forumCreateAuth(option) {
-  check(option, Match.ObjectIncluding({
-    userId: String,
-    authName: Array,
-    groupId: String
-  }));
-  var userId = option.userId;
-  var authName = option.authName;
-  var groupId = option.groupId;
-  var membership = Memberships.findOne({userId: userId, groupId: groupId});
-  if(membership && membership.role === "owner") {
-    return true;
-  } else if(Roles.userIsInRole(userId, authName, 'g'+ groupId)) {
-    return true;
-  }  else return false;
-};
+/*function forumCreateAuth(option) {
+ check(option, Match.ObjectIncluding({
+ userId: String,
+ authName: Array,
+ groupId: String
+ }));
+ var userId = option.userId;
+ var authName = option.authName;
+ var groupId = option.groupId;
+ var membership = Memberships.findOne({userId: userId, groupId: groupId});
+ if(membership && membership.role === "owner") {
+ return true;
+ } else if(Roles.userIsInRole(userId, authName, 'g'+ groupId)) {
+ return true;
+ }  else return false;
+ };*/

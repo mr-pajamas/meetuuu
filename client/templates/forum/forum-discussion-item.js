@@ -1,22 +1,22 @@
 /**
  * Created by jianyanmin on 15/10/7.
  */
-function forumEditAuth(option){
-  check(option, Match.ObjectIncluding({
-    userId: String,
-    authName: Array,
-    groupId: String
-  }));
-  var userId = option.userId;
-  var authName = option.authName;
-  var groupId = option.groupId;
-  var membership = Memberships.findOne({userId: userId, groupId: groupId});
-  if(membership && membership.role === "owner") {
-    return true;
-  } else if(Roles.userIsInRole(userId, authName, 'g'+ groupId)) {
-    return true;
-  }  else return false;
-};
+/*function forumEditAuth(option){
+ check(option, Match.ObjectIncluding({
+ userId: String,
+ authName: Array,
+ groupId: String
+ }));
+ var userId = option.userId;
+ var authName = option.authName;
+ var groupId = option.groupId;
+ var membership = Memberships.findOne({userId: userId, groupId: groupId});
+ if(membership && membership.role === "owner") {
+ return true;
+ } else if(Roles.userIsInRole(userId, authName, 'g'+ groupId)) {
+ return true;
+ }  else return false;
+ };*/
 
 var PAGE_SIZE = 10;
 var limit;
@@ -34,6 +34,21 @@ Template.forumDiscussionItem.onCreated(function () {
   Discussion.update({_id: FlowRouter.getParam("discId")}, {$inc: {viewCount: 1}})
 });
 Template.forumDiscussionItem.helpers({
+  authManage: function() {
+     //获得用户ID
+    var userId = Meteor.userId();
+    //获得用户path
+    var path = FlowRouter.getParam("groupPath");
+    var group = Groups.findOne(path);
+    var authStatus;
+    //console.log("分组表"+groupId._id);
+    var  groupId = group._id;
+    var option = {userId : userId, authName:['modify-own-topic', 'remove-own-topic', 'pin-topic', 'close-own-topic'] , groupId: groupId};
+    //console.log(option);
+    authStatus = forumAuth(option);
+    // console.log(authStatus);
+    return authStatus &&{}|| "hidden";
+  },
   authEdit: function(){
     //获得用户ID
     var userId = Meteor.userId();
@@ -44,9 +59,9 @@ Template.forumDiscussionItem.helpers({
     //console.log("分组表"+groupId._id);
     var  groupId = group._id;
     var option = {userId : userId, authName:['modify-topic', 'modify-own-topic'] , groupId: groupId};
-    console.log(option);
-    authStatus = forumEditAuth(option);
-    console.log(authStatus);
+    //console.log(option);
+    authStatus = forumAuth(option);
+    // console.log(authStatus);
     return authStatus &&{}|| "hidden";
     /* var membership = Memberships.findOne({userId: userId, groupId: groupId});
      if(membership && membership.role === "owner") {
@@ -72,19 +87,52 @@ Template.forumDiscussionItem.helpers({
     var  groupId = group._id;
     var option = {userId : userId, authName:['remove-topic', 'remove-own-topic'] , groupId: groupId};
     console.log(option);
-    authStatus = forumEditAuth(option);
+    authStatus = forumAuth(option);
     console.log(authStatus);
     return authStatus &&{}|| "hidden";
-   /* var membership = Memberships.findOne({userId: userId, groupId: groupId});
-    if(membership && membership.role === "owner") {
-      return {};
-    } else if(Roles.userIsInRole(userId, ['remove-topic'], 'g'+ groupId)) {
-      return {};
-    } else {
-      if(Roles.userIsInRole(userId, ['remove-own-topic'], 'g'+ groupId)) {
-        return {};
-      } else return "hidden";
-    }*/
+    /* var membership = Memberships.findOne({userId: userId, groupId: groupId});
+     if(membership && membership.role === "owner") {
+     return {};
+     } else if(Roles.userIsInRole(userId, ['remove-topic'], 'g'+ groupId)) {
+     return {};
+     } else {
+     if(Roles.userIsInRole(userId, ['remove-own-topic'], 'g'+ groupId)) {
+     return {};
+     } else return "hidden";
+     }*/
+  },
+  authSetTop: function() {
+    //获得用户ID
+    var userId = Meteor.userId();
+    //获得用户path
+    var path = FlowRouter.getParam("groupPath");
+    var group = Groups.findOne(path);
+    //console.log("分组表"+groupId._id);
+    var  groupId = group._id;
+    var authStatus;
+    //console.log("分组表"+groupId._id);
+    var  groupId = group._id;
+    var option = {userId : userId, authName:['pin-topic'] , groupId: groupId};
+    console.log(option);
+    authStatus = forumAuth(option);
+    console.log(authStatus);
+    return authStatus &&{}|| "hidden";
+  },
+  authClose: function() {
+    var userId = Meteor.userId();
+    //获得用户path
+    var path = FlowRouter.getParam("groupPath");
+    var group = Groups.findOne(path);
+    //console.log("分组表"+groupId._id);
+    var  groupId = group._id;
+    var authStatus;
+    //console.log("分组表"+groupId._id);
+    var  groupId = group._id;
+    var option = {userId : userId, authName:['close-own-topic'] , groupId: groupId};
+    console.log(option);
+    authStatus = forumAuth(option);
+    console.log(authStatus);
+    return authStatus &&{}|| "hidden";
   },
   groupPath: function () {
     return FlowRouter.getParam("groupPath");
@@ -164,9 +212,9 @@ Template.forumDiscussionItem.events({
       Meteor.call("setTopForum", updateId, function(error, result) {
         if(result) alert("已置顶"); else{ alert("置顶失败")}
       });
-     /* Discussion.update({_id:updateId},{$set:{setTop: 1}}, function (error, result) {
-        console.log(result);
-      });*/
+      /* Discussion.update({_id:updateId},{$set:{setTop: 1}}, function (error, result) {
+       console.log(result);
+       });*/
     }
   },
   "click .closeBtn": function(e, template) {
@@ -174,8 +222,8 @@ Template.forumDiscussionItem.events({
     if (confirm("确定将该贴关闭，关闭后不可恢复")) {
       var updateId = template.data._id;
       Meteor.call("closeForum", updateId, function(error, result) {
-              if(result) alert("已关闭"); else{ alert("关闭失败")}
-            });
+        if(result) alert("已关闭"); else{ alert("关闭失败")}
+      });
     }
   },
   "click .my-collection":function() {

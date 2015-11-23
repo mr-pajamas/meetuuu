@@ -27,15 +27,15 @@
                      class="glyphicon glyphicon-chevron-left">返回列表</i></a></span>
           </div>
           <div class="forum-discussion-header-right">
-            <div class="dropdown">
+            <div class="dropdown" {{authManage}}>
               <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">帖子管理
                 <span class="caret"></span></button>
               <ul class="dropdown-menu">
                 <li {{authEdit}}><a href="{{pathFor "/groups/:groupPath/discussion/edit/:discId" groupPath = groupPath discId=_id }}">编辑</a></li>
                 <li {{authDelete}}><a class="delDisc">删除</a></li>
-                <li><a href="#" class="setTopBtn">置顶</a></li>
+                <li {{authSetTop}}><a href="#" class="setTopBtn">置顶</a></li>
                 <li><a href="#">加精</a></li>
-                <li><a href="#" class="closeBtn">关闭</a></li>
+                <li {{authClose}}><a href="#" class="closeBtn">关闭</a></li>
               </ul>
             </div>
 
