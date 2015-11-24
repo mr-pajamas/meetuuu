@@ -153,9 +153,54 @@ Meteor.methods({
       return discId;
     }
   },
+  //置顶，
   setTopForum: function(post) {
     var postStatus = Discussion.update({_id: post},{$set:{setTop: 1}})
     return postStatus;
+  },
+//点赞
+  upVoteForum: function(post) {
+    check(post, Match.ObjectIncluding({
+      discId: String,
+      userId: String
+    }));
+    var returnMsg = {};
+    var disc = Discussion.findOne({_id: post.discId});
+    if (!disc) {
+      returnMsg.flag = false;
+      returnMsg.message = "该帖不存在";
+      return returnMsg;
+    }
+    if(_.include(disc.upVote, post.userId)) {
+      returnMsg.flag = false;
+      returnMsg.message = "已赞";
+      return returnMsg;
+    } else{
+      var upVoteData = Discussion.update(post.discId, {
+        $addToSet: {upVote: post.userId},
+        $inc: {upVoteCount: 1}});
+      if(upVoteData)
+      {
+        returnMsg.flag = false;
+        returnMsg.message = "已赞";
+        return returnMsg;
+      }
+    }
+
+
+    /*var disc = Discussion.findOne({_id: updateId});
+     if (!disc) {
+     throw new Meteor.Error('invalid', 'Discussion not found');
+     }
+     if (_.include(disc.upVote, Meteor.user()._id)) {
+     throw new Meteor.Error('invalid', 'User is exist');
+     }
+     else {
+     Discussion.update(disc._id, {
+     $addToSet: {upVote: Meteor.user()._id},
+     $inc: {upVoteCount: 1}
+     }, function (error, result) {
+     });*/
   },
   closeForum: function(post) {
     var postStatus = Discussion.update({_id: post},{$set:{closeStatus: 1}});
@@ -180,6 +225,7 @@ Meteor.methods({
     }
     return insertData && updateData || false;
   }
+
 })
 
 function ImgFindDiff(imgpath, postImg) {

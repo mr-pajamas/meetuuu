@@ -35,7 +35,7 @@ Template.forumDiscussionItem.onCreated(function () {
 });
 Template.forumDiscussionItem.helpers({
   authManage: function() {
-     //获得用户ID
+    //获得用户ID
     var userId = Meteor.userId();
     //获得用户path
     var path = FlowRouter.getParam("groupPath");
@@ -261,30 +261,22 @@ Template.forumDiscussionItem.events({
   },
   "click .upVote": function (e, params) {
     e.preventDefault();
-    if (confirm("UpVote  this Discussion?")) {
-      var updateId = params.data._id;
-      var disc = Discussion.findOne({_id: updateId});
-      //console.log(disc);
-      if (!disc) {
-        throw new Meteor.Error('invalid', 'Discussion not found');
-      }
-      if (_.include(disc.upVote, Meteor.user()._id)) {
-        throw new Meteor.Error('invalid', 'User is exist');
-      }
-      else {
-        //console.log(disc._id);
-        Discussion.update(disc._id, {
-          $addToSet: {upVote: Meteor.user()._id},
-          $inc: {upVoteCount: 1}
-        }, function (error, result) {
-          // console.log(result);
+    if (Meteor.user() != null) {
+      if (confirm("确定要为该帖点赞吗")) {
+        var updateId = this._id;
+        var post = {
+          discId: updateId,
+          userId: Meteor.user()._id
+        };
+        Meteor.call("upVoteForum", post, function (error, result) {
+          if (result.returnMsg.flag) {
+            alert(result.returnMsg.message);
+          } else {
+            alert(result.returnMsg.message);
+          }
         });
-        // console.log(updateId);
-        //Discussion.remove(updateId);
-        //Comments.remove({discussionId: updateId});
       }
     }
-
   },
   "click .load-more": function (e, template) {
     e.preventDefault();

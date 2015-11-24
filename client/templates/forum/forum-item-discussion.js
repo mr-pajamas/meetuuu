@@ -99,22 +99,33 @@ Template.forumItemDiscussion.events({
   "click a.upVote": function(e, template) {
     e.preventDefault();
     if (Meteor.user() != null) {
-      if (confirm("UpVote  this Discussion?")) {
+      if (confirm("确定要为该帖点赞吗")) {
         var updateId = this._id;
-        var disc = Discussion.findOne({_id: updateId});
-        if (!disc) {
-          throw new Meteor.Error('invalid', 'Discussion not found');
-        }
-        if (_.include(disc.upVote, Meteor.user()._id)) {
-          throw new Meteor.Error('invalid', 'User is exist');
-        }
-        else {
-          Discussion.update(disc._id, {
-            $addToSet: {upVote: Meteor.user()._id},
-            $inc: {upVoteCount: 1}
-          }, function (error, result) {
-          });
-        }
+        var post = {
+          discId: updateId,
+          userId: Meteor.user()._id
+        };
+        Meteor.call("upVoteForum", post, function(error, result){
+          if(result.returnMsg.flag) {
+            alert(result.returnMsg.message);
+          } else {
+            alert(result.returnMsg.message);
+          }
+        });
+        /* var disc = Discussion.findOne({_id: updateId});
+         if (!disc) {
+         throw new Meteor.Error('invalid', 'Discussion not found');
+         }
+         if (_.include(disc.upVote, Meteor.user()._id)) {
+         throw new Meteor.Error('invalid', 'User is exist');
+         }
+         else {
+         Discussion.update(disc._id, {
+         $addToSet: {upVote: Meteor.user()._id},
+         $inc: {upVoteCount: 1}
+         }, function (error, result) {
+         });
+         }*/
       }
 
     } else {
@@ -123,23 +134,34 @@ Template.forumItemDiscussion.events({
     }
   },
   "click .delBtn": function(e, template) {
-    var groupPath = FlowRouter.getParam("groupPath");
-    if (confirm("确定将该贴删除")) {
-      var updateId = template.data._id;
-      Discussion.remove({_id: updateId});
-      if (Comments.findOne({discussionId: updateId})) {
-        Meteor.call("deleteDiscussion", updateId);
-      }
-      FlowRouter.go("/groups/:groupPath/discussion", {groupPath: groupPath});
+    if (confirm("是否要删除该讨论！")) {
+      var updateId = this._id;
+      var groupPath = FlowRouter.getParam("groupPath");
+      var delDisc = {updateId: updateId, groupPath: groupPath};
+
+      Meteor.call("deleteDiscussion",delDisc);
+      /* Discussion.remove({_id: updateId});
+       if(Comments.findOne({discussionId: updateId})){
+       Meteor.call("deleteDiscussion",updateId);
+       }*/
+      FlowRouter.go("/groups/:groupPath/discussion?flag=:flag",{groupPath: groupPath, flag: FlowRouter.getQueryParam("flag")});
     }
   },
   "click .setTopBtn": function(e, template) {
     e.preventDefault();
     if (confirm("确定将该贴置顶")) {
       var updateId = template.data._id;
-      Discussion.update({_id:updateId},{$set:{setTop: 1}}, function (error, result) {
-        console.log(result);
+      Meteor.call("setTopForum", updateId, function (error, result) {
+        if (result) alert("已置顶"); else {
+          alert("置顶失败")
+        }
       });
     }
   }
+  /*if (confirm("确定将该贴置顶")) {
+   var updateId = template.data._id;
+   Discussion.update({_id:updateId},{$set:{setTop: 1}}, function (error, result) {
+   console.log(result);
+   });
+   }*/
 });

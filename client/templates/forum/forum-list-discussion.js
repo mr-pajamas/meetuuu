@@ -27,7 +27,7 @@ Template.forumListDiscussion.onCreated(function () {
       //selector.content = {$regex: searchString, $options: "i"};
       selector1.$or.push({content: {$regex: searchString, $options: "i"}});
     }
-    console.log(selector1);
+    //console.log(selector1);
     template.subscribe("listDiscussion", parseInt(limit.get()+1), sortType.get(), selector1, path);
   });
 });
