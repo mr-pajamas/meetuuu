@@ -227,32 +227,32 @@
             </div>-->
           {{else}}
             <div class="hidden-md hidden-sm hidden-lg">
-            <div class="discussion-item-content-subject">
-              <p>{{subject}}</p>
-            </div>
-            <div class="discussion-item-content-container2 animate"
-                 id="discussion-item-content-container">
-              <p>
-                {{{content}}}
-              </p>
-            </div>
-            <div class="discussion-item-footer">
-              {{#if existUserData}}
-                <span><i class="glyphicon glyphicon-thumbs-up"
-                         style=" color: #d9534f"></i>已赞</span>
-              {{else}}
-                <span class="upVote"><i style=" color: #d9534f"
-                                        class="glyphicon glyphicon-thumbs-up "></i>赞</span>
-              {{/if}}
-              <span><i class="glyphicon glyphicon-share" style=" color:#0097cf"></i>分享</span>
-              {{#if existMyCollection}}
-                <span><i class="glyphicon glyphicon-star"
-                         style=" color: #3c763d"></i>已收藏</span>
-              {{else}}
-                <span class="my-collection"><i class="glyphicon glyphicon-star"
-                                               style=" color: #3c763d"></i>收藏</span>
-              {{/if}}
-            </div>
+              <div class="discussion-item-content-subject">
+                <p>{{subject}}</p>
+              </div>
+              <div class="discussion-item-content-container2 animate"
+                   id="discussion-item-content-container">
+                <p>
+                  {{{content}}}
+                </p>
+              </div>
+              <div class="discussion-item-footer">
+                {{#if existUserData}}
+                  <span><i class="glyphicon glyphicon-thumbs-up"
+                           style=" color: #d9534f"></i>已赞</span>
+                {{else}}
+                  <span class="upVote"><i style=" color: #d9534f"
+                                          class="glyphicon glyphicon-thumbs-up "></i>赞</span>
+                {{/if}}
+                <span><i class="glyphicon glyphicon-share" style=" color:#0097cf"></i>分享</span>
+                {{#if existMyCollection}}
+                  <span><i class="glyphicon glyphicon-star"
+                           style=" color: #3c763d"></i>已收藏</span>
+                {{else}}
+                  <span class="my-collection"><i class="glyphicon glyphicon-star"
+                                                 style=" color: #3c763d"></i>收藏</span>
+                {{/if}}
+              </div>
             </div>
           {{/if}}
 
@@ -281,6 +281,7 @@
                 {{#each commentItemsAfter}}
                   {{> forumCommentItem}}
                 {{/each}}
+                <tr><td>{{getDivHeight}}</td></tr>
               </table>
             {{else}}
               <a class="loaded">暂无评论</a>
@@ -291,8 +292,26 @@
               {{#if closeStatus}}
                 <p>该帖已被关闭，不可回复</p>
               {{else}}
-              {{> forumComment}}
+                {{#if authComment}}
+                  <!--{{> forumComment}}-->
+                  <form class="form" id="reply">
+                     <div class="form-content">
+                     <div class="form-content-wrap">
+                         <div class="form-content-left">
+                           <textarea class="comment" id="comment" name="comment"  placeholder="请回复..."></textarea>
+                         </div>
+                         <div class="form-content-right">
+                           <button  type="submit" >发送</button>
+                          </div>
+                       <div style="clear: both"></div>
+                     </div>
+                     </div>
+                     <span class="help-block">{{errorMessage 'comment'}}</span>
+                   </form>
+                {{else}}
+                  <p>抱歉，必须该组成员才能参与讨论</p>
                 {{/if}}
+              {{/if}}
             {{else}}
               <p>请先登录！</p>
             {{/onlyIfLogin}}

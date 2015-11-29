@@ -2,7 +2,7 @@
  * Created by jym on 2015/9/30.
  */
 Template.forumSingleDiscussion.onCreated(function () {
-  console.log(FlowRouter.getParam("discId"));
+  //console.log(FlowRouter.getParam("discId"));
   this.subscribe('singleDiscussion', FlowRouter.getParam("discId"));
 });
 

@@ -9,7 +9,10 @@ Template.forumItemDiscussion.helpers({
   alreadyVote: function () {
     var updateId = this._id;
     var disc = Discussion.findOne({_id: updateId});
-    return _.include(disc.upVote, Meteor.user()._id);
+    if(Meteor.user()){
+      return _.include(disc.upVote, Meteor.user()._id);
+    } else return false;
+
   },
   showTime: function () {
     var nowTime = moment();
@@ -30,7 +33,7 @@ Template.forumItemDiscussion.helpers({
   },
   setTopCss: function () {
     if (this.setTop==1) {
-      console.log(this.imgPath);
+      //console.log(this.imgPath);
       return true;
     } else {
       return false;

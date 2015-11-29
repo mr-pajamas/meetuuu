@@ -21,19 +21,65 @@
 var PAGE_SIZE = 10;
 var limit;
 var setPageTime;
+var divData;
+Template.forumDiscussionItem.onRendered(function() {
+  var template = this;
+  divData = template.$(".discussion-item-reply");
+      template.autorun(function () {
+        if(Template.instance().beDate.ready() && Template.instance().afData.ready() && Template.instance().colData.ready() ) {
+          console.log(divData.prop('scrollHeight'));
+        //divData.scrollTop(500);
+        }
+      });
+
+  })
+ /* divData = this.$(".discussion-item-reply").scrollTop();
+     divHe = this.$(".discussion-item-reply").prop('scrollHeight');
+     if(Template.instance().beDate.ready() && Template.instance().afData.ready() && Template.instance().colData.ready() ){
+            console.log(divData);
+           console.log(divHe);
+     }*/
+           //div.crollTop = div.prop('scrollHeight');
+  //this.$(".discussion-item-reply").scrollTop(300);
+  //this.$(".discussion-item-reply").scrollTop = 300;
+  //divData = this.$(".discussion-item-reply");
+  //var divTop = div.prop('scrollHeight');
+  //div.scrollTop = divTop;
+  //console.log(this.$(".discussion-item-reply").scrollTop());
+  //this.$(".discussion-item-reply").scrollTop=300;
+  //= this.$(".discussion-item-reply").prop('scrollHeight');
+  //console.log(div.scrollTop);
+  //console.log(this.$(".discussion-item-reply").prop('scrollHeight'));
+  //= this.$(".discussion-item-reply").scrollHeight
+//});
 Template.forumDiscussionItem.onCreated(function () {
   setPageTime = new Date();
   limit = new ReactiveVar(PAGE_SIZE);
+  //var div = this.$(".discussion-item-reply");
   var template = this;
   template.autorun(function () {
-    template.subscribe('commentItemBefore', FlowRouter.getParam("discId"), parseInt(limit.get() + 1), setPageTime);
+    template.beDate = template.subscribe('commentItemBefore', FlowRouter.getParam("discId"), parseInt(limit.get() + 1), setPageTime);
+    template.afData = template.subscribe('commentItemAfter', FlowRouter.getParam("discId"), setPageTime);
   });
-  template.subscribe('commentItemAfter', FlowRouter.getParam("discId"), setPageTime);
-  template.subscribe("MyCollectionData", FlowRouter.getParam("discId"), Meteor.userId());
+  template.colData = template.subscribe("MyCollectionData", FlowRouter.getParam("discId"), Meteor.userId());
   //console.log(this)
-  Discussion.update({_id: FlowRouter.getParam("discId")}, {$inc: {viewCount: 1}})
+  Discussion.update({_id: FlowRouter.getParam("discId")}, {$inc: {viewCount: 1}});
+  var group = Template.currentData();
+  //console.log("!!!!!");
+  //console.log(group);
+  template.subscribe("groupMembers", group.groupId);
 });
 Template.forumDiscussionItem.helpers({
+  resultStatus: function() {
+  /*  divData = this.$(".discussion-item-reply").scrollTop();
+    divHe = this.$(".discussion-item-reply").prop('scrollHeight');*/
+    if(Template.instance().beDate.ready() && Template.instance().afData.ready() && Template.instance().colData.ready() ){
+          /* console.log(divData);
+          console.log(divHe);*/
+          //div.crollTop = div.prop('scrollHeight');
+      return true;
+        } return false;
+  },
   authManage: function() {
     //获得用户ID
     var userId = Meteor.userId();
@@ -86,9 +132,9 @@ Template.forumDiscussionItem.helpers({
     //console.log("分组表"+groupId._id);
     var  groupId = group._id;
     var option = {userId : userId, authName:['remove-topic', 'remove-own-topic'] , groupId: groupId};
-    console.log(option);
+    //console.log(option);
     authStatus = forumAuth(option);
-    console.log(authStatus);
+    //console.log(authStatus);
     return authStatus &&{}|| "hidden";
     /* var membership = Memberships.findOne({userId: userId, groupId: groupId});
      if(membership && membership.role === "owner") {
@@ -113,9 +159,9 @@ Template.forumDiscussionItem.helpers({
     //console.log("分组表"+groupId._id);
     var  groupId = group._id;
     var option = {userId : userId, authName:['pin-topic'] , groupId: groupId};
-    console.log(option);
+    //console.log(option);
     authStatus = forumAuth(option);
-    console.log(authStatus);
+    //console.log(authStatus);
     return authStatus &&{}|| "hidden";
   },
   authClose: function() {
@@ -129,9 +175,9 @@ Template.forumDiscussionItem.helpers({
     //console.log("分组表"+groupId._id);
     var  groupId = group._id;
     var option = {userId : userId, authName:['close-own-topic'] , groupId: groupId};
-    console.log(option);
+    //console.log(option);
     authStatus = forumAuth(option);
-    console.log(authStatus);
+    //console.log(authStatus);
     return authStatus &&{}|| "hidden";
   },
   groupPath: function () {
@@ -169,12 +215,14 @@ Template.forumDiscussionItem.helpers({
   existUserData: function () {
     var updateId = FlowRouter.getParam("discId");
     var disc = Discussion.findOne({_id: updateId});
-    console.log("csd:" + disc.upVote);
-    if (_.include(disc.upVote, Meteor.user()._id)) {
-      return true;
-    } else {
-      return false;
-    }
+    if(disc && Meteor.userId()){
+      if (_.include(disc.upVote, Meteor.user()._id)) {
+        return true;
+      } else {
+        return false;
+      }
+    } else return false;
+
   },
   existData: function () {
     if (Comments.find().count() > 0)
@@ -191,6 +239,9 @@ Template.forumDiscussionItem.helpers({
   commentItemsAfter: function () {
     return Comments.find({createdAt: {$gt: setPageTime}}, {sort: {createdAt: 1}});
   },
+  getDivHeight: function(){
+
+  },
   canModify: function () {
     return this.userId == Meteor.userId()
   },
@@ -199,9 +250,20 @@ Template.forumDiscussionItem.helpers({
     return count == limit.get() + 1;
   },
   closeStatus: function() {
-    console.log(this.closeStatus);
+    //console.log(this.closeStatus);
     return this.closeStatus;
   },
+  authComment: function() {
+    //判断是不是该组成员
+    var groupPath = FlowRouter.getParam("groupPath")
+    //console.log(groupPath);
+    var myGroup = MyGroups.findOne({path: groupPath});
+    return myGroup;
+  },
+  errorMessage:function(field){
+      var myContext = Comments.simpleSchema().namedContext("insertComment");
+      return myContext.keyErrorMessage(field);
+    }
 });
 
 Template.forumDiscussionItem.events({
@@ -227,14 +289,21 @@ Template.forumDiscussionItem.events({
     }
   },
   "click .my-collection":function() {
-    var insertData={discussionId: FlowRouter.getParam("discId"), userId: Meteor.userId()};
-    console.log(insertData);
-    MyCollection.insert(insertData, function(error, result){
-      if(result){
-        alert("收藏成功！");
-        Discussion.update({_id: FlowRouter.getParam("discId") },{$inc:{collectionCount: 1} });
-      }
-    });
+    if(Meteor.user()){
+      var insertData={discussionId: FlowRouter.getParam("discId"), userId: Meteor.userId()};
+      Meteor.call("myCollection", insertData, function(error, result){
+        if(result){
+          alert("收藏成功！");
+        } else {
+          alert("收藏失败！");
+        }
+      });
+    }  else {
+      alert("请先登录");
+      FlowRouter.go("signin");
+    }
+
+
   },
   "click .delDisc": function (e, template) {
     if (confirm("是否要删除该讨论！")) {
@@ -277,9 +346,43 @@ Template.forumDiscussionItem.events({
         });
       }
     }
+    else {
+      alert("请先登录");
+      FlowRouter.go("signin");
+    }
   },
   "click .load-more": function (e, template) {
     e.preventDefault();
     limit.set(limit.get() + PAGE_SIZE);
+  },
+  "submit form" :function (e, params) {
+      e.preventDefault();
+      var comment = $(e.target).find('[name=comment]').val();
+      var discussionId = params.data._id;
+      var post ={comment:comment};
+      //console.log(Meteor.userId());
+      post= _.extend(post,{
+        userId:Meteor.userId(),
+        userName: Meteor.user().profile.name,
+        discussionId: discussionId
+      });
+      /*var myContext = Comments.simpleSchema().namedContext("insertComment");
+      console.log(post);
+      console.log(myContext.valid(post));
+      console.log(myContext.getErrorObject());*/
+      /*if(myContext.validate(post)){*/
+        Meteor.call("insertComment", post, function(error, result){
+        });
+      //}
+      //console.log(myContext.validate(post));
+      /*Comments.insert(post,{ validationContext: "insertComment"}, function(error, result) {
+       if(result) {
+       Discussion.update(discussionId,  {$inc: {commentCount: 1}, $set:{ lastReplyAt: new Date(), lastReplyUser: Meteor.user().profile.name, lastReplyUserId: Meteor.userId()}});
+       }
+       });*/
+      $(e.target).find('[name=comment]').val("");
+    },
+  "input .comment": function(e, template){
+    template.$(".discussion-item-reply").scrollTop(template.$(".discussion-item-reply").prop("scrollHeight"));
   }
 });

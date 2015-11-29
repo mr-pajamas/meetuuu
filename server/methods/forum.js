@@ -206,6 +206,19 @@ Meteor.methods({
     var postStatus = Discussion.update({_id: post},{$set:{closeStatus: 1}});
     return postStatus;
   },
+  //收藏
+  myCollection: function(post){
+    check(post, Match.ObjectIncluding({
+      discussionId: String,
+      userId: String
+       }));
+    var myColl = MyCollection.insert(post);
+    var myCollCount;
+    if(myColl){
+      myCollCount = Discussion.update({_id: post.discussionId },{$inc:{collectionCount: 1} });
+    }
+    return myCollCount;
+  },
 //评论管理
   insertComment: function(post) {
     check(post, Match.ObjectIncluding({

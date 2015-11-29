@@ -2,7 +2,7 @@
     {{#if myComment}}
       <tr>
         <td class="col1">
-          <img style=" padding: 10px;"  src="/images/luntan.jpg" />
+          <img style=" padding: 10px;"  src="{{avatarOrDefault user.profile.avatar}}" />
           <p><span class="glyphicon glyphicon glyphicon-user">{{userName}}</span></p>
         </td>
         <td class="col2">
@@ -31,7 +31,7 @@
           <div style="text-align: right">{{ dateFormate createdAt}}</div>
         </td>
         <td class="col3">
-          <img style=" padding: 10px;"  src="/images/luntan.jpg" />
+          <img style=" padding: 10px;"  src="{{avatarOrDefault user.profile.avatar}}"/>
           <p><span class="glyphicon glyphicon glyphicon-user">{{userName}}</span></p>
         </td>
       </tr>

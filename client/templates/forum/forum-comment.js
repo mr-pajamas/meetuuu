@@ -21,9 +21,15 @@ Template.forumComment.events({
       userName: Meteor.user().profile.name,
       discussionId: discussionId
     });
+    /*var myContext = Comments.simpleSchema().namedContext("insertComment");
+    console.log(post);
+    console.log(myContext.valid(post));
+    console.log(myContext.getErrorObject());*/
+    /*if(myContext.validate(post)){*/
+      Meteor.call("insertComment", post, function(error, result){
+      });
+    //}
     //console.log(myContext.validate(post));
-     Meteor.call("insertComment", post, function(error, result){
-     });
     /*Comments.insert(post,{ validationContext: "insertComment"}, function(error, result) {
      if(result) {
      Discussion.update(discussionId,  {$inc: {commentCount: 1}, $set:{ lastReplyAt: new Date(), lastReplyUser: Meteor.user().profile.name, lastReplyUserId: Meteor.userId()}});
