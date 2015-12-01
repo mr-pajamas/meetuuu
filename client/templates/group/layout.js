@@ -11,9 +11,6 @@ Template.groupLayout.onCreated(function () {
 });
 
 Template.groupLayout.helpers({
-  groupReady: function () {
-    return Template.instance().groupHandle.ready();
-  },
   group: function () {
     return Groups.findOne({path: FlowRouter.getParam("groupPath")});
   }

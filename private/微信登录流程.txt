@@ -1,0 +1,19 @@
+微信登录
+
+1、静默授权，自动登录
+
+
+问题：
+1、在startup里的时候呢，跳转很慢
+2、在flowrouter里的时候呢，无法探测登录状态
+3、在template层面呢？
+
+
+考虑使用template层面
+
+
+startup 和 flowrouter 结合的方式
+
+startup 做登录
+template 层面探测状态
+flowrouter 做判断

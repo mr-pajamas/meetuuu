@@ -1,5 +1,5 @@
 <template name="groupLayout">
-  {{#unless groupReady}}
+  {{#unless subscriptionReady "groupHandle"}}
     {{> layout main="loading"}}
   {{else}}
     {{#with group}}
