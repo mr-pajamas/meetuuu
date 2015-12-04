@@ -60,7 +60,12 @@ Template.authModalSigninContent.helpers({
     FlowRouter.watchPathChange();
     var currentContext = FlowRouter.current();
 
-    return Meteor.wxOauthLink({redirect_uri: FlowRouter.url("wxOauth", {}, {redirectPath: currentContext.path})});
+    return Meteor.wxOauthLink({
+      appid: WX_APP_ID,
+      redirect_uri: FlowRouter.url("wxOauth", {}, {redirectPath: currentContext.path}),
+      response_type: "code",
+      scope: "snsapi_userinfo"
+    });
   }
 });
 
