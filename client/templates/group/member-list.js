@@ -1,6 +1,15 @@
 /**
  * Created by Michael on 2015/11/1.
  */
+Meteor._ensure(Meteor, "postLoginActions");
+Meteor.postLoginActions.showMemberListJoinModal = function (options) {
+  if (!Memberships.findOne({groupId: options.groupId, userId: Meteor.userId(), status: {$in: [MemberStatus.Joined, MemberStatus.Banned]}})) {
+    $(".group-member-list-modal").modal();
+  } else {
+    alert("你已经在俱乐部里了");
+  }
+};
+
 Template.groupMemberList.onCreated(function () {
   var template = this;
 
@@ -24,9 +33,19 @@ Template.groupMemberList.onCreated(function () {
   });
 });
 
+/*
 Template.groupMemberList.onRendered(function () {
-  //console.log("rendered");
+  var template = this;
+
+  Meteor.postLoginActions.showMemberListJoinModal = function () {
+    if (!Memberships.findOne({groupId: template.data._id, userId: Meteor.userId(), status: {$in: [MemberStatus.Joined, MemberStatus.Banned]}})) {
+      template.$(".group-member-list-modal").modal();
+    } else {
+      alert("你已经在俱乐部里了");
+    }
+  };
 });
+*/
 
 Template.groupMemberList.helpers({
 
@@ -73,18 +92,21 @@ Template.groupMemberList.helpers({
 Template.groupMemberList.events({
   "click .page-header > button": function (event, template) {
     if (!Meteor.user()) {
-      template.$(".auth-modal").modal();
+      //template.$(".auth-modal").modal();
+      Meteor.showLoginModal("showMemberListJoinModal", {groupId: template.data._id});
     } else {
       template.$(".group-member-list-modal").modal();
     }
   },
-  "login.muuu .auth-modal": function (event, template) {
-    if (!Memberships.findOne({groupId: template.data._id, userId: Meteor.userId(), status: {$in: [MemberStatus.Joined, MemberStatus.Banned]}})) {
-      template.$(".group-member-list-modal").modal();
-    } else {
-      alert("你已经在俱乐部里了");
-    }
-  },
+  /*
+   "login.muuu .auth-modal": function (event, template) {
+   if (!Memberships.findOne({groupId: template.data._id, userId: Meteor.userId(), status: {$in: [MemberStatus.Joined, MemberStatus.Banned]}})) {
+   template.$(".group-member-list-modal").modal();
+   } else {
+   alert("你已经在俱乐部里了");
+   }
+   },
+   */
   "click .group-member-list-modal .modal-footer > button.btn-primary": function(event, template) {
     if (Meteor.user()) {
       template.$(".group-member-list-modal form").submit();

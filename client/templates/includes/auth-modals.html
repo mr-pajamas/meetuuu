@@ -1,0 +1,175 @@
+<template name="authModals">
+  <div class="modal fade auth-modal" tabindex="-1" role="dialog" aria-labelledby="authModalLabel">
+    <div class="modal-dialog" role="document">
+      {{#if signinOrJoin}}
+        {{> authModalSigninContent}}
+      {{else}}
+        {{> authModalJoinContent}}
+      {{/if}}
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  {{> authBindModal}}
+</template>
+
+<template name="authModalSigninContent">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
+      <h4 class="modal-title" id="authModalLabel">请先登录</h4>
+    </div>
+    <div class="modal-body">
+      <form class="form-horizontal">
+
+        {{#if weixin}}
+          <div class="form-group">
+            <label class="col-md-3 control-label visible-md-inline-block visible-lg-inline-block">快捷登录</label>
+            <div class="col-md-8">
+              <a class="btn btn-success btn-center-block-sm" href="{{wxOauthLink}}"><i class="fa fa-weixin"></i> 微信快捷登录</a>
+            </div>
+          </div>
+        {{/if}}
+
+        <div class="form-group">
+          <label for="inputMobile" class="col-md-3 control-label">手机号</label>
+          <div class="col-md-8">
+            <input type="text" name="mobile" class="form-control" id="inputMobile">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inputPassword" class="col-md-3 control-label">密码</label>
+          <div class="col-md-8">
+            <input type="password" name="password" class="form-control" id="inputPassword">
+          </div>
+        </div>
+
+        <button class="hidden" type="submit">登录</button>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+      <button type="button" class="btn btn-info">注册新帐号</button>
+      <button type="button" class="btn btn-primary">登录</button>
+    </div>
+  </div><!-- /.modal-content -->
+</template>
+
+<template name="authModalJoinContent">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
+      <h4 class="modal-title" id="authModalLabel">注册新帐号</h4>
+    </div>
+    <div class="modal-body">
+      <form class="form-horizontal">
+
+        <div class="form-group">
+          <label for="inputName" class="col-md-3 control-label">姓名</label>
+          <div class="col-md-8">
+            <input type="text" name="name" class="form-control" id="inputName">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inputMobile" class="col-md-3 control-label">手机号</label>
+          <div class="col-md-8">
+            <input type="text" name="mobile" class="form-control" id="inputMobile">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inputCode" class="col-md-3 control-label">短信验证码</label>
+          <div class="col-md-8">
+            <div class="input-group">
+              <input type="text" name="code" class="form-control" id="inputCode">
+              <div class="input-group-btn">
+                <button class="btn btn-default" type="button" {{verifyDisabled}}>{{#with countingDown}}重新获取 {{this}}{{else}}获取验证码{{/with}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inputPassword" class="col-md-3 control-label">密码</label>
+          <div class="col-md-8">
+            <input type="password" name="password" class="form-control" id="inputPassword">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inputConfirm" class="col-md-3 control-label">确认密码</label>
+          <div class="col-md-8">
+            <input type="password" name="confirm" class="form-control" id="inputConfirm">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="checkbox col-md-8 col-md-offset-3">
+            <label>
+              <input type="checkbox" checked disabled> 我同意 <a href="#">《平台服务条款与隐私权政策》</a>
+            </label>
+          </div>
+        </div>
+
+        <button class="hidden" type="submit">注册</button>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+      <button type="button" class="btn btn-info">登录已有帐号</button>
+      <button type="button" class="btn btn-primary">注册</button>
+    </div>
+  </div><!-- /.modal-content -->
+</template>
+
+<template name="authBindModal">
+  <div class="modal fade auth-bind-modal" tabindex="-1" role="dialog" aria-labelledby="authBindModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
+          <h4 class="modal-title" id="authBindModalLabel">请绑定手机号</h4>
+        </div>
+        <div class="modal-body">
+
+          <form class="form-horizontal">
+
+            <div class="form-group">
+              <label for="inputMobile" class="col-md-3 control-label">手机号</label>
+              <div class="col-md-8">
+                <input type="text" name="mobile" class="form-control" id="inputMobile">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="inputCode" class="col-md-3 control-label">短信验证码</label>
+              <div class="col-md-8">
+                <div class="input-group">
+                  <input type="text" name="code" class="form-control" id="inputCode">
+                  <div class="input-group-btn">
+                    <button class="btn btn-default" type="button" {{verifyDisabled}}>{{#with countingDown}}重新获取 {{this}}{{else}}获取验证码{{/with}}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="checkbox col-md-8 col-md-offset-3">
+                <label>
+                  <input type="checkbox" checked disabled> 我同意 <a href="#">《平台服务条款与隐私权政策》</a>
+                </label>
+              </div>
+            </div>
+
+            <button class="hidden" type="submit">绑定</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary">登录</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</template>

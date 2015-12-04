@@ -14,6 +14,13 @@ Template.header.events({
     event.preventDefault();
     Meteor.setCity($(event.currentTarget).index());
   },
+
+  "click .navbar-right > li:nth-child(3)": function (event) {
+    event.preventDefault();
+    Meteor.showLoginModal();
+    //template.$(".auth-modal").modal();
+  },
+
   "click .navbar-right .dropdown-menu > li:nth-child(5)": function (event) {
     event.preventDefault();
     Meteor.logout();

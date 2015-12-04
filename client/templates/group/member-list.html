@@ -1,5 +1,7 @@
 <template name="groupMemberList">
-  {{> authModal}}
+  {{!--
+  {{> authModals}}
+  --}}
 
   <div class="modal fade group-member-list-modal" tabindex="-1" role="dialog" aria-labelledby="groupMemberListModalLabel">
     <div class="modal-dialog" role="document">
@@ -103,7 +105,7 @@
                       <button type="button" class="btn btn-success">同意</button>
                       <button type="button" class="btn btn-default">忽略</button>
                     </div>
-                    <a href="{{pathFor 'groupApplicant' groupPath=../path applicantId=_id}}">
+                    <a href="{{pathFor 'groupMember' groupPath=../path memberId=_id}}">
                       <img src="{{avatarOrDefault user.profile.avatar}}">
                       <div class="caption">
                         <h4>{{nickname}}</h4>

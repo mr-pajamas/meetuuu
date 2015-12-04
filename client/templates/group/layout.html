@@ -4,6 +4,7 @@
   {{else}}
     {{#with group}}
       {{> groupHeader}}
+      {{> authModals}}
       {{> Template.dynamic template=../main}}
       {{#with ../footer}}
         {{> Template.dynamic template=this}}

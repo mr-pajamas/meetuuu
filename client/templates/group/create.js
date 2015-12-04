@@ -1,7 +1,19 @@
 /**
  * Created by Michael on 2015/10/23.
  */
-var options;
+//var options;
+function createGroup(options) {
+  Meteor.call("createGroup", options, function (error, result) {
+    if (error) {
+      alert(error);
+    } else {
+      FlowRouter.go("groupHome", {groupPath: result.path});
+    }
+  });
+}
+
+Meteor._ensure(Meteor, "postLoginActions");
+Meteor.postLoginActions.createGroup = createGroup;
 
 Template.groupCreate.events({
   "submit .group-create-container > form": function (event, template) {
@@ -17,7 +29,7 @@ Template.groupCreate.events({
       return;
     }
 
-    options = {
+    var options = {
       name: name,
       homeCity: homeCity,
       memberAlias: memberAlias,
@@ -25,22 +37,15 @@ Template.groupCreate.events({
     };
 
     if (!Meteor.user()) {
-      template.$(".auth-modal").modal();
+      Meteor.showLoginModal("createGroup", options);
+      //template.$(".auth-modal").modal();
     } else {
-      createGroup();
+      createGroup(options);
     }
-  },
-  "login.muuu .auth-modal": function () {
-    createGroup();
   }
+  /*
+   "login.muuu .auth-modal": function () {
+   createGroup();
+   }
+   */
 });
-
-function createGroup() {
-  Meteor.call("createGroup", options, function (error, result) {
-    if (error) {
-      alert(error);
-    } else {
-      FlowRouter.go("groupHome", {groupPath: result.path});
-    }
-  });
-}
