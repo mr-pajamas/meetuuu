@@ -1,18 +1,17 @@
 <template name="groupLayout">
   {{#unless subscriptionReady "groupHandle"}}
-    {{> layout main="loading"}}
+    {{> commonLayout main="loading"}}
   {{else}}
     {{#with group}}
       {{> groupHeader}}
-      {{> authModals}}
       {{> Template.dynamic template=../main}}
-      {{#with ../footer}}
-        {{> Template.dynamic template=this}}
+      {{#if ../footer}}
+        {{> Template.dynamic template=../footer}}
       {{else}}
         {{> footerCompact}}
-      {{/with}}
+      {{/if}}
     {{else}}
-      {{> layout main="notFound" footer="footer"}}
+      {{> commonLayout main="notFound" footer="footer"}}
     {{/with}}
   {{/unless}}
 </template>

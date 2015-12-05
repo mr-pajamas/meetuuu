@@ -16,6 +16,7 @@ Template.groupLayout.helpers({
   }
 });
 
+/*
 Template.groupLayout.events({
   "show.bs.modal": function () {
     Session.set("windowOccupied", true);
@@ -24,3 +25,4 @@ Template.groupLayout.events({
     Session.set("windowOccupied", false);
   }
 });
+*/
