@@ -1,6 +1,7 @@
 /**
  * Created by Michael on 2015/10/26.
  */
+/*
 Meteor._ensure(Meteor, "postLoginActions");
 Meteor.postLoginActions.showHomeJoinModal = function (options) {
   if (!Memberships.findOne({groupId: options.groupId, userId: Meteor.userId(), status: {$in: [MemberStatus.Joined, MemberStatus.Banned]}})) {
@@ -9,6 +10,7 @@ Meteor.postLoginActions.showHomeJoinModal = function (options) {
     alert("你已经在俱乐部里了");
   }
 };
+*/
 
 Template.groupHome.onCreated(function () {
   var template = this;
@@ -58,10 +60,10 @@ Template.groupHome.onCreated(function () {
   });
 });
 
-/*
 Template.groupHome.onRendered(function () {
   var template = this;
 
+  /*
   Meteor.postLoginActions.showHomeJoinModal = function () {
     if (!Memberships.findOne({groupId: template.data._id, userId: Meteor.userId(), status: {$in: [MemberStatus.Joined, MemberStatus.Banned]}})) {
       template.$(".group-home-join-modal").modal();
@@ -69,8 +71,20 @@ Template.groupHome.onRendered(function () {
       alert("你已经在俱乐部里了");
     }
   };
+  */
+  template.autorun(function () {
+    var postponedAction = Session.get("postponedAction");
+    if (Meteor.user() && !Session.get("windowOccupied") && postponedAction && postponedAction.name === "showJoinModal") {
+      Session.clear("postponedAction");
+
+      if (!Memberships.findOne({groupId: template.data._id, userId: Meteor.userId(), status: {$in: [MemberStatus.Joined, MemberStatus.Banned]}})) {
+        template.$(".group-home-join-modal").modal();
+      } else {
+        alert("你已经在俱乐部里了");
+      }
+    }
+  });
 });
-*/
 
 Template.groupHome.helpers({
   canJoin: function () {
@@ -122,7 +136,9 @@ Template.groupHome.helpers({
 Template.groupHome.events({
   "click .group-description button.btn-success": function (event, template) {
     if (!Meteor.user()) {
-      Meteor.showLoginModal("showHomeJoinModal", {groupId: template.data._id});
+      Session.setPersistent("postponedAction", {name: "showJoinModal"});
+
+      Meteor.showLoginModal(true);
       //template.$(".auth-modal").modal();
     } else {
       template.$(".group-home-join-modal").modal();

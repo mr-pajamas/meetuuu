@@ -15,3 +15,12 @@ Template.groupLayout.helpers({
     return Groups.findOne({path: FlowRouter.getParam("groupPath")});
   }
 });
+
+Template.groupLayout.events({
+  "show.bs.modal": function () {
+    Session.set("windowOccupied", true);
+  },
+  "hidden.bs.modal": function () {
+    Session.set("windowOccupied", false);
+  }
+});

@@ -12,8 +12,22 @@ function createGroup(options) {
   });
 }
 
+/*
 Meteor._ensure(Meteor, "postLoginActions");
 Meteor.postLoginActions.createGroup = createGroup;
+*/
+
+Template.groupCreate.onRendered(function () {
+  var template = this;
+  template.autorun(function () {
+    var postponedAction = Session.get("postponedAction");
+    if (Meteor.user() && !Session.get("windowOccupied") && postponedAction && postponedAction.name === "createGroup") {
+      Session.clear("postponedAction");
+
+      createGroup(postponedAction.options);
+    }
+  });
+});
 
 Template.groupCreate.events({
   "submit .group-create-container > form": function (event, template) {
@@ -37,7 +51,8 @@ Template.groupCreate.events({
     };
 
     if (!Meteor.user()) {
-      Meteor.showLoginModal("createGroup", options);
+      Session.setPersistent("postponedAction", {name: "createGroup", options: options});
+      Meteor.showLoginModal(true);
       //template.$(".auth-modal").modal();
     } else {
       createGroup(options);

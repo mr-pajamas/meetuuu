@@ -1,6 +1,7 @@
 /**
  * Created by Michael on 2015/11/1.
  */
+/*
 Meteor._ensure(Meteor, "postLoginActions");
 Meteor.postLoginActions.showMemberListJoinModal = function (options) {
   if (!Memberships.findOne({groupId: options.groupId, userId: Meteor.userId(), status: {$in: [MemberStatus.Joined, MemberStatus.Banned]}})) {
@@ -9,6 +10,7 @@ Meteor.postLoginActions.showMemberListJoinModal = function (options) {
     alert("你已经在俱乐部里了");
   }
 };
+*/
 
 Template.groupMemberList.onCreated(function () {
   var template = this;
@@ -33,10 +35,10 @@ Template.groupMemberList.onCreated(function () {
   });
 });
 
-/*
 Template.groupMemberList.onRendered(function () {
   var template = this;
 
+  /*
   Meteor.postLoginActions.showMemberListJoinModal = function () {
     if (!Memberships.findOne({groupId: template.data._id, userId: Meteor.userId(), status: {$in: [MemberStatus.Joined, MemberStatus.Banned]}})) {
       template.$(".group-member-list-modal").modal();
@@ -44,8 +46,20 @@ Template.groupMemberList.onRendered(function () {
       alert("你已经在俱乐部里了");
     }
   };
+  */
+  template.autorun(function () {
+    var postponedAction = Session.get("postponedAction");
+    if (Meteor.user() && !Session.get("windowOccupied") && postponedAction && postponedAction.name === "showJoinModal") {
+      Session.clear("postponedAction");
+
+      if (!Memberships.findOne({groupId: template.data._id, userId: Meteor.userId(), status: {$in: [MemberStatus.Joined, MemberStatus.Banned]}})) {
+        template.$(".group-member-list-modal").modal();
+      } else {
+        alert("你已经在俱乐部里了");
+      }
+    }
+  });
 });
-*/
 
 Template.groupMemberList.helpers({
 
@@ -93,7 +107,9 @@ Template.groupMemberList.events({
   "click .page-header > button": function (event, template) {
     if (!Meteor.user()) {
       //template.$(".auth-modal").modal();
-      Meteor.showLoginModal("showMemberListJoinModal", {groupId: template.data._id});
+      Session.setPersistent("postponedAction", {name: "showJoinModal"});
+
+      Meteor.showLoginModal(true);
     } else {
       template.$(".group-member-list-modal").modal();
     }
