@@ -9,18 +9,18 @@ Template.authModals.onCreated(function () {
 
 Template.authModals.onRendered(function () {
   var template = this;
-/*
-  Meteor.showLoginModal = function (postActionName, options) {
-    if (postActionName) {
-      var action = {actionName: postActionName};
-      if (options) action.options = options;
-      //Session.setPersistent(POST_LOGIN_ACTION, action);
-    } else {
-      //Session.clear(POST_LOGIN_ACTION);
-    }
-    template.$(".auth-modal").modal();
-  };
-*/
+  /*
+   Meteor.showLoginModal = function (postActionName, options) {
+   if (postActionName) {
+   var action = {actionName: postActionName};
+   if (options) action.options = options;
+   //Session.setPersistent(POST_LOGIN_ACTION, action);
+   } else {
+   //Session.clear(POST_LOGIN_ACTION);
+   }
+   template.$(".auth-modal").modal();
+   };
+   */
 
   Meteor.showLoginModal = function (keepPostponedAction) {
     if (!keepPostponedAction) Session.clear("postponedAction");
@@ -48,23 +48,23 @@ Template.authModals.events({
 });
 
 /*
-function execPostAction() {
-  $(this).off("hidden.bs.modal", execPostAction);
-  //var action = Session.get(POST_LOGIN_ACTION);
-  if (action && Meteor.postLoginActions && Meteor.postLoginActions[action.actionName]) {
-    Meteor.postLoginActions[action.actionName](action.options);
-  }
-}
-*/
+ function execPostAction() {
+ $(this).off("hidden.bs.modal", execPostAction);
+ //var action = Session.get(POST_LOGIN_ACTION);
+ if (action && Meteor.postLoginActions && Meteor.postLoginActions[action.actionName]) {
+ Meteor.postLoginActions[action.actionName](action.options);
+ }
+ }
+ */
 
 /*
-Meteor._execPostLoginAction = function () {
-  //var action = Session.get(POST_LOGIN_ACTION);
-  if (action && Meteor.postLoginActions && Meteor.postLoginActions[action.actionName]) {
-    Meteor.postLoginActions[action.actionName](action.options);
-  }
-};
-*/
+ Meteor._execPostLoginAction = function () {
+ //var action = Session.get(POST_LOGIN_ACTION);
+ if (action && Meteor.postLoginActions && Meteor.postLoginActions[action.actionName]) {
+ Meteor.postLoginActions[action.actionName](action.options);
+ }
+ };
+ */
 
 Template.authModalSigninContent.helpers({
   wxOauthLink: function () {
@@ -77,6 +77,19 @@ Template.authModalSigninContent.helpers({
       response_type: "code",
       scope: "snsapi_userinfo"
     });
+  },
+  wxHrefAttr: function () {
+    FlowRouter.watchPathChange();
+    var currentContext = FlowRouter.current();
+
+    return {
+      href: Meteor.wxOauthLink({
+        appid: WX_APP_ID,
+        redirect_uri: FlowRouter.url("wxOauth", {}, {redirectPath: currentContext.path}),
+        response_type: "code",
+        scope: "snsapi_userinfo"
+      })
+    };
   }
 });
 
@@ -187,12 +200,12 @@ Template.authModalJoinContent.events({
 
 Template.authBindModal.onRendered(function () {
   var template = this;
-/*
-  Meteor.showBindModal = function (wxUserId) {
-    template.wxUserId = wxUserId;
-    template.$(".auth-bind-modal").modal();
-  };
-*/
+  /*
+   Meteor.showBindModal = function (wxUserId) {
+   template.wxUserId = wxUserId;
+   template.$(".auth-bind-modal").modal();
+   };
+   */
 
   template.autorun(function () {
     var wxUserId = Session.get("wxUserId");
