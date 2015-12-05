@@ -65,7 +65,7 @@ Template.authModals.events({
  }
  };
  */
-
+/*
 Template.authModalSigninContent.helpers({
   wxOauthLink: function () {
     FlowRouter.watchPathChange();
@@ -92,8 +92,17 @@ Template.authModalSigninContent.helpers({
     };
   }
 });
+*/
 
 Template.authModalSigninContent.events({
+  "click .form-group:first-child .btn": function () {
+    window.location.replace(Meteor.wxOauthLink({
+      appid: WX_APP_ID,
+      redirect_uri: FlowRouter.url("wxOauth", {}, {redirectPath: FlowRouter.current().path}),
+      response_type: "code",
+      scope: "snsapi_userinfo"
+    }));
+  },
   "submit form": function (event, template) {
     event.preventDefault();
 
