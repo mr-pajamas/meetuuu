@@ -29,12 +29,12 @@ Template.forumDiscussionItem.onRendered(function() {
   divData = template.$(".discussion-item-reply");
       template.autorun(function () {
     //Comments.find();
-    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+   /* console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     console.log(divData.scrollTop());
     console.log(divData.prop("scrollHeight"));
     console.log(commentFlag);
     console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
-    Session.get("testa");
+    Session.get("testa");*/
     if(divData.scrollTop()!=divData.prop("scrollHeight"))
     {
      // c.stop();
@@ -54,25 +54,7 @@ Template.forumDiscussionItem.onRendered(function() {
     }
   });
 })
-/* divData = this.$(".discussion-item-reply").scrollTop();
-     divHe = this.$(".discussion-item-reply").prop('scrollHeight');
-     if(Template.instance().beDate.ready() && Template.instance().afData.ready() && Template.instance().colData.ready() ){
-            console.log(divData);
-           console.log(divHe);
-     }*/
-//div.crollTop = div.prop('scrollHeight');
-//this.$(".discussion-item-reply").scrollTop(300);
-//this.$(".discussion-item-reply").scrollTop = 300;
-//divData = this.$(".discussion-item-reply");
-//var divTop = div.prop('scrollHeight');
-//div.scrollTop = divTop;
-//console.log(this.$(".discussion-item-reply").scrollTop());
-//this.$(".discussion-item-reply").scrollTop=300;
-//= this.$(".discussion-item-reply").prop('scrollHeight');
-//console.log(div.scrollTop);
-//console.log(this.$(".discussion-item-reply").prop('scrollHeight'));
-//= this.$(".discussion-item-reply").scrollHeight
-//});
+
 Template.forumDiscussionItem.onCreated(function () {
   setPageTime = new Date();
   limit = new ReactiveVar(PAGE_SIZE);
