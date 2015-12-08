@@ -48,16 +48,16 @@ Template.groupSettingBasic.events({
     var memberAlias = template.$("[name=memberAlias]").val();
     var description = template.$("[name=description]").val();
 
-    var groupOptions = {};
-    if (_id) groupOptions._id = _id;
-    if (name) groupOptions.name = name;
-    if (path) groupOptions.path = path;
-    if (logoImg) groupOptions.logoImg = logoImg;
-    if (memberAlias) groupOptions.memberAlias = memberAlias;
-    if (description) groupOptions.description = description;
+    var options = {};
+    if (_id) options._id = _id;
+    if (name) options.name = name;
+    if (path) options.path = path;
+    if (logoImg) options.logoImg = logoImg;
+    if (memberAlias) options.memberAlias = memberAlias;
+    if (description) options.description = description;
 
     template.$("button[type=submit]").text("保存中...").prop("disabled", true);
-    Meteor.call("updateGroup", groupOptions, function (error, result) {
+    Meteor.call("updateGroup", options, function (error, result) {
       template.$("button[type=submit]").text("保存").prop("disabled", false);
       if (error) {
         alert(error.reason);
@@ -190,14 +190,14 @@ Template.groupSettingRole.events({
       return;
     }
 
-    var roleOptions = {
+    var options = {
       groupId: group._id,
       _id: _id,
       name: name,
       permissions: permissions
     };
 
-    Meteor.call("putRole", roleOptions, function (error) {
+    Meteor.call("putRole", options, function (error) {
       if (error) {
         alert(error.reason);
       } else {

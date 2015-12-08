@@ -196,12 +196,12 @@ Template.groupHome.events({
     }
 
     var group = template.data;
-    var applyOptions = {
+    var options = {
       groupId: group._id,
       bio: bio
     };
 
-    Meteor.call("applyMembership", applyOptions, function (error, result) {
+    Meteor.call("applyMembership", options, function (error, result) {
       $btnPrimary.text("申请入会").prop("disabled", false);
       if (error) {
         alert(error.reason);

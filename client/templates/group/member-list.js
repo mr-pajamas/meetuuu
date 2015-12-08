@@ -166,12 +166,12 @@ Template.groupMemberList.events({
     }
 
     var group = template.data;
-    var applyOptions = {
+    var options = {
       groupId: group._id,
       bio: bio
     };
 
-    Meteor.call("applyMembership", applyOptions, function (error, result) {
+    Meteor.call("applyMembership", options, function (error, result) {
       $btnPrimary.text("申请入会").prop("disabled", false);
       if (error) {
         alert(error.reason);
@@ -207,25 +207,25 @@ Template.groupMemberList.events({
   },
 
   "click .group-applicant-btn-group > button:first-child": function (event, template) {
-    var approveOptions = {
-      groupId: template.data._id,
+    var options = {
+      //groupId: template.data._id,
       membershipId: this._id
     };
 
-    Meteor.call("approveMembership", approveOptions, function (error, result) {
+    Meteor.call("approveMembership", options, function (error, result) {
       if (error) {
         alert(error.reason);
       }
     });
   },
   "click .group-applicant-btn-group > button:last-child": function (event, template) {
-    var approveOptions = {
-      groupId: template.data._id,
+    var options = {
+      //groupId: template.data._id,
       membershipId: this._id,
       disapprove: true
     };
 
-    Meteor.call("approveMembership", approveOptions, function (error, result) {
+    Meteor.call("approveMembership", options, function (error, result) {
       if (error) {
         alert(error.reason);
       }
