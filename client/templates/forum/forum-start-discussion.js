@@ -90,6 +90,8 @@ Template.forumStartDiscussion.events({
       authName:['create-topic']
     });
     console.log(post);
+    var myContext = Discussion.simpleSchema().namedContext("insert");
+    myContext.validate(Discussion.simpleSchema().clean(post));
     Meteor.call("insertForum",post,function(error, result){
       if(result)
         FlowRouter.go("/groups/:groupPath/discussion/singlediscussion/:discId", {groupPath: FlowRouter.getParam("groupPath"),discId: result});

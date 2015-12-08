@@ -8,7 +8,7 @@ Template.forumEditDiscussion.onRendered(function () {
 
 Template.forumEditDiscussion.helpers({
   errorMessage: function (field) {
-    myContext = Discussion.simpleSchema().namedContext("update");
+    var myContext = Discussion.simpleSchema().namedContext("update");
     return myContext.keyErrorMessage(field);
   },
   discussions: function () {
@@ -37,7 +37,8 @@ Template.forumEditDiscussion.events({
     });
     var updateId = this._id;
     var post ={subject:subject, content: $contentCloned.html(), imgPath:str,DiscId: updateId};
-
+    var myContext = Discussion.simpleSchema().namedContext("update");
+    myContext.validate(Discussion.simpleSchema().clean(post));
     Meteor.call("updateForum",post,function(error, result){
       if(result)
         FlowRouter.go("/groups/:groupPath/discussion/singlediscussion/:discId", {groupPath: FlowRouter.getParam("groupPath"),discId:updateId});
