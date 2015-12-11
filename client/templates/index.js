@@ -8,6 +8,7 @@ Template.index.onCreated(function () {
   var template = this;
 
   template.now = new ReactiveVar(new Date());
+  template.timeShiftDep = new Tracker.Dependency();
 
   template.autorun(function () {
     var city = Meteor.city();
@@ -19,8 +20,12 @@ Template.index.onCreated(function () {
     if (routeName == "eventList") {
 
       Tracker.autorun(function () {
-        var now = moment(template.now.get());
+
+        template.timeShiftDep.depend();
+        //var now = moment(template.now.get());
+        var now = moment();
         var twoHoursLater = moment(now).add(2, "h");
+        template.now.set(now.toDate());
 
         selector = {"time.start": {$gt: twoHoursLater.toDate()}};
         if (searchString) selector.title = {$regex: searchString, $options: "i"};
@@ -37,20 +42,25 @@ Template.index.onCreated(function () {
         template.searchHandle = template.subscribe("events", city, selector, options);
 
         Tracker.autorun(function () {
-          template.timeShiftTid && (Meteor.clearTimeout(template.timeShiftTid), template.timeShiftTid = undefined);
+          if (template.searchHandle.ready()) {
 
-          var realNow = moment();
-          var realTwoHoursLater = moment(realNow).add(2, "h");
+            Tracker.autorun(function (c) {
+              if (c.firstRun) {
+                var _selector = _.extend({"location.city": city, private: false, status: "已发布"}, selector, {"time.start": {$gt: twoHoursLater.toDate()}});
+                var _options = _.clone(options);
 
-          var _selector = _.extend({"location.city": city, private: false, status: "已发布"}, selector, {"time.start": {$gt: realTwoHoursLater.toDate()}});
-          var _options = _.clone(options);
-
-          var upcoming = Events.findOne(_selector, _options);
-          if (upcoming) {
-            template.timeShiftTid = Meteor.setTimeout(function () {
-              template.timeShiftTid = undefined;
-              template.now.set(new Date());
-            }, moment(upcoming.time.start).diff(realTwoHoursLater));
+                var upcoming = Events.findOne(_selector, _options);
+                if (upcoming) {
+                  template.timeShiftTid = Meteor.setTimeout(function () {
+                    template.timeShiftTid = undefined;
+                    template.timeShiftDep.changed();
+                  }, moment(upcoming.time.start).diff(twoHoursLater));
+                }
+              } else {
+                template.timeShiftTid && (Meteor.clearTimeout(template.timeShiftTid), template.timeShiftTid = undefined);
+                template.timeShiftDep.changed();
+              }
+            });
           }
         });
       });

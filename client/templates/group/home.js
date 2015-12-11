@@ -17,6 +17,7 @@ Template.groupHome.onCreated(function () {
 
   template.now = new ReactiveVar(new Date());
   template.today = new ReactiveVar(template.now.get());
+  template.timeShiftDep = new Tracker.Dependency();
 
   (function daily() {
     var today = moment(template.today.get());
@@ -41,22 +42,25 @@ Template.groupHome.onCreated(function () {
       var end = moment(today).add(1, "d").endOf("day").toDate();
 
       template.groupTimelineHandle = template.subscribe("groupTimeline", group._id, start, end);
+
+      Tracker.autorun(function () {
+        template.timeShiftTid && (Meteor.clearTimeout(template.timeShiftTid), template.timeShiftTid = undefined);
+
+        template.timeShiftDep.depend();
+        //template.now.get();
+        var realNow = moment();
+        var endOfToday = moment(realNow).endOf("day").toDate();
+        template.now.set(realNow.toDate());
+        var upcoming = GroupTimelineItems.findOne({groupId: group._id, datetime: {$gt: realNow.toDate(), $lte: endOfToday}}, {sort: {datetime: 1}});
+        if (upcoming) {
+          template.timeShiftTid = Meteor.setTimeout(function () {
+            template.timeShiftTid = undefined;
+            //template.now.set(new Date());
+            template.timeShiftDep.changed();
+          }, moment(upcoming.datetime).diff(realNow));
+        }
+      });
     });
-  });
-
-  template.autorun(function () {
-    template.timeShiftTid && (Meteor.clearTimeout(template.timeShiftTid), template.timeShiftTid = undefined);
-
-    template.now.get();
-    var now = moment();
-    var endOfToday = moment(now).endOf("day").toDate();
-    var upcoming = GroupTimelineItems.findOne({datetime: {$gt: now.toDate(), $lte: endOfToday}}, {sort: {datetime: 1}});
-    if (upcoming) {
-      template.timeShiftTid = Meteor.setTimeout(function () {
-        template.timeShiftTid = undefined;
-        template.now.set(new Date());
-      }, moment(upcoming.datetime).diff(now));
-    }
   });
 });
 
