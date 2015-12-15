@@ -72,7 +72,7 @@ Template.authModalSigninContent.helpers({
     var currentContext = FlowRouter.current();
 
     return Meteor.wxOauthLink({
-      appid: WX_APP_ID,
+      appid: WX_PUBLIC_APP_ID,
       redirect_uri: FlowRouter.url("wxOauth", {}, {redirectPath: currentContext.path}),
       response_type: "code",
       scope: "snsapi_userinfo"
@@ -84,7 +84,7 @@ Template.authModalSigninContent.helpers({
 
     return {
       href: Meteor.wxOauthLink({
-        appid: WX_APP_ID,
+        appid: WX_PUBLIC_APP_ID,
         redirect_uri: FlowRouter.url("wxOauth", {}, {redirectPath: currentContext.path}),
         response_type: "code",
         scope: "snsapi_userinfo"
@@ -94,14 +94,19 @@ Template.authModalSigninContent.helpers({
 });
 */
 
+Template.authModalSigninContent.helpers({
+  weixinLogin: function () {
+    return Meteor.isWeixin || !Meteor.isMobile;
+  }
+});
+
 Template.authModalSigninContent.events({
   "click .form-group:first-child .btn": function () {
-    window.location.replace(Meteor.wxOauthLink({
-      appid: WX_APP_ID,
-      redirect_uri: FlowRouter.url("wxOauth", {}, {redirectPath: FlowRouter.current().path}),
-      response_type: "code",
-      scope: "snsapi_userinfo"
-    }));
+    if (Meteor.isWeixin) {
+      window.location.replace(Meteor.wxOauthLink(WxPlatform.public));
+    } else {
+      window.location.replace(Meteor.wxOauthLink(WxPlatform.open));
+    }
   },
   "submit form": function (event, template) {
     event.preventDefault();

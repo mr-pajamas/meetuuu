@@ -18,3 +18,9 @@ meteor add dburles:collection-helpers
 members 加 status参数   【完成】
 七牛批量上传和批量删除  【完成，批量上传没有】
 论坛页面框架
+
+微信头像问题
+
+openid没有了 【完成】
+unionid索引改变 【完成】
+sex可选了   【完成】
