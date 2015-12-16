@@ -24,3 +24,5 @@ members 加 status参数   【完成】
 openid没有了 【完成】
 unionid索引改变 【完成】
 sex可选了   【完成】
+
+独占页面的注册逻辑需要调整

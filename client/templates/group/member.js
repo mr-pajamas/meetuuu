@@ -28,11 +28,14 @@ Template.groupMember.helpers({
     }), function (value) {
       return value._id === "owner";
     });
+  },
+  canAssignRole: function () {
+    return this.role !== "owner"; // TODO: 当前membership为owner
   }
 });
 
 Template.groupMember.events({
-  "click .page-header > button:first-of-type": function (event, template) {
+  "click .page-header > .appointment-btn": function (event, template) {
     template.$(".appointment-modal")
       .find("select.form-control").val(this.role).change().end()
       .modal();

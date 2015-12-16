@@ -24,6 +24,7 @@ Template.authModals.onRendered(function () {
 
   Meteor.showLoginModal = function (keepPostponedAction) {
     if (!keepPostponedAction) Session.clear("postponedAction");
+    // TODO: 清表单
     template.$(".auth-modal").modal();
   };
 });
