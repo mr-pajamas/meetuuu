@@ -64,6 +64,24 @@ Template.eventDetail.onCreated(function () {
         }
       });
     });
+
+    Tracker.autorun(function () {
+      var event = Events.findOne({_id: new Mongo.ObjectID(eid)});
+      if (event) {
+        Tracker.autorun(function () {
+          if (wx.configReady()) {
+            var shareData = {
+              title: event.club.name,
+              desc: event.title,
+              link: FlowRouter.url(FlowRouter.current().path),
+              imgUrl: event.poster
+            };
+            wx.onMenuShareTimeline(shareData);
+            wx.onMenuShareAppMessage(shareData);
+          }
+        });
+      }
+    });
   });
 });
 
