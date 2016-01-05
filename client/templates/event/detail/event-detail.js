@@ -71,7 +71,7 @@ Template.eventDetail.onCreated(function () {
         Tracker.autorun(function () {
           if (wx.configReady()) {
             var shareData = {
-              title: event.club.name,
+              title: event.author.club.name,
               desc: event.title,
               link: FlowRouter.url(FlowRouter.current().path),
               imgUrl: event.poster
