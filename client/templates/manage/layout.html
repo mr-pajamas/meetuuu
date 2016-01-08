@@ -1,14 +1,16 @@
 <template name="manageLayout">
   <div class="container" style="margin-top: 10px">
+    <div>{{>Template.dynamic template = manageHeader}}</div>
     <div class="row">
       <div class="col-md-2">
         {{> manageLeftMenu}}
       </div>
-      <div class="col-md-10">
-        {{> manageUserList}}
-       <!-- {{> Template.dynamic template=mainlayout}}-->
+      <div class="col-md-8">
+        <!--{{> manageUserList}}-->
+        {{> Template.dynamic template=mainlayout}}
       </div>
 
     </div>
+
   </div>
 </template>

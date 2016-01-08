@@ -1,7 +1,13 @@
 <template name="manageUserItem">
   <tr>
-    <td>John</td>
-    <td>Doe</td>
-    <td>john@example.com</td>
+    <!--<td>{{this.[" id"]}}</td>-->
+    <td>{{this._id}}</td>
+    <td>{{this.mobile}}</td>
+    <td>{{this.profile.name}}</td>
+    <td>{{this.profile.gender}}</td>
+    <td>
+      <button class="btn btn-info btn-sm updateBtn">修改</button>
+      <button class="btn btn-danger btn-sm deleteBtn">删除</button>
+    </td>
   </tr>
 </template>
