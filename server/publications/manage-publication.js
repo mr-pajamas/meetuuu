@@ -5,3 +5,7 @@
 Meteor.publish("manageAllUsers", function () {
   return Meteor.users.find();
 });
+//manageAllEvents
+Meteor.publish("manageAllEvents", function() {
+  return Events.find();
+});

@@ -1,0 +1,13 @@
+<template name="manageEventsItem">
+  <tr>
+    <!--<td>{{this.[" id"]}}</td>-->
+    <td>{{this.title}}</td>
+    <td>{{createTime.start}}~{{createTime.end}}</td>
+    <td>{{this.location.city}} {{this.location.address}}</td>
+    <td>{{this.author.name}}</td>
+    <td>
+      <button class="btn btn-info btn-sm updateBtn">修改</button>
+      <button class="btn btn-danger btn-sm deleteBtn">删除</button>
+    </td>
+  </tr>
+</template>

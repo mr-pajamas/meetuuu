@@ -18,8 +18,9 @@ Template.manageUserList.helpers({
 })
 
 Template.manageUserList.events({
-  "submit #updateUserForm": function() {
+  /*"submit #updateUserForm": function(e, template) {
     console.log("Succed");
-  }
+    template.$(".updateClose").click();
+  }*/
 })
 

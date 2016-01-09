@@ -14,17 +14,42 @@ Template.adminLogin.helpers({
 Template.adminLogin.events({
   "submit form": function(e, template) {
     e.preventDefault();
-    var pwd = template.$("#adminPassword").val();
-    if(pwd) {
+    var option={};
+    option.pwd = template.$("#adminPassword").val();
+    if(option.pwd ) {
       Session.set('pwdError', "");
-      Meteor.call("adminLogin", pwd, function(error, result){
-        if(result) {
-          Session.set('adminName', pwd);
-          FlowRouter.go("/manage");
+      Meteor.adminManageLogin(option, function(error) {
+        if(error) {
+          alert(error.reason);
         } else {
-          Session.set('pwdError', "口令错误");
+          FlowRouter.go("/manage");
         }
       });
+      /*Meteor.adminManageLogin(option, function (error) {
+           if (error) {
+             alert(error.reason);
+           } else {
+             FlowRouter.go("index");
+           }
+         });*/
+
+     /* Meteor.call("adminLogin", option, function(error, result){
+        if (!result) {
+          Session.set('pwdError', "口令错误");
+        } else {
+          console.log("密码正确");
+          Session.set('adminName', "admin");
+          option.pwd = CryptoJS.MD5(option.pwd).toString();
+          Accounts.callLoginMethod({
+            methodArguments: [option]
+          }, function (error, result) {
+            console.log("结果" + result);
+            FlowRouter.go("/manage");
+          });
+
+          //
+        }
+      });*/
     } else {
       Session.set('pwdError',"口令不能为空");
     }

@@ -1,19 +1,19 @@
-<template name="manageUserList">
+<template name="manageEventsList">
   <div hidden>
   <button  type="button" class="btn btn-primary updateModal" data-toggle="modal" data-target="#myModal">
     Launch demo modal
   </button>
   </div>
   <!-- Modal -->
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="width: 100%">
-    <div class="modal-dialog" role="document" style="margin: 0 auto; width: 90%; ">
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel">用户信息修改</h4>
+          <h4 class="modal-title" id="myModalLabel">活动信息修改</h4>
         </div>
         <div class="modal-body">
-          {{> quickForm collection="Meteor.users" doc=userColl id="updateUserForm" type="update"}}
+          {{> quickForm collection="Events" doc=eventColl id="updateEventForm" type="update"}}
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default updateClose" data-dismiss="modal">Close</button>
@@ -24,16 +24,16 @@
     <table class="table table-bordered">
       <thead>
       <tr>
-        <th>ID</th>
-        <th>电话</th>
-        <th>用户名</th>
-        <th>性别</th>
+        <th>标题</th>
+        <th>时间</th>
+        <th>地点</th>
+        <th>发布者</th>
         <th>操作</th>
       </tr>
       </thead>
       <tbody>
-      {{#each usersList}}
-      {{> manageUserItem}}
+      {{#each eventsList}}
+      {{> manageEventsItem}}
       {{/each}}
       </tbody>
     </table>
