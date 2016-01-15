@@ -13,6 +13,9 @@ if(Meteor.isClient) {
           methodArguments: [option],
           userCallback: callback
         });
+        if(Meteor.userId()) {
+          FlowRouter.go("/manage/manageUsers");
+        }
       }
     });
   }

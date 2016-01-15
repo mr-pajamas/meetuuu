@@ -9,10 +9,20 @@ Meteor.methods({
     } else return false;
   },
   "deleteMangeEvent": function(option) {
-    check(option, Object);
+    check(option, Mongo.ObjectID);
+
     //option = new Mongo.ObjectID(option);
     if(Events.remove({_id: option})) {
       return true;
     } else return false;
-  }
+  },
+
+  "deleteMangeGroup": function(option) {
+     check(option, String);
+
+     //option = new Mongo.ObjectID(option);
+     if(Groups.remove({_id: option})) {
+       return true;
+     } else return false;
+   }
 })

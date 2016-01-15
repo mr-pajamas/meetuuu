@@ -9,3 +9,8 @@ Meteor.publish("manageAllUsers", function () {
 Meteor.publish("manageAllEvents", function() {
   return Events.find();
 });
+
+Meteor.publish("manageAllGroups", function() {
+  return Groups.find();
+});
+
