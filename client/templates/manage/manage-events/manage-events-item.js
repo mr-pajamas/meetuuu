@@ -2,9 +2,6 @@
  * Created by jianyanmin on 16/1/9.
  */
 
-/**
- * Created by jym on 2016/1/4.
- */
 Template.manageEventsItem.helpers({
   createTime: function() {
     var createTime = {};
