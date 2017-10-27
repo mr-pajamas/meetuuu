@@ -109,6 +109,7 @@ SmSender = function () {
   }
 
   function activate() {
+    /*
     var resultContent = HTTP.post(ENDPOINT + "/regist.action", {
       params: {
         cdkey: CDKEY,
@@ -120,6 +121,7 @@ SmSender = function () {
 
     if (resultData.error !== '0')
       throw new Error(resultData.message || ERR_MSGS[resultData.error]);
+    */
   }
 
   return {
@@ -132,6 +134,7 @@ SmSender = function () {
         mobiles = mobiles.join();
       }
 
+      /*
       var resultContent = HTTP.post(ENDPOINT + "/sendsms.action", {
         params: {
           cdkey: CDKEY,
@@ -145,6 +148,8 @@ SmSender = function () {
 
       if (resultData.error !== '0')
         throw new Error(resultData.message || ERR_MSGS[resultData.error]);
+      */
+      console.log(mobiles, message);
     }
   };
 }();

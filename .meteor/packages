@@ -4,23 +4,22 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-standard-minifiers
-meteor-base
-mobile-experience
-mongo
+meteor-base@1.0.4
+mobile-experience@1.0.4
+mongo@1.1.15
 blaze-html-templates
-session
-jquery
-tracker
-logging
-reload
-random
-ejson
+session@1.1.7
+jquery@1.11.10
+tracker@1.1.2
+logging@1.1.17
+reload@1.1.11
+random@1.0.10
+ejson@1.0.13
 spacebars
-check
+check@1.2.4
 
 sacha:spin
-less
+less@2.7.9
 nemo64:bootstrap
 meteorhacks:npm
 aldeed:collection2
@@ -31,11 +30,11 @@ fortawesome:fontawesome
 momentjs:moment
 rajit:bootstrap3-datepicker
 sergeyt:typeahead
-reactive-var
+reactive-var@1.0.11
 aldeed:autoform
-http
+http@1.2.11
 steeve:jquery-qrcode
-accounts-base
+accounts-base@1.2.14
 alanning:roles
 jparker:crypto-md5
 jparker:crypto-sha1
@@ -51,5 +50,8 @@ raix:eventemitter
 npm-container
 msavin:mongol
 msavin:jetsetter
-reactive-dict
+reactive-dict@1.1.8
 matb33:collection-hooks
+standard-minifier-css
+standard-minifier-js
+shell-server
